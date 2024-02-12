@@ -30,20 +30,30 @@ public class Player : NetworkBehaviour
     
     private void HandleMovement()
     {
+        HandleHorizontalMovement();
+
+        HandleJump();
+
+        ApplyPlayerGravity();
+    }
+
+    private void HandleHorizontalMovement()
+    {
         Vector2 movementNormalized = GameInput.Instance.GetMovementNormalized();
 
         Vector3 movementToApply = new Vector3(movementNormalized.x, 0, movementNormalized.y);
 
         transform.position += movementToApply * (Time.deltaTime * playerSpeed);
+    }
 
+    private void HandleJump()
+    {
         if (Input.GetKey(KeyCode.Space) && IsGrounded())
         {
             Vector3 vector3 = _playerRigidBody.velocity;
             vector3.y = playerJumpForce;
             _playerRigidBody.velocity = vector3;
         }
-
-        ApplyPlayerGravity();
     }
 
     private bool IsGrounded()
