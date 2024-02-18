@@ -17,6 +17,8 @@ public class CharacterSelectUI : MonoBehaviour
     
     [SerializeField] private Image hostSecondCharacterMark;
     [SerializeField] private Image clientSecondCharacterMark;
+
+    public static event EventHandler OnAnyCharacterSelectChanged;
     
     public enum CharacterId
     {
@@ -30,11 +32,13 @@ public class CharacterSelectUI : MonoBehaviour
         selectFistCharacterButton.onClick.AddListener(() =>
         {
             GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.First);
+            OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
         });
         
         selectSecondCharacterButton.onClick.AddListener(() =>
         {
             GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Second);
+            OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
         });
     }
 
@@ -92,5 +96,10 @@ public class CharacterSelectUI : MonoBehaviour
     private void OnDestroy()
     {
         GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
+    }
+
+    public void ResetStaticData()
+    {
+        OnAnyCharacterSelectChanged = null;
     }
 }
