@@ -83,7 +83,7 @@ public class GameLobbyManager : MonoBehaviour
             
             GameMultiplayerManager.Instance.StartHost();
             
-            Loader.LoadNetwork(Loader.Scene.GameScene);
+            Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
         }
         catch (LobbyServiceException e)
         {
@@ -145,5 +145,15 @@ public class GameLobbyManager : MonoBehaviour
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public string GetLobbyName()
+    {
+        return _joinedLobby.Name;
+    }
+    
+    public string GetLobbyCode()
+    {
+        return _joinedLobby.LobbyCode;
     }
 }
