@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class GameNetworkManager : NetworkBehaviour
+public class GameMultiplayerManager : NetworkBehaviour
 {
-    public static GameNetworkManager Instance { get; private set; }
+    public static GameMultiplayerManager Instance { get; private set; }
+    
+    public static int MAX_NUMBER_OF_PLAYERS = 2;
 
     private void Awake()
     {
         Instance = this;
+        
+        DontDestroyOnLoad(gameObject);
     }
 
     public void StartHost()
