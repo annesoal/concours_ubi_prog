@@ -82,7 +82,8 @@ public class GameLobbyManager : MonoBehaviour
             // await CreateHostRelay();
             
             GameMultiplayerManager.Instance.StartHost();
-            // Change scene
+            
+            Loader.LoadNetwork(Loader.Scene.GameScene);
         }
         catch (LobbyServiceException e)
         {
@@ -111,20 +112,38 @@ public class GameLobbyManager : MonoBehaviour
 
     public async void QuickJoin()
     {
+        OnJoinStarted?.Invoke(this, EventArgs.Empty);
         try
         {
-            OnJoinStarted?.Invoke(this, EventArgs.Empty);
-        
+            _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            
             // TODO
             // CreateClientRelay();
         
             GameMultiplayerManager.Instance.StartClient();
         }
-        catch (Exception e)
+        catch (LobbyServiceException e)
         {
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
         }
     }
-
+    public async void JoinLobbyByCode(string lobbyCode)
+    {
+        OnJoinStarted?.Invoke(this, EventArgs.Empty);
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+                
+            // TODO
+            // CreateClientRelay();
+            
+            GameMultiplayerManager.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnJoinFailed?.Invoke(this, EventArgs.Empty);
+        }
+    }
 }
