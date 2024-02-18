@@ -1,9 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Mathematics;
 using Unity.Netcode;
+using UnityEditor.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : NetworkBehaviour
 {
@@ -13,9 +17,10 @@ public class Player : NetworkBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerGravity;
     [SerializeField] private float playerJumpForce;
-    
+    [SerializeField] private TileSelector tileSelector;
     private Rigidbody _playerRigidBody;
-    private Collider _playerCollider; 
+    private Collider _playerCollider;
+    private bool _canSelectNextTile = true; 
 
     private void Awake()
     {
@@ -23,9 +28,24 @@ public class Player : NetworkBehaviour
          _playerCollider = playerVisuals.GetComponent<CapsuleCollider>();
     }
 
+    private void Start()
+    {
+        tileSelector.Hide();
+    }
+
     private void Update()
     {
-        HandleMovement();
+        if (_canSelectNextTile)
+        {
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _canSelectNextTile = false;
+                tileSelector.Show();
+                tileSelector.CanMove = true;
+
+            }
+        }
+        //  HandleMovement();
     }
     
     private void HandleMovement()
