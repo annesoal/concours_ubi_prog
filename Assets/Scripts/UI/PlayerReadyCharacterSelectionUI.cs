@@ -78,6 +78,7 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
     private void OnDestroy()
     {
         GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
+        GameMultiplayerManager.Instance.OnPlayerReadyCharacterSelectChecked -= GameMultiplayerManager_OnPlayerReadyCharacterSelectChecked;
     }
 
 }
