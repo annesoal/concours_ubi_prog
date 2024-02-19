@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.InputSystem; 
 
 namespace DefaultNamespace
 {
     public class TileSelector : MonoBehaviour
     {
         [SerializeField] private GameObject quad;
-        private MeshRenderer _meshRenderer; 
         private bool _canMove;
+        private const float Cooldown = 0.1f; 
+        private float _cooldown = 0.0f;  
+        public InputAction move;
         public bool CanMove
         {
             set
@@ -17,14 +20,25 @@ namespace DefaultNamespace
         } 
         void Start()
         {
-            _meshRenderer = quad.GetComponent<MeshRenderer>(); 
-            Debug.Log(_meshRenderer);
+            move.Enable();
         }
+        //Permet de deplacer le Selector... TODO : A changer car trop dur atm !  
         public void Move()
         {
-            
-            Vector2 movementNormalized = GameInput.Instance.GetMovementNormalized();
-            
+            Vector2 input = move.ReadValue<Vector2>();
+            // x de input, y de input == x,z en 3d
+            Vector3 directionToAdd = new Vector3(input.x, 0  ,input.y);
+
+            if (_cooldown <= 0.0f)
+            {
+                transform.position += directionToAdd;
+                _cooldown = Cooldown;
+            }
+            else
+            {
+                // reduit le cd par le temps entre chaque frame 
+                _cooldown -= Time.deltaTime; 
+            }
         }
 
         void Update()
@@ -37,12 +51,12 @@ namespace DefaultNamespace
 
         public void Hide()
         {
-            _meshRenderer.enabled = false;
+            quad.SetActive(false);
         }
 
         public void Show()
         {
-            _meshRenderer.enabled = true;
+            quad.SetActive(true);
         }
     }
 }

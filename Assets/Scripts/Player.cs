@@ -42,7 +42,6 @@ public class Player : NetworkBehaviour
                 _canSelectNextTile = false;
                 tileSelector.Show();
                 tileSelector.CanMove = true;
-
             }
         }
         //  HandleMovement();
