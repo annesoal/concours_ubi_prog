@@ -151,4 +151,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc433c78a94429ea335fcb74d3f199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _quad: {fileID: 2066825779908233426}
+  quad: {fileID: 0}
+  player: {fileID: 0}
+  move:
+    m_Name: Move
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: d366ecdb-c876-4792-82fb-9ad8ae332b98
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0

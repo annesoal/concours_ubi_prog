@@ -263,6 +263,11 @@ PrefabInstance:
       objectReference: {fileID: 5739530810330489966}
     - target: {fileID: 5547485615036118723, guid: 402a58ee3ae59cdba8302ef816d777c5,
         type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 199100503184955184}
+    - target: {fileID: 5547485615036118723, guid: 402a58ee3ae59cdba8302ef816d777c5,
+        type: 3}
       propertyPath: move.m_Name
       value: Move
       objectReference: {fileID: 0}
