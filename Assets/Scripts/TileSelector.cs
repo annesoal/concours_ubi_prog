@@ -1,12 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.WSA;
 
 public class TileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
+    private Collider _collider; 
     public InputAction move;
-    
+
+    private void Awake()
+    {
+        _collider = GetComponent<BoxCollider>();
+    }
+
     //Permet de deplacer le Selector... TODO : A changer car trop saccade!  
     public void Control()
     {
@@ -26,7 +34,7 @@ public class TileSelector : MonoBehaviour
         
         transform.position += directionToAdd;
         
-        if (Input.GetKeyDown(KeyCode.Space)) MovePlayer(); 
+        if (Input.GetKeyDown(KeyCode.Space) && IsValidTile()) MovePlayer(); 
     }
 
     // prablement a diviser en sous methode ? 
@@ -52,6 +60,19 @@ public class TileSelector : MonoBehaviour
     {
        quad.SetActive(false);
        player.CanSelectectNextTile = true;
+    }
+
+    private bool IsValidTile()
+    {
+        Vector3 origin = transform.position;
+        Vector3 direction = new Vector3(transform.position.x, -1, transform.position.z);
+        
+        Debug.Log(origin);
+        Debug.Log(direction);
+        Debug.Log(Physics.Raycast(origin, direction, maxDistance:1.0f));
+        return Physics.Raycast(origin, direction, maxDistance: 1.0f);
+        
+            
     }
 
 }
