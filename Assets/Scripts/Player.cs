@@ -4,12 +4,6 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private GameObject playerVisuals;
-
-    [Header("Player Movement")] [SerializeField]
-    private float playerSpeed;
-
-    [SerializeField] private float playerGravity;
-    [SerializeField] private float playerJumpForce;
     [SerializeField] private TileSelector tileSelector;
 
     public bool CanSelectectNextTile
@@ -27,20 +21,20 @@ public class Player : NetworkBehaviour
         _playerCollider = playerVisuals.GetComponent<CapsuleCollider>();
     }
 
-    private void Start()
-    {
-        tileSelector.Hide();
-    }
-
     private void Update()
     {
         if (_canSelectNextTile)
+        {
             // TODO : Utiliser autre systeme d'input
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 _canSelectNextTile = false;
-                tileSelector.Show();
-                tileSelector.CanMove = true;
+                tileSelector.Initialize(transform.position);
             }
+        }
+        else
+        {
+            tileSelector.Control();
+        }
     }
 }

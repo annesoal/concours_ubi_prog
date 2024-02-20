@@ -3,48 +3,30 @@ using UnityEngine.InputSystem;
 
 public class TileSelector : MonoBehaviour
 {
-    private const float Cooldown = 0.1f;
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
     public InputAction move;
-    private bool _canMove;
-    private float _cooldown;
     
-
-    public bool CanMove
-    {
-        set => _canMove = value;
-    }
-
-    private void Start()
-    {
-        move.Enable();
-    }
-
-    private void Update()
-    {
-        if (_canMove) Move();
-        // TODO : utiliser le nouveau system ! 
-        if (Input.GetKey(KeyCode.Space)) MovePlayer(); 
-    }
-
     //Permet de deplacer le Selector... TODO : A changer car trop saccade!  
-    public void Move()
+    public void Control()
     {
-        var input = move.ReadValue<Vector2>();
+        Vector2 input = new Vector2(0,0);
         // x de input, y de input == x,z en 3d
-        var directionToAdd = new Vector3(input.x, 0, input.y);
 
-        if (_cooldown <= 0.0f)
-        {
-            transform.position += directionToAdd;
-            _cooldown = Cooldown;
-        }
-        else
-        {
-            // reduit le cd par le temps entre chaque frame 
-            _cooldown -= Time.deltaTime;
-        }
+        if (Input.GetKeyDown(KeyCode.W))
+            input.y += 1; 
+        else if (Input.GetKeyDown(KeyCode.S))
+            input.y -= 1;
+        else if (Input.GetKeyDown(KeyCode.A))
+            input.x -= 1;
+        else if (Input.GetKeyDown(KeyCode.D))
+            input.x += 1; 
+        
+        var directionToAdd = new Vector3(input.x, 0, input.y);
+        
+        transform.position += directionToAdd;
+        
+        if (Input.GetKeyDown(KeyCode.Space)) MovePlayer(); 
     }
 
     // prablement a diviser en sous methode ? 
@@ -52,20 +34,24 @@ public class TileSelector : MonoBehaviour
     // au joueur qu'il peut recommencer le processus de selection
     public void MovePlayer()
     {
-        _canMove = false;
         player.transform.position = 
-            new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+            new Vector3(transform.localPosition.x, player.transform.position.y, transform.localPosition.z);
         player.CanSelectectNextTile = true;
-        Hide();
+        Destroy();
     }
 
-    public void Hide()
+    public void Initialize(Vector3 position)
     {
-        quad.SetActive(false);
-    }
-
-    public void Show()
-    {
+        Debug.Log(position);
+        transform.position = new Vector3(position.x, 0.51f ,position.z); 
+        transform.rotation = Quaternion.Euler(0, 0, 0); 
         quad.SetActive(true);
     }
+
+    private void Destroy()
+    {
+       quad.SetActive(false);
+       player.CanSelectectNextTile = true;
+    }
+
 }
