@@ -1,27 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using Grid;
 using UnityEngine;
 
-public class BasicBlock : MonoBehaviour, Block
+namespace Grid
 {
+    public class BasicBlock : MonoBehaviour, IBlock
+    {
     
-    // Start is called before the first frame update
-    void Start()
-    {
+        // Start is called before the first frame update
+        void Start()
+        {
         
-    }
+        }
 
-    // Awake est bien dans editor ou mettre en edit mode
-    // Peut creer un lag 
-    void Awake()
-    {
+        // Awake est bien dans editor ou mettre en edit mode
+        // Peut creer un lag 
+        void Awake()
+        {
         
-    }
+        }
 
 
-    public Vector3 getPosition()
-    {
-        return this.transform.localPosition;
+        public Vector3 GetPosition()
+        {
+            return this.transform.localPosition;
+        }
     }
 }

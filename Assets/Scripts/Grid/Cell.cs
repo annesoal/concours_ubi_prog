@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace Grid
 {
-    public class Cell
+    
+    struct Cell
     {
-        public CellType type = CellType.Empty;
-        public Vector2Int position; 
+        public CellType type;
+        public Vector2Int position;
     }
     
     public enum CellType
