@@ -1,8 +1,7 @@
 using Grid;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class GridLayout : MonoBehaviour
+public class TilingGrid : GridLayout 
 {
     // A changer au besoin
     private const int Size = 100; 
@@ -22,7 +21,7 @@ public class GridLayout : MonoBehaviour
        
         DebugCells();
     }
-
+    
     private void AddBlockAsCell(Block block)
     {
         Cell cell = new Cell(); 
@@ -34,13 +33,13 @@ public class GridLayout : MonoBehaviour
                 break;
         }
 
-        Vector2Int position = TranslateLocalPositionToGridPosition(block.getPosition());
+        Vector2Int position = LocalToCell(block.getPosition());
         _cells[position.x, position.y] = cell;
         
     }
 
     // Traduit une position local a la position dans la grille 
-    public Vector2Int TranslateLocalPositionToGridPosition(Vector3 position)
+    public Vector2Int LocalToCell(Vector3 position)
     {
         Vector2Int gridPosition = new Vector2Int(); 
         gridPosition.x = (int)position.x; 
@@ -50,12 +49,12 @@ public class GridLayout : MonoBehaviour
     
     
     // Traduit une position dans la grille a une position local
-    public Vector3 TranslateLocalPositionToGridPosition(Vector2 position)
+    public Vector3 CellToLocal(Vector2Int position)
     {
         Vector3 localPosition = new Vector3(); 
-        localPosition.x = (int)position.x;
+        localPosition.x = position.x;
         localPosition.y = 0; // Devrait toujours etre 0 pour la position locale
-        localPosition.z = (int)position.y; 
+        localPosition.z = position.y; 
         return localPosition;
     }
     //-----------------------------------------------------------------------------------------------------------------
