@@ -31,13 +31,13 @@ public class TileSelector : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
             input.x += 1;
 
-        if (_helper.IsValidTile(input))
+        if (_helper.IsValidCell(input))
             _helper.SetHelperPosition(input);
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsValidTile()) MovePlayer();
+        if (Input.GetKeyDown(KeyCode.Space) && IsValidTileToMove()) MovePlayer();
     }
 
     // prablement a diviser en sous methode ? 
@@ -56,6 +56,8 @@ public class TileSelector : MonoBehaviour
         Destroy();
     }
 
+    // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
+    // et initialise le Helper dans la grille. 
     public void Initialize(Vector3 position)
     {
         transform.position = new Vector3(position.x, 0.51f, position.z);
@@ -64,13 +66,15 @@ public class TileSelector : MonoBehaviour
         _helper = new SelectorGridHelper(TilingGrid.LocalToGridPosition(transform.position));
     }
 
+    // Cache le selecteur et indique au joueur qu'il peut recommencer 
     private void Destroy()
     {
         quad.SetActive(false);
         player.CanSelectectNextTile = true;
     }
 
-    private bool IsValidTile()
+    // Check si la cellule peut permettre au joueur de se deplacer
+    private bool IsValidTileToMove()
     {
         var cell = _helper.Cell;
         return cell.type == BlockType.Walkable;

@@ -5,7 +5,7 @@ namespace Grid
 {
     public class SelectorGridHelper : GridHelper
     {
-        public override bool IsValidTile(Vector2Int position)
+        public override bool IsValidCell(Vector2Int position)
         {
             position = currentCell.position + position;
             Cell cell = TilingGrid.grid.GetCell(position);

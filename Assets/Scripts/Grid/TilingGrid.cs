@@ -1,3 +1,4 @@
+using System;
 using Grid.Blocks;
 using Unity.Collections;
 using UnityEngine;
@@ -44,10 +45,13 @@ namespace Grid
             gridPosition.y = (int)position.z; 
             return gridPosition;
         }
-    
-    
-        public Cell GetCell(Vector2Int position)
+        
+        // Donne la Cellule a la position donnee.
+        public Cell GetCell(Vector2Int position) 
         {
+            if (position.x >= Size || position.y >= Size)
+                throw new ArgumentException();
+            
             return _cells[position.x,position.y];
         }
         // Traduit une position dans la grille a une position local

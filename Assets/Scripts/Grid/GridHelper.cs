@@ -9,6 +9,7 @@ namespace Grid
     {
         protected Cell currentCell;
 
+        // Simplement un Getter... 
         public Cell Cell
         {
             get
@@ -21,8 +22,11 @@ namespace Grid
         {
             currentCell = TilingGrid.grid.GetCell(position);
         }
-        public abstract bool IsValidTile(Vector2Int direction);
+        // Check si la Cell qu'on vise possede une cellule valide (On se base sur la position actuelle)
+        public abstract bool IsValidCell(Vector2Int direction);
+        // Donne la position du Helper sur la grille
         public abstract Vector2Int GetHelperPosition();
+        // Change la position du Helper sur la grille
         public abstract void SetHelperPosition(Vector2Int direction);
         
     }
