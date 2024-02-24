@@ -1,4 +1,5 @@
 using Grid.Blocks;
+using Unity.Collections;
 using UnityEngine;
 
 namespace Grid
@@ -26,16 +27,8 @@ namespace Grid
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(IBlock block)
         {
-            Cell cell = new Cell(); 
-            
-            // Check le type de bloc pour definir le type de cell 
-            switch (block)
-            {
-                case BasicBlock :
-                    cell.type = BlockType.Walkable;
-                    break;
-            }
-
+            Cell cell = new Cell();
+            cell.type = block.GetBlockType();
             Vector2Int position = LocalToCell(block.GetPosition());
             // TODO : Refactor car duplication de l'information
             cell.position = position;

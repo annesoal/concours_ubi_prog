@@ -11,12 +11,17 @@ namespace Grid.Blocks
         Movable,
         Destructible,
         SpawnBlock1,
-        SpawnBlock2
+        SpawnBlock2,
+        BasicBlock
     }
     public class BasicBlock : MonoBehaviour, IBlock
     {
-        [SerializeField] protected BlockType blockType = BlockType.None;
-       
+        [SerializeField] protected BlockType blockType;
+
+        protected BasicBlock()
+        {
+            blockType = BlockType.BasicBlock;
+        }
         // Start is called before the first frame update
         void Start()
         {
