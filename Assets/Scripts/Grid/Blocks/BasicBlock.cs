@@ -12,7 +12,7 @@ namespace Grid.Blocks
         Destructible,
         SpawnBlock1,
         SpawnBlock2,
-        BasicBlock
+        BasicBlock, 
     }
     public class BasicBlock : MonoBehaviour, IBlock
     {

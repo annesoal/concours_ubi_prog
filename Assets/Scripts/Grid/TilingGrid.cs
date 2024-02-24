@@ -7,9 +7,9 @@ namespace Grid
     public class TilingGrid : MonoBehaviour 
     {
         // A changer au besoin
+        static public TilingGrid grid;
         private const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
-
         private IBlock _blocks; 
         // Start is called before the first frame update
         void Start()
@@ -21,7 +21,7 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            
+            grid = this;
             DebugCells();
         }
         // Ajoute un bloc dans la liste de Cells
@@ -35,9 +35,9 @@ namespace Grid
             _cells[position.x, position.y] = cell;
         
         }
-
+        
         // Traduit une position local a la position dans la grille 
-        public Vector2Int LocalToCell(Vector3 position)
+        private Vector2Int LocalToCell(Vector3 position)
         {
             Vector2Int gridPosition = new Vector2Int(); 
             gridPosition.x = (int)position.x; 
@@ -46,8 +46,12 @@ namespace Grid
         }
     
     
+        public Cell GetCell(Vector2Int position)
+        {
+            return _cells[position.x,position.y];
+        }
         // Traduit une position dans la grille a une position local
-        public Vector3 CellToLocal(Vector2Int position)
+        public static Vector3 GridPositionToLocal(Vector2Int position)
         {
             Vector3 localPosition = new Vector3(); 
             localPosition.x = position.x;
@@ -55,6 +59,7 @@ namespace Grid
             localPosition.z = position.y; 
             return localPosition;
         }
+
         //-----------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 
         void DebugCells()
