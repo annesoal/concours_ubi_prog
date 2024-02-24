@@ -27,11 +27,12 @@ namespace Grid
         private void AddBlockAsCell(IBlock block)
         {
             Cell cell = new Cell(); 
+            
             // Check le type de bloc pour definir le type de cell 
             switch (block)
             {
                 case BasicBlock :
-                    cell.type = CellType.Basic;
+                    cell.type = BlockType.Walkable;
                     break;
             }
 
@@ -67,7 +68,7 @@ namespace Grid
         {
             foreach (var cell in _cells)
             { 
-                if (cell.type != CellType.Empty)
+                if (cell.type != BlockType.None)
                     Debug.Log("type : " + cell.type + " a " + cell.position.x +  ", " + cell.position.y); 
             }
         }

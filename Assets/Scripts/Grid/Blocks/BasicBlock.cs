@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 
 namespace Grid.Blocks
@@ -15,7 +16,7 @@ namespace Grid.Blocks
     public class BasicBlock : MonoBehaviour, IBlock
     {
         [SerializeField] protected BlockType blockType = BlockType.None;
-    
+       
         // Start is called before the first frame update
         void Start()
         {
@@ -33,6 +34,11 @@ namespace Grid.Blocks
         public Vector3 GetPosition()
         {
             return this.transform.localPosition;
+        }
+
+        public BlockType GetBlockType()
+        {
+            return blockType;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Grid.Blocks;
 using UnityEngine;
 
 namespace Grid
@@ -5,13 +6,7 @@ namespace Grid
     
     struct Cell
     {
-        public CellType type;
+        public BlockType type;
         public Vector2Int position;
-    }
-    
-    public enum CellType
-    {
-        Empty = 0,
-        Basic,  
     }
 }
