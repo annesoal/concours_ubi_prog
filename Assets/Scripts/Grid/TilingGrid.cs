@@ -29,15 +29,15 @@ namespace Grid
         {
             Cell cell = new Cell();
             cell.type = block.GetBlockType();
-            Vector2Int position = LocalToCell(block.GetPosition());
-            // TODO : Refactor car duplication de l'information
+            Vector2Int position = LocalToGridPosition(block.GetPosition());
+            // TODO : Refactor? car duplication de l'information
             cell.position = position;
             _cells[position.x, position.y] = cell;
         
         }
         
         // Traduit une position local a la position dans la grille 
-        private Vector2Int LocalToCell(Vector3 position)
+        public static Vector2Int LocalToGridPosition(Vector3 position)
         {
             Vector2Int gridPosition = new Vector2Int(); 
             gridPosition.x = (int)position.x; 
@@ -55,7 +55,7 @@ namespace Grid
         {
             Vector3 localPosition = new Vector3(); 
             localPosition.x = position.x;
-            localPosition.y = 0; // Devrait toujours etre 0 pour la position locale
+            localPosition.y = 0.51f; // Devrait toujours etre 0 pour la position locale TODO : Changer ca ! 
             localPosition.z = position.y; 
             return localPosition;
         }
@@ -66,7 +66,7 @@ namespace Grid
         {
             foreach (var cell in _cells)
             { 
-                if (cell.type != BlockType.None)
+                if (cell.type == BlockType.Walkable)
                     Debug.Log("type : " + cell.type + " a " + cell.position.x +  ", " + cell.position.y); 
             }
         }

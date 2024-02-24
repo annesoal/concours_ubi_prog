@@ -24,5 +24,10 @@ namespace Grid
             Vector2Int next = currentCell.position + direction; 
             currentCell = TilingGrid.grid.GetCell(next); 
         }
+
+        public SelectorGridHelper(Vector2Int position) : base(position)
+        {
+            
+        }
     }
 }

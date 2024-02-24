@@ -8,8 +8,22 @@ namespace Grid
     public abstract class GridHelper
     {
         protected Cell currentCell;
-        public abstract bool IsValidTile(Vector2Int position);
+
+        public Cell Cell
+        {
+            get
+            {
+                return currentCell;
+            }
+        }
+
+        public GridHelper(Vector2Int position)
+        {
+            currentCell = TilingGrid.grid.GetCell(position);
+        }
+        public abstract bool IsValidTile(Vector2Int direction);
         public abstract Vector2Int GetHelperPosition();
         public abstract void SetHelperPosition(Vector2Int direction);
+        
     }
 }
