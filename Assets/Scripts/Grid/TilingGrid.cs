@@ -23,7 +23,6 @@ namespace Grid
                 AddBlockAsCell(block);
             }
             grid = this;
-            DebugCells();
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(IBlock block)
@@ -59,7 +58,7 @@ namespace Grid
         {
             Vector3 localPosition = new Vector3(); 
             localPosition.x = position.x;
-            localPosition.y = 0.51f; // Devrait toujours etre 0 pour la position locale TODO : Changer ca ! 
+            localPosition.y = 0.51f; // valeur magique que j'ai pas  TODO : Changer ca ! 
             localPosition.z = position.y; 
             return localPosition;
         }

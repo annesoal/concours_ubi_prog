@@ -7,7 +7,7 @@ namespace Grid
     {
         // Permetterait de parcourir la File pour avoir les deplacements qui se jouent dans l'ordre durant la phase 
         // d'action
-        private CellRecorder _recorder = new();
+        private CellRecorder _recorder;
         public override bool IsValidCell(Vector2Int position)
         {
             position = currentCell.position + position;
@@ -29,8 +29,9 @@ namespace Grid
             _recorder.AddCell(currentCell);
         }
 
-        public SelectorGridHelper(Vector2Int position) : base(position)
+        public SelectorGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
         {
+            _recorder = recorder;
             _recorder.AddCell(currentCell);
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections;
 using Grid;
 using Grid.Blocks;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class TileSelector : MonoBehaviour
     public InputAction move;
     private Collider _collider;
     private GridHelper _helper;
-
+    private CellRecorder _recorder; 
     private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
@@ -31,28 +32,28 @@ public class TileSelector : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
             input.x += 1;
 
-        if (_helper.IsValidCell(input))
+        if (input != Vector2Int.zero && _helper.IsValidCell(input))
             _helper.SetHelperPosition(input);
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsValidTileToMove()) MovePlayer();
+        if (Input.GetKeyDown(KeyCode.Space) && IsValidTileToMove()) StartCoroutine(MovePlayer());
     }
 
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public void MovePlayer()
+    public IEnumerator MovePlayer()
     {
-        Debug.Log("ok");
-        var nextPosition = new Vector3(
-            transform.localPosition.x,
-            player.transform.position.y,
-            transform.localPosition.z
-        );
         player.CanSelectectNextTile = true;
-        player.transform.position = nextPosition;
+        while (!_recorder.IsEmpty())
+        {
+            Cell cell = _recorder.RemoveLast();
+            Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
+            player.transform.position = cellLocalPosition;
+            yield return new WaitForSeconds(0.1f);
+        }
         Destroy();
     }
 
@@ -63,14 +64,21 @@ public class TileSelector : MonoBehaviour
         transform.position = new Vector3(position.x, 0.51f, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         quad.SetActive(true);
-        _helper = new SelectorGridHelper(TilingGrid.LocalToGridPosition(transform.position));
+        InitializeHelper();
+    }
+
+    // Initialize le Helper avec la position du selecteur et un recorder
+    private void InitializeHelper()
+    {
+        _recorder = new();
+        Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
+        _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
 
     // Cache le selecteur et indique au joueur qu'il peut recommencer 
     private void Destroy()
     {
         quad.SetActive(false);
-        player.CanSelectectNextTile = true;
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer
