@@ -26,7 +26,7 @@ namespace Grid.Blocks
                 _position.y = j; 
                 do
                 {
-                    if (_helper.IsValidCell(_position)) //TODO Randomiser
+                    if (_helper.IsValidCell(_position) && randomBool())
                     { 
                         Debug.Log(_cell.position);
                         Debug.Log(_cell.type);
@@ -40,7 +40,7 @@ namespace Grid.Blocks
             } while (i < Size);
         }
 
-        private bool isRandom()
+        private bool randomBool()
         {
        
             return rand.NextDouble() > 0.5;
