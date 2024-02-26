@@ -22,11 +22,6 @@ namespace Grid.Blocks
         {
             blockType = BlockType.BasicBlock;
         }
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
 
         // Awake est bien dans editor ou mettre en edit mode
         // Peut creer un lag 

@@ -3,11 +3,13 @@ using Grid;
 using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class TileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
+    [SerializeField] private Character _character;
     public InputAction move;
     private Collider _collider;
     private GridHelper _helper;
@@ -18,40 +20,28 @@ public class TileSelector : MonoBehaviour
     }
 
     //Permet de deplacer le Selector... TODO : A changer car trop saccade!  
-    public void Control()
+    public void Control( Vector2Int direction , bool activator)
     {
-        var input = new Vector2Int(0, 0);
-        // x de input, y de input == x,z en 3d
-
-        if (Input.GetKeyDown(KeyCode.W))
-            input.y += 1;
-        else if (Input.GetKeyDown(KeyCode.S))
-            input.y -= 1;
-        else if (Input.GetKeyDown(KeyCode.A))
-            input.x -= 1;
-        else if (Input.GetKeyDown(KeyCode.D))
-            input.x += 1;
-
-        if (input != Vector2Int.zero && _helper.IsValidCell(input))
-            _helper.SetHelperPosition(input);
+        if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
+            _helper.SetHelperPosition(direction);
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
 
-        if (Input.GetKeyDown(KeyCode.Space) && IsValidTileToMove()) StartCoroutine(MovePlayer());
+        if ( activator && IsValidTileToMove()) StartCoroutine(MoveCharacter());
     }
 
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public IEnumerator MovePlayer()
+    public IEnumerator MoveCharacter()
     {
-        player.CanSelectectNextTile = true;
+        player.CanSelectNextTile = true;
         while (!_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
-            player.transform.position = cellLocalPosition;
+            _character.transform.position = cellLocalPosition;
             yield return new WaitForSeconds(0.1f);
         }
         Destroy();
