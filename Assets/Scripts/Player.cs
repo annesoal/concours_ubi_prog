@@ -37,4 +37,10 @@ public class Player : NetworkBehaviour
             tileSelector.Control();
         }
     }
+
+    // Permet de pas controller les autres "players" 
+    public override void OnNetworkSpawn()
+    {
+        if(!IsOwner) Destroy(this);
+    }
 }
