@@ -12,10 +12,7 @@ namespace Grid.Blocks
         
         public void SpawnPlayer(GameObject player)
         {
-            Debug.Log(_cell.position);
-            Debug.Log(_cell.type);
             Vector3 position = TilingGrid.GridPositionToLocal(_cell.position);
-            Debug.Log(position);
             Object.Instantiate(player, position, Quaternion.identity);
         }
     }

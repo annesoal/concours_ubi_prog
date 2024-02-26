@@ -40,8 +40,6 @@ namespace Grid
             // TODO : Refactor? car duplication de l'information
             cell.position = position;
             _cells[position.x, position.y] = cell;
-                Debug.Log(cell.position);
-                             Debug.Log(cell.type);
              if (type == BlockType.SpawnBlock1)
              {
              
