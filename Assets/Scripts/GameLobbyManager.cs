@@ -62,11 +62,6 @@ public class GameLobbyManager : MonoBehaviour
         }
     }
 
-    private bool IsLobbyHost()
-    {
-        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
-    }
-
     public event EventHandler OnCreateLobbyStarted;
     public event EventHandler OnCreateLobbyFailed;
     
@@ -156,4 +151,27 @@ public class GameLobbyManager : MonoBehaviour
     {
         return _joinedLobby.LobbyCode;
     }
+
+    public async void LeaveLobby()
+    {
+        try
+        {
+            if (_joinedLobby != null)
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                
+                _joinedLobby = null;
+            }
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+    
+    private bool IsLobbyHost()
+    {
+        return _joinedLobby != null && _joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+    }
+
 }

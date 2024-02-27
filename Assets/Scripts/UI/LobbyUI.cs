@@ -20,6 +20,8 @@ public class LobbyUI : MonoBehaviour
     {
         mainMenuButton.onClick.AddListener(() =>
         {
+            GameLobbyManager.Instance.LeaveLobby();
+            
             Loader.Load(Loader.Scene.MainMenuScene);
         });
         
