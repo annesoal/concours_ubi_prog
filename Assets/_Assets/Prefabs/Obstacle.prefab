@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb44bd928ec74e5e8be599dba6960712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacle: {fileID: 926555442791790243}
   obstacleType: 1
 --- !u!1 &5952841745482552074
 GameObject:
@@ -108,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 2317f00b8cdb0f6aeb994670f3c74015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

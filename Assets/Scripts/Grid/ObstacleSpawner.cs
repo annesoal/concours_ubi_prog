@@ -6,9 +6,8 @@ using Object = UnityEngine.Object;
 
 namespace Grid.Blocks
 {
-    public class ObstacleSpawner
+    public class ObstacleSpawner : MonoBehaviour
     {
-        [SerializeField] private GameObject _obstacle ;
         private ObstacleGridHelper _helper;
         private const int Size = 100;
         private Cell _cell = new Cell();
@@ -31,8 +30,9 @@ namespace Grid.Blocks
                         Debug.Log(_cell.position);
                         Debug.Log(_cell.type);
                         Vector3 position3d = TilingGrid.GridPositionToLocal(_position);
+                        position3d.y += 1; // TODO Je pense bien que ca mettre l'obstacle dessus
                         Debug.Log(_position);
-                        Object.Instantiate(obstacle, position3d, Quaternion.identity);
+                        Instantiate(obstacle, position3d, Quaternion.identity);
                     }
                     j++; 
                 } while (j < Size);

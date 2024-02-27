@@ -8,6 +8,8 @@ namespace Grid
     public class TilingGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _player;
+        [SerializeField] private GameObject _obstacle;
+        
         public const float TopOfCell = 0.51f;
         
         // A changer au besoin
@@ -17,10 +19,13 @@ namespace Grid
         private Cell [,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
+       
 
         [SerializeField]
         private BlockPlayerSpawn _spawnPlayer1;
-
+        [SerializeField]
+        private ObstacleSpawner _spawnObstacle;
+        
         private void Awake()
         {
             grid = this;
@@ -36,6 +41,9 @@ namespace Grid
             }
             // TODO : enlever
             _spawnPlayer1.SpawnPlayer(_player);
+            
+            // TODO ICI ca dit que cest pas une instance of an Object..???
+            _spawnObstacle.SpawnObstacle(_obstacle);
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
