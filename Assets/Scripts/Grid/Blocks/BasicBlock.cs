@@ -3,20 +3,11 @@ using UnityEngine;
 
 namespace Grid.Blocks
 {
-    public enum BlockType
-    {
-        None = 0,
-        Walkable,
-        Buildable,
-        Movable,
-        Destructible,
-        SpawnBlock1,
-        SpawnBlock2,
-        BasicBlock, 
-    }
+    
+
     public class BasicBlock : MonoBehaviour
     {
-        [SerializeField] protected BlockType blockType;
+        [SerializeField] protected int blockType;
 
         protected BasicBlock()
         {
@@ -36,9 +27,11 @@ namespace Grid.Blocks
             return this.transform.localPosition;
         }
 
-        public BlockType GetBlockType()
+        public int GetBlockType()
         {
             return blockType;
         }
     }
+
+
 }

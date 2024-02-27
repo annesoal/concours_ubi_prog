@@ -36,15 +36,13 @@ namespace Grid
             }
             // TODO : enlever
             _spawnPlayer1.SpawnPlayer(_player);
-           
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
         {
             Cell cell = new Cell();
             
-            BlockType type = block.GetBlockType();
-            cell.type = type;
+            cell.type = block.GetBlockType();
 
             Vector2Int position = LocalToGridPosition(block.GetPosition());
             // TODO : Refactor? car duplication de l'information
@@ -88,8 +86,13 @@ namespace Grid
         {
             foreach (var cell in _cells)
             { 
+                Debug.Log("is of type None" + cell.IsOf(BlockType.None));
                 if (cell.type != BlockType.None)
+                {
                     Debug.Log("type : " + cell.type + " a " + cell.position.x +  ", " + cell.position.y); 
+                    Debug.Log("is of type Walkable" + cell.IsOf(BlockType.Walkable));
+                    Debug.Log("is of type Walkable or Movable" + cell.IsOf(BlockType.Walkable | BlockType.Movable));
+                }
             }
         }
     }
