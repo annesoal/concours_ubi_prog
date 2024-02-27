@@ -168,6 +168,21 @@ public class GameLobbyManager : MonoBehaviour
             Debug.Log(e);
         }
     }
+
+    public async void KickPlayer(string lobbyPlayerId)
+    {
+        try
+        {
+            if (IsLobbyHost())
+            {
+                await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, lobbyPlayerId);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+    }
     
     private bool IsLobbyHost()
     {
