@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Services.Authentication;
 using UnityEngine;
 
 public class GameMultiplayerManager : NetworkBehaviour
@@ -33,6 +34,7 @@ public class GameMultiplayerManager : NetworkBehaviour
 
     public void StartClient()
     {
+        NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
         NetworkManager.Singleton.StartClient();
     }
 
@@ -222,8 +224,27 @@ public class GameMultiplayerManager : NetworkBehaviour
         _playerDataNetworkList.Add(new PlayerData
         {
             clientId = clientId,
-            characterSelection = CharacterSelectUI.CharacterId.First
+            characterSelection = CharacterSelectUI.CharacterId.First,
         });
+        
+        SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+    }
+    
+    private void NetworkManager_Client_OnClientConnectedCallback(ulong clientId)
+    {
+        SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetLobbyPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
+    {
+        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+        PlayerData toSetPlayerId = _playerDataNetworkList[playerDataIndex];
+
+        toSetPlayerId.lobbyPlayerId = playerId;
+        
+        _playerDataNetworkList[playerDataIndex] = toSetPlayerId;
     }
 
     private void NetworkManager_Host_OnClientDisconnectCallback(ulong clientId)
