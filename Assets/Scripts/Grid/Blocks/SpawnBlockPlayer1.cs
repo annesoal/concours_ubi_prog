@@ -2,11 +2,13 @@ using UnityEngine;
 
 namespace Grid.Blocks
 {
-    public class SpawnBlock : BasicBlock
+    public class SpawnBlockPlayer1 : BasicBlock
     {
-        public SpawnBlock()
+        public SpawnBlockPlayer1()
         {
             blockType = BlockType.SpawnBlock1;
         }
+        
+        // Creer methode
     }
 }
