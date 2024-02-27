@@ -2,18 +2,16 @@ using UnityEngine;
 
 namespace Grid.Blocks
 {
-    public class PlayerSpawner 
+    public class PlayerSpawner
     {
-        private Cell _cell; 
-        public Cell SpawningCell
+        private Vector3 _position; 
+        public PlayerSpawner(Vector3 position)
         {
-            set => _cell = value;
+            _position = position;
         }
-        
         public void SpawnPlayer(GameObject player)
         {
-            Vector3 position = TilingGrid.GridPositionToLocal(_cell.position);
-            Object.Instantiate(player, position, Quaternion.identity);
+            Object.Instantiate(player, _position, Quaternion.identity);
         }
     }
 }

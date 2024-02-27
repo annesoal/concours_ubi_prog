@@ -11,14 +11,21 @@ namespace Grid
         public const float TopOfCell = 0.51f;
         
         // A changer au besoin
-        static public TilingGrid grid;
+        static public TilingGrid grid { get; private set; }
         
         private const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
-        private PlayerSpawner _playerSpawner = new();
 
-        [SerializeField] private GameObject _ground; 
-        
+        [SerializeField] private GameObject _ground;
+
+        [SerializeField]
+        private BlockPlayerSpawn _spawnPlayer1;
+
+        private void Awake()
+        {
+            grid = this;
+        }
+
         void Start()
         {
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
@@ -27,8 +34,9 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            grid = this;
-            _playerSpawner.SpawnPlayer(_player);
+            // TODO : enlever
+            _spawnPlayer1.SpawnPlayer(_player);
+           
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
@@ -42,10 +50,6 @@ namespace Grid
             // TODO : Refactor? car duplication de l'information
             cell.position = position;
             _cells[position.x, position.y] = cell;
-             if (type == BlockType.SpawnBlock1)
-             {
-                 _playerSpawner.SpawningCell = cell;
-             }       
         }
         
         // Traduit une position local a la position dans la grille 
