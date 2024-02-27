@@ -14,7 +14,7 @@ namespace Grid.Blocks
         SpawnBlock2,
         BasicBlock, 
     }
-    public class BasicBlock : MonoBehaviour, IBlock
+    public class BasicBlock : MonoBehaviour
     {
         [SerializeField] protected BlockType blockType;
 

@@ -15,14 +15,13 @@ namespace Grid
         
         private const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
-        private IBlock _blocks;
         private PlayerSpawner _playerSpawner = new();
 
         [SerializeField] private GameObject _ground; 
         
         void Start()
         {
-            IBlock[] blocks = _ground.GetComponentsInChildren<IBlock>();
+            BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
 
             foreach (var block in blocks)
             {
@@ -32,7 +31,7 @@ namespace Grid
             _playerSpawner.SpawnPlayer(_player);
         }
         // Ajoute un bloc dans la liste de Cells
-        private void AddBlockAsCell(IBlock block)
+        private void AddBlockAsCell(BasicBlock block)
         {
             Cell cell = new Cell();
             
