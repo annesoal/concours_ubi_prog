@@ -8,24 +8,27 @@ namespace Grid
     public class TilingGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _player;
+        public const float TopOfCell = 0.51f;
+        
         // A changer au besoin
         static public TilingGrid grid;
+        
         private const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
         private IBlock _blocks;
         private PlayerSpawner _playerSpawner = new();
-        // Start is called before the first frame update
+
+        [SerializeField] private GameObject _ground; 
+        
         void Start()
         {
-            GameObject ground = GameObject.Find("Ground");
-            IBlock[] blocks = ground.GetComponentsInChildren<IBlock>();
+            IBlock[] blocks = _ground.GetComponentsInChildren<IBlock>();
 
             foreach (var block in blocks)
             {
                 AddBlockAsCell(block);
             }
             grid = this;
-            
             _playerSpawner.SpawnPlayer(_player);
         }
         // Ajoute un bloc dans la liste de Cells
@@ -42,7 +45,6 @@ namespace Grid
             _cells[position.x, position.y] = cell;
              if (type == BlockType.SpawnBlock1)
              {
-             
                  _playerSpawner.SpawningCell = cell;
              }       
         }
@@ -57,7 +59,7 @@ namespace Grid
         }
         
         // Donne la Cellule a la position donnee.
-        public Cell GetCell(Vector2Int position) 
+        public Cell GetCell(Vector2Int position)
         {
             if (position.x >= Size || position.y >= Size)
                 throw new ArgumentException();
@@ -65,11 +67,11 @@ namespace Grid
             return _cells[position.x,position.y];
         }
         // Traduit une position dans la grille a une position local
-        public static Vector3 GridPositionToLocal(Vector2Int position)
+        public static Vector3 GridPositionToLocal(Vector2Int position, float yPos = TopOfCell)
         {
             Vector3 localPosition = new Vector3(); 
             localPosition.x = position.x;
-            localPosition.y = 0.51f; // valeur magique que j'ai pas  TODO : Changer ca ! 
+            localPosition.y = yPos;  
             localPosition.z = position.y; 
             return localPosition;
         }
