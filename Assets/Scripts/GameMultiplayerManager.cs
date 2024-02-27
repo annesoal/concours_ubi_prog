@@ -43,6 +43,14 @@ public class GameMultiplayerManager : NetworkBehaviour
     {
         CheckPlayersCanSetReadyCharacterSelectServerRpc();
     }
+
+    public void KickPlayer(ulong clientId)
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.DisconnectClient(clientId);
+        }
+    }
     
     [ServerRpc(RequireOwnership = false)]
     private void CheckPlayersCanSetReadyCharacterSelectServerRpc()
