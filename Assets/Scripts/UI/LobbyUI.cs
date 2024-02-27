@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ public class LobbyUI : MonoBehaviour
         mainMenuButton.onClick.AddListener(() =>
         {
             GameLobbyManager.Instance.LeaveLobby();
+            
+            NetworkManager.Singleton.Shutdown();
             
             Loader.Load(Loader.Scene.MainMenuScene);
         });
