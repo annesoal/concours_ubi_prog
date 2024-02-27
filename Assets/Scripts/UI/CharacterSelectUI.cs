@@ -98,7 +98,7 @@ public class CharacterSelectUI : MonoBehaviour
         GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
     }
 
-    public void ResetStaticData()
+    public static void ResetStaticData()
     {
         OnAnyCharacterSelectChanged = null;
     }
