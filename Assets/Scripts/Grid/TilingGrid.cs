@@ -64,7 +64,10 @@ namespace Grid
         // Donne la Cellule a la position donnee.
         public Cell GetCell(Vector2Int position)
         {
-            if (position.x >= Size || position.y >= Size)
+            bool outOfBound = 
+                position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
+            
+            if (outOfBound)
                 throw new ArgumentException();
             
             return _cells[position.x,position.y];
