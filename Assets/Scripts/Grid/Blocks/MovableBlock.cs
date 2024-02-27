@@ -4,7 +4,7 @@ namespace Grid.Blocks
     {
         public MovableBlock()
         {
-            blockType = BlockType.Movable;
+            blockType = BlockType.Movable | BlockType.Walkable;
         }
     }
 }

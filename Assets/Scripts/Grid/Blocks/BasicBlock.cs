@@ -7,8 +7,7 @@ namespace Grid.Blocks
 
     public class BasicBlock : MonoBehaviour
     {
-        [SerializeField] protected int blockType;
-
+        protected int blockType;
         protected BasicBlock()
         {
             blockType = BlockType.BasicBlock;
@@ -18,7 +17,7 @@ namespace Grid.Blocks
         // Peut creer un lag 
         void Awake()
         {
-        
+            Debug.Log(blockType); 
         }
 
 

@@ -8,12 +8,20 @@ namespace Grid
         public int type;
         public Vector2Int position;
         
-        public bool IsOf(int type)
+        // Check que le type soit le meme (exactement) que le type de la cellule
+        public bool IsOf(int blockType)
         {
-            if (type == BlockType.None)
-                return this.type == 0;
+             return (this.type ^ blockType) == 0;
+        }
 
-            return (this.type & type) > 0;
+        // Check que le type existe dans le type de la cellule
+        // None donne toujours vrai
+        public bool Has(int blockType)
+        {
+            if (blockType == BlockType.None)
+                return true; 
+            
+            return (this.type & blockType) > 0;
         }
     }
     

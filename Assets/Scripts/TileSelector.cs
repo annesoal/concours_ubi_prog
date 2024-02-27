@@ -75,6 +75,7 @@ public class TileSelector : MonoBehaviour
     private bool IsValidTileToMove()
     {
         var cell = _helper.Cell;
-        return cell.type == BlockType.Walkable;
+        Debug.Log(cell.Has(BlockType.Walkable));
+        return cell.Has(BlockType.Walkable);
     }
 }
