@@ -1,19 +1,21 @@
-using System;
 using UnityEngine;
-using static Unity.Mathematics.Random;
-using Object = UnityEngine.Object;
-
 
 namespace Grid.Blocks
 {
     public class ObstacleSpawner : MonoBehaviour
     {
-        private ObstacleGridHelper _helper;
         private const int Size = 100;
         private Cell _cell = new Cell();
-        private Vector2Int _position = new Vector2Int();
+        private Vector2Int _position;
         private System.Random rand = new System.Random();
-        
+        private GridHelper _helper;
+
+        public void Initialize()
+        { 
+            _position = new Vector2Int();
+            _helper = new ObstacleGridHelper(_position); 
+        }
+
         public void SpawnObstacle(GameObject obstacle)
         {
             int i = 0;
@@ -25,6 +27,7 @@ namespace Grid.Blocks
                 _position.y = j; 
                 do
                 {
+                    Debug.Log(_helper == null);
                     if (_helper.IsValidCell(_position) && randomBool())
                     { 
                         Debug.Log(_cell.position);

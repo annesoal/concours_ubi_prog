@@ -1,5 +1,6 @@
 using System;
 using Grid.Blocks;
+using TMPro;
 using Unity.Collections;
 using UnityEngine;
 
@@ -40,9 +41,9 @@ namespace Grid
                 AddBlockAsCell(block);
             }
             // TODO : enlever
-            _spawnPlayer1.SpawnPlayer(_player);
-            
+            _spawnPlayer1.SpawnPlayer(_player); 
             // TODO ICI ca dit que cest pas une instance of an Object..???
+            _spawnObstacle.Initialize();
             _spawnObstacle.SpawnObstacle(_obstacle);
         }
         // Ajoute un bloc dans la liste de Cells
