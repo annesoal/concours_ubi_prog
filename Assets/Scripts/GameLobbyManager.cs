@@ -206,6 +206,25 @@ public class GameLobbyManager : MonoBehaviour
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
         }
     }
+    
+    public async void JoinLobbyById(string lobbyId)
+    {
+        OnJoinStarted?.Invoke(this, EventArgs.Empty);
+        try
+        {
+            _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+                
+            // TODO
+            // CreateClientRelay();
+            
+            GameMultiplayerManager.Instance.StartClient();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+            OnJoinFailed?.Invoke(this, EventArgs.Empty);
+        }
+    }
 
     public string GetLobbyName()
     {

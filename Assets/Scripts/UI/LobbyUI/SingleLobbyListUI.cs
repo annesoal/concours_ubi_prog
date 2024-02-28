@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SingleLobbyListUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Button joinLobbyButton;
+    [SerializeField] private TextMeshProUGUI lobbyNameText;
+    
+    private Lobby _associated;
+
+    private void Awake()
     {
-        
+        joinLobbyButton.onClick.AddListener(() =>
+        {
+            GameLobbyManager.Instance.JoinLobbyById(_associated.Id);
+        });
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateVisuals(Lobby associated)
     {
-        
+        _associated = associated;
+
+        lobbyNameText.text = _associated.Name;
     }
 }
