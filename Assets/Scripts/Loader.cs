@@ -32,4 +32,13 @@ public static class Loader
     {
         SceneManager.LoadScene(_targetScene.ToString());
     }
+
+    public static void ReturnToMainMenuClean()
+    {
+        GameLobbyManager.Instance.LeaveLobby();
+            
+        NetworkManager.Singleton.Shutdown();
+            
+        Load(Scene.MainMenuScene);
+    }
 }

@@ -19,14 +19,7 @@ public class LobbyUI : MonoBehaviour
 
     private void Awake()
     {
-        mainMenuButton.onClick.AddListener(() =>
-        {
-            GameLobbyManager.Instance.LeaveLobby();
-            
-            NetworkManager.Singleton.Shutdown();
-            
-            Loader.Load(Loader.Scene.MainMenuScene);
-        });
+        mainMenuButton.onClick.AddListener(Loader.ReturnToMainMenuClean);
         
         createLobbyButton.onClick.AddListener(() =>
         {
