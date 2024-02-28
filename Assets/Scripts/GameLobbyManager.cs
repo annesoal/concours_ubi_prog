@@ -8,6 +8,7 @@ using Unity.Services.Authentication;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class GameLobbyManager : MonoBehaviour
@@ -28,6 +29,8 @@ public class GameLobbyManager : MonoBehaviour
     private void Update()
     {
         HandleHearthbeat();
+
+        HandlePeriodicListLobbies();
     }
 
     private async void InitializeUnityAuthentication()
@@ -60,6 +63,68 @@ public class GameLobbyManager : MonoBehaviour
                 LobbyService.Instance.SendHeartbeatPingAsync(_joinedLobby.Id);
             }
         }
+    }
+
+    public event EventHandler<OnLobbyListChangedEventArgs> OnLobbyListChanged;
+    public class OnLobbyListChangedEventArgs : EventArgs
+    {
+        public List<Lobby> lobbyList;
+    }
+
+    private const float LIST_LOBBIES_TIMER_MAX = 3f;
+    private float _listLobbiesTimer = LIST_LOBBIES_TIMER_MAX;
+    
+    private void HandlePeriodicListLobbies()
+    {
+        if (PeriodicListingShouldStop()) { return; }
+
+        _listLobbiesTimer -= Time.deltaTime;
+
+        if (_listLobbiesTimer < 0)
+        {
+            _listLobbiesTimer = LIST_LOBBIES_TIMER_MAX;
+            CarryOutUpdateLobbyListProcedure();
+        }
+    }
+    
+    private bool PeriodicListingShouldStop()
+    {
+        return !AuthenticationService.Instance.IsSignedIn ||
+               PlayerHasAlreadyJoinedLobby() ||
+               SceneManager.GetActiveScene().name != Loader.Scene.LobbyScene.ToString();
+    }
+
+    private bool PlayerHasAlreadyJoinedLobby()
+    {
+        return _joinedLobby != null;
+    }
+
+    private async void CarryOutUpdateLobbyListProcedure()
+    {
+        try
+        {
+            await UpdateLobbyList();
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    private async Task UpdateLobbyList()
+    {
+        QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions();
+        
+        queryLobbiesOptions.Filters = new List<QueryFilter>{
+            new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+        };
+        
+        QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
+        
+        OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs
+        {
+            lobbyList = queryResponse.Results,
+        });
     }
 
     public event EventHandler OnCreateLobbyStarted;
