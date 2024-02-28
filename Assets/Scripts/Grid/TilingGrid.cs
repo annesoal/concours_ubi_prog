@@ -41,8 +41,6 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            // TODO : enlever
-            _spawnPlayer1.SpawnPlayer(_player); 
             
             _spawnObstacles.Initialize();
             _spawnObstacles.SpawnObstacles(_obstacle);

@@ -275,6 +275,25 @@ public class GameMultiplayerManager : NetworkBehaviour
         }
     }
 
+    private const string NO_CLIENT_ID_MATCH_CHARACTER_SELECTION =
+        "No matching client id found when searching for character selection";
+    
+    /**
+     * Throws NoMatchingClientIdFoundException.
+     */
+    public CharacterSelectUI.CharacterId GetCharacterSelectionFromClientId(ulong clientId)
+    {
+        foreach (PlayerData playerData in _playerDataNetworkList)
+        {
+            if (playerData.clientId == clientId)
+            {
+                return playerData.characterSelection;
+            }
+        }
+
+        throw new NoMatchingClientIdFoundException(NO_CLIENT_ID_MATCH_CHARACTER_SELECTION);
+    }
+
     /**
      * Returns -1 if no equivalence found.
      */
@@ -307,7 +326,7 @@ public class GameMultiplayerManager : NetworkBehaviour
         _playerDataNetworkList.Add(new PlayerData
         {
             clientId = clientId,
-            characterSelection = CharacterSelectUI.CharacterId.First,
+            characterSelection = CharacterSelectUI.CharacterId.Monkey,
         });
         
         SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
