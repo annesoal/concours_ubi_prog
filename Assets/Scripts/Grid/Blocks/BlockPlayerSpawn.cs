@@ -8,7 +8,7 @@ namespace Grid.Blocks
             
         void Awake()
         {
-            blockType = BlockType.SpawnBlock1 | BlockType.Walkable;
+            blockType = BlockType.SpawnBlock | BlockType.Walkable;
         }
 
         /**

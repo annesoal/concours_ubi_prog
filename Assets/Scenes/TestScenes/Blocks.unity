@@ -1068,7 +1068,7 @@ MonoBehaviour:
   _obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
     type: 3}
   _ground: {fileID: 1264037788}
-  _spawnPlayer1: {fileID: 1751245265}
+  _spawnPlayer1: {fileID: 0}
   _spawnObstacles: {fileID: 1728712665}
 --- !u!4 &184127203 stripped
 Transform:
@@ -12410,18 +12410,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1718285906}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1751245265 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5255801251789880944, guid: 26166a7b9eec019ffb99c8523879acf5,
-    type: 3}
-  m_PrefabInstance: {fileID: 1718285906}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b80fc64d8e94ad38008a113726aade7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1755130723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13694,10 +13682,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb252143610737f0181785354309e0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monkeySpawnPoint: {fileID: 0}
-  playerMonkeyPrefab: {fileID: 0}
-  playerRobotPrefab: {fileID: 0}
-  _robotSpawnPoint: {fileID: 0}
+  playerMonkeyPrefab: {fileID: 5859016237900757387, guid: e526c4caf8f47b6158e994c81b9c1341,
+    type: 3}
+  _monkeyBlockPlayerSpawn: {fileID: 1751245264}
+  playerRobotPrefab: {fileID: 5859016237900757387, guid: e526c4caf8f47b6158e994c81b9c1341,
+    type: 3}
+  _robotBlockPlayerSpawn: {fileID: 1044088096}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
