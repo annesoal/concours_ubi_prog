@@ -35,6 +35,7 @@ public class GameMultiplayerManager : NetworkBehaviour
     public void StartClient()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
         NetworkManager.Singleton.StartClient();
     }
 
@@ -67,12 +68,14 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         return playerDataOfClient;
     }
-    
+
+    private const string KICK_REASON = "YOU HAVE BEEN KICKED";
+        
     public void KickPlayer(ulong clientId)
     {
         if (IsServer)
         {
-            NetworkManager.Singleton.DisconnectClient(clientId);
+            NetworkManager.Singleton.DisconnectClient(clientId, KICK_REASON);
 
             TryRemoveDisconnectedPlayerFromPlayerReadyList(clientId);
         }
@@ -313,6 +316,16 @@ public class GameMultiplayerManager : NetworkBehaviour
     private void NetworkManager_Client_OnClientConnectedCallback(ulong clientId)
     {
         SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+    }
+
+    public event EventHandler OnHostDisconneted;
+    
+    private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
+    {
+        if (clientId == NetworkManager.ServerClientId)
+        {
+            OnHostDisconneted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
