@@ -22,8 +22,8 @@ public class CharacterSelectUI : MonoBehaviour
     
     public enum CharacterId
     {
-        First = 0,
-        Second = 1,
+        Monkey = 0,
+        Robot = 1,
         None = 2,
     }
 
@@ -31,13 +31,13 @@ public class CharacterSelectUI : MonoBehaviour
     {
         selectFistCharacterButton.onClick.AddListener(() =>
         {
-            GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.First);
+            GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Monkey);
             OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
         });
         
         selectSecondCharacterButton.onClick.AddListener(() =>
         {
-            GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Second);
+            GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Robot);
             OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
         });
     }
@@ -73,13 +73,13 @@ public class CharacterSelectUI : MonoBehaviour
 
     private void SetMarkActive(Image fisrtCharacterMark, Image secondCharacterMark, CharacterId selectedId)
     {
-        if (selectedId == CharacterId.First)
+        if (selectedId == CharacterId.Monkey)
         {
             BasicShowHide.Show(fisrtCharacterMark.gameObject);
             BasicShowHide.Hide(secondCharacterMark.gameObject);
         }
 
-        if (selectedId == CharacterId.Second)
+        if (selectedId == CharacterId.Robot)
         {
             BasicShowHide.Hide(fisrtCharacterMark.gameObject);
             BasicShowHide.Show(secondCharacterMark.gameObject);
