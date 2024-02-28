@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Grid.Blocks
 {
-    public class ObstacleSpawner : MonoBehaviour
+    public class ObstaclesSpawner : MonoBehaviour
     {
         private const int Size = 100;
         private Cell _cell = new Cell();
@@ -16,26 +16,23 @@ namespace Grid.Blocks
             _helper = new ObstacleGridHelper(_position); 
         }
 
-        public void SpawnObstacle(GameObject obstacle)
+        public void SpawnObstacles(GameObject obstacle)
         {
             int i = 0;
-            int j = 0;
-           
             do
             {
                 _position.x = i;
-                _position.y = j; 
+                int j = 0;
                 do
                 {
-                    Debug.Log(_helper == null);
+                    _position.y = j; 
+                    _helper.SetHelperPosition(_position);
+                    Debug.Log(_helper.GetHelperPosition());
+                    //Debug.Log(_helper == null);
                     if (_helper.IsValidCell(_position) && randomBool())
-                    { 
-                        Debug.Log(_cell.position);
-                        Debug.Log(_cell.type);
-                        Vector3 position3d = TilingGrid.GridPositionToLocal(_position);
-                        position3d.y += 1; // TODO Je pense bien que ca mettre l'obstacle dessus
+                    {
                         Debug.Log(_position);
-                        Instantiate(obstacle, position3d, Quaternion.identity);
+                        SpawnObstacle(obstacle);
                     }
                     j++; 
                 } while (j < Size);
@@ -45,12 +42,22 @@ namespace Grid.Blocks
 
         private bool randomBool()
         {
-       
-            return rand.NextDouble() > 0.5;
+            return rand.NextDouble() > 0.8;
         }
+        
+        private void SpawnObstacle(GameObject obstacle)
+        {
+            Debug.Log(_cell.position);
+            
+            Vector3 position3d = TilingGrid.GridPositionToLocal(_position);
+            position3d.y += 0.5f;
+            Debug.Log(_position);
+            Instantiate(obstacle, position3d, Quaternion.identity);
+        }
+
+        
     }
 }
-
 
 
 

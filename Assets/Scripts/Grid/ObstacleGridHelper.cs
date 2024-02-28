@@ -9,6 +9,7 @@ namespace Grid
         {
         }
 
+        //TODO pas de spawn sur player
         public override bool IsValidCell(Vector2Int position)
         {
           Cell cell = TilingGrid.grid.GetCell(position);

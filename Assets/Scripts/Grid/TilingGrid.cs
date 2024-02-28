@@ -3,6 +3,7 @@ using Grid.Blocks;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Grid
 {
@@ -24,8 +25,8 @@ namespace Grid
 
         [SerializeField]
         private BlockPlayerSpawn _spawnPlayer1;
-        [SerializeField]
-        private ObstacleSpawner _spawnObstacle;
+        [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
+        private ObstaclesSpawner _spawnObstacles;
         
         private void Awake()
         {
@@ -42,9 +43,9 @@ namespace Grid
             }
             // TODO : enlever
             _spawnPlayer1.SpawnPlayer(_player); 
-            // TODO ICI ca dit que cest pas une instance of an Object..???
-            _spawnObstacle.Initialize();
-            _spawnObstacle.SpawnObstacle(_obstacle);
+            
+            _spawnObstacles.Initialize();
+            _spawnObstacles.SpawnObstacles(_obstacle);
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
