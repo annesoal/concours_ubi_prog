@@ -38,6 +38,8 @@ public class Player : NetworkBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!IsOwner) { return; }
+
         if (_canSelectNextTile)
         {
             // TODO : Utiliser autre systeme d'input
