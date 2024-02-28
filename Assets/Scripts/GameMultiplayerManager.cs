@@ -44,11 +44,47 @@ public class GameMultiplayerManager : NetworkBehaviour
         CheckPlayersCanSetReadyCharacterSelectServerRpc();
     }
 
+    
+    // Lance une exception NoClientException lorsqu'aucun client est présent.
+    public PlayerData GetClientPlayerData()
+    {
+        PlayerData playerDataOfClient = default;
+
+        if (_playerDataNetworkList.Count == MAX_NUMBER_OF_PLAYERS)
+        {
+            foreach (PlayerData playerData in _playerDataNetworkList)
+            {
+                if (playerData.clientId != NetworkManager.ServerClientId)
+                {
+                    playerDataOfClient = playerData;
+                }
+            }
+        }
+        else
+        {
+            throw new NoClientException("No client connected !");
+        }
+
+        return playerDataOfClient;
+    }
+    
     public void KickPlayer(ulong clientId)
     {
         if (IsServer)
         {
             NetworkManager.Singleton.DisconnectClient(clientId);
+
+            TryRemoveDisconnectedPlayerFromPlayerReadyList(clientId);
+        }
+    }
+
+    private void TryRemoveDisconnectedPlayerFromPlayerReadyList(ulong disconnectedClientId)
+    {
+        if (_playerReadyCharacterSelect.ContainsKey(disconnectedClientId))
+        {
+            _playerReadyCharacterSelect.Remove(disconnectedClientId);
+            
+            ResetPlayerReady();
         }
     }
 
@@ -62,11 +98,17 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         if (!canSetReady)
         {
-            ResetPlayerReadyClientRpc();
-            _playerReadyCharacterSelect.Clear();
+            ResetPlayerReady();
         }
         
         NotifyPlayerSetReadyCharacterSelectClientRpc(canSetReady, errorMessage);
+    }
+
+    private void ResetPlayerReady()
+    {
+        ResetPlayerReadyClientRpc();
+        
+        _playerReadyCharacterSelect.Clear();
     }
 
     [ClientRpc]
@@ -295,5 +337,4 @@ public class GameMultiplayerManager : NetworkBehaviour
             }
         }
     }
-
 }
