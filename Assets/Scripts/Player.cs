@@ -1,72 +1,89 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
+    private const float MinPressure = 0.3f;
+    public InputAction direction;
 
-    [SerializeField] private GameObject playerVisuals;
-    [Header("Player Movement")]
-    [SerializeField] private float playerSpeed;
-    [SerializeField] private float playerGravity;
-    [SerializeField] private float playerJumpForce;
+    public InputAction selectorActivator;
+
+    [SerializeField] private float cooldown = 0.1f;
+
     
-    private Rigidbody _playerRigidBody;
-    private Collider _playerCollider; 
+    public bool CanSelectNextTile
+    {
+        set => _canSelectNextTile = value;
+    }
+
+    private bool _canSelectNextTile = true;
+    [SerializeField] private Character _character;
+    [SerializeField] private TileSelector _selector;
+
+    private float _timer;
 
     private void Awake()
     {
-         _playerRigidBody = GetComponent<Rigidbody>();
-         _playerCollider = playerVisuals.GetComponent<CapsuleCollider>();
+        direction.Enable();
+        selectorActivator.Enable();
     }
 
+    private void Start()
+    {
+        _timer = cooldown;
+    }
+
+    // Update is called once per frame
     private void Update()
     {
-        HandleMovement();
-    }
-    
-    private void HandleMovement()
-    {
-        HandleHorizontalMovement();
-
-        HandleJump();
-
-        ApplyPlayerGravity();
-    }
-
-    private void HandleHorizontalMovement()
-    {
-        Vector2 movementNormalized = GameInput.Instance.GetMovementNormalized();
-
-        Vector3 movementToApply = new Vector3(movementNormalized.x, 0, movementNormalized.y);
-
-        transform.position += movementToApply * (Time.deltaTime * playerSpeed);
-    }
-
-    private void HandleJump()
-    {
-        if (Input.GetKey(KeyCode.Space) && IsGrounded())
+        if (_canSelectNextTile)
         {
-            Vector3 vector3 = _playerRigidBody.velocity;
-            vector3.y = playerJumpForce;
-            _playerRigidBody.velocity = vector3;
+            // TODO : Utiliser autre systeme d'input
+            if (selectorActivator.WasPerformedThisFrame())
+            {
+                _canSelectNextTile = false;
+                _selector.Initialize(_character.transform.position);
+            }
+        }
+        else
+        {
+            var vector = GetDirectionInput();
+            _selector.Control(vector, selectorActivator.WasPerformedThisFrame());
+            _timer = cooldown;
         }
     }
 
-    private bool IsGrounded()
+    private Vector2Int GetDirectionInput()
     {
-        Vector3 position = transform.position;
-        
-        Debug.Log("isGrounded : " + Physics.Raycast(position, new Vector3(0, -1, 0), 0.1f));
-        
-        return Physics.Raycast(_playerCollider.bounds.center, Vector3.down, 1.5f);
+        var input = direction.ReadValue<Vector2>();
+        Vector2Int translation = new Vector2Int();
+        if (input.x > MinPressure)
+        {
+            translation.x = 1; 
+        }
+
+        if (input.x < -MinPressure)
+        {
+            translation.x = -1; 
+        }
+
+        if (input.y > MinPressure)
+        {
+            translation.y = +1; 
+        }
+
+        if (input.y < -MinPressure)
+        {
+            translation.y = -1;
+        }
+        return translation;
     }
 
-    private void ApplyPlayerGravity()
+    // Permet de pas controller les autres "players" 
+    public override void OnNetworkSpawn()
     {
-        _playerRigidBody.AddForce(0, playerGravity, 0);
+        if (!IsOwner) Destroy(this);
     }
 }
