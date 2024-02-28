@@ -51,6 +51,8 @@ public class GameMultiplayerManager : NetworkBehaviour
             NetworkManager.Singleton.DisconnectClient(clientId);
         }
     }
+
+    public event EventHandler OnPlayerReadyReset;
     
     [ServerRpc(RequireOwnership = false)]
     private void CheckPlayersCanSetReadyCharacterSelectServerRpc()
@@ -60,12 +62,19 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         if (!canSetReady)
         {
+            ResetPlayerReadyClientRpc();
             _playerReadyCharacterSelect.Clear();
         }
         
         NotifyPlayerSetReadyCharacterSelectClientRpc(canSetReady, errorMessage);
     }
-    
+
+    [ClientRpc]
+    private void ResetPlayerReadyClientRpc()
+    {
+        OnPlayerReadyReset?.Invoke(this, EventArgs.Empty);
+    }
+
     public event EventHandler<OnPlayerReadyCharacterSelectCheckedEventArgs> OnPlayerReadyCharacterSelectChecked;
 
     public class OnPlayerReadyCharacterSelectCheckedEventArgs : EventArgs
@@ -133,27 +142,48 @@ public class GameMultiplayerManager : NetworkBehaviour
     
     // clientId et si pret ou non
     private Dictionary<ulong, bool> _playerReadyCharacterSelect;
-
+    
+    public event EventHandler<OnPlayerReadyCharacterSelectChangedEventArgs> OnPlayerReadyCharacterSelectChanged;
+    public class OnPlayerReadyCharacterSelectChangedEventArgs : EventArgs
+    {
+        public bool isHost;
+        public bool isReady;
+    }
+    
     public void SetPlayerReadyCharacterSelect(bool isReady)
     {
-        SetPlayerReadyCharacterSelectServerRpc(isReady);
+        SetPlayerReadyCharacterSelectServerRpc(isReady, IsHost);
     }
     
     [ServerRpc(RequireOwnership = false)]
-    private void SetPlayerReadyCharacterSelectServerRpc(bool isReady, ServerRpcParams serverRpcParams = default)
+    private void SetPlayerReadyCharacterSelectServerRpc
+        (bool isReady, bool isHost, ServerRpcParams serverRpcParams = default)
     {
+        SetPlayerReadyCharacterSelectClientRpc(isReady, isHost);
+        
         ulong clientId = serverRpcParams.Receive.SenderClientId;
         
         _playerReadyCharacterSelect[clientId] = isReady;
 
-        if (AreAllPlayersReady())
+        if (AreAllPlayersReadyCharacterSelect())
         {
             // TODO transition vers scene de jeu.
             Debug.Log("BOTH PLAYER ARE READY :)");
         }
     }
 
-    private bool AreAllPlayersReady()
+    [ClientRpc]
+    private void SetPlayerReadyCharacterSelectClientRpc
+        (bool isReady, bool isHost) 
+    {
+        OnPlayerReadyCharacterSelectChanged?.Invoke(this, new OnPlayerReadyCharacterSelectChangedEventArgs
+        {
+            isHost = isHost,
+            isReady = isReady
+        });
+    }
+
+    private bool AreAllPlayersReadyCharacterSelect()
     {
         bool areAllReady = true;
         
