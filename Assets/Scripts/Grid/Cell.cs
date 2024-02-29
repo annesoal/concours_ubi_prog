@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Grid.Blocks;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        
+        public List<GameObject> objectsOnTop;
         // Check que le type soit le meme (exactement) que le type de la cellule
         public bool IsOf(int blockType)
         {
