@@ -37,7 +37,7 @@ namespace Grid.Blocks
                     {
                        // Debug.Log(_position2d);
                         GameObject test = SpawnObstacle(obstacle);
-                        tellPresenceAtCell(test, _position2d);
+                        TellPresenceAtCell(test, _position2d);
                     }
                     j++; 
                 } while (j < Size);
@@ -59,7 +59,7 @@ namespace Grid.Blocks
             return Instantiate(obstacle, position3d, Quaternion.identity);
         }
 
-        private void tellPresenceAtCell(GameObject obstacle, Vector2Int position)
+        private void TellPresenceAtCell(GameObject obstacle, Vector2Int position)
         {
             _cell = TilingGrid.grid.GetCell(position);
             _cell.AddGameObject(obstacle);

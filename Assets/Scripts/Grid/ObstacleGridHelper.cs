@@ -13,7 +13,9 @@ namespace Grid
         public override bool IsValidCell(Vector2Int position)
         {
           Cell cell = TilingGrid.grid.GetCell(position);
-          return (cell.type & BlockType.Walkable) > 0;
+          bool isValidBlockType = (cell.type & BlockType.Walkable) > 0;
+          bool itHasPlaceOnTop = cell.objectsOnTop == null || cell.objectsOnTop.Count == 0;
+          return isValidBlockType && itHasPlaceOnTop;
         }
 
         public override Vector2Int GetHelperPosition()
