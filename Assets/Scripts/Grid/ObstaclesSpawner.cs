@@ -9,6 +9,7 @@ namespace Grid.Blocks
         private Vector2Int _position;
         private System.Random rand = new System.Random();
         private GridHelper _helper;
+        private float valueForRandomness = 0.95f;
 
         public void Initialize()
         { 
@@ -50,7 +51,7 @@ namespace Grid.Blocks
             Debug.Log(_cell.position);
             
             Vector3 position3d = TilingGrid.GridPositionToLocal(_position);
-            position3d.y += 0.5f;
+            position3d.y += valueForRandomness;
             Debug.Log(_position);
             Instantiate(obstacle, position3d, Quaternion.identity);
         }
