@@ -88,43 +88,30 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [Header("Player Spawn")]
     [SerializeField] private Transform playerMonkeyPrefab;
-    [SerializeField] private Transform _monkeyBlockPlayerSpawn;
-    
+    [field: SerializeField] public Transform MonkeyBlockPlayerSpawn { get; private set; }
+
     private void SpawnMonkey(ulong clientId)
     {
-        SpawnPlayerPrefab(clientId, playerMonkeyPrefab, _monkeyBlockPlayerSpawn);
+        Debug.Log((clientId == NetworkManager.ServerClientId) + " IN MONKEY SPAWN");
+        SpawnPlayerPrefab(clientId, playerMonkeyPrefab);
     }
     
     [SerializeField] private Transform playerRobotPrefab;
-    [SerializeField] private Transform _robotBlockPlayerSpawn;
-    
+    [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
+
     private void SpawnRobot(ulong clientId)
     {
-        SpawnPlayerPrefab(clientId, playerRobotPrefab, _robotBlockPlayerSpawn);
+        Debug.Log((clientId == NetworkManager.ServerClientId) + " IN ROBOT SPAWN");
+        SpawnPlayerPrefab(clientId, playerRobotPrefab);
     }
-
-    private const string SPAWN_POINT_COMPONENT_ERROR =
-        "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     
-    private void SpawnPlayerPrefab(ulong clientId, Transform playerPrefab, Transform spawnPoint)
+    private void SpawnPlayerPrefab(ulong clientId, Transform playerPrefab)
     {
         Transform playerInstance = Instantiate(playerPrefab);
 
         NetworkObject playerNetworkObject = playerInstance.GetComponent<NetworkObject>();
         
         playerNetworkObject.SpawnAsPlayerObject(clientId, true);
-
-        BlockPlayerSpawn blockPlayerSpawn;
-        bool hasComponent = spawnPoint.TryGetComponent(out blockPlayerSpawn);
-        
-        if (hasComponent)
-        {
-            blockPlayerSpawn.SetPlayerOnBlock(playerPrefab);
-        }
-        else
-        {
-            Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
-        }
     }
     
     private void DebugPlayerSpawnError(ulong clientId)

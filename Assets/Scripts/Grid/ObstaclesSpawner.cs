@@ -27,7 +27,7 @@ namespace Grid.Blocks
                 {
                     _position.y = j; 
                     _helper.SetHelperPosition(_position);
-                    Debug.Log(_helper.GetHelperPosition());
+                    // Debug.Log(_helper.GetHelperPosition());
                     //Debug.Log(_helper == null);
                     if (_helper.IsValidCell(_position) && randomBool())
                     {

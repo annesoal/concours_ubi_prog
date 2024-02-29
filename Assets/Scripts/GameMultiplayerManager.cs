@@ -212,8 +212,9 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         if (AreAllPlayersReadyCharacterSelect())
         {
-            // TODO transition vers scene de jeu.
+            // TODO transition vers scene de jeu
             Debug.Log("BOTH PLAYER ARE READY :)");
+            Loader.LoadNetwork(Loader.Scene.Blocks);
         }
     }
 
@@ -323,11 +324,14 @@ public class GameMultiplayerManager : NetworkBehaviour
     
     private void NetworkManager_Host_OnClientConnectedCallback(ulong clientId)
     {
-        _playerDataNetworkList.Add(new PlayerData
-        {
-            clientId = clientId,
-            characterSelection = CharacterSelectUI.CharacterId.Monkey,
-        });
+        CharacterSelectUI.CharacterId initial = clientId == NetworkManager.ServerClientId ? 
+            CharacterSelectUI.CharacterId.Monkey : CharacterSelectUI.CharacterId.Robot;
+        
+            _playerDataNetworkList.Add(new PlayerData
+            {
+                clientId = clientId,
+                characterSelection = initial,
+            });
         
         SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }

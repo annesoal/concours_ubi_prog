@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Character : NetworkBehaviour
+public class Character : MonoBehaviour
 {
     [SerializeField] private GameObject playerVisuals;
 

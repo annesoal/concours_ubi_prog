@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 127681382}
   - component: {fileID: 127681381}
   m_Layer: 5
-  m_Name: SelectFirstCharacterButton
+  m_Name: SelectMonkeyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 200709832}
   - component: {fileID: 200709831}
   m_Layer: 5
-  m_Name: SelectSecondCharacterButton
+  m_Name: RobotCharacterButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,12 +555,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8da33b3f3e2600fcb8a17d66b69dcb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectFistCharacterButton: {fileID: 127681381}
-  selectSecondCharacterButton: {fileID: 200709831}
-  hostFirstCharacterMark: {fileID: 780519456}
-  clientFirstCharacterMark: {fileID: 550525522}
-  hostSecondCharacterMark: {fileID: 399728053}
-  clientSecondCharacterMark: {fileID: 1455671977}
+  selectMonkeyButton: {fileID: 127681381}
+  selectRobotButton: {fileID: 200709831}
+  hostMonkeyMark: {fileID: 780519456}
+  clientMonkeyMark: {fileID: 550525522}
+  hostRobotMark: {fileID: 399728053}
+  clientRobotMark: {fileID: 1455671977}
 --- !u!1 &324691208
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,7 +946,7 @@ GameObject:
   - component: {fileID: 399728054}
   - component: {fileID: 399728053}
   m_Layer: 5
-  m_Name: SecondCharacterHostMark
+  m_Name: RobotHostMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1021,7 +1021,7 @@ GameObject:
   - component: {fileID: 550525523}
   - component: {fileID: 550525522}
   m_Layer: 5
-  m_Name: FirstCharacterClientMark
+  m_Name: MonkeyClientMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1437,7 +1437,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SELECT PLAYER 2
+  m_text: ROBOT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1526,7 +1526,7 @@ GameObject:
   - component: {fileID: 780519457}
   - component: {fileID: 780519456}
   m_Layer: 5
-  m_Name: FirstCharacterHostMark
+  m_Name: MonkeyHostMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2473,7 +2473,7 @@ GameObject:
   - component: {fileID: 1455671978}
   - component: {fileID: 1455671977}
   m_Layer: 5
-  m_Name: SecondCharacterClientMark
+  m_Name: RobotClientMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2593,7 +2593,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SELECT PLAYER 1
+  m_text: MONKEY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

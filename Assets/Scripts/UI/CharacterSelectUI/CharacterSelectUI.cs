@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CharacterSelectUI : MonoBehaviour
 {
-    [SerializeField] private Button selectFistCharacterButton;
-    [SerializeField] private Button selectSecondCharacterButton;
+    [SerializeField] private Button selectMonkeyButton;
+    [SerializeField] private Button selectRobotButton;
     
     // La marque est affichee lorsque le joueur selectionne le personnage correspondant.
-    [SerializeField] private Image hostFirstCharacterMark;
-    [SerializeField] private Image clientFirstCharacterMark;
+    [SerializeField] private Image hostMonkeyMark;
+    [SerializeField] private Image clientMonkeyMark;
     
-    [SerializeField] private Image hostSecondCharacterMark;
-    [SerializeField] private Image clientSecondCharacterMark;
+    [SerializeField] private Image hostRobotMark;
+    [SerializeField] private Image clientRobotMark;
 
     public static event EventHandler OnAnyCharacterSelectChanged;
     
@@ -29,13 +30,13 @@ public class CharacterSelectUI : MonoBehaviour
 
     private void Awake()
     {
-        selectFistCharacterButton.onClick.AddListener(() =>
+        selectMonkeyButton.onClick.AddListener(() =>
         {
             GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Monkey);
             OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
         });
         
-        selectSecondCharacterButton.onClick.AddListener(() =>
+        selectRobotButton.onClick.AddListener(() =>
         {
             GameMultiplayerManager.Instance.SelectCharacterVisual(CharacterId.Robot);
             OnAnyCharacterSelectChanged?.Invoke(this, EventArgs.Empty);
@@ -63,32 +64,32 @@ public class CharacterSelectUI : MonoBehaviour
 
     private void SetHostMarkActive(CharacterId selectedId)
     {
-        SetMarkActive(hostFirstCharacterMark, hostSecondCharacterMark, selectedId);
+        SetMarkActive(hostMonkeyMark, hostRobotMark, selectedId);
     }
     
     private void SetClientMarkActive(CharacterId selectedId)
     {
-        SetMarkActive(clientFirstCharacterMark, clientSecondCharacterMark, selectedId);
+        SetMarkActive(clientMonkeyMark, clientRobotMark, selectedId);
     }
 
-    private void SetMarkActive(Image fisrtCharacterMark, Image secondCharacterMark, CharacterId selectedId)
+    private void SetMarkActive(Image monkeyMark, Image robotMark, CharacterId selectedId)
     {
         if (selectedId == CharacterId.Monkey)
         {
-            BasicShowHide.Show(fisrtCharacterMark.gameObject);
-            BasicShowHide.Hide(secondCharacterMark.gameObject);
+            BasicShowHide.Show(monkeyMark.gameObject);
+            BasicShowHide.Hide(robotMark.gameObject);
         }
 
         if (selectedId == CharacterId.Robot)
         {
-            BasicShowHide.Hide(fisrtCharacterMark.gameObject);
-            BasicShowHide.Show(secondCharacterMark.gameObject);
+            BasicShowHide.Hide(monkeyMark.gameObject);
+            BasicShowHide.Show(robotMark.gameObject);
         }
 
         if (selectedId == CharacterId.None)
         {
-            BasicShowHide.Hide(fisrtCharacterMark.gameObject);
-            BasicShowHide.Hide(secondCharacterMark.gameObject);
+            BasicShowHide.Hide(monkeyMark.gameObject);
+            BasicShowHide.Hide(robotMark.gameObject);
         }
         
     }

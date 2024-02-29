@@ -22,9 +22,6 @@ namespace Grid
 
         [SerializeField] private GameObject _ground;
        
-
-        [SerializeField]
-        private BlockPlayerSpawn _spawnPlayer1;
         [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
         private ObstaclesSpawner _spawnObstacles;
         
