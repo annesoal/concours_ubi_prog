@@ -12,10 +12,10 @@ namespace DefaultNamespace
         Fast
     }
     
-    public class Ennemy : MonoBehaviour, IMove, ICorrupt
+    public abstract class Ennemy : MonoBehaviour
     {
         protected EnnemyType ennemyType;
-
+        
         public Ennemy()
         {
             ennemyType = EnnemyType.None;
@@ -24,17 +24,13 @@ namespace DefaultNamespace
         
         public virtual void Move()
         {
-            throw new System.NotImplementedException();
         }
 
-        public virtual void CorruptDream()
+        public virtual void Corrupt()
         {
-            throw new System.NotImplementedException();
         }
-
-        public virtual void CorruptBuilding()
-        {
-            throw new System.NotImplementedException();
-        }
+        
+        //Destroy
+        
     }
 }

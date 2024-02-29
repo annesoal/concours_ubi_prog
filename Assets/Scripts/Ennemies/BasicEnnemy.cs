@@ -7,15 +7,14 @@ namespace DefaultNamespace
     {
         [SerializeField] private EnnemyType ennemyType = EnnemyType.Basic;
 
-
         public override void Move()
         {
             base.Move();
         }
 
-        public override void CorruptDream()
+        public override void Corrupt()
         {
-            base.CorruptDream();
+            base.Corrupt();
         }
     }
 }
