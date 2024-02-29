@@ -5,12 +5,11 @@ namespace Grid.Blocks
     public class BlockPlayerSpawn : BasicBlock
     {
         [SerializeField] private Transform spawnPosition;
-            
-        void Awake()
-        {
-            blockType = BlockType.SpawnBlock | BlockType.Walkable;
-        }
 
+        BlockPlayerSpawn() : base()
+        {
+            blockType = BlockType.SpawnBlock;
+        }
         /**
          * Place le joueur sur le bloc.
          */
