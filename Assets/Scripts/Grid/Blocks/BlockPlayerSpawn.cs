@@ -2,22 +2,21 @@ using UnityEngine;
 
 namespace Grid.Blocks
 {
-    public class BlockPlayerSpawn : BasicBlock 
+    public class BlockPlayerSpawn : BasicBlock
     {
-        private PlayerSpawner _spawner;
-
+        [SerializeField] private Transform spawnPosition;
+            
         void Awake()
         {
-            Vector3 position = new(
-                           transform.position.x,
-                           TilingGrid.TopOfCell, 
-                           transform.position.z); 
-            _spawner = new(position); 
+            blockType = BlockType.SpawnBlock | BlockType.Walkable;
         }
 
-        public void SpawnPlayer(GameObject player)
+        /**
+         * Place le joueur sur le bloc.
+         */
+        public void SetPlayerOnBlock(Transform player)
         {
-           _spawner.SpawnPlayer(player); 
+            player.position = spawnPosition.position;
         }
         
     }

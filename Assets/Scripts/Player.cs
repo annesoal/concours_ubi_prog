@@ -1,4 +1,5 @@
 using System;
+using Grid.Blocks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,10 +20,12 @@ public class Player : NetworkBehaviour
     }
 
     private bool _canSelectNextTile = true;
-    [SerializeField] private Character _character;
     [SerializeField] private TileSelector _selector;
 
     private float _timer;
+    
+    private const string SPAWN_POINT_COMPONENT_ERROR =
+        "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
 
     private void Awake()
     {
@@ -35,16 +38,33 @@ public class Player : NetworkBehaviour
         _timer = cooldown;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        CharacterSelectUI.CharacterId characterSelection =
+            GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
+
+        if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
+        {
+            MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
+        }
+        else
+        {
+            MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
+        }
+    }
+
     // Update is called once per frame
     private void Update()
     {
+        if (!IsOwner) { return; }
+
         if (_canSelectNextTile)
         {
             // TODO : Utiliser autre systeme d'input
             if (selectorActivator.WasPerformedThisFrame())
             {
                 _canSelectNextTile = false;
-                _selector.Initialize(_character.transform.position);
+                _selector.Initialize(transform.position);
             }
         }
         else
@@ -52,6 +72,20 @@ public class Player : NetworkBehaviour
             var vector = GetDirectionInput();
             _selector.Control(vector, selectorActivator.WasPerformedThisFrame());
             _timer = cooldown;
+        }
+    }
+
+    private void MovePlayerOnSpawnPoint(Transform spawnPoint)
+    {
+        bool hasComponent = spawnPoint.TryGetComponent(out BlockPlayerSpawn blockPlayerSpawn);
+        
+        if (hasComponent)
+        {
+            blockPlayerSpawn.SetPlayerOnBlock(transform);
+        }
+        else
+        {
+            Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
         }
     }
 
@@ -79,11 +113,5 @@ public class Player : NetworkBehaviour
             translation.y = -1;
         }
         return translation;
-    }
-
-    // Permet de pas controller les autres "players" 
-    public override void OnNetworkSpawn()
-    {
-        if (!IsOwner) Destroy(this);
     }
 }

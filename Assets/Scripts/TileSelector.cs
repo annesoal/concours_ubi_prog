@@ -9,7 +9,6 @@ public class TileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
-    [SerializeField] private Character _character;
     public InputAction move;
     private Collider _collider;
     private GridHelper _helper;
@@ -41,7 +40,7 @@ public class TileSelector : MonoBehaviour
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
-            _character.transform.position = cellLocalPosition;
+            player.transform.position = cellLocalPosition;
             yield return new WaitForSeconds(0.1f);
         }
         Destroy();

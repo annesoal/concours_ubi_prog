@@ -212,8 +212,9 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         if (AreAllPlayersReadyCharacterSelect())
         {
-            // TODO transition vers scene de jeu.
+            // TODO transition vers scene de jeu
             Debug.Log("BOTH PLAYER ARE READY :)");
+            Loader.LoadNetwork(Loader.Scene.Blocks);
         }
     }
 
@@ -275,6 +276,25 @@ public class GameMultiplayerManager : NetworkBehaviour
         }
     }
 
+    private const string NO_CLIENT_ID_MATCH_CHARACTER_SELECTION =
+        "No matching client id found when searching for character selection";
+    
+    /**
+     * Throws NoMatchingClientIdFoundException.
+     */
+    public CharacterSelectUI.CharacterId GetCharacterSelectionFromClientId(ulong clientId)
+    {
+        foreach (PlayerData playerData in _playerDataNetworkList)
+        {
+            if (playerData.clientId == clientId)
+            {
+                return playerData.characterSelection;
+            }
+        }
+
+        throw new NoMatchingClientIdFoundException(NO_CLIENT_ID_MATCH_CHARACTER_SELECTION);
+    }
+
     /**
      * Returns -1 if no equivalence found.
      */
@@ -304,11 +324,14 @@ public class GameMultiplayerManager : NetworkBehaviour
     
     private void NetworkManager_Host_OnClientConnectedCallback(ulong clientId)
     {
-        _playerDataNetworkList.Add(new PlayerData
-        {
-            clientId = clientId,
-            characterSelection = CharacterSelectUI.CharacterId.First,
-        });
+        CharacterSelectUI.CharacterId initial = clientId == NetworkManager.ServerClientId ? 
+            CharacterSelectUI.CharacterId.Monkey : CharacterSelectUI.CharacterId.Robot;
+        
+            _playerDataNetworkList.Add(new PlayerData
+            {
+                clientId = clientId,
+                characterSelection = initial,
+            });
         
         SetLobbyPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
     }
