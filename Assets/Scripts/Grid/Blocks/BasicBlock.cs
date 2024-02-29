@@ -11,14 +11,19 @@ namespace Grid.Blocks
     {
         [SerializeField] private List<Type> Types = new ();
         public int blockType;
-        
-        protected BasicBlock()
+
+        void Awake()
         {
             foreach (var type in Types)
             {
                 int typeToAdd = translate(type);
                 Add(typeToAdd);
             } 
+        }
+
+        protected BasicBlock()
+        {
+
         }
 
         public Vector3 GetPosition()
