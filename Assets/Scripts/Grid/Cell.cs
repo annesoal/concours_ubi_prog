@@ -24,6 +24,15 @@ namespace Grid
             
             return (this.type & blockType) > 0;
         }
+        
+        public void AddGameObject(GameObject gameObject)
+        {
+            if (objectsOnTop == null)
+                objectsOnTop = new List<GameObject>();
+
+            objectsOnTop.Add(gameObject);
+        }
+        
     }
     
     public static class BlockType

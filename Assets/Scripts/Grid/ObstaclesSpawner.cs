@@ -6,15 +6,18 @@ namespace Grid.Blocks
     {
         private const int Size = 100;
         private Cell _cell = new Cell();
-        private Vector2Int _position;
+        private Vector2Int _position2d;
         private System.Random rand = new System.Random();
         private GridHelper _helper;
-        private float valueForRandomness = 0.95f;
+        private float yPositionValue = 0.5f;
+        
+        [SerializeField]
+        private float valueForRandomness = 0.15f;
 
         public void Initialize()
         { 
-            _position = new Vector2Int();
-            _helper = new ObstacleGridHelper(_position); 
+            _position2d = new Vector2Int();
+            _helper = new ObstacleGridHelper(_position2d); 
         }
 
         public void SpawnObstacles(GameObject obstacle)
@@ -22,18 +25,19 @@ namespace Grid.Blocks
             int i = 0;
             do
             {
-                _position.x = i;
+                _position2d.x = i;
                 int j = 0;
                 do
                 {
-                    _position.y = j; 
-                    _helper.SetHelperPosition(_position);
-                    Debug.Log(_helper.GetHelperPosition());
+                    _position2d.y = j; 
+                    _helper.SetHelperPosition(_position2d);
+                    // Debug.Log(_helper.GetHelperPosition());
                     //Debug.Log(_helper == null);
-                    if (_helper.IsValidCell(_position) && randomBool())
+                    if (_helper.IsValidCell(_position2d) && randomBool())
                     {
-                        Debug.Log(_position);
-                        SpawnObstacle(obstacle);
+                       // Debug.Log(_position2d);
+                        GameObject test = SpawnObstacle(obstacle);
+                        tellPresenceAtCell(test, _position2d);
                     }
                     j++; 
                 } while (j < Size);
@@ -43,19 +47,24 @@ namespace Grid.Blocks
 
         private bool randomBool()
         {
-            return rand.NextDouble() > 0.8;
+            return rand.NextDouble() > (1 - valueForRandomness);
         }
         
-        private void SpawnObstacle(GameObject obstacle)
+        private GameObject SpawnObstacle(GameObject obstacle)
         {
             Debug.Log(_cell.position);
-            
-            Vector3 position3d = TilingGrid.GridPositionToLocal(_position);
-            position3d.y += valueForRandomness;
-            Debug.Log(_position);
-            Instantiate(obstacle, position3d, Quaternion.identity);
+            Vector3 position3d = TilingGrid.GridPositionToLocal(_position2d);
+            position3d.y += yPositionValue;
+            Debug.Log(_position2d);
+            return Instantiate(obstacle, position3d, Quaternion.identity);
         }
 
+        private void tellPresenceAtCell(GameObject obstacle, Vector2Int position)
+        {
+            _cell = TilingGrid.grid.GetCell(position);
+            _cell.AddGameObject(obstacle);
+            Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
+        }
         
     }
 }
