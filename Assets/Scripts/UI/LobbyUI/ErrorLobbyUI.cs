@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,8 @@ public class ErrorLobbyUI : MonoBehaviour
         
         GameLobbyManager.Instance.OnCreateLobbyFailed += GameLobbyManager_OnCreateLobbyFailed;
         
+        GameMultiplayerManager.Instance.OnFailedToJoinGame += GameMultiplayerManager_OnFailedToJoinGame;
+        
         BasicShowHide.Hide(gameObject);
     }
 
@@ -47,6 +50,19 @@ public class ErrorLobbyUI : MonoBehaviour
         ShowWithErrorText(ON_CREATE_LOBBY_FAILED_TEXT);
     }
 
+    private const string DEFAULT_ON_FAILED_TO_JOIN_TEXT = "Failed to join game !";
+    private void GameMultiplayerManager_OnFailedToJoinGame(object sender, EventArgs e)
+    {
+        string errorToShow = NetworkManager.Singleton.DisconnectReason;
+        
+        if (errorToShow == "")
+        {
+            errorToShow = DEFAULT_ON_FAILED_TO_JOIN_TEXT;
+        }
+        
+        ShowWithErrorText(errorToShow);
+    }
+
     private void ShowWithErrorText(string errorToShow)
     {
         errorText.text = errorToShow;
@@ -59,5 +75,7 @@ public class ErrorLobbyUI : MonoBehaviour
         GameLobbyManager.Instance.OnQuickJoinFailed -= GameLobbyManager_OnQuickJoinFailed;
         
         GameLobbyManager.Instance.OnCreateLobbyFailed -= GameLobbyManager_OnCreateLobbyFailed;
+        
+        GameMultiplayerManager.Instance.OnFailedToJoinGame -= GameMultiplayerManager_OnFailedToJoinGame;
     }
 }

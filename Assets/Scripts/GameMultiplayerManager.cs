@@ -27,8 +27,11 @@ public class GameMultiplayerManager : NetworkBehaviour
 
     public void StartHost()
     {
+        NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
+        
         NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Host_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Host_OnClientDisconnectCallback;
+        
         NetworkManager.Singleton.StartHost();
     }
 
@@ -342,12 +345,17 @@ public class GameMultiplayerManager : NetworkBehaviour
     }
 
     public event EventHandler OnHostDisconneted;
+    public event EventHandler OnFailedToJoinGame;
     
     private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
     {
         if (clientId == NetworkManager.ServerClientId)
         {
             OnHostDisconneted?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -373,4 +381,20 @@ public class GameMultiplayerManager : NetworkBehaviour
             }
         }
     }
+
+    private const string LOBBY_FULL_REASON_TEXT = "Lobby is already full !";
+    
+    private void NetworkManager_ConnectionApprovalCallback(
+        NetworkManager.ConnectionApprovalRequest approvalRequest,
+        NetworkManager.ConnectionApprovalResponse approvalResponse)
+    {
+        if (NetworkManager.ConnectedClients.Count >= MAX_NUMBER_OF_PLAYERS)
+        {
+            approvalResponse.Approved = false;
+            approvalResponse.Reason = LOBBY_FULL_REASON_TEXT;
+        }
+
+        approvalResponse.Approved = true;
+    }
+
 }
