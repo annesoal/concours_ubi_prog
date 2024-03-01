@@ -16,6 +16,7 @@ public class LoadingLobbyUI : MonoBehaviour
     {
         GameLobbyManager.Instance.OnJoinStarted += GameLobbyManager_OnJoinStarted;
         GameLobbyManager.Instance.OnJoinFailed += GameLobbyManager_OnJoinFailed;
+        GameLobbyManager.Instance.OnQuickJoinFailed += GameLobbyManager_OnQuickJoinFailed;
         
         GameLobbyManager.Instance.OnCreateLobbyStarted += GameLobbyManager_OnCreateLobbyStarted;
         GameLobbyManager.Instance.OnCreateLobbyFailed += GameLobbyManager_OnCreateLobbyFailed;
@@ -45,11 +46,16 @@ public class LoadingLobbyUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
     }
 
+    private void GameLobbyManager_OnQuickJoinFailed(object sender, EventArgs e)
+    {
+        BasicShowHide.Hide(gameObject);
+    }
 
     private void OnDestroy()
     {
         GameLobbyManager.Instance.OnJoinStarted -= GameLobbyManager_OnJoinStarted;
         GameLobbyManager.Instance.OnJoinFailed -= GameLobbyManager_OnJoinFailed;
+        GameLobbyManager.Instance.OnQuickJoinFailed -= GameLobbyManager_OnQuickJoinFailed;
         
         GameLobbyManager.Instance.OnCreateLobbyStarted -= GameLobbyManager_OnCreateLobbyStarted;
         GameLobbyManager.Instance.OnCreateLobbyFailed -= GameLobbyManager_OnCreateLobbyFailed;
