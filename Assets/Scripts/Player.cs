@@ -6,38 +6,20 @@ using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
-    private const float MinPressure = 0.3f;
-    public InputAction direction;
-
-    public InputAction selectorActivator;
-
-    [SerializeField] private float cooldown = 0.1f;
-
+    private const float MinPressure = 0.3f; 
+    [SerializeField] private float cooldown = 0.2f;
     
-    public bool CanSelectNextTile
-    {
-        set => _canSelectNextTile = value;
-    }
+     private bool IsMovingSelector { get; set; }
 
-    private bool _canSelectNextTile = true;
     [SerializeField] private TileSelector _selector;
-
-    private float _timer;
     
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
 
-    private void Awake()
+    void Awake()
     {
-        direction.Enable();
-        selectorActivator.Enable();
+        
     }
-
-    private void Start()
-    {
-        _timer = cooldown;
-    }
-
     public override void OnNetworkSpawn()
     {
         CharacterSelectUI.CharacterId characterSelection =
@@ -52,29 +34,6 @@ public class Player : NetworkBehaviour
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
         }
     }
-
-    // Update is called once per frame
-    private void Update()
-    {
-        if (!IsOwner) { return; }
-
-        if (_canSelectNextTile)
-        {
-            // TODO : Utiliser autre systeme d'input
-            if (selectorActivator.WasPerformedThisFrame())
-            {
-                _canSelectNextTile = false;
-                _selector.Initialize(transform.position);
-            }
-        }
-        else
-        {
-            var vector = GetDirectionInput();
-            _selector.Control(vector, selectorActivator.WasPerformedThisFrame());
-            _timer = cooldown;
-        }
-    }
-
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
         bool hasComponent = spawnPoint.TryGetComponent(out BlockPlayerSpawn blockPlayerSpawn);
@@ -88,11 +47,13 @@ public class Player : NetworkBehaviour
             Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
         }
     }
-
-    private Vector2Int GetDirectionInput()
+    public void OnMovement(InputValue value)
     {
-        var input = direction.ReadValue<Vector2>();
+        if (!IsOwner) return;
+        if (!IsMovingSelector) return;  
+        var input = value.Get<Vector2>();
         Vector2Int translation = new Vector2Int();
+
         if (input.x > MinPressure)
         {
             translation.x = 1; 
@@ -112,6 +73,21 @@ public class Player : NetworkBehaviour
         {
             translation.y = -1;
         }
-        return translation;
+        _selector.MoveSelector(translation);
+    }
+
+    public void OnSelect()
+    {
+        if (!IsOwner) return;
+        if (IsMovingSelector)
+        {
+            _selector.Destroy();
+            IsMovingSelector = false;
+        }
+        else
+        {
+            _selector.Initialize(transform.position); 
+            IsMovingSelector = true; 
+        }
     }
 }

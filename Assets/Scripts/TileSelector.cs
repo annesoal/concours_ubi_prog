@@ -10,32 +10,25 @@ public class TileSelector : MonoBehaviour
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
     public InputAction move;
-    private Collider _collider;
     private GridHelper _helper;
     private CellRecorder _recorder; 
-    private void Awake()
-    {
-        _collider = GetComponent<BoxCollider>();
-    }
 
-    //Permet de deplacer le Selector... TODO : A changer car trop saccade!  
-    public void Control( Vector2Int direction , bool activator)
+    //Permet de deplacer le Selector...   
+    public void MoveSelector( Vector2Int direction)
     {
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
             _helper.SetHelperPosition(direction);
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
-
-        if ( activator && IsValidTileToMove()) StartCoroutine(MoveCharacter());
     }
+     //;
 
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
     public IEnumerator MoveCharacter()
     {
-        player.CanSelectNextTile = true;
         while (!_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
@@ -43,7 +36,6 @@ public class TileSelector : MonoBehaviour
             player.transform.position = cellLocalPosition;
             yield return new WaitForSeconds(0.1f);
         }
-        Destroy();
     }
 
     // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
@@ -64,17 +56,19 @@ public class TileSelector : MonoBehaviour
         _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
 
-    // Cache le selecteur et indique au joueur qu'il peut recommencer 
-    private void Destroy()
+    public void Destroy()
     {
-        quad.SetActive(false);
+        if (IsValidTileToMove())
+        {
+            quad.SetActive(false);
+            StartCoroutine(MoveCharacter());
+        }
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer
     private bool IsValidTileToMove()
     {
         var cell = _helper.Cell;
-        Debug.Log(cell.Has(BlockType.Walkable));
         return cell.Has(BlockType.Walkable);
     }
 }

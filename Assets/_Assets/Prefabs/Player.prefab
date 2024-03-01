@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 6296155453993736320}
   - component: {fileID: 6722293896940644102}
   - component: {fileID: 4833543920865548287}
+  - component: {fileID: 9075904248914318119}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -175,120 +176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d3bf8fe2392e1758b90d320a84fd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction:
-    m_Name: Direction
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 13ceef04-5a59-4a55-821a-0782c920d783
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: GamePad
-      m_Id: dd7a35b0-5944-410a-bf6e-05e2751272df
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 7f5fc760-f3e6-46fb-8771-dc52d0946178
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 75087780-4a6a-4b48-93cc-858dced556df
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 65be6e7f-6791-48d1-9987-5a557fc1525a
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: right
-      m_Id: dc4509db-b6c9-4753-8bd1-bcb79fe8046c
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: Keyboard
-      m_Id: be3d0a4d-0f7b-4b5e-88a8-5c3346c95004
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 4
-    - m_Name: up
-      m_Id: decbe75a-8655-4cbb-872e-fdeda410a96f
-      m_Path: <Gamepad>/leftStick/up
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: down
-      m_Id: b33e14d0-d397-4ab6-bb3b-ff82316aa823
-      m_Path: <Gamepad>/leftStick/down
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 468bcc29-d8d8-468d-a731-18df33f08d00
-      m_Path: <Gamepad>/leftStick/left
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    - m_Name: right
-      m_Id: ab1077c0-33c2-479c-8033-54f3a979e9c2
-      m_Path: <Gamepad>/leftStick/right
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Direction
-      m_Flags: 8
-    m_Flags: 0
-  selectorActivator:
-    m_Name: Selector Activator
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 87994097-3d3a-4eb4-9535-cf3e46d8907f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 0e2e6b3f-e091-42cf-a6aa-14dba2101209
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Selector Activator
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 28d18c99-c0a3-47b3-89f0-43f144294341
-      m_Path: <XInputController>/buttonSouth
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Selector Activator
-      m_Flags: 0
-    m_Flags: 0
   cooldown: 0.1
   _selector: {fileID: 6851856790170113824}
 --- !u!114 &4833543920865548287
@@ -321,6 +208,45 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &9075904248914318119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472343039729643430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 422b113c9c9ecf9699478042714ddf27,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8fa7af92-2c9e-46e2-aa85-f738a0614464
+    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 23e8b5f3-37f2-4952-8de0-18f0f77b6976
+    m_ActionName: Player/Select[/Keyboard/space,/Gamepad/buttonSouth]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &1434976700346737123
 PrefabInstance:
   m_ObjectHideFlags: 0
