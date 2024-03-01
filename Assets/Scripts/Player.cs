@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour
     private const float MinPressure = 0.3f; 
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
-    [SerializeField] private float cooldown = 0.2f;
+    [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private TileSelector _selector;
 
     private PlayerInputActions _playerInputActions;
@@ -32,15 +32,16 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        Vector2 value = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-        //TODO : RAAAAAAPPPHHH ?? CA MARCHE ?? 
         if (!IsOwner) return;
+        // On veut pas bouger si on bouge pas le selecteur
         if (!IsMovingSelector) return;
+        // On veut pas aller trop vite !
         if (!CanMove()) return;
+        
+        Vector2 value = _playerInputActions.Player.Movement.ReadValue<Vector2>();
         Vector2Int input = Translate(value);
         _selector.MoveSelector(input);
         _timer.Start();     
-       
     }
     public override void OnNetworkSpawn()
     {
@@ -69,6 +70,7 @@ public class Player : NetworkBehaviour
             Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
         }
     }
+    // Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
     private bool CanMove()
     {
         return _timer.HasTimePassed();
@@ -102,9 +104,11 @@ public class Player : NetworkBehaviour
         return translation;
     }
 
+    // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
     public void OnSelect(InputAction.CallbackContext context)
     {
         if (!IsOwner) return;
+        
         if (IsMovingSelector)
         {
             _selector.Destroy();
