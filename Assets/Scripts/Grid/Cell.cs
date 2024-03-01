@@ -35,4 +35,14 @@ namespace Grid
         public const int SpawnBlock =  0b0000_0000_0001_0000;
         public const int BasicBlock =   0b0000_0000_0100_0000; 
     }
+    
+    public enum Type
+    {
+         Walkable,
+         Buildable,
+         Movable,
+         Destructible,
+         SpawnBlock,
+         BasicBlock,
+    }
 }
