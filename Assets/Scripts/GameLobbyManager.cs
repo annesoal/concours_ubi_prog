@@ -151,6 +151,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnCreateLobbyFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
         
     }
@@ -188,6 +189,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnQuickJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
     public async void JoinLobbyByCode(string lobbyCode)
@@ -205,6 +207,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
     
@@ -223,6 +226,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
 
