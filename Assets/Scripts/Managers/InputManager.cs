@@ -1,13 +1,21 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
     private PlayerInputActions _playerInputActions;
-    public static Player player; 
+
+    private static Player _player;
+    public static Player Player
+    {
+        set
+        {
+            if (value.IsOwner)
+                _player = value;
+        }
+    } 
 
     private void Awake()
     {
@@ -19,26 +27,14 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-        if (IsScene("Lobby"))
-        {
-            
-        }
-        else if (IsScene("Blocks"))
-        {
-            
-        }
+
+        _player.Move(input);
     }
 
     private void Select(InputAction.CallbackContext context)
     {
-        if (IsScene("Lobby"))
-        {
-            
-        }
-        else if (IsScene("Blocks"))
-        {
-            
-        }
+        Debug.Log("wtf");
+        _player.OnSelect(context);
     }
 
     private bool IsScene(String name)
@@ -48,11 +44,5 @@ public class InputManager : MonoBehaviour
         return currentScene.name == name; 
     }
 
-    /**
-     * Cette methode doit etre appellee par le joueur quand il est construit.
-     */
-    public static void SetPlayer(Player player)
-    {
-        InputManager.player = player;
-    }
+
 }

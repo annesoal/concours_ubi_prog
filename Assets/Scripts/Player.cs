@@ -13,39 +13,31 @@ public class Player : NetworkBehaviour
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private TileSelector _selector;
-
-    private PlayerInputActions _playerInputActions;
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
+    public CharacterSelectUI.CharacterId characterSelection;  
 
     public Player()
     {
         _timer = new(cooldown);
     }
-
-    void Awake()
-    {
-        _playerInputActions = new PlayerInputActions();
-        _playerInputActions.Player.Enable();
-        _playerInputActions.Player.Select.performed += OnSelect;
-    }
-
-    void Update()
+    public void Move(Vector2 direction)
     {
         if (!IsOwner) return;
         // On veut pas bouger si on bouge pas le selecteur
         if (!IsMovingSelector) return;
         // On veut pas aller trop vite !
         if (!CanMove()) return;
-        
-        Vector2 value = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-        Vector2Int input = Translate(value);
+            
+        Vector2Int input = Translate(direction);
         _selector.MoveSelector(input);
-        _timer.Start();     
+        _timer.Start();   
     }
+
     public override void OnNetworkSpawn()
     {
-        CharacterSelectUI.CharacterId characterSelection =
+        InputManager.Player = this;
+       characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
