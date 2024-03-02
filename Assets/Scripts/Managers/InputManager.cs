@@ -33,7 +33,6 @@ public class InputManager : MonoBehaviour
 
     private void Select(InputAction.CallbackContext context)
     {
-        Debug.Log("wtf");
         _player.OnSelect(context);
     }
 
@@ -43,6 +42,4 @@ public class InputManager : MonoBehaviour
 
         return currentScene.name == name; 
     }
-
-
 }

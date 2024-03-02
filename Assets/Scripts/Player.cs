@@ -15,7 +15,6 @@ public class Player : NetworkBehaviour
     [SerializeField] private TileSelector _selector;
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
-    public CharacterSelectUI.CharacterId characterSelection;  
 
     public Player()
     {
@@ -37,7 +36,8 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         InputManager.Player = this;
-       characterSelection =
+        
+        CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
