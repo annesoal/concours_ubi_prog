@@ -14,7 +14,10 @@ using UnityEngine.SceneManagement;
  */
 public class TowerDefenseManager : NetworkBehaviour
 {
-    private enum State
+    [Header("Pause Tactique")]
+    [SerializeField] private float tacticalPauseDuration;
+
+    public enum State
     {
         WaitingToStart = 0,
         CountdownToStart,
@@ -23,29 +26,176 @@ public class TowerDefenseManager : NetworkBehaviour
         EndOfGame,
     }
 
+    private Action[] _statesMethods;
+    private void InitializeStatesMethods()
+    {
+        _statesMethods = new Action[]
+        {
+            WaitForPlayerReadyToPlay,
+            ProgressCountDownToStartTimer,
+            PlayEnvironmentTurn,
+            ProgressTacticalTimer,
+            () => { },
+        };
+    }
+
     public static TowerDefenseManager Instance { get; private set; }
 
     private NetworkVariable<State> _currentState = new NetworkVariable<State>(State.WaitingToStart);
     
+    // clientId and isReady pair
+    private Dictionary<ulong, bool> _playerReadyToPlayDictionary;
+
     private void Awake()
     {
         Instance = this;
+
+        _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
         
+        InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
     }
 
     public override void OnNetworkSpawn()
     {
+        _currentState.OnValueChanged += TowerDefenseManager_CurrentState_OnValueChanged;
+        
         if (IsServer)
         {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManager_OnLoadEventCompleted;
         }
     }
 
+    private void Update()
+    {
+        if (IsServer)
+        {
+            _statesMethods[(int)_currentState.Value]();
+        }
+    }
+    
+    private void WaitForPlayerReadyToPlay()
+    {
+        if (PlayersAreReadyToPlay())
+        {
+            GoToSpecifiedState(State.CountdownToStart);
+        }
+    }
+
+    [field: Header("Chrono de depart")]
+    [field: SerializeField] public float CountDownToStartTimer { get; private set; }
+    
+    private void ProgressCountDownToStartTimer()
+    {
+        ProgressCountDownToStartTimerClientRpc(Time.deltaTime);
+        
+        CountDownToStartTimer -= Time.deltaTime;
+
+        if (CountDownToStartTimer <= 0f)
+        {
+            GoToSpecifiedState(State.EnvironmentTurn);
+        }
+    }
+    
+    [ClientRpc()]
+    private void ProgressCountDownToStartTimerClientRpc(float deltaTime)
+    {
+        if (IsServer) { return; }
+
+        CountDownToStartTimer -= Time.deltaTime;
+    }
+    
+    private bool _isEnvironmentTurnNotCalled = true;
+    private void PlayEnvironmentTurn()
+    {
+        return;
+        if (! _isEnvironmentTurnNotCalled)
+        {
+            _isEnvironmentTurnNotCalled = false;
+            // TODO call AI Manager
+            // Connexion à un event qui se lance lorsque le AI Manager a fini
+            // passage au tactical timer dans la réponse à cet event
+        }
+    }
+    
+    private void ProgressTacticalTimer()
+    {
+        tacticalPauseDuration -= Time.deltaTime;
+        
+        if (tacticalPauseDuration <= 0f)
+        {
+            GoToSpecifiedState(State.EnvironmentTurn);
+        }
+    }
+
+    private bool PlayersAreReadyToPlay()
+    {
+        bool areReady = true;
+        
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (ConnectedPlayerIsNotReady(clientId))
+            {
+                areReady = false;
+                break;
+            }
+        }
+
+        return areReady;
+    }
+    
+    public void SetPlayerReadyToPlay()
+    {
+        SetPlayerReadyToPlayServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerReadyToPlayServerRpc(ServerRpcParams serverRpcParams = default)
+    {
+        SetPlayerReadyToPlayClientRpc(serverRpcParams.Receive.SenderClientId);
+    }
+    
+    [ClientRpc]
+    private void SetPlayerReadyToPlayClientRpc(ulong clientIdOfPlayerReady)
+    {
+        _playerReadyToPlayDictionary.Add(clientIdOfPlayerReady, true);
+    }
+
+    private bool ConnectedPlayerIsNotReady(ulong clientIdOfPlayer)
+    {
+        return ! _playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayer) || 
+               ! _playerReadyToPlayDictionary[clientIdOfPlayer];
+    }
+    
+    private void GoToSpecifiedState(State specified)
+    {
+        _currentState.Value = specified;
+    }
+    
+    private void GoToNextState()
+    {
+        _currentState.Value += 1 % _statesMethods.Length;
+    }
+
     private void NetworkManager_OnLoadEventCompleted
         (string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
         CarryOutSpawnPlayersProcedure();
+    }
+
+    public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
+    public class OnCurrentStateChangedEventArgs : EventArgs
+    {
+        public State previousValue;
+        public State newValue;
+    }
+    private void TowerDefenseManager_CurrentState_OnValueChanged(State previousValue, State newValue)
+    {
+        OnCurrentStateChanged?.Invoke(this, new OnCurrentStateChangedEventArgs
+        {
+            previousValue = previousValue,
+            newValue = newValue,
+        });
     }
 
     private void CarryOutSpawnPlayersProcedure()
@@ -118,5 +268,4 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         Debug.LogError("Player selection is `None` when in game, which is not a valid value !");
     }
-
 }
