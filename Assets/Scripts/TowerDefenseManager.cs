@@ -5,6 +5,7 @@ using Grid.Blocks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 /**
  * Classe responsable de la logique d'exécution du jeu.
@@ -14,6 +15,10 @@ using UnityEngine.SceneManagement;
  */
 public class TowerDefenseManager : NetworkBehaviour
 {
+    [Header("Information du jeu")]
+    // Nombre de round du que le niveau detient. Arrive a 0, les joueurs ont gagne.
+    [SerializeField] private int totalRounds;
+    
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
@@ -54,6 +59,8 @@ public class TowerDefenseManager : NetworkBehaviour
         
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
+
+        _currentRoundNumber = totalRounds;
     }
 
     public override void OnNetworkSpawn()
@@ -120,12 +127,30 @@ public class TowerDefenseManager : NetworkBehaviour
     
     private void ProgressTacticalTimer()
     {
+        if (AllRoundsAreDone())
+        {
+            GoToSpecifiedState(State.EndOfGame);
+        }
+        
         tacticalPauseDuration -= Time.deltaTime;
         
         if (tacticalPauseDuration <= 0f)
         {
+            IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
         }
+    }
+
+    private bool AllRoundsAreDone()
+    {
+        return _currentRoundNumber == 0;
+    }
+
+    private int _currentRoundNumber;
+    
+    private void IncreaseRoundNumber()
+    {
+        _currentRoundNumber += 1;
     }
 
     private bool PlayersAreReadyToPlay()

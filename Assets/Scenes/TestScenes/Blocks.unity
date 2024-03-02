@@ -14705,6 +14705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb252143610737f0181785354309e0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalRounds: 20
   tacticalPauseDuration: 10
   <CountDownToStartTimer>k__BackingField: 3
   playerMonkeyPrefab: {fileID: 5859016237900757387, guid: e526c4caf8f47b6158e994c81b9c1341,
