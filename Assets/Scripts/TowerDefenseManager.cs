@@ -65,6 +65,11 @@ public class TowerDefenseManager : NetworkBehaviour
         _currentRoundNumber = totalRounds;
     }
 
+    private void Start()
+    {
+        EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+    }
+
     public override void OnNetworkSpawn()
     {
         _currentState.OnValueChanged += TowerDefenseManager_CurrentState_OnValueChanged;
@@ -120,25 +125,22 @@ public class TowerDefenseManager : NetworkBehaviour
         if (! _isEnvironmentTurnNotCalled)
         {
             _isEnvironmentTurnNotCalled = false;
-            // TODO Centraliser ça dans EnvironmentManager
-            // Connexion à un event qui se lance lorsque le EnvironmentManager a fini (retour en pause tactique ou en gameOver)
-            /**
-             * Effecuter le Spawn d'enemis (prévu avant, consultable par les joueurs)
-             * 
-             * AIM.ComputePaths()
-             * while (hasEnergy())
-             * {
-             *     AIM.PlaySubordinatesTurn();
-             *
-             *     TowerManager.PlayTowersTurn();
-             * 
-             *     currentEnvironmentEnergy--;
-             * }
-             * 
-             * currentEnvironmentEnergy = INITIAL_CURRENT_ENERGY;
-             * GoToSpecifiedState(State.TacticalPause);
-             */
+            EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
         }
+    }
+
+    private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
+    {
+        if (_currentRoundNumber >= totalRounds)
+        {
+            GoToSpecifiedState(State.EndOfGame);
+        }
+        else
+        {
+            GoToSpecifiedState(State.TacticalPause);
+        }
+        
+        _isEnvironmentTurnNotCalled = true;
     }
     
     private void ProgressTacticalTimer()
@@ -223,7 +225,7 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         CarryOutSpawnPlayersProcedure();
     }
-
+    
     public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
     public class OnCurrentStateChangedEventArgs : EventArgs
     {
