@@ -16,9 +16,11 @@ using UnityEngine.Serialization;
 public class TowerDefenseManager : NetworkBehaviour
 {
     [Header("Information du jeu")]
-    // Nombre de round du que le niveau detient. Arrive a 0, les joueurs ont gagne.
+    // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     [SerializeField] private int totalRounds;
-    
+    // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
+    [field: SerializeField] public int EnergyAvailable { get; private set; }
+
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
