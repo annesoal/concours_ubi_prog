@@ -19,21 +19,25 @@ public class EnvironmentTurnManager : MonoBehaviour
     /// <param name="totalEnergy">Énergie qui devra être dépensée avant de retourner à la pause tactique.</param>
     public void EnableEnvironmentTurn(int totalEnergy)
     {
-        /**
-         * Effecuter le Spawn d'enemis (prévu avant, consultable par les joueurs)
-         *
-         * AIM.ComputePaths()
-         * while (hasEnergy())
-         * {
-         *     AIM.PlaySubordinatesTurn();
-         *
-         *     TowerManager.PlayTowersTurn();
-         *
-         *     currentEnvironmentEnergy--;
-         * }
-         *
-         * currentEnvironmentEnergy = INITIAL_CURRENT_ENERGY;
-         * GoToSpecifiedState(State.TacticalPause);
-         */
+        // NOTE : AIM = AI Manager
+        // AIM.ComputePaths()
+        
+        while (HasEnergyLeft(totalEnergy))
+        {
+            // MovePlayers
+            
+            // AIM.PlaySubordinatesTurn();
+            
+            // TowerManager.PlayTowersTurn();
+            
+            totalEnergy--;
+        }
+        
+        OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private bool HasEnergyLeft(int energyLeft)
+    {
+        return energyLeft > 0;
     }
 }
