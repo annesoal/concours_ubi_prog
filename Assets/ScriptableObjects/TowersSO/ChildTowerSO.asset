@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df2a32ede7bbf3bfb6b817e14614c61, type: 3}
+  m_Name: ChildTowerSO
+  m_EditorClassIdentifier: 
+  towerPrefab: {fileID: 1798826350640963164, guid: dcdfe9e2473fb9a9b937c2738bea04fe,
+    type: 3}
+  towerIcon: {fileID: 0}
+  towerName: Child Tower
+  towerVisuals: {fileID: 0}
