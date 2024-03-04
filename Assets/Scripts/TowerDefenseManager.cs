@@ -115,13 +115,27 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-        return;
         if (! _isEnvironmentTurnNotCalled)
         {
             _isEnvironmentTurnNotCalled = false;
-            // TODO call AI Manager
-            // Connexion à un event qui se lance lorsque le AI Manager a fini
-            // passage au tactical timer dans la réponse à cet event
+            // TODO Centraliser ça dans EnvironmentManager
+            // Connexion à un event qui se lance lorsque le EnvironmentManager a fini (retour en pause tactique ou en gameOver)
+            /**
+             * Effecuter le Spawn d'enemis (prévu avant, consultable par les joueurs)
+             * 
+             * AIM.ComputePaths()
+             * while (hasEnergy())
+             * {
+             *     AIM.PlaySubordinatesTurn();
+             *
+             *     TowerManager.PlayTowersTurn();
+             * 
+             *     currentEnvironmentEnergy--;
+             * }
+             * 
+             * currentEnvironmentEnergy = INITIAL_CURRENT_ENERGY;
+             * GoToSpecifiedState(State.TacticalPause);
+             */
         }
     }
     
