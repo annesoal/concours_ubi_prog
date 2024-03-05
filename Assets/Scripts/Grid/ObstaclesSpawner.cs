@@ -12,7 +12,7 @@ namespace Grid.Blocks
         private float yPositionValue = 0.5f;
         
         [SerializeField]
-        private float valueForRandomness = 0.15f;
+        private float valueForRandomness = 0.10f;
 
         public void Initialize()
         { 
@@ -22,28 +22,22 @@ namespace Grid.Blocks
 
         public void SpawnObstacles(GameObject obstacle)
         {
-            int i = 0;
-            do
+            for (int i = 0; i < Size; i++)
             {
                 _position2d.x = i;
-                int j = 0;
-                do
+                for (int j = 0; j < Size; j++)
                 {
-                    _position2d.y = j; 
+                    _position2d.y = j;
                     _helper.SetHelperPosition(_position2d);
-                    // Debug.Log(_helper.GetHelperPosition());
-                    //Debug.Log(_helper == null);
                     if (_helper.IsValidCell(_position2d) && randomBool())
                     {
-                       // Debug.Log(_position2d);
                         GameObject test = SpawnObstacle(obstacle);
                         TellPresenceAtCell(test, _position2d);
                     }
-                    j++; 
-                } while (j < Size);
-                i++;
-            } while (i < Size);
+                }
+            }
         }
+
 
         private bool randomBool()
         {
@@ -52,10 +46,10 @@ namespace Grid.Blocks
         
         private GameObject SpawnObstacle(GameObject obstacle)
         {
-            Debug.Log(_cell.position);
+           // Debug.Log(_cell.position);
             Vector3 position3d = TilingGrid.GridPositionToLocal(_position2d);
             position3d.y += yPositionValue;
-            Debug.Log(_position2d);
+           // Debug.Log(_position2d);
             return Instantiate(obstacle, position3d, Quaternion.identity);
         }
 
@@ -63,7 +57,7 @@ namespace Grid.Blocks
         {
             _cell = TilingGrid.grid.GetCell(position);
             _cell.AddGameObject(obstacle);
-            Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
+           // Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
         }
         
     }
