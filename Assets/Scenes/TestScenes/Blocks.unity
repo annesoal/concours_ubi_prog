@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029127, g: 0.22572401, b: 0.3069303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -14774,12 +14774,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalRounds: 20
+  <EnergyAvailable>k__BackingField: 0
   tacticalPauseDuration: 10
   <CountDownToStartTimer>k__BackingField: 3
-  playerMonkeyPrefab: {fileID: 5859016237900757387, guid: e526c4caf8f47b6158e994c81b9c1341,
+  playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
     type: 3}
   <MonkeyBlockPlayerSpawn>k__BackingField: {fileID: 1751245264}
-  playerRobotPrefab: {fileID: 5859016237900757387, guid: e526c4caf8f47b6158e994c81b9c1341,
+  playerRobotPrefab: {fileID: 2868363114536855551, guid: 5691060b1c68ecd84ad714b4e706c7b4,
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 1044088096}
 --- !u!4 &1953641236
