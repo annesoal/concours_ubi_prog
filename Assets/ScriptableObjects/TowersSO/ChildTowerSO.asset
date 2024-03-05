@@ -16,4 +16,4 @@ MonoBehaviour:
     type: 3}
   towerIcon: {fileID: 0}
   towerName: Child Tower
-  towerVisuals: {fileID: 0}
+  materialAndQuantityPairs: []
