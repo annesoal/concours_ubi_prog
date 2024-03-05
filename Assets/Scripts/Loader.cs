@@ -13,6 +13,8 @@ public static class Loader
         GameScene,
         LoadingScene,
         CharacterSelectScene,
+        // TEST SCENES
+        Blocks,
     }
 
     private static Scene _targetScene;

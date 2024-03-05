@@ -151,6 +151,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnCreateLobbyFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
         
     }
@@ -171,6 +172,7 @@ public class GameLobbyManager : MonoBehaviour
 
     public event EventHandler OnJoinStarted;
     public event EventHandler OnJoinFailed;
+    public event EventHandler OnQuickJoinFailed;
 
     public async void QuickJoin()
     {
@@ -186,7 +188,8 @@ public class GameLobbyManager : MonoBehaviour
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
-            OnJoinFailed?.Invoke(this, EventArgs.Empty);
+            OnQuickJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
     public async void JoinLobbyByCode(string lobbyCode)
@@ -204,6 +207,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
     
@@ -222,6 +226,7 @@ public class GameLobbyManager : MonoBehaviour
         {
             Debug.Log(e);
             OnJoinFailed?.Invoke(this, EventArgs.Empty);
+            _joinedLobby = null;
         }
     }
 
