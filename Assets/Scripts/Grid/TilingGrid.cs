@@ -11,6 +11,7 @@ namespace Grid
     {
         [SerializeField] private GameObject _player;
         [SerializeField] private GameObject _obstacle;
+        [SerializeField] private GameObject _ennemy;
         
         public const float TopOfCell = 0.51f;
         
@@ -38,7 +39,6 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            
             _spawnObstacles.Initialize();
             _spawnObstacles.SpawnObstacles(_obstacle);
         }

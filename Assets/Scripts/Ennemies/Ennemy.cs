@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace DefaultNamespace
 {
 
@@ -13,14 +12,18 @@ namespace DefaultNamespace
     }
     
     public abstract class Ennemy : MonoBehaviour
-    {
-        protected EnnemyType ennemyType;
-        
-        public Ennemy()
-        {
-            ennemyType = EnnemyType.None;
-        }
+    { 
+        [SerializeField]
+        protected EnnemyType ennemyType ;
 
+        [SerializeField] 
+        protected int speedEnnemy; //Tnb de bloc pouvant avancer par tour
+
+        [SerializeField] 
+        protected bool state = true; // peut avancer ou est piege
+        
+        protected Vector2Int currentPosition2d;
+        
         
         public virtual void Move()
         {
