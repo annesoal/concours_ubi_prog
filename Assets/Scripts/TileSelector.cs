@@ -33,7 +33,9 @@ public class TileSelector : MonoBehaviour
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
-            player.transform.position = cellLocalPosition;
+            Transform playerTransform = player.transform;
+            playerTransform.LookAt(cellLocalPosition);
+            playerTransform.position = cellLocalPosition;
             yield return new WaitForSeconds(0.1f);
         }
     }
