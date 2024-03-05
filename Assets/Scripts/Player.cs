@@ -35,7 +35,10 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        InputManager.Player = this;
+        if (IsOwner)
+        {
+            InputManager.Player = this;
+        }
         
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
