@@ -1,3 +1,4 @@
+using System;
 using Grid;
 using UnityEngine;
 
@@ -5,9 +6,14 @@ namespace Ennemies
 {
     public class EnnemyGridHelper : GridHelper
     {
+
+  
         private CellRecorder _recorder;
-        public EnnemyGridHelper(Vector2Int position) : base(position)
+        // Servira a verifier les dernieres positions de l'ennemi
+        public EnnemyGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
         {
+            _recorder = recorder;
+          //  _recorder.AddCell(currentCell);
         }
 
         public override bool IsValidCell(Vector2Int position)
@@ -52,12 +58,7 @@ namespace Ennemies
             return false; 
         }
 
-        // Servira a verifier les dernieres positions de l'ennemi
-        public EnnemyGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
-        {
-            _recorder = recorder;
-            _recorder.AddCell(currentCell);
-        }
+
     }
     
 }

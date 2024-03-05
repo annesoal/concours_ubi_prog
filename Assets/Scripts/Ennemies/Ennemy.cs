@@ -1,3 +1,4 @@
+using Grid;
 using UnityEngine;
 namespace DefaultNamespace
 {
@@ -23,6 +24,9 @@ namespace DefaultNamespace
         protected bool state = true; // peut avancer ou est piege
         
         protected Vector2Int currentPosition2d;
+        protected CellRecorder _cellRecorder;
+        
+        
         
         
         public virtual void Move()
