@@ -13,7 +13,7 @@ namespace Ennemies
         public EnnemyGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
         {
             _recorder = recorder;
-          //  _recorder.AddCell(currentCell);
+            _recorder.AddCell(currentCell);
         }
 
         public override bool IsValidCell(Vector2Int position)

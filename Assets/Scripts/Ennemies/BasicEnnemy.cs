@@ -26,7 +26,9 @@ namespace Ennemies
             _cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _currentPosition3d = new Vector3();
+            _cellRecorder = new CellRecorder();
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
+            
         }
         
         private void Update()
@@ -57,6 +59,9 @@ namespace Ennemies
             transform.position = new Vector3(_currentPosition3d.x,_currentPosition3d.y,_currentPosition3d.z);
             Debug.Log("position ennemi : "+ _currentPosition3d);
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
+            _cell.position = currentPosition2d;
+            _cellRecorder.AddCell(_cell);
+            Debug.Log("size recorder : "+ _cellRecorder.Size());
             yield return new WaitForSeconds(2f); 
         }
 
