@@ -6,16 +6,18 @@ namespace Ennemies
 {
     public class EnnemyGridHelper : GridHelper
     {
-
-  
-        private CellRecorder _recorder;
-        // Servira a verifier les dernieres positions de l'ennemi
+        private CellRecorder _recorder; // Servira a verifier les dernieres positions de l'ennemi
+        
         public EnnemyGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
         {
             _recorder = recorder;
             _recorder.AddCell(currentCell);
         }
 
+        /**
+         * TODO Valider si fin grid
+         * Verifie qu'un ennemi peut avancer
+         */
         public override bool IsValidCell(Vector2Int position)
         {
             Cell cell = TilingGrid.grid.GetCell(position);

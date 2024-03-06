@@ -14,19 +14,12 @@ namespace DefaultNamespace
     
     public abstract class Ennemy : MonoBehaviour
     { 
-        [SerializeField]
-        protected EnnemyType ennemyType ;
-
-        [SerializeField] 
-        protected int speedEnnemy; //Tnb de bloc pouvant avancer par tour
-
-        [SerializeField] 
-        protected bool state = true; // peut avancer ou est piege
+        [SerializeField] protected EnnemyType ennemyType ;
+        [SerializeField] protected int speedEnnemy; //Nb de blocs pouvant avancer par tour
+        [SerializeField] protected bool state = true; // Piege
         
         protected Vector2Int currentPosition2d;
-        protected CellRecorder _cellRecorder;
-        
-        
+        protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         
         
         public virtual void Move()
