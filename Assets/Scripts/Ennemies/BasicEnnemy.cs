@@ -36,7 +36,7 @@ namespace Ennemies
         private void Update()
         {
             Initialize();
-            while (state && speedEnnemy != 0)
+            if (state && speedEnnemy != 0)
             {
                 Move();
                 speedEnnemy -= 1; // facon de faire temporaire
