@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Grid.Blocks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Grid
@@ -33,7 +34,14 @@ namespace Grid
             objectsOnTop.Add(gameObject);
         }
         
+        public bool IsNone()
+        {
+            return type  == 0;
+        }
+        
     }
+    
+
     
     public static class BlockType
     {

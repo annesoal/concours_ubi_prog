@@ -25,7 +25,7 @@ namespace Ennemies
             ennemyType = EnnemyType.Basic;
             currentPosition2d.x = 10;
             currentPosition2d.y = 15;
-            speedEnnemy = 15; //Nombre de blocs avancer par tour
+            speedEnnemy = 20; //Nombre de blocs avancer par tour
         }
 
 
@@ -39,13 +39,14 @@ namespace Ennemies
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
 
+        //TODO Enlever Update lors du push sur Develop
         private void Update()
         {
             Initialize();
             if (state && speedEnnemy != 0)
             {
                 Move();
-                speedEnnemy -= 1; // facon de faire temporaire
+                // facon de faire temporaire
             }
         }
 
@@ -63,8 +64,8 @@ namespace Ennemies
                 //         : verifie droite, ok, va a droite (non verifie gauche...)
             }
         }
-
-
+        
+        
         /**
          * Avance le Helper sur la Cell en avant de l'ennemi en changeant
          * la nextPosition2d
@@ -88,6 +89,7 @@ namespace Ennemies
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             //transform.position = new Vector3(_currentPosition3d.x, _currentPosition3d.y, _currentPosition3d.z);
             _cellRecorder.AddCell(_cell);
+            speedEnnemy -= 1;
         }
 
         /**

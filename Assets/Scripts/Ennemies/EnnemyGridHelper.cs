@@ -23,8 +23,8 @@ namespace Ennemies
             Cell cell = TilingGrid.grid.GetCell(position);
             bool isValidBlockType = (cell.type & BlockType.Walkable) > 0;
             bool hasNoObstacle = ContainsObstacle(cell);
-            bool isNotEndOfGrid = true; // TODO
-            return true; //isValidBlockType && hasNoObstacle;
+            bool isNotEndOfGrid = ! cell.IsNone();
+            return isNotEndOfGrid; //isValidBlockType && hasNoObstacle;
         }
 
         public override Vector2Int GetHelperPosition()
@@ -37,12 +37,7 @@ namespace Ennemies
             currentCell.position = position;
         }
 
-        //TODO 
-        private bool IsNotEndOfGrid(Cell cell)
-        {
-            return true;
-        }
-        
+
         //TODO autre maniere de faire ?
         private bool ContainsObstacle(Cell cell)
         {
