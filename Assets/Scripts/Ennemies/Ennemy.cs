@@ -20,7 +20,7 @@ namespace DefaultNamespace
         
         protected Vector2Int currentPosition2d;
         protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
-        
+        protected Cell cell;
         
         public virtual void Move()
         {

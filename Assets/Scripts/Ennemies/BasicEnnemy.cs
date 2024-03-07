@@ -7,10 +7,11 @@ namespace Ennemies
 {
     public class BasicEnnemy : Ennemy
     {
+        private GameObject basicEnnemy;
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
-        private Cell _cell;
+        
         private EnnemyGridHelper _ennemyGridHelper;
         public float lerpSpeed = 0.5f; 
         
@@ -26,12 +27,13 @@ namespace Ennemies
             currentPosition2d.x = 10;
             currentPosition2d.y = 15;
             speedEnnemy = 20; //Nombre de blocs avancer par tour
+            basicEnnemy = this.gameObject;
         }
 
 
         public void Initialize()
         {
-            _cell = new Cell();
+            cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _currentPosition3d = new Vector3();
             _nextPosition3d = new Vector3();
@@ -39,19 +41,18 @@ namespace Ennemies
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
 
-        //TODO Enlever Update lors du push sur Develop
+        //TODO Enlever Update() lors du push sur Develop
         private void Update()
         {
-            Initialize();
-            if (state && speedEnnemy != 0)
+            if (state && speedEnnemy != 0) //TODO mettre direct dans Move
             {
                 Move();
-                // facon de faire temporaire
             }
         }
 
         public override void Move()
         {
+            Initialize();
             SetNextPositionAhead();
             if (_ennemyGridHelper.IsValidCell(_nextPosition2d)) //Sil peut avancer
             {
@@ -64,7 +65,16 @@ namespace Ennemies
                 //         : verifie droite, ok, va a droite (non verifie gauche...)
             }
         }
-        
+
+        private void TellCellOnTop()
+        {
+            cell = TilingGrid.grid.GetCell(currentPosition2d);
+            if (!cell.objectsOnTop.Contains(this.basicEnnemy))
+            {
+                cell.AddGameObject(this.basicEnnemy);
+            }
+                
+        }
         
         /**
          * Avance le Helper sur la Cell en avant de l'ennemi en changeant
@@ -88,7 +98,7 @@ namespace Ennemies
             float t = Mathf.Clamp01(lerpSpeed * Time.deltaTime); // Normalisation de la vitesse
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             //transform.position = new Vector3(_currentPosition3d.x, _currentPosition3d.y, _currentPosition3d.z);
-            _cellRecorder.AddCell(_cell);
+            _cellRecorder.AddCell(cell);
             speedEnnemy -= 1;
         }
 
@@ -108,7 +118,7 @@ namespace Ennemies
         private void ChangeEnnemyPosition2d()
         {
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-            _cell.position = currentPosition2d;
+            cell.position = currentPosition2d;
         }
 
         public override void Corrupt()
