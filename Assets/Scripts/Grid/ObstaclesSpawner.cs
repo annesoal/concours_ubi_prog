@@ -32,7 +32,7 @@ namespace Grid.Blocks
                     if (_helper.IsValidCell(_position2d) && randomBool())
                     {
                         GameObject test = SpawnObstacle(obstacle);
-                        TellPresenceAtCell(test, _position2d);
+                        SetObjectOnTop(test, _position2d);
                     }
                 }
             }
@@ -53,7 +53,7 @@ namespace Grid.Blocks
             return Instantiate(obstacle, position3d, Quaternion.identity);
         }
 
-        private void TellPresenceAtCell(GameObject obstacle, Vector2Int position)
+        private void SetObjectOnTop(GameObject obstacle, Vector2Int position)
         {
             _cell = TilingGrid.grid.GetCell(position);
             _cell.AddGameObject(obstacle);

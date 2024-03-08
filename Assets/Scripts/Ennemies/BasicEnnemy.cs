@@ -1,3 +1,4 @@
+using System;
 using DefaultNamespace;
 using Grid;
 using UnityEngine;
@@ -7,7 +8,6 @@ namespace Ennemies
 {
     public class BasicEnnemy : Ennemy
     {
-        private GameObject basicEnnemy;
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
@@ -27,9 +27,13 @@ namespace Ennemies
             currentPosition2d.x = 10;
             currentPosition2d.y = 15;
             speedEnnemy = 20; //Nombre de blocs avancer par tour
-            basicEnnemy = this.gameObject;
         }
 
+        private void Awake()
+        {
+           
+            
+        }
 
         public void Initialize()
         {
@@ -40,10 +44,20 @@ namespace Ennemies
             _cellRecorder = new CellRecorder();
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
+        
+        private void SetObjectOnTop(GameObject ennemi, Vector2Int position2d)
+        {
+            cell = TilingGrid.grid.GetCell(position2d);
+            cell.AddGameObject(ennemi);
+            // Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
+        }
+
 
         //TODO Enlever Update() lors du push sur Develop
         private void Update()
         {
+            Initialize();
+           // SetObjectOnTop(this.gameObject, currentPosition2d);
             if (state && speedEnnemy != 0) //TODO mettre direct dans Move
             {
                 Move();
@@ -52,7 +66,6 @@ namespace Ennemies
 
         public override void Move()
         {
-            Initialize();
             SetNextPositionAhead();
             if (_ennemyGridHelper.IsValidCell(_nextPosition2d)) //Sil peut avancer
             {
@@ -66,16 +79,7 @@ namespace Ennemies
             }
         }
 
-        private void TellCellOnTop()
-        {
-            cell = TilingGrid.grid.GetCell(currentPosition2d);
-            if (!cell.objectsOnTop.Contains(this.basicEnnemy))
-            {
-                cell.AddGameObject(this.basicEnnemy);
-            }
-                
-        }
-        
+
         /**
          * Avance le Helper sur la Cell en avant de l'ennemi en changeant
          * la nextPosition2d
