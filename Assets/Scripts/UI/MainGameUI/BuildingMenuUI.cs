@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingMenuUI : MonoBehaviour
 {
@@ -11,23 +13,37 @@ public class BuildingMenuUI : MonoBehaviour
     /// </summary>
     [SerializeField] private TowersListSO availableTowersListSO;
 
+    private void Awake()
+    {
+        showBuildingMenuButton.onClick.AddListener(() =>
+        {
+            BasicShowHide.Show(circularLayout.gameObject);
+        });
+    }
+
     private void Start()
     {
+        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+        
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
     }
 
+    [SerializeField] private Button showBuildingMenuButton;
+    [SerializeField] private GameObject circularLayout;
+    
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
         if (e.newValue == TowerDefenseManager.State.TacticalPause)
         {
             if (PlayerIsOnBuildingBlock())
             {
-                // Show building UI (button to show it at least)
+                BasicShowHide.Show(showBuildingMenuButton.gameObject);
             }
         }
         else
         {
-            // Hide UI
+            BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+            BasicShowHide.Hide(circularLayout.gameObject);
         }
     }
 
