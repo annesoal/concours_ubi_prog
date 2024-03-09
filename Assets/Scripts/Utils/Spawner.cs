@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
+using Managers;
 using Unity.Netcode;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -11,14 +12,16 @@ using Type = Grid.Type;
 namespace Utils
 {
     [Serializable]
-    public class Spawner : NetworkBehaviour
+    public class Spawner
     {
+        private bool _isServer;
         [Header("When")] [SerializeField] private TowerDefenseManager.State _timeSlot;
         [Header("IfRepeatable")] 
         [SerializeField] private int _startingRound = -1;
         [SerializeField] private int _endingRound = -1 ;
         [SerializeField] private int _period = 0 ;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
+        public GameObject ObjectToSpawn => _objectToSpawn;
 
         [Header("How")] [SerializeField] private double _spawnRate;
 
@@ -29,10 +32,12 @@ namespace Utils
         private GridHelper _helper;
         private Vector2Int _position;
         private Random _rand = new();
-        List<Vector2Int> positions = new();
+        private int _positionInList;
 
-        public void Start()
+        public void Initialize(bool isServer, int positionInList)
         {
+            _positionInList = positionInList;
+            _isServer = isServer;
             _position = new Vector2Int();
             _helper = new SpawnerGridHelper(_position, _BlockTypeToSpawnOn);
             timeToRepeate = _period; 
@@ -112,16 +117,16 @@ namespace Utils
             return _rand.NextDouble() > _spawnRate;
         }
 
-        private void InstantiateObstacles(List<Vector2Int> listOfPosition)
+        public static void InstantiateObstacles(List<Vector2Int> listOfPosition,GameObject objectToSpawn)
         {
-            foreach (var position in listOfPosition) InstantiateObstacle(position);
+            foreach (var position in listOfPosition) InstantiateObstacle(position, objectToSpawn);
         }
 
-        private void InstantiateObstacle(Vector2Int position)
+        private static void InstantiateObstacle(Vector2Int position, GameObject objectToSpawn)
         {
             var position3d = TilingGrid.GridPositionToLocal(position);
             position3d.y += 0.5f;
-            Object.Instantiate(_objectToSpawn, position3d, Quaternion.identity);
+            Object.Instantiate(objectToSpawn, position3d, Quaternion.identity);
         }
 
         public void AddSelfToTimeSlot(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
@@ -130,20 +135,20 @@ namespace Utils
             {
                 if (RepeatablePredicate.Invoke())
                 {
-                    if (IsServer)
+                    if (_isServer)
                     {
-                        positions = GeneratePositions();
-                        GenerateObjectsClientRpc(positions.ToArray());
+                        List<Vector2Int> positions = GeneratePositions();
+                        if (SpawnersManager.Instance == null)
+                        {
+                            Debug.Log("wtf");
+                            return;
+                        }
+                        SpawnersManager.Instance.GenerateObjectsClientRpc(positions.ToArray(), _positionInList);
                     }
-                    InstantiateObstacles(positions);
                 }
             }
         }
         
-        [ClientRpc]
-        private void GenerateObjectsClientRpc(Vector2Int[] positionToObstacles)
-        {
-            positions = positionToObstacles.ToList();
-        }
+
     }
 }

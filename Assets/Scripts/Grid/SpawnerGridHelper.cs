@@ -19,7 +19,7 @@ namespace Grid
             {
                 int translatedType = BlockType.Translate(type);
                 Cell cell = TilingGrid.grid.GetCell(position);
-                if (cell.Has(translatedType)) ;
+                if (cell.Has(translatedType)) 
                     return true;
             }
             return false;
