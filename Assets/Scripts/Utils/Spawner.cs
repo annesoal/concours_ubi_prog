@@ -1,35 +1,149 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Grid;
+using Unity.Netcode;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = System.Random;
+using Type = Grid.Type;
 
 namespace Utils
 {
-    public abstract class Spawner
+    [Serializable]
+    public class Spawner : NetworkBehaviour
     {
-        private GameObject _objectToSpawn;
-        private bool _hasBeenAdded = false;
-        public bool HasBeenAdded
-        {
-            get
-            {
-                return _hasBeenAdded;
-            }
-            set
-            {
-                _hasBeenAdded = value;
-            }
-        }
+        [Header("When")] [SerializeField] private TowerDefenseManager.State _timeSlot;
+        [Header("IfRepeatable")] 
+        [SerializeField] private int _startingRound = -1;
+        [SerializeField] private int _endingRound = -1 ;
+        [SerializeField] private int _period = 0 ;
+        [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
-        public Spawner(GameObject objectToSpawn, TowerDefenseManager.State[] state)
-        {
-            _objectToSpawn = objectToSpawn;
-        }
+        [Header("How")] [SerializeField] private double _spawnRate;
 
-        public abstract Vector2Int[] GeneratePosition();
+        [SerializeField] private List<Type> _BlockTypeToSpawnOn;
+        
+        private int timeToRepeate;
+        private Func<bool> RepeatablePredicate; 
+        private GridHelper _helper;
+        private Vector2Int _position;
+        private Random _rand = new();
+        List<Vector2Int> positions = new();
+
+        public void Start()
+        {
+            _position = new Vector2Int();
+            _helper = new SpawnerGridHelper(_position, _BlockTypeToSpawnOn);
+            timeToRepeate = _period; 
+            RepeatablePredicate = CreateRepeatablePredicate();
+        }
+        /// <summary>
+        /// Permet de creer un predicat pour la repetition si le _startingRound est different de -1.
+        /// </summary>
+        /// <returns></returns>
+        private Func<bool> CreateRepeatablePredicate()
+        {
+            if (_startingRound == -1)
+            {
+                return () => true;
+            }
+
+            if (_endingRound == -1)
+            {
+                return () =>
+                {
+                    if (timeToRepeate == 0)
+                    {
+                        timeToRepeate = _period; 
+                        return _startingRound <= TowerDefenseManager.Instance.currentRoundNumber;
+                    }
+
+                    timeToRepeate--;
+                    return false;
+                };
+            }
+
+            return () =>
+            {
+                if (timeToRepeate == 0)
+                {
+                    timeToRepeate = _period;
+                    int currentRound = TowerDefenseManager.Instance.currentRoundNumber;
+                    return _startingRound <= currentRound && _endingRound >= currentRound;
+                }
+
+                timeToRepeate--;
+                return false;
+            };
+        }
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
-            
+
             return GetType() == obj.GetType();
+        }
+
+        private List<Vector2Int> GeneratePositions()
+        {
+            List<Vector2Int> listOfPosition = new();
+            var i = 0;
+            do
+            {
+                _position.x = i;
+                var j = 0;
+                do
+                {
+                    _position.y = j;
+                    _helper.SetHelperPosition(_position);
+                    if (_helper.IsValidCell(_position) && RandomBool()) listOfPosition.Add(_position);
+                    j++;
+                } while (j < TilingGrid.Size);
+
+                i++;
+            } while (i < TilingGrid.Size);
+
+            return listOfPosition;
+        }
+
+        private bool RandomBool()
+        {
+            return _rand.NextDouble() > _spawnRate;
+        }
+
+        private void InstantiateObstacles(List<Vector2Int> listOfPosition)
+        {
+            foreach (var position in listOfPosition) InstantiateObstacle(position);
+        }
+
+        private void InstantiateObstacle(Vector2Int position)
+        {
+            var position3d = TilingGrid.GridPositionToLocal(position);
+            position3d.y += 0.5f;
+            Object.Instantiate(_objectToSpawn, position3d, Quaternion.identity);
+        }
+
+        public void AddSelfToTimeSlot(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
+        {
+            if (changedEventArgs.newValue == _timeSlot)
+            {
+                if (RepeatablePredicate.Invoke())
+                {
+                    if (IsServer)
+                    {
+                        positions = GeneratePositions();
+                        GenerateObjectsClientRpc(positions.ToArray());
+                    }
+                    InstantiateObstacles(positions);
+                }
+            }
+        }
+        
+        [ClientRpc]
+        private void GenerateObjectsClientRpc(Vector2Int[] positionToObstacles)
+        {
+            positions = positionToObstacles.ToList();
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Grid
     public class TilingGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _player;
-        [SerializeField] private GameObject _obstacle;
         
         public const float TopOfCell = 0.51f;
         
@@ -24,9 +23,6 @@ namespace Grid
 
         [SerializeField] private GameObject _ground;
        
-        [FormerlySerializedAs("_spawnObstacles")] [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
-        private ObjectSpawner spawnObject;
-        
         private void Awake()
         {
             grid = this;

@@ -1,34 +1,35 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Utils;
 
 namespace Managers
 {
-    public class SpawnersManager
+    public class SpawnersManager : MonoBehaviour
     {
+        [Header("test")]
+        [SerializeField] public List<Spawner> _listOfSpawners;  
         public static SpawnersManager Instance { get; private set; }
 
-        public SpawnersManager()
+        public void Start()
         {
             if (Instance != null) 
                 Instance = this;
         }
         
-        private List<Spawner> _spawners = new List<Spawner>();
-
         /// <summary>
         /// Ajoute un Spawner au manager, ! N'ajoute pas un spawner deja dans la liste...  
         /// </summary>
         /// <param name="spawnerToAdd"></param>
         public void AddSpawner(Spawner spawnerToAdd)
         {
-            foreach (var spawner in _spawners)
+            foreach (var spawner in _listOfSpawners)
             {
                 if (spawner.Equals(spawnerToAdd)) ;
                 {
                     return;
                 }
             }
-            _spawners.Add(spawnerToAdd);
+           // _listOfSpawners.Add(spawnerToAdd);
         }
         
         /// <summary>
@@ -37,11 +38,11 @@ namespace Managers
         /// <param name="spawnerToRemove"></param>
         public void RemoveSpawner(Spawner spawnerToRemove)
         {
-            foreach (var spawner in _spawners)
+            foreach (var spawner in _listOfSpawners)
             {
-                if (spawner == spawnerToRemove)
+                if (spawner.Equals(spawnerToRemove))
                 {
-                    _spawners.Remove(spawner);
+                    _listOfSpawners.Remove(spawner);
                 }
             }
         }
@@ -51,13 +52,9 @@ namespace Managers
         /// </summary>
         public void AddSpawnersToTowerDefenseManager()
         {
-            foreach (var spawner in _spawners)
+            foreach (var spawner in _listOfSpawners)
             {
-                if (!spawner.HasBeenAdded)
-                {
-                     
-                    spawner.HasBeenAdded = true;
-                }
+                TowerDefenseManager.Instance.OnCurrentStateChanged += spawner.AddSelfToTimeSlot;
             }  
         }
     }
