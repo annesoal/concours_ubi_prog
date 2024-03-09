@@ -14776,6 +14776,7 @@ MonoBehaviour:
   totalRounds: 20
   <EnergyAvailable>k__BackingField: 0
   tacticalPauseDuration: 10
+  obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
   <CountDownToStartTimer>k__BackingField: 3
   playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
     type: 3}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Grid.Blocks;
 using TMPro;
 using Unity.Collections;
@@ -14,16 +15,17 @@ namespace Grid
         
         public const float TopOfCell = 0.51f;
         
+        
         // A changer au besoin
         static public TilingGrid grid { get; private set; }
         
-        private const int Size = 100; 
+        public const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
        
-        [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
-        private ObstaclesSpawner _spawnObstacles;
+        [FormerlySerializedAs("_spawnObstacles")] [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
+        private ObjectSpawner spawnObject;
         
         private void Awake()
         {
@@ -38,9 +40,6 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            
-            _spawnObstacles.Initialize();
-            _spawnObstacles.SpawnObstacles(_obstacle);
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)

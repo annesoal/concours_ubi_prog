@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Grid;
 using Grid.Blocks;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -15,6 +18,8 @@ using UnityEngine.Serialization;
  */
 public class TowerDefenseManager : NetworkBehaviour
 {
+    
+    private List<Vector2Int> positions = new List<Vector2Int>();
     [Header("Information du jeu")]
     // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     [SerializeField] private int totalRounds;
@@ -24,6 +29,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
+    [Header("Obstacles")] 
+    [SerializeField] private GameObject obstacle;
     public enum State
     {
         WaitingToStart = 0,
@@ -67,9 +74,33 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Start()
     {
-        EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+        if (EnvironmentTurnManager.Instance != null)
+            EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+        
+        OnCurrentStateChanged += (ob, args) =>
+        {
+            // Predicat de quand ?
+            if (args.previousValue == State.CountdownToStart)
+            {
+                ObjectSpawner spawner = new ObjectSpawner();
+                // quel type d'objet
+                spawner.Initialize(obstacle);
+                
+                if (IsServer)
+                {
+                    // algo de generation de positions ? 
+                    positions = spawner.GeneratePositions();
+                    KillMeClientRpc(positions.ToArray());
+                }
+                spawner.InstantiateObstacles(positions);
+            }
+        };
     }
-
+    [ClientRpc]
+    private void KillMeClientRpc(Vector2Int[] positionToObstacles)
+    {
+        positions = positionToObstacles.ToList();
+    }
     public override void OnNetworkSpawn()
     {
         _currentState.OnValueChanged += TowerDefenseManager_CurrentState_OnValueChanged;
