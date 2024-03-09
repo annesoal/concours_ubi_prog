@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -13,8 +14,6 @@ namespace Grid
     {
         public GameObject obstacle;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
-     
-        
         public ObstacleType GetObstacleType()
         {
             return obstacleType;

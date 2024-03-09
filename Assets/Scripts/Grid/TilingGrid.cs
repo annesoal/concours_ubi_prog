@@ -14,7 +14,6 @@ namespace Grid
         
         public const float TopOfCell = 0.51f;
         
-        
         // A changer au besoin
         static public TilingGrid grid { get; private set; }
         
@@ -80,7 +79,7 @@ namespace Grid
             return localPosition;
         }
 
-        //-----------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 
         void DebugCells()
         {
