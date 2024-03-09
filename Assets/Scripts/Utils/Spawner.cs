@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Grid;
 using Managers;
-using Unity.Netcode;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -14,7 +12,6 @@ namespace Utils
     [Serializable]
     public class Spawner
     {
-        private bool _isServer;
         [Header("When")] [SerializeField] private TowerDefenseManager.State _timeSlot;
         [Header("IfRepeatable")] 
         [SerializeField] private int _startingRound = -1;
@@ -33,6 +30,9 @@ namespace Utils
         private Vector2Int _position;
         private Random _rand = new();
         private int _positionInList;
+        private bool _isServer;
+        
+        private static float _overTheTiles = 0.5f;
 
         public void Initialize(bool isServer, int positionInList)
         {
@@ -82,14 +82,10 @@ namespace Utils
                 return false;
             };
         }
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-
-            return GetType() == obj.GetType();
-        }
-
+        /// <summary>
+        /// Generates the position where to put the gameObjects
+        /// </summary>
+        /// <returns> List of positions</returns>
         private List<Vector2Int> GeneratePositions()
         {
             List<Vector2Int> listOfPosition = new();
@@ -117,6 +113,11 @@ namespace Utils
             return _rand.NextDouble() > _spawnRate;
         }
 
+        /// <summary>
+        /// Instantiate/spawn the gameobject at the different positions 
+        /// </summary>
+        /// <param name="listOfPosition"> Positions where to put the gameobjects</param>
+        /// <param name="objectToSpawn"> GameObject to Spawn at the positions</param>
         public static void InstantiateObstacles(List<Vector2Int> listOfPosition,GameObject objectToSpawn)
         {
             foreach (var position in listOfPosition) InstantiateObstacle(position, objectToSpawn);
@@ -125,7 +126,7 @@ namespace Utils
         private static void InstantiateObstacle(Vector2Int position, GameObject objectToSpawn)
         {
             var position3d = TilingGrid.GridPositionToLocal(position);
-            position3d.y += 0.5f;
+            position3d.y += _overTheTiles;
             Object.Instantiate(objectToSpawn, position3d, Quaternion.identity);
         }
 
@@ -140,10 +141,9 @@ namespace Utils
                         List<Vector2Int> positions = GeneratePositions();
                         if (SpawnersManager.Instance == null)
                         {
-                            Debug.Log("wtf");
-                            return;
+                            throw new Exception("SpawnersManager instance has not been set !");
                         }
-                        SpawnersManager.Instance.GenerateObjectsClientRpc(positions.ToArray(), _positionInList);
+                        SpawnersManager.Instance.PlaceObjectsClientRpc(positions.ToArray(), _positionInList);
                     }
                 }
             }

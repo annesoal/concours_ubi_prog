@@ -9,17 +9,11 @@ namespace Managers
 {
     public class SpawnersManager : NetworkBehaviour
     {
-        [Header("test")] [SerializeField] public List<Spawner> listOfSpawners;
+        [Header("Spawners")] [SerializeField] public List<Spawner> listOfSpawners;
 
         private List<GameObject> _gameObjectsToSpawn = new List<GameObject>();
         public static SpawnersManager Instance { get; private set; }
 
-        private SpawnersManager()
-        {
-          
-              
-            
-        }
         public void Start()
         {
             Instance = this;
@@ -43,6 +37,9 @@ namespace Managers
             }  
         }
 
+        /// <summary>
+        /// Met les objets de chaques Spawners dans une liste
+        /// </summary>
         private void FillListOfGameObjectsToSpawn()
         {
             foreach (var spawner in listOfSpawners)
@@ -52,11 +49,16 @@ namespace Managers
             } 
         }
         
+        /// <summary>
+        /// Place les objets dans le server et le client
+        /// </summary>
+        /// <param name="positionToObstacles"> positions des objets </param>
+        /// <param name="positionInGameObjectList"> position de l'objet a spawn dans la list des objets</param>
         [ClientRpc]
-        public void GenerateObjectsClientRpc(Vector2Int[] positionToObstacles, int positionInList)
+        public void PlaceObjectsClientRpc(Vector2Int[] positionToObstacles, int positionInGameObjectList)
         {
             List<Vector2Int> positions = positionToObstacles.ToList();
-            Spawner.InstantiateObstacles(positions, _gameObjectsToSpawn.ElementAt(positionInList));
+            Spawner.InstantiateObstacles(positions, _gameObjectsToSpawn.ElementAt(positionInGameObjectList));
        
         }
     }
