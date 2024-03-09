@@ -1,22 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Grid.Blocks
+namespace Grid
 {
-    public class ObjectSpawner : MonoBehaviour
+    public class ObjectSpawner
     {
-        private const int Size = 100;
         private Vector2Int _position;
-        private System.Random rand = new System.Random();
+        private System.Random _rand = new System.Random();
         private GridHelper _helper;
-        private GameObject _obstacle;
-        public void Initialize(GameObject obstacle)
+        private GameObject _objectToSpawn;
+        private double _spawnRate;
+        public void Initialize(GameObject objectToSpawn, double spawnRate = 0.8)
         { 
             _position = new Vector2Int();
             _helper = new ObstacleGridHelper(_position);
-            _obstacle = obstacle;
+            _objectToSpawn = objectToSpawn;
+            _spawnRate = spawnRate;
         }
-
         public List<Vector2Int> GeneratePositions()
         {
             List<Vector2Int> listOfPosition = new();
@@ -29,21 +29,21 @@ namespace Grid.Blocks
                 {
                     _position.y = j; 
                     _helper.SetHelperPosition(_position);
-                    if (_helper.IsValidCell(_position) && randomBool())
+                    if (_helper.IsValidCell(_position) && RandomBool())
                     {
                         listOfPosition.Add(_position);
                     }
                     j++; 
-                } while (j < Size);
+                } while (j < TilingGrid.Size);
                 i++;
-            } while (i < Size);
+            } while (i < TilingGrid.Size);
 
             return listOfPosition;
         }
 
-        private bool randomBool()
+        private bool RandomBool()
         {
-            return rand.NextDouble() > 0.8;
+            return _rand.NextDouble() > _spawnRate;
         }
 
         public void InstantiateObstacles(List<Vector2Int> listOfPosition)
@@ -57,16 +57,9 @@ namespace Grid.Blocks
         {
             Vector3 position3d = TilingGrid.GridPositionToLocal(position);
             position3d.y += 0.5f;
-            GameObject.Instantiate(_obstacle, position3d, Quaternion.identity);
+            Object.Instantiate(_objectToSpawn, position3d, Quaternion.identity);
         }
         
         
     }
 }
-
-
-
-        
-    
-    
-
