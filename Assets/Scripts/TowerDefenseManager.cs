@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Grid;
 using Grid.Blocks;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 
 /**
  * Classe responsable de la logique d'exécution du jeu.
@@ -15,15 +19,20 @@ using UnityEngine.Serialization;
  */
 public class TowerDefenseManager : NetworkBehaviour
 {
+    
+    private List<Vector2Int> positions = new List<Vector2Int>();
     [Header("Information du jeu")]
     // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     [SerializeField] private int totalRounds;
+
     // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
     [field: SerializeField] public int EnergyAvailable { get; private set; }
 
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
+    [Header("Obstacles")] 
+    [SerializeField] private GameObject obstacle;
     public enum State
     {
         WaitingToStart = 0,
@@ -62,12 +71,13 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
-        _currentRoundNumber = totalRounds;
+        currentRoundNumber = totalRounds;
     }
 
     private void Start()
     {
-        EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+        if (EnvironmentTurnManager.Instance != null)
+            EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
     }
 
     public override void OnNetworkSpawn()
@@ -131,7 +141,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        if (_currentRoundNumber >= totalRounds)
+        if (currentRoundNumber >= totalRounds)
         {
             GoToSpecifiedState(State.EndOfGame);
         }
@@ -161,14 +171,14 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool AllRoundsAreDone()
     {
-        return _currentRoundNumber == 0;
+        return currentRoundNumber == 0;
     }
 
-    private int _currentRoundNumber;
+     public int currentRoundNumber;
     
     private void IncreaseRoundNumber()
     {
-        _currentRoundNumber += 1;
+        currentRoundNumber += 1;
     }
 
     private bool PlayersAreReadyToPlay()

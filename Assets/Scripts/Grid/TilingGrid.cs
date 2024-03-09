@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Grid.Blocks;
 using TMPro;
 using Unity.Collections;
@@ -10,21 +11,17 @@ namespace Grid
     public class TilingGrid : MonoBehaviour
     {
         [SerializeField] private GameObject _player;
-        [SerializeField] private GameObject _obstacle;
         
         public const float TopOfCell = 0.51f;
         
         // A changer au besoin
         static public TilingGrid grid { get; private set; }
         
-        private const int Size = 100; 
+        public const int Size = 100; 
         private Cell [,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
        
-        [FormerlySerializedAs("spawnObstacles")] [FormerlySerializedAs("_spawnObstacle")] [SerializeField]
-        private ObstaclesSpawner _spawnObstacles;
-        
         private void Awake()
         {
             grid = this;
@@ -38,9 +35,6 @@ namespace Grid
             {
                 AddBlockAsCell(block);
             }
-            
-            _spawnObstacles.Initialize();
-            _spawnObstacles.SpawnObstacles(_obstacle);
         }
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
@@ -85,7 +79,7 @@ namespace Grid
             return localPosition;
         }
 
-        //-----------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 
         void DebugCells()
         {

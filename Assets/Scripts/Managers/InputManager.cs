@@ -26,6 +26,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        if (_player == null) return; 
         Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
 
         _player.Move(input);
