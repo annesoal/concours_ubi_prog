@@ -32,6 +32,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
+    private float _tacticalPauseTimer;
+
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
     public enum State
@@ -77,8 +79,10 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Start()
     {
-        EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
-        Debug.Log("ETM event instantiated");
+        if (EnvironmentTurnManager.Instance != null)
+            EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+
+        Instance.OnCurrentStateChanged += SetTimer;
     }
 
     public override void OnNetworkSpawn()
@@ -154,7 +158,14 @@ public class TowerDefenseManager : NetworkBehaviour
         
         _isEnvironmentTurnNotCalled = true;
     }
-    
+
+    private void SetTimer(object sender, OnCurrentStateChangedEventArgs onCurrentStateChangedEventArgs)
+    {
+        if (onCurrentStateChangedEventArgs.newValue == State.TacticalPause)
+        {
+            _tacticalPauseTimer = tacticalPauseDuration;
+        }
+    }
     private void ProgressTacticalTimer()
     {
         if (AllRoundsAreDone())
@@ -162,9 +173,9 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
         
-        tacticalPauseDuration -= Time.deltaTime;
+        _tacticalPauseTimer -= Time.deltaTime;
         
-        if (tacticalPauseDuration <= 0f)
+        if (_tacticalPauseTimer <= 0f)
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
