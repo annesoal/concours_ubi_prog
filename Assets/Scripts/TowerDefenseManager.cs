@@ -146,7 +146,6 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        Debug.Log("curr RN : " + currentRoundNumber + " tot : " + totalRounds );
         if (currentRoundNumber >= totalRounds)
         {
             GoToSpecifiedState(State.EndOfGame);

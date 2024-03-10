@@ -58,7 +58,10 @@ public class InputManager : MonoBehaviour
     {
         Debug.Log(changedEventArgs.newValue);
         if (changedEventArgs.newValue == TowerDefenseManager.State.TacticalPause)
-            this._isInTacticalPausePhase = true; 
+        {
+            this._isInTacticalPausePhase = true;
+            _player.Energy = TowerDefenseManager.Instance.EnergyAvailable;
+        }
         else if (changedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
             this._isInTacticalPausePhase = false; 
         Debug.Log(_isInTacticalPausePhase);

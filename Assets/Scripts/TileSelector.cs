@@ -22,8 +22,6 @@ public class TileSelector : MonoBehaviour
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
     }
-     //;
-
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
@@ -43,7 +41,7 @@ public class TileSelector : MonoBehaviour
     // et initialise le Helper dans la grille. 
     public void Initialize(Vector3 position)
     {
-        transform.position = new Vector3(position.x, 0.51f, position.z);
+        transform.position = new Vector3(position.x, TilingGrid.TopOfCell, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         quad.SetActive(true);
         InitializeHelper();
@@ -62,7 +60,6 @@ public class TileSelector : MonoBehaviour
         if (IsValidTileToMove())
         {
             quad.SetActive(false);
-            StartCoroutine(MoveCharacter());
         }
     }
 
@@ -71,5 +68,16 @@ public class TileSelector : MonoBehaviour
     {
         var cell = _helper.Cell;
         return cell.Has(BlockType.Walkable);
+    }
+
+    public void Reset()
+    {
+        Cell currentCell = _recorder.RemoveLast();
+        // place le selector
+        transform.position = TilingGrid.GridPositionToLocal(currentCell.position);
+         
+        _recorder.Reset();
+        _helper = new SelectorGridHelper(currentCell.position, _recorder);
+
     }
 }
