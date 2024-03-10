@@ -9,6 +9,9 @@ using Type = Grid.Type;
 
 namespace Utils
 {
+    /// <summary>
+    /// Classe des Spawner, ne devrait pas etre instancier directement mais a travers l'Inspecteur
+    /// </summary>
     [Serializable]
     public class Spawner
     {

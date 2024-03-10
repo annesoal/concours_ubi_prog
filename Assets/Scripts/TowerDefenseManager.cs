@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Grid;
 using Grid.Blocks;
+using Managers;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -71,13 +72,13 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
-        currentRoundNumber = totalRounds;
+        currentRoundNumber = 0;
     }
 
     private void Start()
     {
-        if (EnvironmentTurnManager.Instance != null)
-            EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+        EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+        Debug.Log("ETM event instantiated");
     }
 
     public override void OnNetworkSpawn()
@@ -132,7 +133,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-        if (! _isEnvironmentTurnNotCalled)
+        if (_isEnvironmentTurnNotCalled)
         {
             _isEnvironmentTurnNotCalled = false;
             EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
@@ -141,6 +142,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
+        Debug.Log("curr RN : " + currentRoundNumber + " tot : " + totalRounds );
         if (currentRoundNumber >= totalRounds)
         {
             GoToSpecifiedState(State.EndOfGame);
@@ -171,7 +173,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool AllRoundsAreDone()
     {
-        return currentRoundNumber == 0;
+        return currentRoundNumber == totalRounds;
     }
 
      public int currentRoundNumber;
@@ -181,6 +183,7 @@ public class TowerDefenseManager : NetworkBehaviour
         currentRoundNumber += 1;
     }
 
+    // Begin Ready 
     private bool PlayersAreReadyToPlay()
     {
         bool areReady = true;
@@ -219,6 +222,7 @@ public class TowerDefenseManager : NetworkBehaviour
         return ! _playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayer) || 
                ! _playerReadyToPlayDictionary[clientIdOfPlayer];
     }
+    // End Ready to play
     
     private void GoToSpecifiedState(State specified)
     {
@@ -251,6 +255,7 @@ public class TowerDefenseManager : NetworkBehaviour
         });
     }
 
+    // Spawn players methods
     private void CarryOutSpawnPlayersProcedure()
     {
         try

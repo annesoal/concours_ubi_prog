@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private PlayerInputActions _playerInputActions;
 
+    private bool _isInTacticalPausePhase; 
     private static Player _player;
     public static Player Player
     {
@@ -22,25 +23,44 @@ public class InputManager : MonoBehaviour
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
+        _playerInputActions.Player.Cancel.performed += Reset;
+    }
+
+    private void Start()
+    {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += ChangeIsTacticalPausePhase;
     }
 
     private void Update()
     {
-        if (_player == null) return; 
-        Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-
-        _player.Move(input);
+        if (_player == null) return;
+        if (_isInTacticalPausePhase)
+        {
+            Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
+            _player.MoveSelector(input);
+        }
     }
 
     private void Select(InputAction.CallbackContext context)
     {
-        _player.OnSelect(context);
+        if (_isInTacticalPausePhase)
+            _player.OnSelect(context);
     }
 
-    private bool IsScene(String name)
+    private void Reset(InputAction.CallbackContext context)
     {
-        Scene currentScene = SceneManager.GetActiveScene();
+        if (_isInTacticalPausePhase)
+            _player.OnCancel(context);
+    }
 
-        return currentScene.name == name; 
+    private void ChangeIsTacticalPausePhase(object sender, 
+        TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
+    {
+        Debug.Log(changedEventArgs.newValue);
+        if (changedEventArgs.newValue == TowerDefenseManager.State.TacticalPause)
+            this._isInTacticalPausePhase = true; 
+        else if (changedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
+            this._isInTacticalPausePhase = false; 
+        Debug.Log(_isInTacticalPausePhase);
     }
 }

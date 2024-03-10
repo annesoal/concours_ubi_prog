@@ -20,7 +20,7 @@ public class Player : NetworkBehaviour
     {
         _timer = new(cooldown);
     }
-    public void Move(Vector2 direction)
+    public void MoveSelector(Vector2 direction)
     {
         if (!IsOwner) return;
         // On veut pas bouger si on bouge pas le selecteur
@@ -114,6 +114,12 @@ public class Player : NetworkBehaviour
             _selector.Initialize(transform.position); 
             IsMovingSelector = true; 
         }
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (!IsOwner) return; 
+        Debug.Log("Fun!");
     }
     
 }
