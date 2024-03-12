@@ -121,6 +121,7 @@ MonoBehaviour:
   ennemyType: 1
   speedEnnemy: 20
   state: 1
+  ennemi: {fileID: 955291028793845129}
   lerpSpeed: 0.5
 --- !u!136 &8752721134040866974
 CapsuleCollider:

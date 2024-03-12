@@ -5851,6 +5851,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Block
       objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.data[1]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6803,6 +6823,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._timeSlot
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
       propertyPath: _listOfSpawners.Array.data[0]._timeSlot
       value: 2
       objectReference: {fileID: 0}
@@ -6814,6 +6839,11 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._spawnRate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._spawnRate
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
@@ -6824,6 +6854,11 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._endingRound
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._endingRound
       value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
@@ -6850,6 +6885,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._objectToSpawn
+      value: 
+      objectReference: {fileID: 955291028793845129, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._startingRound
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
       propertyPath: listOfSpawners.Array.data[0]._BlockTypeToSpawnOn.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -6857,6 +6903,16 @@ PrefabInstance:
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._BlockTypeToSpawnOn.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[2]._BlockTypeToSpawnOn.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[1]._BlockTypeToSpawnOn.Array.data[0]
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2561477878122128030, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}

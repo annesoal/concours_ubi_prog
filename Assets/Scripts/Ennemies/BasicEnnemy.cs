@@ -9,6 +9,7 @@ namespace Ennemies
 {
     public class BasicEnnemy : Ennemy
     {
+        public GameObject ennemi;
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
@@ -22,6 +23,8 @@ namespace Ennemies
             ennemyType = EnnemyType.Basic;
             speedEnnemy = 2; //Nombre de blocs avancer par tour
         }
+        
+   
 
         private void Start()
         {

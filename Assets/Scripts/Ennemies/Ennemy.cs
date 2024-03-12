@@ -14,7 +14,8 @@ namespace DefaultNamespace
     }
     
     public abstract class Ennemy : NetworkBehaviour
-    { 
+    {
+     
         [SerializeField] protected EnnemyType ennemyType ;
         [SerializeField] protected int speedEnnemy; //Nb de blocs pouvant avancer par tour
         [SerializeField] protected bool state = true; // Piege
@@ -31,6 +32,11 @@ namespace DefaultNamespace
         protected Vector2Int currentPosition2d;
         protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
+        
+        public EnnemyType GetEnnemyType()
+        {
+            return ennemyType;
+        }
         
         public virtual void Move()
         {
