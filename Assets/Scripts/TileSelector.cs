@@ -38,7 +38,6 @@ public class TileSelector : MonoBehaviour
             player.transform.position = cellLocalPosition;
             
             // TODO : changer ca avec meilleur systeme
-            Debug.Log("inside _selector.MoveCharacter");
         }
     }
 

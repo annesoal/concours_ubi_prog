@@ -30,7 +30,6 @@ namespace Managers
         
             while (HasEnergyLeft(totalEnergy))
             {
-                // MovePlayers
                 MovePlayers();
             
                 // AIM.PlaySubordinatesTurn();

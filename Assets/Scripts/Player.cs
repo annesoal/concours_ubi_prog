@@ -67,7 +67,6 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             Instance = this;
-            TowerDefenseManager.Instance.OnCurrentStateChanged += OnEnviromnentTurn;
         }
         
         CharacterSelectUI.CharacterId characterSelection =
@@ -153,18 +152,8 @@ public class Player : NetworkBehaviour
         _selector.Reset(); 
     }
 
-    public void OnEnviromnentTurn(object sender,
-        TowerDefenseManager.OnCurrentStateChangedEventArgs stateChangedEventArgs)
-    {
-       // if (stateChangedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
-       // {
-       //     StartCoroutine(_selector.MoveCharacter());
-       // }
-    }
-
     public void MoveCharacter()
     {
-        Debug.Log("inside player.MoveCharacter");
         _selector.MoveCharacter();
     }
     
