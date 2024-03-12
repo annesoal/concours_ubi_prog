@@ -22,17 +22,17 @@ public class SingleTowerSelectUI : MonoBehaviour
         selectionButton.image.sprite = icon;
     }
 
-    public static event EventHandler<OnAnySingleTowerSelectUIHoveredEventArgs> OnAnySingleTowerSelectUIHoveredEnter;
-    public static event EventHandler<OnAnySingleTowerSelectUIHoveredEventArgs> OnAnySingleTowerSelectUIHoveredExit;
+    public static event EventHandler<TowerData> OnAnySingleTowerSelectUIHoveredEnter;
+    public static event EventHandler<TowerData> OnAnySingleTowerSelectUIHoveredExit;
 
-    public class OnAnySingleTowerSelectUIHoveredEventArgs : EventArgs
+    public class TowerData : EventArgs
     {
         public TowerSO towerInfos;
     }
     public void OnEventTrigger_PointerEnter()
     {
         Debug.Log("MOUSE OVER !");
-        OnAnySingleTowerSelectUIHoveredEnter?.Invoke(this, new OnAnySingleTowerSelectUIHoveredEventArgs
+        OnAnySingleTowerSelectUIHoveredEnter?.Invoke(this, new TowerData
         {
             towerInfos = correspondingTowerSO
         });
@@ -41,7 +41,7 @@ public class SingleTowerSelectUI : MonoBehaviour
     public void OnEventTrigger_PointerExit()
     {
         Debug.Log("Mouse exit");
-        OnAnySingleTowerSelectUIHoveredExit?.Invoke(this, new OnAnySingleTowerSelectUIHoveredEventArgs
+        OnAnySingleTowerSelectUIHoveredExit?.Invoke(this, new TowerData
         {
             towerInfos = correspondingTowerSO
         });
@@ -50,5 +50,6 @@ public class SingleTowerSelectUI : MonoBehaviour
     public static void ResetStaticData()
     {
         OnAnySingleTowerSelectUIHoveredEnter = null;
+        OnAnySingleTowerSelectUIHoveredExit = null;
     }
 }
