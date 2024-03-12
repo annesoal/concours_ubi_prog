@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class CircularLayoutUI : MonoBehaviour
 {
+    [Header("Settings")]
     [SerializeField] private List<GameObject> gameObjectsToLayout;
     
     /// <summary>
@@ -30,6 +32,9 @@ public class CircularLayoutUI : MonoBehaviour
     /// </summary>
     [SerializeField] private float maxAngle = 360f;
 
+    [Header("Visuals")]
+    [SerializeField] private GameObject layoutItemTemplate;
+
     /// <summary>
     /// Interval of the value of the angle separating each object.
     /// </summary>
@@ -50,6 +55,29 @@ public class CircularLayoutUI : MonoBehaviour
         PlaceObjectsAroundCircle();
     }
 
+    public void ShowLayout()
+    {
+        BasicShowHide.Show(gameObject);
+    }
+    
+    public void HideLayout()
+    {
+        BasicShowHide.Hide(gameObject);
+    }
+    
+    public void AddObjectToLayout(Sprite iconOfObject)
+    {
+        GameObject layoutItem = Instantiate(layoutItemTemplate, transform);
+        
+        layoutItem.SetActive(true);
+        
+        layoutItem.GetComponent<SingleTowerSelectUI>().SetIcon(iconOfObject);
+        
+        gameObjectsToLayout.Add(layoutItem);
+        
+        PlaceObjectsAroundCircle();
+    }
+    
     private void PlaceObjectsAroundCircle()
     {
         float angleToLayout = Mathf.Deg2Rad * startAngle;
