@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using Grid.Blocks;
-using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utils;
 
 public class Player : NetworkBehaviour
 {
@@ -156,10 +156,16 @@ public class Player : NetworkBehaviour
     public void OnEnviromnentTurn(object sender,
         TowerDefenseManager.OnCurrentStateChangedEventArgs stateChangedEventArgs)
     {
-        if (stateChangedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
-        {
-            StartCoroutine(_selector.MoveCharacter());
-        }
+       // if (stateChangedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
+       // {
+       //     StartCoroutine(_selector.MoveCharacter());
+       // }
+    }
+
+    public void MoveCharacter()
+    {
+        Debug.Log("inside player.MoveCharacter");
+        _selector.MoveCharacter();
     }
     
 }

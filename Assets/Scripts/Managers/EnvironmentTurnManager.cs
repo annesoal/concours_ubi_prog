@@ -31,6 +31,7 @@ namespace Managers
             while (HasEnergyLeft(totalEnergy))
             {
                 // MovePlayers
+                MovePlayers();
             
                 // AIM.PlaySubordinatesTurn();
             
@@ -44,6 +45,11 @@ namespace Managers
         private bool HasEnergyLeft(int energyLeft)
         {
             return energyLeft > 0;
+        }
+
+        private void MovePlayers()
+        {
+           GameMultiplayerManager.Instance.MovePlayerClientRpc(); 
         }
     }
 }

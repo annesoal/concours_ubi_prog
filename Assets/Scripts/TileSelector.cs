@@ -4,6 +4,7 @@ using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using Utils;
 
 public class TileSelector : MonoBehaviour
 {
@@ -25,15 +26,19 @@ public class TileSelector : MonoBehaviour
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public IEnumerator MoveCharacter()
+    public void MoveCharacter()
     {
-        while (!_recorder.IsEmpty())
+        if (_recorder == null) return; 
+        
+        if ( !_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
             player.transform.LookAt(cellLocalPosition);
             player.transform.position = cellLocalPosition;
-            yield return new WaitForSeconds(0.1f);
+            
+            // TODO : changer ca avec meilleur systeme
+            Debug.Log("inside _selector.MoveCharacter");
         }
     }
 
