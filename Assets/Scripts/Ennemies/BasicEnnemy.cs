@@ -15,22 +15,14 @@ namespace Ennemies
 
         private EnnemyGridHelper _ennemyGridHelper;
         public float lerpSpeed = 0.5f;
-
-        // Deplacements (mettre dans parent?)
-        private Vector3 _avancer = new Vector3(0, 0, -1);
-        private Vector3 _gauche = new Vector3(-1, 0, 0);
-        private Vector3 _droite = new Vector3(1, 0, 0);
-        private Vector2Int _avancer2d = new Vector2Int(0, -1);
-        private Vector2Int _gauche2d = new Vector2Int(-1, 0);
-        private Vector2Int _droite2d = new Vector2Int(1, 0);
         private Random _rand = new();
 
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            currentPosition2d.x = 10; // TODO
+            currentPosition2d.x = 10; // Enlever quand Spawner TODO
             currentPosition2d.y = 15;
-            speedEnnemy = 20; //Nombre de blocs avancer par tour
+            speedEnnemy = 20; //Nombre de blocs avancer par tour, Enlever quand pu de Update TODO
         }
 
         private void Awake()
@@ -58,23 +50,38 @@ namespace Ennemies
 
         public override void Move()
         {
-            if (!MoveInDirection(_avancer2d, _avancer))
+            if (!IsEndOfGrid())
             {
-                if (_rand.NextDouble() < 0.5)
+                if (!MoveInDirection(_avancer2d, _avancer))
                 {
-                    if (!MoveInDirection(_gauche2d, _gauche))
+                    if (_rand.NextDouble() < 0.5)
                     {
-                        MoveInDirection(_droite2d, _droite);
+                        if (!MoveInDirection(_gauche2d, _gauche))
+                        {
+                            MoveInDirection(_droite2d, _droite);
+                        }
                     }
-                }
-                else
-                {
-                    if(!MoveInDirection(_droite2d, _droite))
+                    else
                     {
-                        MoveInDirection(_gauche2d, _gauche);
+                        if(!MoveInDirection(_droite2d, _droite))
+                        {
+                            MoveInDirection(_gauche2d, _gauche);
+                        }
                     }
                 }
             }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+           
+        }
+        
+        private bool IsEndOfGrid()
+        {
+            Cell next_cell = new Cell();
+            next_cell = TilingGrid.grid.GetCell(currentPosition2d+_avancer2d);
+            return next_cell.IsNone();
         }
         
         private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
