@@ -1,4 +1,5 @@
 using Grid;
+using Unity.Netcode;
 using UnityEngine;
 namespace DefaultNamespace
 {
@@ -12,7 +13,7 @@ namespace DefaultNamespace
         Fast
     }
     
-    public abstract class Ennemy : MonoBehaviour
+    public abstract class Ennemy : NetworkBehaviour
     { 
         [SerializeField] protected EnnemyType ennemyType ;
         [SerializeField] protected int speedEnnemy; //Nb de blocs pouvant avancer par tour
