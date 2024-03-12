@@ -20,16 +20,15 @@ namespace Ennemies
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            currentPosition2d.x = 10; // Enlever quand Spawner TODO
-            currentPosition2d.y = 15;
-            speedEnnemy = 20; //Nombre de blocs avancer par tour, Enlever quand pu de Update TODO
+            speedEnnemy = 2; //Nombre de blocs avancer par tour
         }
 
-        private void Awake()
+        private void Start()
         {
+            Initialize();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
@@ -39,14 +38,7 @@ namespace Ennemies
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
 
-
-        //TODO Enlever Update() lors du push sur Develop
-        private void Update()
-        {
-            Initialize();
-            // SetObjectOnTop(this.gameObject, currentPosition2d);
-            Move();
-        }
+        
 
         public override void Move()
         {
