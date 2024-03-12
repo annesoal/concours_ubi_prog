@@ -12,6 +12,10 @@ public class TowerSO : ScriptableObject
 
     public string towerName;
 
+    public Transform towerVisuals;
+
+    public string description;
+
     public List<BuildingMaterialAndQuantityPair> materialAndQuantityPairs;
 
     /// <summary>
