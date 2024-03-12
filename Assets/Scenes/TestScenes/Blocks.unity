@@ -509,7 +509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &45769954
 RectTransform:
   m_ObjectHideFlags: 0
@@ -547,6 +547,7 @@ MonoBehaviour:
     type: 2}
   showBuildingMenuButton: {fileID: 112272458}
   circularLayout: {fileID: 401297421}
+  buildingTowerOnGridUI: {fileID: 0}
 --- !u!1001 &46415082
 PrefabInstance:
   m_ObjectHideFlags: 0
