@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7144109569043832097}
   - component: {fileID: 5301084766139972500}
   - component: {fileID: 7939711488200194041}
+  - component: {fileID: 2652567110894939592}
   - component: {fileID: -5281524653170225075}
   - component: {fileID: 8752721134040866974}
   m_Layer: 0
@@ -85,6 +86,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2652567110894939592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955291028793845129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1441894555
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &-5281524653170225075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,6 +119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ennemyType: 1
+  speedEnnemy: 20
+  state: 1
+  lerpSpeed: 0.5
 --- !u!136 &8752721134040866974
 CapsuleCollider:
   m_ObjectHideFlags: 0
