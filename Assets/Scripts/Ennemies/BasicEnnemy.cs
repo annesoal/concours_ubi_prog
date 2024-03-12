@@ -46,20 +46,7 @@ namespace Ennemies
             {
                 if (!MoveInDirection(_avancer2d, _avancer))
                 {
-                    if (_rand.NextDouble() < 0.5)
-                    {
-                        if (!MoveInDirection(_gauche2d, _gauche))
-                        {
-                            MoveInDirection(_droite2d, _droite);
-                        }
-                    }
-                    else
-                    {
-                        if(!MoveInDirection(_droite2d, _droite))
-                        {
-                            MoveInDirection(_gauche2d, _gauche);
-                        }
-                    }
+                    MoveSides();
                 }
             }
             else
@@ -68,7 +55,26 @@ namespace Ennemies
             }
            
         }
-        
+
+        private void MoveSides()
+        {
+            // Algo temporaire, va plutot utiliser le recorder
+            if (_rand.NextDouble() < 0.5)
+            {
+                if (!MoveInDirection(_gauche2d, _gauche))
+                {
+                    MoveInDirection(_droite2d, _droite);
+                }
+            }
+            else
+            {
+                if(!MoveInDirection(_droite2d, _droite))
+                {
+                    MoveInDirection(_gauche2d, _gauche);
+                }
+            }
+        }
+
         private bool IsEndOfGrid()
         {
             Cell next_cell = new Cell();
