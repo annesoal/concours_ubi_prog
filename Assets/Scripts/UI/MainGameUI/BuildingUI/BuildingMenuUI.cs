@@ -28,6 +28,7 @@ public class BuildingMenuUI : MonoBehaviour
         
         // DEBUG devra être décommenté
         //TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        SingleTowerSelectUI.OnAnySingleTowerSelectUISelected += SingleTowerSelectUI_OnAnySingleTowerSelectUISelected;
         
         circularLayout.HideLayout();
         
@@ -59,6 +60,15 @@ public class BuildingMenuUI : MonoBehaviour
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             BasicShowHide.Hide(circularLayout.gameObject);
         }
+    }
+
+    [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
+    
+    private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleTowerSelectUI.TowerData e)
+    {
+        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+        BasicShowHide.Hide(circularLayout.gameObject);
+        buildingTowerOnGridUI.Show();
     }
 
     private bool PlayerIsOnBuildingBlock()
