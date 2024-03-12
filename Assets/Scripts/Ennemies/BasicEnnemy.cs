@@ -3,6 +3,7 @@ using DefaultNamespace;
 using Grid;
 using UnityEngine;
 using System.Collections;
+using Random = System.Random;
 
 namespace Ennemies
 {
@@ -11,28 +12,29 @@ namespace Ennemies
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
-        
+
         private EnnemyGridHelper _ennemyGridHelper;
-        public float lerpSpeed = 0.5f; 
-        
+        public float lerpSpeed = 0.5f;
+
         // Deplacements (mettre dans parent?)
         private Vector3 _avancer = new Vector3(0, 0, -1);
         private Vector3 _gauche = new Vector3(-1, 0, 0);
         private Vector3 _droite = new Vector3(1, 0, 0);
+        private Vector2Int _avancer2d = new Vector2Int(0, -1);
+        private Vector2Int _gauche2d = new Vector2Int(-1, 0);
+        private Vector2Int _droite2d = new Vector2Int(1, 0);
+        private Random _rand = new();
 
-        
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            currentPosition2d.x = 10;
+            currentPosition2d.x = 10; // TODO
             currentPosition2d.y = 15;
             speedEnnemy = 20; //Nombre de blocs avancer par tour
         }
 
         private void Awake()
         {
-           
-            
         }
 
         public void Initialize()
@@ -44,41 +46,47 @@ namespace Ennemies
             _cellRecorder = new CellRecorder();
             _ennemyGridHelper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
-        
-        private void SetObjectOnTop(GameObject ennemi, Vector2Int position2d)
-        {
-            cell = TilingGrid.grid.GetCell(position2d);
-            cell.AddGameObject(ennemi);
-            // Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
-        }
 
 
         //TODO Enlever Update() lors du push sur Develop
         private void Update()
         {
             Initialize();
-           // SetObjectOnTop(this.gameObject, currentPosition2d);
-            if (state && speedEnnemy != 0) //TODO mettre direct dans Move
-            {
-                Move();
-            }
+            // SetObjectOnTop(this.gameObject, currentPosition2d);
+            Move();
         }
 
         public override void Move()
         {
-            SetNextPositionAhead();
-            if (_ennemyGridHelper.IsValidCell(_nextPosition2d)) //Sil peut avancer
+            if (!MoveInDirection(_avancer2d, _avancer))
             {
-                MoveEnnemy(_avancer);
-            }
-            else
-            {
-                // Verifie random sil peut aller a gauche/droite ou a droite/gauche
-                // exemple : verifie gauche, obstacle, verifie droite, ok, va a droite
-                //         : verifie droite, ok, va a droite (non verifie gauche...)
+                if (_rand.NextDouble() < 0.5)
+                {
+                    if (!MoveInDirection(_gauche2d, _gauche))
+                    {
+                        MoveInDirection(_droite2d, _droite);
+                    }
+                }
+                else
+                {
+                    if(!MoveInDirection(_droite2d, _droite))
+                    {
+                        MoveInDirection(_gauche2d, _gauche);
+                    }
+                }
             }
         }
-
+        
+        private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
+        {
+            _nextPosition2d = _ennemyGridHelper.GetNeighborHelperPosition(direction2d);
+            if (_ennemyGridHelper.IsValidCell(_nextPosition2d))
+            {
+                MoveEnnemy(direction);
+                return true;
+            }
+            return false;
+        }
 
         /**
          * Avance le Helper sur la Cell en avant de l'ennemi en changeant
@@ -101,7 +109,6 @@ namespace Ennemies
             ChangeEnnemyPosition2d();
             float t = Mathf.Clamp01(lerpSpeed * Time.deltaTime); // Normalisation de la vitesse
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
-            //transform.position = new Vector3(_currentPosition3d.x, _currentPosition3d.y, _currentPosition3d.z);
             _cellRecorder.AddCell(cell);
             speedEnnemy -= 1;
         }
@@ -111,6 +118,7 @@ namespace Ennemies
          */
         private void ChangeEnnemyPosition3d(Vector3 direction)
         {
+            currentPosition2d = _ennemyGridHelper.GetHelperPosition();
             _currentPosition3d = TilingGrid.GridPositionToLocal(currentPosition2d, TilingGrid.TopOfCell + 1);
             _currentPosition3d += direction;
         }
@@ -122,7 +130,14 @@ namespace Ennemies
         private void ChangeEnnemyPosition2d()
         {
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-            cell.position = currentPosition2d;
+            _ennemyGridHelper.SetHelperPosition(currentPosition2d);
+        }
+
+        private void SetObjectOnTop(GameObject ennemi, Vector2Int position2d)
+        {
+            cell = TilingGrid.grid.GetCell(position2d);
+            cell.AddGameObject(ennemi);
+            // Debug.Log("REP   :" + _cell.objectsOnTop.Exists(o => o == obstacle));
         }
 
         public override void Corrupt()

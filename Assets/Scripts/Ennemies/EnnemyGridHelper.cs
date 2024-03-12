@@ -21,15 +21,22 @@ namespace Ennemies
         public override bool IsValidCell(Vector2Int position)
         {
             Cell cell = TilingGrid.grid.GetCell(position);
-            bool isValidBlockType = (cell.type & BlockType.Walkable) > 0;
-            bool hasNoObstacle = ContainsObstacle(cell);
-            bool isNotEndOfGrid = ! cell.IsNone();
-            return isNotEndOfGrid; //isValidBlockType && hasNoObstacle;
+            //bool isValidBlockType = (cell.type & BlockType.Walkable) > 0;
+            bool hasNoObstacle = ! ContainsObstacle(cell);
+            bool isEndOfGrid =  cell.IsNone();
+            return ! isEndOfGrid && hasNoObstacle; //isValidBlockType 
         }
 
         public override Vector2Int GetHelperPosition()
         {
             return currentCell.position;
+        }
+
+        public Vector2Int GetNeighborHelperPosition(Vector2Int direction)
+        {
+            Vector2Int test = new Vector2Int();
+            test = currentCell.position + direction;
+            return test;
         }
 
         public override void SetHelperPosition(Vector2Int position)
@@ -47,7 +54,6 @@ namespace Ennemies
                 {
                     if (obj.GetComponent<Obstacle>() != null)
                     {
-                        Debug.Log("Obstacle present = true");
                         return true;
                     }
                 }
