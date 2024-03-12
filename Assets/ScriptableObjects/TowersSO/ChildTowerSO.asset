@@ -16,4 +16,6 @@ MonoBehaviour:
     type: 3}
   towerIcon: {fileID: 21300000, guid: 03e5dd39b1fd506e0b795f847510c64e, type: 3}
   towerName: Child Tower
+  towerVisuals: {fileID: 0}
+  description: "Je d\xE9cris cette tour de mani\xE8re hasardeuse."
   materialAndQuantityPairs: []
