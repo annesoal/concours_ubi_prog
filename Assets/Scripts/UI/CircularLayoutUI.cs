@@ -65,13 +65,13 @@ public class CircularLayoutUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
     }
     
-    public void AddObjectToLayout(Sprite iconOfObject)
+    public void AddObjectToLayout(TowerSO toAdd)
     {
         GameObject layoutItem = Instantiate(layoutItemTemplate, transform);
         
         layoutItem.SetActive(true);
         
-        layoutItem.GetComponent<SingleTowerSelectUI>().SetIcon(iconOfObject);
+        layoutItem.GetComponent<SingleTowerSelectUI>().SetCorrespondingTowerSO(toAdd);
         
         gameObjectsToLayout.Add(layoutItem);
         

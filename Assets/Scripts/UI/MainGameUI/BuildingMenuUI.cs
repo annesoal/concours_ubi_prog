@@ -38,7 +38,7 @@ public class BuildingMenuUI : MonoBehaviour
     {
         foreach (TowerSO towerSo in availableTowersListSO.allTowersList)
         {
-            circularLayout.AddObjectToLayout(towerSo.towerIcon);
+            circularLayout.AddObjectToLayout(towerSo);
         }
     }
 
