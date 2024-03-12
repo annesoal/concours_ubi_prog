@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
+using Utils;
 
 namespace Managers
 {
     public class EnvironmentTurnManager : MonoBehaviour
     {
         public static EnvironmentTurnManager Instance;
-    
         public event EventHandler OnEnvironmentTurnEnded;
 
         private void Awake()
@@ -48,7 +48,7 @@ namespace Managers
 
         private void MovePlayers()
         {
-           GameMultiplayerManager.Instance.MovePlayerClientRpc(); 
+            GameMultiplayerManager.Instance.MovePlayerClientRpc(); 
         }
     }
 }
