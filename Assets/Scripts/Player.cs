@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private TileSelector _selector;
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
+    public static Player Instance; 
     public int Energy
     {
         set
@@ -65,7 +66,7 @@ public class Player : NetworkBehaviour
     {
         if (IsOwner)
         {
-            InputManager.Player = this;
+            Instance = this;
             TowerDefenseManager.Instance.OnCurrentStateChanged += OnEnviromnentTurn;
         }
         

@@ -8,15 +8,6 @@ public class InputManager : MonoBehaviour
     private PlayerInputActions _playerInputActions;
 
     private bool _isInTacticalPausePhase; 
-    private static Player _player;
-    public static Player Player
-    {
-        set
-        {
-            if (value.IsOwner)
-                _player = value;
-        }
-    } 
 
     private void Awake()
     {
@@ -33,24 +24,24 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (_player == null) return;
+        if (Player.Instance == null) return;
         if (_isInTacticalPausePhase)
         {
             Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-            _player.MoveSelector(input);
+            Player.Instance.MoveSelector(input);
         }
     }
 
     private void Select(InputAction.CallbackContext context)
     {
         if (_isInTacticalPausePhase)
-            _player.OnSelect(context);
+            Player.Instance.OnSelect(context);
     }
 
     private void Reset(InputAction.CallbackContext context)
     {
         if (_isInTacticalPausePhase)
-            _player.OnCancel(context);
+            Player.Instance.OnCancel(context);
     }
 
     private void ChangeIsTacticalPausePhase(object sender, 
@@ -60,7 +51,7 @@ public class InputManager : MonoBehaviour
         if (changedEventArgs.newValue == TowerDefenseManager.State.TacticalPause)
         {
             this._isInTacticalPausePhase = true;
-            _player.Energy = TowerDefenseManager.Instance.EnergyAvailable;
+            Player.Instance.Energy = TowerDefenseManager.Instance.EnergyAvailable;
         }
         else if (changedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
             this._isInTacticalPausePhase = false; 
