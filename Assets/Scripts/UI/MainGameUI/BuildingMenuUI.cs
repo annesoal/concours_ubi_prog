@@ -17,19 +17,33 @@ public class BuildingMenuUI : MonoBehaviour
     {
         showBuildingMenuButton.onClick.AddListener(() =>
         {
-            BasicShowHide.Show(circularLayout.gameObject);
+            circularLayout.ShowLayout();
         });
     }
 
     private void Start()
     {
-        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+        // DEBUG devra être décommenté
+        // BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         
-        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        // DEBUG devra être décommenté
+        //TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
+        circularLayout.HideLayout();
+        
+        UpdateLayoutVisuals();
+    }
+
+    private void UpdateLayoutVisuals()
+    {
+        foreach (TowerSO towerSo in availableTowersListSO.allTowersList)
+        {
+            circularLayout.AddObjectToLayout(towerSo.towerIcon);
+        }
     }
 
     [SerializeField] private Button showBuildingMenuButton;
-    [SerializeField] private GameObject circularLayout;
+    [SerializeField] private CircularLayoutUI circularLayout;
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
