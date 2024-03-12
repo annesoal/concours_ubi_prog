@@ -79,6 +79,21 @@ namespace Grid
             return localPosition;
         }
 
+        public List<Cell> GetBuildableCells()
+        {
+            List<Cell> buildableCells = new List<Cell>();
+            
+            foreach (Cell cell in _cells)
+            {
+                if (cell.Has(BlockType.Buildable))
+                {
+                    buildableCells.Add(cell);
+                }
+            }
+
+            return buildableCells;
+        }
+
         //--------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 
         void DebugCells()

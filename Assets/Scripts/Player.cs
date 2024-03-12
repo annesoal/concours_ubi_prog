@@ -8,6 +8,8 @@ using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
+    public static Player LocalInstance { get; private set; }
+
     private const float MinPressure = 0.3f; 
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
@@ -37,6 +39,7 @@ public class Player : NetworkBehaviour
     {
         if (IsOwner)
         {
+            LocalInstance = this;
             InputManager.Player = this;
         }
         
