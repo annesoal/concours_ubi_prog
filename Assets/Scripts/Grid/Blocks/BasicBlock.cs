@@ -16,7 +16,7 @@ namespace Grid.Blocks
         {
             foreach (var type in Types)
             {
-                int typeToAdd = translate(type);
+                int typeToAdd = BlockType.Translate(type);
                 Add(typeToAdd);
             } 
         }
@@ -34,27 +34,6 @@ namespace Grid.Blocks
         public int GetBlockType()
         {
             return blockType;
-        }
-
-        private int translate(Type type)
-        {
-            switch (type)
-            {
-                case Type.Walkable:
-                    return BlockType.Walkable; 
-                case Type.Buildable:
-                    return BlockType.Buildable; 
-                case Type.Movable:
-                    return BlockType.Movable; 
-                case Type.Destructible:
-                    return BlockType.Destructible; 
-                case Type.SpawnBlock:
-                    return BlockType.SpawnBlock; 
-                case Type.BasicBlock:
-                    return BlockType.BasicBlock; 
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
         }
 
         private void Add(int type)
