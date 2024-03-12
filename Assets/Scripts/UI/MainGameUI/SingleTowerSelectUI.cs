@@ -10,6 +10,19 @@ public class SingleTowerSelectUI : MonoBehaviour
 
     private TowerSO correspondingTowerSO;
 
+    public static event EventHandler<TowerData> OnAnySingleTowerSelectUISelected;
+    
+    private void Awake()
+    {
+        selectionButton.onClick.AddListener(() =>
+        {
+            OnAnySingleTowerSelectUISelected?.Invoke(this, new TowerData
+            {
+                towerInfos = correspondingTowerSO
+            });
+        });
+    }
+
     public void SetCorrespondingTowerSO(TowerSO toSet)
     {
         correspondingTowerSO = toSet;
@@ -51,5 +64,6 @@ public class SingleTowerSelectUI : MonoBehaviour
     {
         OnAnySingleTowerSelectUIHoveredEnter = null;
         OnAnySingleTowerSelectUIHoveredExit = null;
+        OnAnySingleTowerSelectUISelected = null;
     }
 }
