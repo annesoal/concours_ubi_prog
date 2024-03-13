@@ -108,7 +108,7 @@ namespace Utils
 
         private bool RandomBool()
         {
-            return _rand.NextDouble() > _spawnRate;
+            return _rand.NextDouble() > 1 - _spawnRate;
         }
 
         /// <summary>
