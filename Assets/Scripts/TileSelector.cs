@@ -4,7 +4,6 @@ using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using Utils;
 
 public class TileSelector : MonoBehaviour
 {
@@ -28,19 +27,24 @@ public class TileSelector : MonoBehaviour
     // au joueur qu'il peut recommencer le processus de selection
     public void MoveCharacter()
     {
-        if (_recorder == null) return; 
-        
-        if ( !_recorder.IsEmpty())
+        if (_recorder != null && !_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
             player.transform.LookAt(cellLocalPosition);
             player.transform.position = cellLocalPosition;
-            
-            // TODO : changer ca avec meilleur systeme
         }
     }
 
+    public void MoveCharacter2()
+    {
+        if (_recorder == null || _recorder.IsEmpty()) return;
+        
+        Cell cell = _recorder.RemoveLast();
+        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
+        player.transform.LookAt(cellLocalPosition);
+        player.transform.position = cellLocalPosition;
+    }
     // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
     // et initialise le Helper dans la grille. 
     public void Initialize(Vector3 position)
@@ -59,20 +63,17 @@ public class TileSelector : MonoBehaviour
         _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
 
-    public void Hide()
+    public void ConfirmFinalPosition()
     {
         if (IsValidTileToMove())
         {
-            quad.SetActive(false);
+            
         }
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer
     private bool IsValidTileToMove()
     {
-        if (_helper == null) 
-            return false;
-        
         var cell = _helper.Cell;
         return cell.Has(BlockType.Walkable);
     }
@@ -86,5 +87,10 @@ public class TileSelector : MonoBehaviour
         _recorder.Reset();
         _helper = new SelectorGridHelper(currentCell.position, _recorder);
 
+    }
+
+    public void Hide()
+    {
+        quad.SetActive(false);
     }
 }

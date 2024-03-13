@@ -71,7 +71,6 @@ public class Player : NetworkBehaviour
         if (IsOwner)
         {
             LocalInstance = this;
-            InputManager.Player = this;
             Instance = this;
         }
         
