@@ -9,6 +9,9 @@ using Type = Grid.Type;
 
 namespace Utils
 {
+    /// <summary>
+    /// Classe des Spawner, ne devrait pas etre instancier directement mais a travers l'Inspecteur
+    /// </summary>
     [Serializable]
     public class Spawner
     {
@@ -22,7 +25,7 @@ namespace Utils
         [SerializeField] private int _period;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
-        [Header("How")] [SerializeField] private double _spawnRate;
+        [Header("How")] [Header("Pourcentage de chance qu'une cell ait un objet")][SerializeField] private double _spawnRate;
 
         [SerializeField] private List<Type> _BlockTypeToSpawnOn;
         private GridHelper _helper;
@@ -32,7 +35,8 @@ namespace Utils
         private Random _rand = new();
         private Func<bool> Predicate;
 
-        private int timeToRepeate;
+
+        private int timeToRepeat;
         public GameObject ObjectToSpawn => _objectToSpawn;
 
         public void Initialize(bool isServer, int positionInList)
@@ -41,7 +45,7 @@ namespace Utils
             _isServer = isServer;
             _position = new Vector2Int();
             _helper = new SpawnerGridHelper(_position, _BlockTypeToSpawnOn);
-            timeToRepeate = _period;
+            timeToRepeat = _period;
             Predicate = CreatePredicate();
         }
 
@@ -51,33 +55,54 @@ namespace Utils
         /// <returns></returns>
         private Func<bool> CreatePredicate()
         {
-            if (_startingRound == -1) return () => true;
+            if (_startingRound == -1) return TruePredicate;
 
             if (_endingRound == -1)
-                return () =>
-                {
-                    if (timeToRepeate == 0)
-                    {
-                        timeToRepeate = _period;
-                        return _startingRound <= TowerDefenseManager.Instance.currentRoundNumber;
-                    }
+                return NoEndingPredicate;
 
-                    timeToRepeate--;
-                    return false;
-                };
+            return GeneralPredicate;
+        }
 
-            return () =>
-            {
-                if (timeToRepeate == 0)
+        /// <summary>
+        /// Predicate avec debut et fin et periode
+        /// </summary>
+        /// <returns></returns>
+        private bool GeneralPredicate()
+        {
+                if (timeToRepeat == 0)
                 {
-                    timeToRepeate = _period;
+                    timeToRepeat = _period;
                     var currentRound = TowerDefenseManager.Instance.currentRoundNumber;
                     return _startingRound <= currentRound && _endingRound >= currentRound;
                 }
 
-                timeToRepeate--;
+                timeToRepeat--;
                 return false;
-            };
+        }
+
+        /// <summary>
+        /// Predicate avec debut et periode mais pas de fin
+        /// </summary>
+        /// <returns></returns>
+        private bool NoEndingPredicate()
+        {
+            if (timeToRepeat == 0)
+            {
+                timeToRepeat = _period;
+                return _startingRound <= TowerDefenseManager.Instance.currentRoundNumber;
+            }
+
+            timeToRepeat--;
+            return false;
+        }
+
+        /// <summary>
+        /// Predicate qui retourne toujours true
+        /// </summary>
+        /// <returns></returns>
+        private bool TruePredicate()
+        {
+            return true;
         }
 
         /// <summary>

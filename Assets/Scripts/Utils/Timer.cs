@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils
+namespace Utils
 {
     public class Timer
     {

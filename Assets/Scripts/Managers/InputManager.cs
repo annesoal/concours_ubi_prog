@@ -10,15 +10,7 @@ public class InputManager : MonoBehaviour
     
     private PlayerInputActions _playerInputActions;
 
-    private static Player _player;
-    public static Player Player
-    {
-        set
-        {
-            if (value.IsOwner)
-                _player = value;
-        }
-    } 
+    private bool _isInTacticalPausePhase; 
 
     private void Awake()
     {
@@ -27,14 +19,22 @@ public class InputManager : MonoBehaviour
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
+        _playerInputActions.Player.Cancel.performed += Reset;
+    }
+
+    private void Start()
+    {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += ChangeIsTacticalPausePhase;
     }
 
     private void Update()
     {
-        if (_player == null) return; 
-        Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
-
-        _player.Move(input);
+        if (Player.Instance == null) return;
+        if (_isInTacticalPausePhase)
+        {
+            Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
+            Player.Instance.MoveSelector(input);
+        }
     }
 
     public Vector2 GetCameraMoveInput()
@@ -51,13 +51,25 @@ public class InputManager : MonoBehaviour
 
     private void Select(InputAction.CallbackContext context)
     {
-        _player.OnSelect(context);
+        if (_isInTacticalPausePhase)
+            Player.Instance.OnSelect(context);
     }
 
-    private bool IsScene(String name)
+    private void Reset(InputAction.CallbackContext context)
     {
-        Scene currentScene = SceneManager.GetActiveScene();
+        if (_isInTacticalPausePhase)
+            Player.Instance.OnCancel(context);
+    }
 
-        return currentScene.name == name; 
+    private void ChangeIsTacticalPausePhase(object sender, 
+        TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
+    {
+        if (changedEventArgs.newValue == TowerDefenseManager.State.TacticalPause)
+        {
+            this._isInTacticalPausePhase = true;
+            Player.Instance.Energy = TowerDefenseManager.Instance.EnergyAvailable;
+        }
+        else if (changedEventArgs.newValue == TowerDefenseManager.State.EnvironmentTurn)
+            this._isInTacticalPausePhase = false; 
     }
 }

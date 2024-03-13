@@ -4,6 +4,7 @@ using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using Utils;
 
 public class TileSelector : MonoBehaviour
 {
@@ -22,20 +23,21 @@ public class TileSelector : MonoBehaviour
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
     }
-     //;
-
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public IEnumerator MoveCharacter()
+    public void MoveCharacter()
     {
-        while (!_recorder.IsEmpty())
+        if (_recorder == null) return; 
+        
+        if ( !_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
             player.transform.LookAt(cellLocalPosition);
             player.transform.position = cellLocalPosition;
-            yield return new WaitForSeconds(0.1f);
+            
+            // TODO : changer ca avec meilleur systeme
         }
     }
 
@@ -43,7 +45,7 @@ public class TileSelector : MonoBehaviour
     // et initialise le Helper dans la grille. 
     public void Initialize(Vector3 position)
     {
-        transform.position = new Vector3(position.x, 0.51f, position.z);
+        transform.position = new Vector3(position.x, TilingGrid.TopOfCell, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         quad.SetActive(true);
         InitializeHelper();
@@ -57,19 +59,32 @@ public class TileSelector : MonoBehaviour
         _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
 
-    public void Destroy()
+    public void Hide()
     {
         if (IsValidTileToMove())
         {
             quad.SetActive(false);
-            StartCoroutine(MoveCharacter());
         }
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer
     private bool IsValidTileToMove()
     {
+        if (_helper == null) 
+            return false;
+        
         var cell = _helper.Cell;
         return cell.Has(BlockType.Walkable);
+    }
+
+    public void Reset()
+    {
+        Cell currentCell = _recorder.RemoveLast();
+        // place le selector
+        transform.position = TilingGrid.GridPositionToLocal(currentCell.position);
+         
+        _recorder.Reset();
+        _helper = new SelectorGridHelper(currentCell.position, _recorder);
+
     }
 }

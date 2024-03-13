@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Grid.Blocks;
-using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utils;
 
 public class Player : NetworkBehaviour
 {
@@ -17,22 +18,52 @@ public class Player : NetworkBehaviour
     [SerializeField] private TileSelector _selector;
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
+    public static Player Instance;
+
+    public int Energy
+    {
+        set
+        {
+            _setEnergy = value;
+            _localEnergy = value;
+        }
+    }
+
+    private int _setEnergy; 
+    private int _localEnergy;
 
     public Player()
     {
         _timer = new(cooldown);
     }
-    public void Move(Vector2 direction)
+    public void MoveSelector(Vector2 direction)
     {
         if (!IsOwner) return;
         // On veut pas bouger si on bouge pas le selecteur
         if (!IsMovingSelector) return;
         // On veut pas aller trop vite !
         if (!CanMove()) return;
-            
+        if (!HasEnergy()) return; 
+        HandleInput(direction);
+    }
+    private void HandleInput(Vector2 direction)
+    {
         Vector2Int input = Translate(direction);
         _selector.MoveSelector(input);
-        _timer.Start();   
+        _timer.Start();
+        if (HasMoved(direction))
+        {
+            _localEnergy--;
+        }
+    }
+
+    private bool HasMoved(Vector2 direction)
+    {
+        return direction != Vector2.zero;
+    }
+    private bool HasEnergy()
+    {
+        return _localEnergy >= 0;
     }
 
     public override void OnNetworkSpawn()
@@ -41,6 +72,7 @@ public class Player : NetworkBehaviour
         {
             LocalInstance = this;
             InputManager.Player = this;
+            Instance = this;
         }
         
         CharacterSelectUI.CharacterId characterSelection =
@@ -102,21 +134,35 @@ public class Player : NetworkBehaviour
         return translation;
     }
 
-    // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
+    // Methode appellee quand le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
     public void OnSelect(InputAction.CallbackContext context)
     {
         if (!IsOwner) return;
         
         if (IsMovingSelector)
         {
-            _selector.Destroy();
             IsMovingSelector = false;
+            TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(true);
         }
         else
         {
             _selector.Initialize(transform.position); 
+            TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(false);
             IsMovingSelector = true; 
         }
     }
-    
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (!IsOwner) return;
+        _localEnergy = _setEnergy;
+        _selector.Reset();
+       TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(false); 
+    }
+
+    public void MoveCharacter()
+    {
+        _selector.Hide();
+        _selector.MoveCharacter();
+    }
 }

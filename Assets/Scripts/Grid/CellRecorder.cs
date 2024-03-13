@@ -27,5 +27,11 @@ namespace Grid
         {
             return _cells.Count; 
         }
+
+        public void Reset()
+        {
+            while (!IsEmpty())
+                _cells.RemoveLast();
+        }
     }
 }

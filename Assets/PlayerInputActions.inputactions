@@ -24,6 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
+<<<<<<< HEAD
                     "name": "CameraMove",
                     "type": "Value",
                     "id": "978ecb6a-2543-4aa8-90b4-884efdb9c37b",
@@ -36,6 +37,11 @@
                     "name": "CameraZoom",
                     "type": "Button",
                     "id": "13b9fbb0-ab61-44f3-ba84-9e85c06c29ae",
+=======
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "8b254d3b-a65d-4295-b187-27843d0c6893",
+>>>>>>> centralize-input
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -176,6 +182,7 @@
                     "isPartOfComposite": false
                 },
                 {
+<<<<<<< HEAD
                     "name": "Stick",
                     "id": "58096a61-d65b-4a86-a709-f6b55397f876",
                     "path": "2DVector",
@@ -262,6 +269,28 @@
                     "action": "CameraZoom",
                     "isComposite": false,
                     "isPartOfComposite": true
+=======
+                    "name": "",
+                    "id": "5bb0016d-7ec9-4808-a47a-ad45d201c0d5",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19f88f2b-a545-4ec6-af02-641022e9cf69",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+>>>>>>> centralize-input
                 }
             ]
         }
