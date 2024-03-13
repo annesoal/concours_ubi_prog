@@ -7,9 +7,8 @@ using Random = System.Random;
 
 namespace Ennemies
 {
-    public class BasicEnnemy : Ennemy
+    public sealed class BasicEnnemy : Ennemy
     {
-        private int MovementBlocPerTurn = 2;
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
@@ -21,8 +20,6 @@ namespace Ennemies
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            remainingMove = MovementBlocPerTurn;
-            _helper.AddOnTopCell(this.gameObject);
         }
         
    
@@ -32,14 +29,15 @@ namespace Ennemies
             Initialize();
         }
 
-        private void RestartStatsMovement()
-        {
-            
-        }
+        /**
+         * Reinitialise le nombre de mouvement d'un BasicEnnemi
+         */
+
 
         private void Initialize()
         {
-            remainingMove = MovementBlocPerTurn;
+            remainingMove = GetMovementBlocPerTurn();
+            Debug.Log(remainingMove);
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _nextPosition3d = new Vector3();
@@ -48,6 +46,7 @@ namespace Ennemies
             
             _cellRecorder = new CellRecorder();
             _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
+            _helper.AddOnTopCell(this.gameObject);
         }
 
         

@@ -21,7 +21,7 @@ namespace DefaultNamespace
         [SerializeField] protected EnnemyType ennemyType ;
         [FormerlySerializedAs("RemainingMove")] [FormerlySerializedAs("speedEnnemy")] [SerializeField] protected int remainingMove; //Nb de blocs restants lors dun tour
         [SerializeField] protected bool state = true; // Piege
-        
+        public virtual int GetMovementBlocPerTurn() => 2;
         
         protected EnnemyGridHelper _helper;
         protected Vector2Int currentPosition2d;
@@ -41,6 +41,11 @@ namespace DefaultNamespace
         public EnnemyType GetEnnemyType()
         {
             return ennemyType;
+        }
+        
+        public void ResetMovement()
+        {
+            remainingMove = GetMovementBlocPerTurn();
         }
         
         public virtual void Move()
