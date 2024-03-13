@@ -1,3 +1,4 @@
+using Ennemies;
 using Grid;
 using Unity.Netcode;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace DefaultNamespace
         [SerializeField] protected int speedEnnemy; //Nb de blocs pouvant avancer par tour
         [SerializeField] protected bool state = true; // Piege
         
+        
         // Deplacements (enum ou dict?)
         protected Vector3 _avancer = new Vector3(0, 0, -1);
         protected Vector3 _gauche = new Vector3(-1, 0, 0);
@@ -28,7 +30,7 @@ namespace DefaultNamespace
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
-        
+        protected EnnemyGridHelper _helper;
         protected Vector2Int currentPosition2d;
         protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
@@ -46,7 +48,6 @@ namespace DefaultNamespace
         {
         }
         
-        //Destroy
         
     }
 }

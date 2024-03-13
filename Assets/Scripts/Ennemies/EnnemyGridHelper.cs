@@ -60,6 +60,11 @@ namespace Ennemies
             }
             return false; 
         }
+        
+        public override void  AddOnTopCell(GameObject gameObject)
+        {
+            currentCell.AddGameObject(gameObject);
+        }
 
 
     }
