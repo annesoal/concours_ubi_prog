@@ -2,9 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Vector2 = UnityEngine.Vector2;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance { get; private set; }
+    
     private PlayerInputActions _playerInputActions;
 
     private static Player _player;
@@ -19,6 +22,8 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+        
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
