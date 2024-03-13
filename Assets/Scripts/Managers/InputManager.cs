@@ -37,6 +37,18 @@ public class InputManager : MonoBehaviour
         _player.Move(input);
     }
 
+    public Vector2 GetCameraMoveInput()
+    {
+        Vector2 cameraInputVector = _playerInputActions.Player.CameraMove.ReadValue<Vector2>();
+
+        return cameraInputVector;
+    }
+
+    public float GetCameraZoomInput()
+    {
+        return _playerInputActions.Player.CameraZoom.ReadValue<float>();
+    }
+
     private void Select(InputAction.CallbackContext context)
     {
         _player.OnSelect(context);
