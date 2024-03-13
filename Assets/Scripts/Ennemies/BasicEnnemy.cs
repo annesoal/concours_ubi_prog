@@ -29,10 +29,7 @@ namespace Ennemies
             Initialize();
         }
 
-        /**
-         * Reinitialise le nombre de mouvement d'un BasicEnnemi
-         */
-
+   
 
         private void Initialize()
         {

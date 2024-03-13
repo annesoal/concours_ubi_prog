@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 
 namespace DefaultNamespace
 {
-
     public enum EnnemyType
     {
         None = 0,
@@ -15,19 +14,22 @@ namespace DefaultNamespace
         Flying,
         Fast
     }
-    
+
     public abstract class Ennemy : NetworkBehaviour
     {
-        [SerializeField] protected EnnemyType ennemyType ;
-        [FormerlySerializedAs("RemainingMove")] [FormerlySerializedAs("speedEnnemy")] [SerializeField] protected int remainingMove; //Nb de blocs restants lors dun tour
+        [SerializeField] protected EnnemyType ennemyType;
+
+        [FormerlySerializedAs("RemainingMove")] [FormerlySerializedAs("speedEnnemy")] [SerializeField]
+        protected int remainingMove; //Nb de blocs restants lors dun tour
+
         [SerializeField] protected bool state = true; // Piege
-        public virtual int GetMovementBlocPerTurn() => 2;
-        
+        [SerializeField] protected int movementPerTurn = 2;
+
         protected EnnemyGridHelper _helper;
         protected Vector2Int currentPosition2d;
         protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
-        
+
         // Deplacements (enum?)
         protected Vector3 _avancer = new Vector3(0, 0, -1);
         protected Vector3 _gauche = new Vector3(-1, 0, 0);
@@ -35,19 +37,23 @@ namespace DefaultNamespace
         protected Vector2Int _avancer2d = new Vector2Int(0, -1);
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-        
 
-        
+
         public EnnemyType GetEnnemyType()
         {
             return ennemyType;
         }
-        
+
+        public virtual int GetMovementBlocPerTurn() => 2;
+
+        /**
+        * Reinitialise le nombre de mouvement d'un Ennemi
+        */
         public void ResetMovement()
         {
             remainingMove = GetMovementBlocPerTurn();
         }
-        
+
         public virtual void Move()
         {
         }
@@ -55,7 +61,5 @@ namespace DefaultNamespace
         public virtual void Corrupt()
         {
         }
-        
-        
     }
 }
