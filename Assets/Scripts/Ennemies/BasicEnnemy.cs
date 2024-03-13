@@ -9,6 +9,7 @@ namespace Ennemies
 {
     public class BasicEnnemy : Ennemy
     {
+        private int MovementBlocPerTurn = 2;
         private Vector2Int _nextPosition2d;
         private Vector3 _currentPosition3d;
         private Vector3 _nextPosition3d;
@@ -20,7 +21,8 @@ namespace Ennemies
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            speedEnnemy = 2; //Nombre de blocs avancer par tour
+            remainingMove = MovementBlocPerTurn;
+            _helper.AddOnTopCell(this.gameObject);
         }
         
    
@@ -30,14 +32,20 @@ namespace Ennemies
             Initialize();
         }
 
+        private void RestartStatsMovement()
+        {
+            
+        }
+
         private void Initialize()
         {
+            remainingMove = MovementBlocPerTurn;
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _nextPosition3d = new Vector3();
             _currentPosition3d = transform.position;
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-
+            
             _cellRecorder = new CellRecorder();
             _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
         }
@@ -109,7 +117,7 @@ namespace Ennemies
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.AddCell(cell);
-            speedEnnemy -= 1;
+            remainingMove -= 1;
         }
 
         /**
