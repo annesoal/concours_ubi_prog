@@ -59,7 +59,7 @@ public class TileSelector : MonoBehaviour
         _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
 
-    public void Destroy()
+    public void Hide()
     {
         if (IsValidTileToMove())
         {
@@ -70,6 +70,9 @@ public class TileSelector : MonoBehaviour
     // Check si la cellule peut permettre au joueur de se deplacer
     private bool IsValidTileToMove()
     {
+        if (_helper == null) 
+            return false;
+        
         var cell = _helper.Cell;
         return cell.Has(BlockType.Walkable);
     }

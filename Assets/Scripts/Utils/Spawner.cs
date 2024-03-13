@@ -25,7 +25,7 @@ namespace Utils
         [SerializeField] private int _period;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
-        [Header("How")] [SerializeField] private double _spawnRate;
+        [Header("How")] [Header("Pourcentage de chance qu'une cell ait un objet")][SerializeField] private double _spawnRate;
 
         [SerializeField] private List<Type> _BlockTypeToSpawnOn;
         private GridHelper _helper;

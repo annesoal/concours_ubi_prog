@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Grid.Blocks;
 using Unity.Netcode;
 using UnityEngine;
@@ -15,7 +16,8 @@ public class Player : NetworkBehaviour
     [SerializeField] private TileSelector _selector;
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
-    public static Player Instance; 
+    public static Player Instance;
+
     public int Energy
     {
         set
@@ -135,12 +137,13 @@ public class Player : NetworkBehaviour
         
         if (IsMovingSelector)
         {
-            _selector.Destroy();
             IsMovingSelector = false;
+            TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(true);
         }
         else
         {
             _selector.Initialize(transform.position); 
+            TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(false);
             IsMovingSelector = true; 
         }
     }
@@ -149,12 +152,15 @@ public class Player : NetworkBehaviour
     {
         if (!IsOwner) return;
         _localEnergy = _setEnergy;
-        _selector.Reset(); 
+        _selector.Reset();
+       TowerDefenseManager.Instance.SetPlayerReadyToPassTurn(false); 
     }
 
     public void MoveCharacter()
     {
+        _selector.Hide();
         _selector.MoveCharacter();
     }
+
     
 }

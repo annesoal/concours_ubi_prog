@@ -64,13 +64,14 @@ public class TowerDefenseManager : NetworkBehaviour
     
     // clientId and isReady pair
     private Dictionary<ulong, bool> _playerReadyToPlayDictionary;
-
+    private Dictionary<ulong, bool> _playerReadyToPassDictionnary;
+    
     private void Awake()
     {
         Instance = this;
 
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
-        
+        _playerReadyToPassDictionnary = new Dictionary<ulong, bool>(); 
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
@@ -83,6 +84,12 @@ public class TowerDefenseManager : NetworkBehaviour
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
 
         Instance.OnCurrentStateChanged += SetTimer;
+        Instance.OnCurrentStateChanged += ResetPassDictionnary;
+    }
+
+    private void ResetPassDictionnary(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        _playerReadyToPassDictionnary = new Dictionary<ulong, bool>();
     }
 
     public override void OnNetworkSpawn()
@@ -105,7 +112,7 @@ public class TowerDefenseManager : NetworkBehaviour
     
     private void WaitForPlayerReadyToPlay()
     {
-        if (PlayersAreReadyToPlay())
+        if (PlayersAreReadyToPlay(ConnectedPlayerIsNotReady))
         {
             GoToSpecifiedState(State.CountdownToStart);
         }
@@ -173,8 +180,8 @@ public class TowerDefenseManager : NetworkBehaviour
         }
         
         _tacticalPauseTimer -= Time.deltaTime;
-        
-        if (_tacticalPauseTimer <= 0f)
+       
+        if (_tacticalPauseTimer <= 0f || PlayersAreReadyToPlay(PlayersNotReady))
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
@@ -194,13 +201,13 @@ public class TowerDefenseManager : NetworkBehaviour
     }
 
     // Begin Ready 
-    private bool PlayersAreReadyToPlay()
+    private bool PlayersAreReadyToPlay(Func<ulong, bool> notReadyPredicate)
     {
         bool areReady = true;
         
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            if (ConnectedPlayerIsNotReady(clientId))
+            if (notReadyPredicate.Invoke(clientId))
             {
                 areReady = false;
                 break;
@@ -336,4 +343,35 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         Debug.LogError("Player selection is `None` when in game, which is not a valid value !");
     }
+    public bool PlayersNotReady(ulong playerID)
+    {
+        return !_playerReadyToPassDictionnary.ContainsKey(playerID) ||
+               !_playerReadyToPassDictionnary[playerID];
+    }
+    
+    public void SetPlayerReadyToPassTurn(bool value)
+    {
+        SetPlayerReadyToPassServerRpc(value);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerReadyToPassServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+    {
+        SetPlayerReadyToPassClientRpc(serverRpcParams.Receive.SenderClientId, value);
+    }
+    
+    [ClientRpc]
+    private void SetPlayerReadyToPassClientRpc(ulong clientIdOfPlayerReady, bool value)
+    {
+        try
+        {
+            _playerReadyToPassDictionnary.Add(clientIdOfPlayerReady, value);
+        }
+        catch (Exception e)
+        {
+            _playerReadyToPassDictionnary[clientIdOfPlayerReady] = value;
+        }
+    }
+    
+    
 }
