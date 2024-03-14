@@ -55,6 +55,11 @@ public class InputManager : MonoBehaviour
         return _playerInputActions.Player.CameraZoom.ReadValue<float>();
     }
 
+    public float GetCameraRotationInput()
+    {
+        return _playerInputActions.Player.CameraRotation.ReadValue<float>();
+    }
+
     private void Select(InputAction.CallbackContext context)
     {
         _player.OnSelect(context);
