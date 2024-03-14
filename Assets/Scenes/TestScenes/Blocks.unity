@@ -15923,7 +15923,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalRounds: 20
   <EnergyAvailable>k__BackingField: 10
-  tacticalPauseDuration: 5
+  tacticalPauseDuration: 10
   obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
   <CountDownToStartTimer>k__BackingField: 3
   currentRoundNumber: 0

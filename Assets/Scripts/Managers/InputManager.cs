@@ -27,6 +27,12 @@ public class InputManager : MonoBehaviour
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
+        _playerInputActions.Player.Cancel.performed += Cancel;
+    }
+
+    private void Cancel(InputAction.CallbackContext obj)
+    {
+        _player.OnCancel();
     }
 
     private void Update()

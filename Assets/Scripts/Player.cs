@@ -130,7 +130,6 @@ public class Player : NetworkBehaviour
         
         if (IsMovingSelector)
         {
-            _selector.Destroy();
             IsMovingSelector = false;
         }
         else
@@ -142,7 +141,7 @@ public class Player : NetworkBehaviour
 
     public void MoveCharacter()
     { 
-        _selector.Destroy(); 
+        _selector.Hide(); 
         _selector.MoveCharacter(); 
     }
 
@@ -162,5 +161,12 @@ public class Player : NetworkBehaviour
         {
             _currentEnergy--; 
         }
+    }
+
+    public void OnCancel()
+    {
+        ResetEnergy();
+        _selector.ResetSelf();
+        IsMovingSelector = false;
     }
 }
