@@ -397,4 +397,9 @@ public class GameMultiplayerManager : NetworkBehaviour
         approvalResponse.Approved = true;
     }
 
+    [ClientRpc]
+    public void MovePlayersClientRpc()
+    {
+       Player.LocalInstance.MoveCharacter(); 
+    }
 }

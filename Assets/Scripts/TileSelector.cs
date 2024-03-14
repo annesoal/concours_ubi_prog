@@ -27,15 +27,14 @@ public class TileSelector : MonoBehaviour
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public IEnumerator MoveCharacter()
+    public void MoveCharacter()
     {
-        while (!_recorder.IsEmpty())
+        if (_recorder != null && !_recorder.IsEmpty())
         {
             Cell cell = _recorder.RemoveLast();
             Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
             player.transform.LookAt(cellLocalPosition);
             player.transform.position = cellLocalPosition;
-            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -62,13 +61,15 @@ public class TileSelector : MonoBehaviour
         if (IsValidTileToMove())
         {
             quad.SetActive(false);
-            StartCoroutine(MoveCharacter());
         }
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer
     private bool IsValidTileToMove()
     {
+        if (_helper == null) 
+            return false; 
+        
         var cell = _helper.Cell;
         return cell.Has(BlockType.Walkable);
     }

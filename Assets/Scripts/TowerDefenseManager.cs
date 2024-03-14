@@ -81,15 +81,16 @@ public class TowerDefenseManager : NetworkBehaviour
         if (EnvironmentTurnManager.Instance != null)
         {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
-            TowerDefenseManager.Instance.OnCurrentStateChanged += ResetTimerTacticalPause;
+            Instance.OnCurrentStateChanged += BeginTacticalPause;
         }
     }
 
-    private void ResetTimerTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
+    private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
     {
         if (e.newValue == State.TacticalPause)
         {
-            _currentTimer = tacticalPauseDuration; 
+            _currentTimer = tacticalPauseDuration;
+            Player.LocalInstance.EnergyAvailable = EnergyAvailable;
         }
     }
 

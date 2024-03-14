@@ -5,6 +5,8 @@ using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 public class Player : NetworkBehaviour
 {
@@ -18,6 +20,18 @@ public class Player : NetworkBehaviour
     private bool IsMovingSelector { get; set; }
     private Timer _timer;
 
+    public int EnergyAvailable
+    {
+        set
+        {
+            _totalEnergy = value;
+            _currentEnergy = value;
+        }
+    }
+
+    private int _totalEnergy;
+    private int _currentEnergy;
+    
     public Player()
     {
         _timer = new(cooldown);
@@ -29,10 +43,17 @@ public class Player : NetworkBehaviour
         if (!IsMovingSelector) return;
         // On veut pas aller trop vite !
         if (!CanMove()) return;
+        if (!HasEnergy()) return;
             
+        HandleInput(direction);
+    }
+
+    private void HandleInput(Vector2 direction)
+    {
         Vector2Int input = Translate(direction);
+        DecrementEnergy(input);
         _selector.MoveSelector(input);
-        _timer.Start();   
+        _timer.Start();
     }
 
     public override void OnNetworkSpawn()
@@ -118,5 +139,28 @@ public class Player : NetworkBehaviour
             IsMovingSelector = true; 
         }
     }
-    
+
+    public void MoveCharacter()
+    { 
+        _selector.Destroy(); 
+        _selector.MoveCharacter(); 
+    }
+
+    private bool HasEnergy()
+    {
+        return _currentEnergy > 0; 
+    }
+
+    private void ResetEnergy()
+    {
+        _currentEnergy = _totalEnergy;
+    }
+
+    private void DecrementEnergy(Vector2Int input)
+    {
+        if (input != Vector2Int.zero)
+        {
+            _currentEnergy--; 
+        }
+    }
 }
