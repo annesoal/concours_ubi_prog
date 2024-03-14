@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         HandleCameraMovement();
+
+        HandleCameraRotation();
         
         HandleCameraZoom();
     }
@@ -26,6 +28,19 @@ public class CameraController : MonoBehaviour
 
     }
 
+    [Header("Rotation")]
+    [SerializeField] private float rotationSpeed;
+    
+    private void HandleCameraRotation()
+    {
+        float rotationInput = InputManager.Instance.GetCameraRotationInput();
+
+        Quaternion associatedCameraRotation = associatedCamera.transform.rotation;
+        associatedCameraRotation.y += rotationInput * Time.deltaTime;
+        associatedCamera.transform.rotation = associatedCameraRotation;
+    }
+
+    [Header("Zoom")]
     [SerializeField] private float zoomSpeed;
     [SerializeField] private float maxFov = 80f;
     [SerializeField] private float minFov = 10f;
