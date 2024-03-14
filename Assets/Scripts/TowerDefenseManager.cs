@@ -63,6 +63,7 @@ public class TowerDefenseManager : NetworkBehaviour
     
     // clientId and isReady pair
     private Dictionary<ulong, bool> _playerReadyToPlayDictionary;
+    private Dictionary<ulong, bool> _playerReadyToPassDictionary;
 
     private void Awake()
     {
@@ -91,6 +92,7 @@ public class TowerDefenseManager : NetworkBehaviour
         {
             _currentTimer = tacticalPauseDuration;
             Player.LocalInstance.EnergyAvailable = EnergyAvailable;
+            _playerReadyToPassDictionary = new();
         }
     }
 
@@ -176,7 +178,7 @@ public class TowerDefenseManager : NetworkBehaviour
         
         _currentTimer -= Time.deltaTime;
         
-        if (_currentTimer <= 0f)
+        if (_currentTimer <= 0f  || PlayersAreReadyToPass())
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
@@ -335,4 +337,50 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         Debug.LogError("Player selection is `None` when in game, which is not a valid value !");
     }
+    
+    
+    private bool PlayersAreReadyToPass()
+    {
+        bool areReady = true;
+        
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (ConnectedPlayerIsNotReadyToPass(clientId))
+            {
+                areReady = false;
+                break;
+            }
+        }
+
+        return areReady;
+    }
+    public void SetPlayerReadyToPass(bool value)
+        {
+            SetPlayerReadyToPassServerRpc(value);
+        }
+    
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerReadyToPassServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+        {
+            SetPlayerReadyToPassClientRpc(value, serverRpcParams.Receive.SenderClientId);
+        }
+        
+        [ClientRpc]
+        private void SetPlayerReadyToPassClientRpc(bool value, ulong clientIdOfPlayerReady)
+        {
+            try
+            {
+                _playerReadyToPassDictionary.Add(clientIdOfPlayerReady, value);
+            }
+            catch (ArgumentException argumentException)
+            {
+                _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
+            }
+        }
+    
+        private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
+        {
+            return ! _playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) || 
+                   ! _playerReadyToPassDictionary[clientIdOfPlayer];
+        }
 }

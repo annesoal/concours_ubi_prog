@@ -9,7 +9,6 @@ public class TileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
-    public InputAction move;
     private GridHelper _helper;
     private CellRecorder _recorder; 
 
@@ -73,6 +72,9 @@ public class TileSelector : MonoBehaviour
 
     public void ResetSelf()
     {
-        Hide(); 
+        Hide();
+        Cell lastCell = _recorder.RemoveLast();
+        _recorder.Reset();
+        _recorder.AddCell(lastCell);
     }
 }

@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
 using Grid.Blocks;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 public class Player : NetworkBehaviour
 {
@@ -131,11 +127,13 @@ public class Player : NetworkBehaviour
         if (IsMovingSelector)
         {
             IsMovingSelector = false;
+            TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         }
         else
         {
             _selector.Initialize(transform.position); 
             IsMovingSelector = true; 
+            TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
         }
     }
 
@@ -168,5 +166,6 @@ public class Player : NetworkBehaviour
         ResetEnergy();
         _selector.ResetSelf();
         IsMovingSelector = false;
+        TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
     }
 }

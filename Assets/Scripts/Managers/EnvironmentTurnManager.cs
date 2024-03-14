@@ -24,7 +24,6 @@ public class EnvironmentTurnManager : MonoBehaviour
         
         while (HasEnergyLeft(totalEnergy))
         {
-            // MovePlayers
             MovePlayers();
             
             // AIM.PlaySubordinatesTurn();
