@@ -31,6 +31,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
+    private float _currentTimer; 
+
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
     public enum State
@@ -71,13 +73,24 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
-        currentRoundNumber = totalRounds;
+        currentRoundNumber = 0;
     }
 
     private void Start()
     {
         if (EnvironmentTurnManager.Instance != null)
+        {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+            TowerDefenseManager.Instance.OnCurrentStateChanged += ResetTimerTacticalPause;
+        }
+    }
+
+    private void ResetTimerTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == State.TacticalPause)
+        {
+            _currentTimer = tacticalPauseDuration; 
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -132,7 +145,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-        if (! _isEnvironmentTurnNotCalled)
+        if (_isEnvironmentTurnNotCalled)
         {
             _isEnvironmentTurnNotCalled = false;
             EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
@@ -160,9 +173,9 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
         
-        tacticalPauseDuration -= Time.deltaTime;
+        _currentTimer -= Time.deltaTime;
         
-        if (tacticalPauseDuration <= 0f)
+        if (_currentTimer <= 0f)
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
@@ -171,7 +184,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool AllRoundsAreDone()
     {
-        return currentRoundNumber == 0;
+        return currentRoundNumber == totalRounds;
     }
 
      public int currentRoundNumber;
