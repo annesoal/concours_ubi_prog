@@ -64,6 +64,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""CameraRotation"",
+                    ""type"": ""Value"",
+                    ""id"": ""38bc00cf-7b7c-4834-834d-bb6223d3ea90"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""e795b668-c570-4f7a-a4e0-4f0c18844290"",
@@ -315,6 +324,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""R1L1"",
+                    ""id"": ""b127cb0c-9d2e-418f-af76-997abc4c7574"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d9571dca-5fb0-4c0d-8172-160d5d347469"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""972d1a80-714d-47b0-b67f-ff07b3eae17c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -350,6 +392,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_CameraMove = m_Player.FindAction("CameraMove", throwIfNotFound: true);
         m_Player_CameraZoom = m_Player.FindAction("CameraZoom", throwIfNotFound: true);
+        m_Player_CameraRotation = m_Player.FindAction("CameraRotation", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
     }
 
@@ -416,6 +459,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_CameraMove;
     private readonly InputAction m_Player_CameraZoom;
+    private readonly InputAction m_Player_CameraRotation;
     private readonly InputAction m_Player_Cancel;
     public struct PlayerActions
     {
@@ -425,6 +469,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @CameraMove => m_Wrapper.m_Player_CameraMove;
         public InputAction @CameraZoom => m_Wrapper.m_Player_CameraZoom;
+        public InputAction @CameraRotation => m_Wrapper.m_Player_CameraRotation;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -447,6 +492,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraZoom.started += instance.OnCameraZoom;
             @CameraZoom.performed += instance.OnCameraZoom;
             @CameraZoom.canceled += instance.OnCameraZoom;
+            @CameraRotation.started += instance.OnCameraRotation;
+            @CameraRotation.performed += instance.OnCameraRotation;
+            @CameraRotation.canceled += instance.OnCameraRotation;
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
@@ -466,6 +514,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraZoom.started -= instance.OnCameraZoom;
             @CameraZoom.performed -= instance.OnCameraZoom;
             @CameraZoom.canceled -= instance.OnCameraZoom;
+            @CameraRotation.started -= instance.OnCameraRotation;
+            @CameraRotation.performed -= instance.OnCameraRotation;
+            @CameraRotation.canceled -= instance.OnCameraRotation;
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
@@ -510,6 +561,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSelect(InputAction.CallbackContext context);
         void OnCameraMove(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
+        void OnCameraRotation(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
     }
 }
