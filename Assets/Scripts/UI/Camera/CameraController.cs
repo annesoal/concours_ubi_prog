@@ -44,6 +44,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomSpeed;
     [SerializeField] private float maxFov = 80f;
     [SerializeField] private float minFov = 10f;
+    [SerializeField] private bool verticalViewIsChangingOnZoom = true;
+    [SerializeField] private float verticalViewFactor = 25f;
     
     private void HandleCameraZoom()
     {
@@ -54,5 +56,21 @@ public class CameraController : MonoBehaviour
         newFov = Mathf.Clamp(newFov, minFov, maxFov);
 
         associatedCamera.m_Lens.FieldOfView = newFov;
+
+        if (verticalViewIsChangingOnZoom)
+        {
+            ChangeVerticalView(zoomInput);
+        }
+    }
+
+    private void ChangeVerticalView(float zoomInput)
+    {
+        CinemachineTransposer associatedCameraTransposer = 
+            associatedCamera.GetCinemachineComponent<CinemachineTransposer>();
+
+        Vector3 newFollowOffset = associatedCameraTransposer.m_FollowOffset - Vector3.up * zoomInput;
+
+        associatedCameraTransposer.m_FollowOffset = 
+            Vector3.Lerp(associatedCameraTransposer.m_FollowOffset, newFollowOffset, Time.deltaTime);
     }
 }
