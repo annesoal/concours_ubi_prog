@@ -29,15 +29,13 @@ public class CameraController : MonoBehaviour
     }
 
     [Header("Rotation")]
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float rotationSpeed = 40f;
     
     private void HandleCameraRotation()
     {
         float rotationInput = InputManager.Instance.GetCameraRotationInput();
 
-        Quaternion associatedCameraRotation = associatedCamera.transform.rotation;
-        associatedCameraRotation.y += rotationInput * Time.deltaTime;
-        associatedCamera.transform.rotation = associatedCameraRotation;
+        transform.Rotate(Vector3.up * (rotationInput * Time.deltaTime * rotationSpeed));
     }
 
     [Header("Zoom")]
