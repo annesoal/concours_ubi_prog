@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
         HandleCameraZoom();
     }
 
+    [Header("Movement")]
     [SerializeField] private float moveSpeed;
     
     private void HandleCameraMovement()
@@ -42,6 +43,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomSpeed;
     [SerializeField] private float maxFov = 80f;
     [SerializeField] private float minFov = 10f;
+    [Header("Vertical View Offset")]
     [SerializeField] private bool verticalViewIsChangingOnZoom = true;
     [SerializeField] private float verticalViewFactor = 25f;
     
