@@ -170,6 +170,8 @@ MonoBehaviour:
   associatedCamera: {fileID: 1773068532}
   moveSpeed: 30
   zoomSpeed: 20
+  maxFov: 80
+  minFov: 10
 --- !u!1 &82869272
 GameObject:
   m_ObjectHideFlags: 0

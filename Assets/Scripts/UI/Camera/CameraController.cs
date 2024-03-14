@@ -7,9 +7,6 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera associatedCamera;
     
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float zoomSpeed;
-    
     void Update()
     {
         HandleCameraMovement();
@@ -17,6 +14,8 @@ public class CameraController : MonoBehaviour
         HandleCameraZoom();
     }
 
+    [SerializeField] private float moveSpeed;
+    
     private void HandleCameraMovement()
     {
         Vector2 cameraInput = InputManager.Instance.GetCameraMoveInput();
@@ -27,10 +26,18 @@ public class CameraController : MonoBehaviour
 
     }
 
+    [SerializeField] private float zoomSpeed;
+    [SerializeField] private float maxFov = 80f;
+    [SerializeField] private float minFov = 10f;
+    
     private void HandleCameraZoom()
     {
         float zoomInput = InputManager.Instance.GetCameraZoomInput();
 
-        associatedCamera.m_Lens.FieldOfView -= zoomInput * zoomSpeed * Time.deltaTime;
+        float newFov = associatedCamera.m_Lens.FieldOfView - zoomInput * zoomSpeed * Time.deltaTime;
+
+        newFov = Mathf.Clamp(newFov, minFov, maxFov);
+
+        associatedCamera.m_Lens.FieldOfView = newFov;
     }
 }
