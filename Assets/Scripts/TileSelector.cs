@@ -36,15 +36,6 @@ public class TileSelector : MonoBehaviour
         }
     }
 
-    public void MoveCharacter2()
-    {
-        if (_recorder == null || _recorder.IsEmpty()) return;
-        
-        Cell cell = _recorder.RemoveLast();
-        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
-        player.transform.LookAt(cellLocalPosition);
-        player.transform.position = cellLocalPosition;
-    }
     // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
     // et initialise le Helper dans la grille. 
     public void Initialize(Vector3 position)
@@ -61,14 +52,6 @@ public class TileSelector : MonoBehaviour
         _recorder = new();
         Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
         _helper = new SelectorGridHelper(gridPosition, _recorder);
-    }
-
-    public void ConfirmFinalPosition()
-    {
-        if (IsValidTileToMove())
-        {
-            
-        }
     }
 
     // Check si la cellule peut permettre au joueur de se deplacer

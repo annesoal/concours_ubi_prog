@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
-        _playerInputActions.Player.Cancel.performed += Reset;
+        _playerInputActions.Player.Cancel.performed += Cancel;
     }
 
     private void Start()
@@ -55,7 +55,7 @@ public class InputManager : MonoBehaviour
             Player.Instance.OnSelect(context);
     }
 
-    private void Reset(InputAction.CallbackContext context)
+    private void Cancel(InputAction.CallbackContext context)
     {
         if (_isInTacticalPausePhase)
             Player.Instance.OnCancel(context);

@@ -136,6 +136,7 @@ public class Player : NetworkBehaviour
     // Methode appellee quand le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
     public void OnSelect(InputAction.CallbackContext context)
     {
+        Debug.Log("Selected");
         if (!IsOwner) return;
         
         if (IsMovingSelector)
@@ -153,6 +154,7 @@ public class Player : NetworkBehaviour
 
     public void OnCancel(InputAction.CallbackContext context)
     {
+        Debug.Log("Cancel");
         if (!IsOwner) return;
         _localEnergy = _setEnergy;
         _selector.Reset();
