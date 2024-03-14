@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029127, g: 0.22572401, b: 0.3069303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6837,7 +6837,7 @@ PrefabInstance:
     - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
         type: 3}
       propertyPath: Types.Array.data[0]
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
         type: 3}
@@ -7812,12 +7812,12 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[0]._spawnRate
-      value: 0.8
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._spawnRate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -12871,6 +12871,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558684930035877340, guid: e2a844e8ea8ad611b98536893c8d06bd,
+        type: 3}
+      propertyPath: Types.Array.data[1]
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
