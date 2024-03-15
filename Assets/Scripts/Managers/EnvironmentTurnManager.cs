@@ -24,7 +24,7 @@ public class EnvironmentTurnManager : MonoBehaviour
         
         while (HasEnergyLeft(totalEnergy))
         {
-            // MovePlayers
+            MovePlayers();
             
             // AIM.PlaySubordinatesTurn();
             
@@ -39,5 +39,10 @@ public class EnvironmentTurnManager : MonoBehaviour
     private bool HasEnergyLeft(int energyLeft)
     {
         return energyLeft > 0;
+    }
+
+    private void MovePlayers()
+    {
+        GameMultiplayerManager.Instance.MovePlayersClientRpc();
     }
 }

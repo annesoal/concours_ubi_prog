@@ -31,6 +31,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
+    private float _currentTimer; 
+
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
     public enum State
@@ -61,6 +63,7 @@ public class TowerDefenseManager : NetworkBehaviour
     
     // clientId and isReady pair
     private Dictionary<ulong, bool> _playerReadyToPlayDictionary;
+    private Dictionary<ulong, bool> _playerReadyToPassDictionary;
 
     private void Awake()
     {
@@ -71,13 +74,26 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
-        currentRoundNumber = totalRounds;
+        currentRoundNumber = 0;
     }
 
     private void Start()
     {
         if (EnvironmentTurnManager.Instance != null)
+        {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+            Instance.OnCurrentStateChanged += BeginTacticalPause;
+        }
+    }
+
+    private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == State.TacticalPause)
+        {
+            _currentTimer = tacticalPauseDuration;
+            Player.LocalInstance.EnergyAvailable = EnergyAvailable;
+            _playerReadyToPassDictionary = new();
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -132,7 +148,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-        if (! _isEnvironmentTurnNotCalled)
+        if (_isEnvironmentTurnNotCalled)
         {
             _isEnvironmentTurnNotCalled = false;
             EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
@@ -160,9 +176,9 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
         
-        tacticalPauseDuration -= Time.deltaTime;
+        _currentTimer -= Time.deltaTime;
         
-        if (tacticalPauseDuration <= 0f)
+        if (_currentTimer <= 0f  || PlayersAreReadyToPass())
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
@@ -171,7 +187,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool AllRoundsAreDone()
     {
-        return currentRoundNumber == 0;
+        return currentRoundNumber == totalRounds;
     }
 
      public int currentRoundNumber;
@@ -321,4 +337,50 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         Debug.LogError("Player selection is `None` when in game, which is not a valid value !");
     }
+    
+    
+    private bool PlayersAreReadyToPass()
+    {
+        bool areReady = true;
+        
+        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        {
+            if (ConnectedPlayerIsNotReadyToPass(clientId))
+            {
+                areReady = false;
+                break;
+            }
+        }
+
+        return areReady;
+    }
+    public void SetPlayerReadyToPass(bool value)
+        {
+            SetPlayerReadyToPassServerRpc(value);
+        }
+    
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerReadyToPassServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+        {
+            SetPlayerReadyToPassClientRpc(value, serverRpcParams.Receive.SenderClientId);
+        }
+        
+        [ClientRpc]
+        private void SetPlayerReadyToPassClientRpc(bool value, ulong clientIdOfPlayerReady)
+        {
+            try
+            {
+                _playerReadyToPassDictionary.Add(clientIdOfPlayerReady, value);
+            }
+            catch (ArgumentException argumentException)
+            {
+                _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
+            }
+        }
+    
+        private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
+        {
+            return ! _playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) || 
+                   ! _playerReadyToPassDictionary[clientIdOfPlayer];
+        }
 }

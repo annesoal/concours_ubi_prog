@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1983669303560393747}
   - component: {fileID: 597692602431824532}
-  - component: {fileID: 3080429363446872503}
   m_Layer: 0
-  m_Name: WalkableBlock
+  m_Name: EnemySpawnBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,21 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b9b8cec43925cae906cf7fee0f9d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Types: 00000000
-  blockType: 0
---- !u!114 &3080429363446872503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2591778836384208253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81b9b8cec43925cae906cf7fee0f9d5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Types: 00000000
+  Types: 0600000005000000
   blockType: 0
 --- !u!1 &4580477594474389813
 GameObject:

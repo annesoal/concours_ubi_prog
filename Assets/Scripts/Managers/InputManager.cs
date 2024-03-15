@@ -2,9 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Vector2 = UnityEngine.Vector2;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance { get; private set; }
+    
     private PlayerInputActions _playerInputActions;
 
     private static Player _player;
@@ -19,9 +22,23 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+        
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Select.performed += Select;
+        _playerInputActions.Player.Cancel.performed += Cancel;
+        _playerInputActions.Player.Confirm.performed += Confirm;
+    }
+
+    private void Confirm(InputAction.CallbackContext obj)
+    {
+        _player.OnConfirm();
+    }
+
+    private void Cancel(InputAction.CallbackContext obj)
+    {
+        _player.OnCancel();
     }
 
     private void Update()
@@ -32,15 +49,25 @@ public class InputManager : MonoBehaviour
         _player.Move(input);
     }
 
-    private void Select(InputAction.CallbackContext context)
+    public Vector2 GetCameraMoveInput()
     {
-        _player.OnSelect(context);
+        Vector2 cameraInputVector = _playerInputActions.Player.CameraMove.ReadValue<Vector2>();
+
+        return cameraInputVector;
     }
 
-    private bool IsScene(String name)
+    public float GetCameraZoomInput()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
+        return _playerInputActions.Player.CameraZoom.ReadValue<float>();
+    }
 
-        return currentScene.name == name; 
+    public float GetCameraRotationInput()
+    {
+        return _playerInputActions.Player.CameraRotation.ReadValue<float>();
+    }
+
+    private void Select(InputAction.CallbackContext context)
+    {
+        _player.OnSelect();
     }
 }

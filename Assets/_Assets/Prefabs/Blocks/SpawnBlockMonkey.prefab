@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f29b846cf54c218775f36fd1b08f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Types: 00000000
+  blockType: 16
   spawnPosition: {fileID: 8225631570594607265}
 --- !u!1 &4580477594474389813
 GameObject:
