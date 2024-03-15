@@ -26,16 +26,7 @@ public class TileSelector : MonoBehaviour
     // prablement a diviser en sous methode ? 
     // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
     // au joueur qu'il peut recommencer le processus de selection
-    public void MoveCharacter()
-    {
-        if (_recorder != null && !_recorder.IsEmpty())
-        {
-            Cell cell = _recorder.RemoveLast();
-            Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(cell.position);
-            player.transform.LookAt(cellLocalPosition);
-            player.transform.position = cellLocalPosition;
-        }
-    }
+
 
     // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
     // et initialise le Helper dans la grille. 
@@ -76,5 +67,13 @@ public class TileSelector : MonoBehaviour
         Cell lastCell = _recorder.RemoveLast();
         _recorder.Reset();
         _recorder.AddCell(lastCell);
+    }
+
+    public Vector2Int? GetNextPositionToGo()
+    {
+        if (_recorder == null || _recorder.IsEmpty())
+            return null;
+        
+        return _recorder.RemoveLast().position;
     }
 }

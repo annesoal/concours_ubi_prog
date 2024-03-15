@@ -400,6 +400,6 @@ public class GameMultiplayerManager : NetworkBehaviour
     [ClientRpc]
     public void MovePlayersClientRpc()
     {
-       Player.LocalInstance.MoveCharacter(); 
+       Player.LocalInstance.Move(); 
     }
 }

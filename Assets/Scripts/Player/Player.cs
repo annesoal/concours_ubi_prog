@@ -1,3 +1,4 @@
+using Grid;
 using Grid.Blocks;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
@@ -34,14 +35,16 @@ public class Player : NetworkBehaviour
     }
     public void Move(Vector2 direction)
     {
-        if (!IsOwner) return;
-        // On veut pas bouger si on bouge pas le selecteur
-        if (!IsMovingSelector) return;
-        // On veut pas aller trop vite !
-        if (!CanMove()) return;
-        if (!HasEnergy()) return;
-            
+        if (IfIsInvalid()) return;
         HandleInput(direction);
+    }
+
+    private bool IfIsInvalid()
+    {
+        if (!IsOwner) return true;
+        if (!IsMovingSelector) return true;
+        if (!CanMove()) return true;
+        return !HasEnergy();
     }
 
     private void HandleInput(Vector2 direction)
@@ -137,10 +140,13 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public void MoveCharacter()
-    { 
+    public void Move()
+    {
         _selector.Hide(); 
-        _selector.MoveCharacter(); 
+        Vector2Int? nextPosition = _selector.GetNextPositionToGo();
+        if (nextPosition == null) return;
+        
+        MoveCharacter((Vector2Int) nextPosition); 
     }
 
     private bool HasEnergy()
@@ -167,5 +173,12 @@ public class Player : NetworkBehaviour
         _selector.ResetSelf();
         IsMovingSelector = false;
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
+    }
+    
+    public void MoveCharacter(Vector2Int toPosition)
+    {
+        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
+        transform.LookAt(cellLocalPosition);
+        transform.position = cellLocalPosition;
     }
 }
