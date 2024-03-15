@@ -1,9 +1,11 @@
 using Grid;
 using Grid.Blocks;
+using Unity.Mathematics;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
 
 public class Player : NetworkBehaviour
 {
@@ -14,6 +16,8 @@ public class Player : NetworkBehaviour
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
+    [SerializeField] private GameObject _highlighter;
+    private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
     public int EnergyAvailable
@@ -31,10 +35,12 @@ public class Player : NetworkBehaviour
     public Player()
     {
         _timer = new(cooldown);
+        _highlighters = new();
     }
     public void Move(Vector2 direction)
     {
         if (IsMovementInvalid()) return;
+        if (direction == Vector2.zero) return;
         HandleInput(direction);
     }
 
@@ -52,9 +58,26 @@ public class Player : NetworkBehaviour
     private void HandleInput(Vector2 direction)
     {
         Vector2Int input = TranslateToVector2Int(direction);
-        DecrementEnergy(input);
-        _selector.MoveSelector(input);
-        _timer.Start();
+        var savedSelectorPosition = SaveSelectorPosition();
+        bool hasMoved = _selector.MoveSelector(input);
+
+        if (hasMoved)
+        {
+            DecrementEnergy(input);
+            AddHighlighter(savedSelectorPosition);
+            _timer.Start();
+        }
+    }
+
+    public Vector3 SaveSelectorPosition()
+    {
+        return _selector.transform.position;
+    }
+
+    private void AddHighlighter(Vector3 position)
+    {
+        GameObject newHighlighter = Instantiate(_highlighter, position, quaternion.identity);
+        _highlighters.Add(newHighlighter);
     }
 
     public override void OnNetworkSpawn()
@@ -152,10 +175,26 @@ public class Player : NetworkBehaviour
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
         if (nextPosition == null) return;
-        
+
+        RemoveNextHighlighter();
         MoveToNextPosition((Vector2Int) nextPosition); 
     }
 
+    private void CleanHighlighters()
+    {
+        while (_highlighters != null && !_highlighters.IsEmpty())
+        {
+            RemoveNextHighlighter();
+        }
+    }
+    private void RemoveNextHighlighter()
+    {
+        if (!_highlighters.IsEmpty())
+        {
+            GameObject nextHighLighter = _highlighters.RemoveLast();
+            Destroy(nextHighLighter);
+        }
+    }
     private bool HasEnergy()
     {
         return _currentEnergy > 0; 
@@ -177,6 +216,7 @@ public class Player : NetworkBehaviour
     public void OnCancel()
     {
         ResetEnergy();
+        CleanHighlighters();
         _selector.ResetSelf();
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
     }

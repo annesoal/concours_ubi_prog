@@ -4,13 +4,12 @@ using Grid;
 using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 
 public class PlayerTileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
-    [SerializeField] private GameObject highlighter;
-    private List<GameObject> highlighters;
     private GridHelper _helper;
     private Recorder<Cell> _recorder;
     public bool isSelecting = false;
@@ -19,23 +18,21 @@ public class PlayerTileSelector : MonoBehaviour
     /// Permet de deplacer le Selector... 
     /// </summary>
     /// <param name="direction"></param>
-    public void MoveSelector( Vector2Int direction)
+    public bool MoveSelector( Vector2Int direction)
     {
+        bool hasMoved = false;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
         {
             _helper.SetHelperPosition(direction);
-            SetHighlighter();
+            hasMoved = true;
         }
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
+        return hasMoved;
     }
 
-    private void SetHighlighter()
-    {
-        GameObject newHighlighter = Instantiate(highlighter, transform.position, Quaternion.identity);
-        highlighters.Add(newHighlighter);
-    }
+
 
     /// <summary>
     ///  Initialise le Selecteur, en le deplacant sous le joueur, active le renderer
@@ -56,7 +53,6 @@ public class PlayerTileSelector : MonoBehaviour
     private void InitializeHelper()
     {
         _recorder = new();
-        highlighters = new();
         Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
         _helper = new PlayerSelectorGridHelper(gridPosition, _recorder);
     }
@@ -76,12 +72,14 @@ public class PlayerTileSelector : MonoBehaviour
     public void ResetSelf()
     {
         Disable();
-        Cell lastCell = _recorder.RemoveLast();
-        _recorder.Reset();
-        _recorder.AddCell(lastCell);
-        highlighters = new();
+        if (!_recorder.IsEmpty())
+        {
+            Cell lastCell = _recorder.RemoveLast();
+            _recorder.Reset();
+            _recorder.Add(lastCell);
+        }
     }
-
+    
     /// <summary>
     /// Enlever une Cell du recorder et donne sa position
     /// </summary>

@@ -1,31 +1,32 @@
+#nullable enable
 using System.Collections.Generic;
 
 namespace Grid
 {
     public class Recorder<T>
     {
-        private LinkedList<T> _element = new();
+        private readonly LinkedList<T> _elements = new();
 
-        public void AddCell(T element)
+        public void Add(T element)
         {
-            this._element.AddFirst(element);
+            this._elements.AddFirst(element);
         }
 
         public T RemoveLast()
         {
-            T element = _element.Last.Value; 
-            _element.RemoveLast();
+            T element = _elements.Last.Value; 
+            _elements.RemoveLast();
             return element;
         }
         
         public bool IsEmpty()
         {
-            return _element.Count < 1;
+            return _elements.Count < 1;
         }
 
         public int Size()
         {
-            return _element.Count; 
+            return _elements.Count; 
         }
 
         public void Reset()

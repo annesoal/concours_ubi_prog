@@ -17,7 +17,7 @@ namespace Grid
         public PlayerSelectorGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
         {
             _recorder = recorder;
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         
@@ -39,7 +39,7 @@ namespace Grid
         {
             Vector2Int next = currentCell.position + direction; 
             currentCell = TilingGrid.grid.GetCell(next); 
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         public override void AddOnTopCell(GameObject gameObject)

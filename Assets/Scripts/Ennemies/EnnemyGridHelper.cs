@@ -11,7 +11,7 @@ namespace Ennemies
         public EnnemyGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
         {
             _recorder = recorder;
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         /**

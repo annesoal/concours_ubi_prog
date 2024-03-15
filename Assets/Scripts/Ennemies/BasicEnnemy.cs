@@ -112,7 +112,7 @@ namespace Ennemies
             float t = Mathf.Clamp01(lerpSpeed * Time.deltaTime); // Normalisation de la vitesse
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             _helper.AddOnTopCell(transform.gameObject);
-            _cellRecorder.AddCell(cell);
+            _cellRecorder.Add(cell);
             remainingMove -= 1;
         }
 
