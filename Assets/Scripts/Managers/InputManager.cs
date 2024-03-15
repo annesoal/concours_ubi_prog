@@ -29,6 +29,12 @@ public class InputManager : MonoBehaviour
         _playerInputActions.Camera.Enable();
         _playerInputActions.Player.Select.performed += Select;
         _playerInputActions.Player.Cancel.performed += Cancel;
+        _playerInputActions.Player.Confirm.performed += Confirm;
+    }
+
+    private void Confirm(InputAction.CallbackContext obj)
+    {
+        _player.OnConfirm();
     }
 
     private void Cancel(InputAction.CallbackContext obj)
@@ -63,13 +69,6 @@ public class InputManager : MonoBehaviour
 
     private void Select(InputAction.CallbackContext context)
     {
-        _player.OnSelect(context);
-    }
-
-    private bool IsScene(String name)
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-
-        return currentScene.name == name; 
+        _player.OnSelect();
     }
 }

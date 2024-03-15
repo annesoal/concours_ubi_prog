@@ -1,3 +1,4 @@
+using Grid;
 using Grid.Blocks;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
@@ -12,8 +13,7 @@ public class Player : NetworkBehaviour
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     [SerializeField] private float cooldown = 0.1f;
-    [SerializeField] private TileSelector _selector;
-    private bool IsMovingSelector { get; set; }
+    [SerializeField] private PlayerTileSelector _selector;
     private Timer _timer;
 
     public int EnergyAvailable
@@ -34,19 +34,24 @@ public class Player : NetworkBehaviour
     }
     public void Move(Vector2 direction)
     {
-        if (!IsOwner) return;
-        // On veut pas bouger si on bouge pas le selecteur
-        if (!IsMovingSelector) return;
-        // On veut pas aller trop vite !
-        if (!CanMove()) return;
-        if (!HasEnergy()) return;
-            
+        if (IsMovementInvalid()) return;
         HandleInput(direction);
+    }
+
+    /// <summary>
+    /// Check si les conditions de deplacement sont valides.
+    /// </summary>
+    /// <returns> true si elles sont invalides</returns>
+    private bool IsMovementInvalid()
+    {
+        if (!IsOwner) return true;
+        if (!CanMove()) return true;
+        return !HasEnergy();
     }
 
     private void HandleInput(Vector2 direction)
     {
-        Vector2Int input = Translate(direction);
+        Vector2Int input = TranslateToVector2Int(direction);
         DecrementEnergy(input);
         _selector.MoveSelector(input);
         _timer.Start();
@@ -85,14 +90,21 @@ public class Player : NetworkBehaviour
             Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
         }
     }
-    // Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
+    /// <summary>
+    /// Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
+    /// </summary>
+    /// <returns></returns>
     private bool CanMove()
     {
         return _timer.HasTimePassed();
     }
     
-    // Traduite la valeur d'input en Vector2Int
-    private Vector2Int Translate(Vector2 value)
+    /// <summary>
+    ///  Traduite la valeur d'input en Vector2Int
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    private Vector2Int TranslateToVector2Int(Vector2 value)
     {
         Vector2Int translation = new Vector2Int();
         // pas tres jolie mais franchement ca marche 
@@ -119,28 +131,29 @@ public class Player : NetworkBehaviour
         return translation;
     }
 
-    // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
-    public void OnSelect(InputAction.CallbackContext context)
+    public void OnConfirm()
     {
-        if (!IsOwner) return;
-        
-        if (IsMovingSelector)
-        {
-            IsMovingSelector = false;
-            TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
-        }
-        else
-        {
-            _selector.Initialize(transform.position); 
-            IsMovingSelector = true; 
-            TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        }
+        TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
     }
 
-    public void MoveCharacter()
-    { 
-        _selector.Hide(); 
-        _selector.MoveCharacter(); 
+    // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
+    public void OnSelect()
+    {
+        if (_selector.isSelecting)
+            return;
+        
+        _selector.isSelecting = true;
+        _selector.Initialize(transform.position); 
+        TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
+    }
+
+    public void Move()
+    {
+        _selector.Disable(); 
+        Vector2Int? nextPosition = _selector.GetNextPositionToGo();
+        if (nextPosition == null) return;
+        
+        MoveToNextPosition((Vector2Int) nextPosition); 
     }
 
     private bool HasEnergy()
@@ -165,7 +178,13 @@ public class Player : NetworkBehaviour
     {
         ResetEnergy();
         _selector.ResetSelf();
-        IsMovingSelector = false;
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
+    }
+
+    private void MoveToNextPosition(Vector2Int toPosition)
+    {
+        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
+        transform.LookAt(cellLocalPosition);
+        transform.position = cellLocalPosition;
     }
 }

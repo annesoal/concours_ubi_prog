@@ -24,7 +24,7 @@ namespace Grid
         private void Start()
         {
             _position3d = transform.position;
-            _helper = new SelectorGridHelper(TilingGrid.LocalToGridPosition(_position3d));
+            _helper = new PlayerSelectorGridHelper(TilingGrid.LocalToGridPosition(_position3d));
             _helper.AddOnTopCell(this.gameObject);
             
         }

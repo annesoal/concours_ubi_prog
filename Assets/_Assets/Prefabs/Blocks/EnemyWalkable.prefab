@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1983669303560393747}
   - component: {fileID: 7061643507086070728}
   m_Layer: 0
-  m_Name: MovableBlock
+  m_Name: EnemyWalkable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b9b8cec43925cae906cf7fee0f9d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Types: 00000000
+  Types: 05000000
   blockType: 0
 --- !u!1 &4580477594474389813
 GameObject:

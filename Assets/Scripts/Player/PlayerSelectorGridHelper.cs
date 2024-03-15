@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Grid
 {
-    public class SelectorGridHelper : GridHelper
+    public class PlayerSelectorGridHelper : GridHelper
     {
         // Permetterait de parcourir la File pour avoir les deplacements qui se jouent dans l'ordre durant la phase 
         // d'action
         private CellRecorder _recorder;
         
-        public SelectorGridHelper(Vector2Int position2d) : base(position2d)
+        public PlayerSelectorGridHelper(Vector2Int position2d) : base(position2d)
         {
             currentCell = TilingGrid.grid.GetCell(position2d);
         }
         
-        public SelectorGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
+        public PlayerSelectorGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
         {
             _recorder = recorder;
             _recorder.AddCell(currentCell);
