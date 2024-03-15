@@ -57,10 +57,15 @@ public class CameraController : MonoBehaviour
 
         associatedCamera.m_Lens.FieldOfView = newFov;
 
-        if (verticalViewIsChangingOnZoom)
+        if (verticalViewIsChangingOnZoom && FovLimitIsReached(newFov))
         {
             ChangeVerticalView(zoomInput);
         }
+    }
+
+    private bool FovLimitIsReached(float fov)
+    {
+        return Mathf.Approximately(fov, minFov) && Mathf.Approximately(fov, maxFov);
     }
 
     private void ChangeVerticalView(float zoomInput)
@@ -68,7 +73,8 @@ public class CameraController : MonoBehaviour
         CinemachineTransposer associatedCameraTransposer = 
             associatedCamera.GetCinemachineComponent<CinemachineTransposer>();
 
-        Vector3 newFollowOffset = associatedCameraTransposer.m_FollowOffset - Vector3.up * zoomInput;
+        Vector3 newFollowOffset =
+            associatedCameraTransposer.m_FollowOffset - Vector3.up * (zoomInput * verticalViewFactor);
 
         associatedCameraTransposer.m_FollowOffset = 
             Vector3.Lerp(associatedCameraTransposer.m_FollowOffset, newFollowOffset, Time.deltaTime);
