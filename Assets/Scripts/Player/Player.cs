@@ -149,7 +149,7 @@ public class Player : NetworkBehaviour
 
     public void Move()
     {
-        _selector.Hide(); 
+        _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
         if (nextPosition == null) return;
         

@@ -50,10 +50,11 @@ public class PlayerTileSelector : MonoBehaviour
     }
     
     /// <summary>
-    /// Cache le visuel du Selector
+    /// Cache le visuel du Selector et indique que le selector n'est plus en train de selectionner
     /// </summary>
-    public void Hide()
+    public void Disable()
     {
+        isSelecting = false;
         quad.SetActive(false);
     }
 
@@ -62,7 +63,7 @@ public class PlayerTileSelector : MonoBehaviour
     /// </summary>
     public void ResetSelf()
     {
-        Hide();
+        Disable();
         Cell lastCell = _recorder.RemoveLast();
         _recorder.Reset();
         _recorder.AddCell(lastCell);
