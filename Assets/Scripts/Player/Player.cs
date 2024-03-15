@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     [SerializeField] private float cooldown = 0.1f;
-    [SerializeField] private TileSelector _selector;
+    [SerializeField] private PlayerTileSelector _selector;
     private Timer _timer;
 
     public int EnergyAvailable

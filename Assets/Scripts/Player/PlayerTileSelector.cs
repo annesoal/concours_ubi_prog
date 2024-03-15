@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class TileSelector : MonoBehaviour
+public class PlayerTileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
@@ -46,7 +46,7 @@ public class TileSelector : MonoBehaviour
     {
         _recorder = new();
         Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
-        _helper = new SelectorGridHelper(gridPosition, _recorder);
+        _helper = new PlayerSelectorGridHelper(gridPosition, _recorder);
     }
     
     /// <summary>
