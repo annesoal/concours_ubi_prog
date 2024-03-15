@@ -51,9 +51,10 @@ namespace Grid
         public const int Walkable =     0b0000_0000_0000_0001;
         public const int Buildable =    0b0000_0000_0000_0010;
         public const int Movable =      0b0000_0000_0000_0100;
-        public const int Destructible = 0b0000_0000_0000_1000;
+        public const int EnemySpawnBlock = 0b0000_0000_0000_1000;
         public const int SpawnBlock =  0b0000_0000_0001_0000;
         public const int BasicBlock =   0b0000_0000_0100_0000; 
+        public const int EnnemyWalkable =   0b0000_0000_1000_0000; 
         
         public static int Translate(Type type)
         {
@@ -65,12 +66,14 @@ namespace Grid
                     return BlockType.Buildable; 
                 case Type.Movable:
                     return BlockType.Movable; 
-                case Type.Destructible:
-                    return BlockType.Destructible; 
+                case Type.EnemySpawnBlock:
+                    return BlockType.EnemySpawnBlock; 
                 case Type.SpawnBlock:
                     return BlockType.SpawnBlock; 
                 case Type.BasicBlock:
                     return BlockType.BasicBlock; 
+                case Type.EnemyWalkable:
+                    return BlockType.EnnemyWalkable;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -82,8 +85,9 @@ namespace Grid
          Walkable,
          Buildable,
          Movable,
-         Destructible,
          SpawnBlock,
          BasicBlock,
+         EnemyWalkable,
+         EnemySpawnBlock,
     }
 }
