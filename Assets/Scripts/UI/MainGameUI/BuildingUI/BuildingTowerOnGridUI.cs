@@ -39,6 +39,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         // DEBUG
         // _buildableCells = TilingGrid.grid.GetBuildableCells();
         
+        // DEBUG
         // AddBlocksToContentLayout();
     }
 
@@ -76,9 +77,10 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     private void InstantiateTemplate(Cell buildableCell, Transform parentLayout)
     {
         Transform template = Instantiate(buildableContentTemplate, parentLayout);
+        
+        SingleBuildableContentTemplateUI singleTemplate = template.GetComponent<SingleBuildableContentTemplateUI>();
             
-        // TODO ADD BUILDABLE CELL AND _selectedTowerSo
-        // template.AddBuildableCell(_buildableCells[i], _selectedTowerSo);
+        singleTemplate.AddBuildableCell(buildableCell, _selectedTowerSo);
     }
     
     private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleTowerSelectUI.TowerData e)
