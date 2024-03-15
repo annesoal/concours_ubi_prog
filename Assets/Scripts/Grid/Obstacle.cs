@@ -18,7 +18,7 @@ namespace Grid
         private GridHelper _helper;
         private Vector2Int _position2d;
         private Vector3 _position3d;
-        private CellRecorder recorder;
+        private Recorder<Cell> recorder;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
         
         private void Start()

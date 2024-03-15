@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Grid;
 using Grid.Blocks;
 using UnityEngine;
@@ -8,9 +9,10 @@ using UnityEngine.Serialization;
 public class PlayerTileSelector : MonoBehaviour
 {
     [SerializeField] private GameObject quad;
-    [SerializeField] private Player player;
+    [SerializeField] private GameObject highlighter;
+    private List<GameObject> highlighters;
     private GridHelper _helper;
-    private CellRecorder _recorder;
+    private Recorder<Cell> _recorder;
     public bool isSelecting = false;
 
     /// <summary>
@@ -20,10 +22,19 @@ public class PlayerTileSelector : MonoBehaviour
     public void MoveSelector( Vector2Int direction)
     {
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
+        {
             _helper.SetHelperPosition(direction);
+            SetHighlighter();
+        }
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
+    }
+
+    private void SetHighlighter()
+    {
+        GameObject newHighlighter = Instantiate(highlighter, transform.position, Quaternion.identity);
+        highlighters.Add(newHighlighter);
     }
 
     /// <summary>
@@ -45,6 +56,7 @@ public class PlayerTileSelector : MonoBehaviour
     private void InitializeHelper()
     {
         _recorder = new();
+        highlighters = new();
         Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
         _helper = new PlayerSelectorGridHelper(gridPosition, _recorder);
     }
@@ -67,6 +79,7 @@ public class PlayerTileSelector : MonoBehaviour
         Cell lastCell = _recorder.RemoveLast();
         _recorder.Reset();
         _recorder.AddCell(lastCell);
+        highlighters = new();
     }
 
     /// <summary>

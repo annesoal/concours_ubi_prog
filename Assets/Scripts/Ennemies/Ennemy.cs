@@ -27,7 +27,7 @@ namespace DefaultNamespace
 
         protected EnnemyGridHelper _helper;
         protected Vector2Int currentPosition2d;
-        protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
+        protected Recorder<Cell> _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
 
         // Deplacements (enum?)

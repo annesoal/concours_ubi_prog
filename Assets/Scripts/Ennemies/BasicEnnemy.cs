@@ -41,7 +41,7 @@ namespace Ennemies
             _currentPosition3d = transform.position;
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
             
-            _cellRecorder = new CellRecorder();
+            _cellRecorder = new Recorder<Cell>();
             _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
             _helper.AddOnTopCell(this.gameObject);
         }
