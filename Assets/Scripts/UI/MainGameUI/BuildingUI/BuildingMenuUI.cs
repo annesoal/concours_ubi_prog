@@ -68,7 +68,7 @@ public class BuildingMenuUI : MonoBehaviour
     {
         BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         BasicShowHide.Hide(circularLayout.gameObject);
-        buildingTowerOnGridUI.Show();
+        buildingTowerOnGridUI.Show(e.towerInfos);
     }
 
     private bool PlayerIsOnBuildingBlock()
