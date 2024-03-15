@@ -80,6 +80,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""f972cd79-3600-41ff-b8cc-ea29cca88a79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -478,6 +487,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""324647bd-f7ce-48da-afb6-63296b911c00"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f893483-51b4-4d5b-b876-d147b39f0877"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -515,6 +546,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_CameraZoom = m_Player.FindAction("CameraZoom", throwIfNotFound: true);
         m_Player_CameraRotation = m_Player.FindAction("CameraRotation", throwIfNotFound: true);
         m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_Confirm = m_Player.FindAction("Confirm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -582,6 +614,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CameraZoom;
     private readonly InputAction m_Player_CameraRotation;
     private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_Confirm;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -592,6 +625,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @CameraZoom => m_Wrapper.m_Player_CameraZoom;
         public InputAction @CameraRotation => m_Wrapper.m_Player_CameraRotation;
         public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @Confirm => m_Wrapper.m_Player_Confirm;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -619,6 +653,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @Confirm.started += instance.OnConfirm;
+            @Confirm.performed += instance.OnConfirm;
+            @Confirm.canceled += instance.OnConfirm;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -641,6 +678,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @Confirm.started -= instance.OnConfirm;
+            @Confirm.performed -= instance.OnConfirm;
+            @Confirm.canceled -= instance.OnConfirm;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -684,5 +724,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCameraZoom(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnConfirm(InputAction.CallbackContext context);
     }
 }

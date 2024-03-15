@@ -10,7 +10,8 @@ public class TileSelector : MonoBehaviour
     [SerializeField] private GameObject quad;
     [SerializeField] private Player player;
     private GridHelper _helper;
-    private CellRecorder _recorder; 
+    private CellRecorder _recorder;
+    public bool isSelecting = false;
 
     //Permet de deplacer le Selector...   
     public void MoveSelector( Vector2Int direction)
