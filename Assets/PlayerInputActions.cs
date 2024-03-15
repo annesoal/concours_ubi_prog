@@ -769,13 +769,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnConfirm(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {
         void OnCameraMove(InputAction.CallbackContext context);
         void OnCameraZoom(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
-        void OnCancel(InputAction.CallbackContext context);
-        void OnConfirm(InputAction.CallbackContext context);
     }
 }
