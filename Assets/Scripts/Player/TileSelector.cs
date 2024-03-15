@@ -13,7 +13,10 @@ public class TileSelector : MonoBehaviour
     private CellRecorder _recorder;
     public bool isSelecting = false;
 
-    //Permet de deplacer le Selector...   
+    /// <summary>
+    /// Permet de deplacer le Selector... 
+    /// </summary>
+    /// <param name="direction"></param>
     public void MoveSelector( Vector2Int direction)
     {
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
@@ -22,15 +25,12 @@ public class TileSelector : MonoBehaviour
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
     }
-     //;
 
-    // prablement a diviser en sous methode ? 
-    // deplace le joueur la ou le selector se trouve, empeche le selector de bouger, cache le selector et indique 
-    // au joueur qu'il peut recommencer le processus de selection
-
-
-    // Initialise le Selecteur, en le deplacant sous le joueur, active le renderer 
-    // et initialise le Helper dans la grille. 
+    /// <summary>
+    ///  Initialise le Selecteur, en le deplacant sous le joueur, active le renderer
+    ///  et initialise le Helper dans la grille.
+    /// </summary>
+    /// <param name="position"> La position dans le monde actuel </param>
     public void Initialize(Vector3 position)
     {
         transform.position = new Vector3(position.x, 0.51f, position.z);
@@ -39,29 +39,27 @@ public class TileSelector : MonoBehaviour
         InitializeHelper();
     }
 
-    // Initialize le Helper avec la position du selecteur et un recorder
+    /// <summary>
+    /// Initialize le Helper avec la position du selecteur et un recorder 
+    /// </summary>
     private void InitializeHelper()
     {
         _recorder = new();
         Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
         _helper = new SelectorGridHelper(gridPosition, _recorder);
     }
-
+    
+    /// <summary>
+    /// Cache le visuel du Selector
+    /// </summary>
     public void Hide()
     {
         quad.SetActive(false);
     }
 
-    // Check si la cellule peut permettre au joueur de se deplacer
-    private bool IsValidTileToMove()
-    {
-        if (_helper == null) 
-            return false; 
-        
-        var cell = _helper.Cell;
-        return cell.Has(BlockType.Walkable);
-    }
-
+    /// <summary>
+    /// Cache le Selector, reset le recorder et place sous la du joueur 
+    /// </summary>
     public void ResetSelf()
     {
         Hide();
@@ -70,6 +68,10 @@ public class TileSelector : MonoBehaviour
         _recorder.AddCell(lastCell);
     }
 
+    /// <summary>
+    /// Enlever une Cell du recorder et donne sa position
+    /// </summary>
+    /// <returns>null si le _recoder est null ou vide, la position de la cell sinon</returns>
     public Vector2Int? GetNextPositionToGo()
     {
         if (_recorder == null || _recorder.IsEmpty())
