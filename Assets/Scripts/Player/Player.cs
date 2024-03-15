@@ -17,6 +17,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
+    
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
@@ -28,6 +29,8 @@ public class Player : NetworkBehaviour
             _currentEnergy = value;
         }
     }
+
+    private bool _canMove;
 
     private int _totalEnergy;
     private int _currentEnergy;
@@ -41,7 +44,8 @@ public class Player : NetworkBehaviour
     {
         if (IsMovementInvalid()) return;
         if (direction == Vector2.zero) return;
-        HandleInput(direction);
+        if (_canMove)
+            HandleInput(direction);
     }
 
     /// <summary>
@@ -51,7 +55,7 @@ public class Player : NetworkBehaviour
     private bool IsMovementInvalid()
     {
         if (!IsOwner) return true;
-        if (!CanMove()) return true;
+        if (!CooldownHasPassed()) return true;
         return !HasEnergy();
     }
 
@@ -117,7 +121,7 @@ public class Player : NetworkBehaviour
     /// Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
     /// </summary>
     /// <returns></returns>
-    private bool CanMove()
+    private bool CooldownHasPassed()
     {
         return _timer.HasTimePassed();
     }
@@ -157,6 +161,7 @@ public class Player : NetworkBehaviour
     public void OnConfirm()
     {
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
+        _canMove = false;
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
@@ -168,6 +173,7 @@ public class Player : NetworkBehaviour
         _selector.isSelecting = true;
         _selector.Initialize(transform.position); 
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
+        _canMove = true; 
     }
 
     public void Move()
@@ -226,5 +232,12 @@ public class Player : NetworkBehaviour
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
         transform.LookAt(cellLocalPosition);
         transform.position = cellLocalPosition;
+    }
+
+    public void ResetPlayer(int energy)
+    {
+        EnergyAvailable = energy;
+        _canMove = false;
+
     }
 }
