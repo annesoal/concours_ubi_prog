@@ -33,7 +33,7 @@ public class PlayerTileSelector : MonoBehaviour
     /// <param name="position"> La position dans le monde actuel </param>
     public void Initialize(Vector3 position)
     {
-        transform.position = new Vector3(position.x, 0.51f, position.z);
+        transform.position = new Vector3(position.x,TilingGrid.TopOfCell, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         quad.SetActive(true);
         InitializeHelper();
