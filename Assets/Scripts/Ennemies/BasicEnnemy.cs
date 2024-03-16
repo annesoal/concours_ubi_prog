@@ -5,7 +5,7 @@ using Random = System.Random;
 
 namespace Ennemies
 {
-    public sealed class BasicEnnemy : Ennemy
+    public class BasicEnnemy : Ennemy
     {
         public float lerpSpeed = 0.5f;
         private Random _rand = new();
@@ -13,16 +13,8 @@ namespace Ennemies
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
-            
+            health = 1;
         }
-        
-        
-        private void Start()
-        {
-            Initialize();
-        }
-
-        
         
         /**
          * Deplace un ennemi d'un block :

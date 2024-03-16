@@ -48,7 +48,7 @@ namespace DefaultNamespace
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
 
 
-        protected void Initialize()
+        private void Initialize()
         {
             remainingMove = GetMovementBlocPerTurn();
             cell = new Cell();
@@ -60,23 +60,16 @@ namespace DefaultNamespace
             _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
             _helper.AddOnTopCell(this.gameObject);
         }
+        
+        public void Start()
+        {
+            Initialize();
+        }
 
         public EnnemyType GetEnnemyType()
         {
             return ennemyType;
         }
-
-        public virtual int GetMovementBlocPerTurn() => 2;
-
-        /**
-        * Reinitialise le nombre de mouvement d'un Ennemi
-        */
-        public void ResetMovement()
-        {
-            remainingMove = GetMovementBlocPerTurn();
-        }
-
-        public abstract void Move();
         
         public int Health
         {
@@ -92,5 +85,23 @@ namespace DefaultNamespace
                 Destroy(gameObject, 0.5f);
             }
         }
+        
+
+
+        public virtual int GetMovementBlocPerTurn() => 2;
+
+        /**
+        * Reinitialise le nombre de mouvement d'un Ennemi
+        */
+        public void ResetMovement()
+        {
+            remainingMove = GetMovementBlocPerTurn();
+        }
+
+        public abstract void Move();
+        
+        
+        
+        
     }
 }
