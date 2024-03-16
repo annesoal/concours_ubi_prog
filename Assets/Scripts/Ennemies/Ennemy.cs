@@ -10,9 +10,10 @@ namespace DefaultNamespace
     {
         None = 0,
         Basic,
-        Big,
+        BigGuy,
         Flying,
-        Fast
+        Goofy,
+        Doggo
     }
 
     public abstract class Ennemy : NetworkBehaviour, IDamageable
@@ -38,7 +39,7 @@ namespace DefaultNamespace
         protected Vector3 _nextPosition3d;
 
 
-        // Deplacements (enum?)
+        // Deplacements 
         protected Vector3 _avancer = new Vector3(0, 0, -1);
         protected Vector3 _gauche = new Vector3(-1, 0, 0);
         protected Vector3 _droite = new Vector3(1, 0, 0);
@@ -76,9 +77,7 @@ namespace DefaultNamespace
         }
 
         public abstract void Move();
-
-        public abstract void Corrupt();
-
+        
         public int Health
         {
             get { return health; }

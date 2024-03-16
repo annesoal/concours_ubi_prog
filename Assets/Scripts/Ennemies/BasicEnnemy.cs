@@ -1,27 +1,22 @@
-using System;
 using DefaultNamespace;
 using Grid;
 using UnityEngine;
-using System.Collections;
 using Random = System.Random;
 
 namespace Ennemies
 {
     public sealed class BasicEnnemy : Ennemy
     {
-
-
-        
         public float lerpSpeed = 0.5f;
         private Random _rand = new();
 
         public BasicEnnemy()
         {
             ennemyType = EnnemyType.Basic;
+            
         }
         
-   
-
+        
         private void Start()
         {
             Initialize();
@@ -124,11 +119,7 @@ namespace Ennemies
             _helper.SetHelperPosition(currentPosition2d);
         }
 
-        public override void Corrupt()
-        {
-            
-        }
-
+        
        
     }
 }
