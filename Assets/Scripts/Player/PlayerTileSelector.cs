@@ -1,30 +1,45 @@
 using System.Collections;
+using System.Collections.Generic;
 using Grid;
 using Grid.Blocks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 
 public class PlayerTileSelector : MonoBehaviour
 {
-    [SerializeField] private GameObject quad;
-    [SerializeField] private Player player;
+    [SerializeField] private GameObject _quad;
+    private MeshRenderer _renderer;
+    [SerializeField] private Material _baseMaterial; 
+    [SerializeField] private Material _confirmedMaterial; 
     private GridHelper _helper;
-    private CellRecorder _recorder;
+    private Recorder<Cell> _recorder;
     public bool isSelecting = false;
 
+    private void Awake()
+    {
+        _renderer = _quad.GetComponent<MeshRenderer>();
+    }
     /// <summary>
     /// Permet de deplacer le Selector... 
     /// </summary>
     /// <param name="direction"></param>
-    public void MoveSelector( Vector2Int direction)
+    public bool MoveSelector( Vector2Int direction)
     {
+        bool hasMoved = false;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
+        {
             _helper.SetHelperPosition(direction);
+            hasMoved = true;
+        }
 
         var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
         transform.position = nextPosition;
+        return hasMoved;
     }
+
+
 
     /// <summary>
     ///  Initialise le Selecteur, en le deplacant sous le joueur, active le renderer
@@ -35,7 +50,7 @@ public class PlayerTileSelector : MonoBehaviour
     {
         transform.position = new Vector3(position.x,TilingGrid.TopOfCell, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        quad.SetActive(true);
+        _quad.SetActive(true);
         InitializeHelper();
     }
 
@@ -55,7 +70,7 @@ public class PlayerTileSelector : MonoBehaviour
     public void Disable()
     {
         isSelecting = false;
-        quad.SetActive(false);
+        _quad.SetActive(false);
     }
 
     /// <summary>
@@ -64,11 +79,14 @@ public class PlayerTileSelector : MonoBehaviour
     public void ResetSelf()
     {
         Disable();
-        Cell lastCell = _recorder.RemoveLast();
-        _recorder.Reset();
-        _recorder.AddCell(lastCell);
+        if (_recorder != null && !_recorder.IsEmpty())
+        {
+            Cell lastCell = _recorder.RemoveLast();
+            _recorder.Reset();
+            _recorder.Add(lastCell);
+        }
     }
-
+    
     /// <summary>
     /// Enlever une Cell du recorder et donne sa position
     /// </summary>
@@ -80,4 +98,26 @@ public class PlayerTileSelector : MonoBehaviour
         
         return _recorder.RemoveLast().position;
     }
+
+    public void Confirm()
+    {
+       ChangeSelectorVisualToConfirm(); 
+    }
+
+    public void Select()
+    {
+        _quad.SetActive(true);
+       ChangeSelectorVisualToSelect(); 
+    }
+
+    private void ChangeSelectorVisualToConfirm()
+    {
+        _renderer.material = _confirmedMaterial; 
+    }
+    
+    private void ChangeSelectorVisualToSelect()
+    {
+        _renderer.material = _baseMaterial; 
+    }
+
 }

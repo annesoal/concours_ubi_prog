@@ -91,7 +91,7 @@ public class TowerDefenseManager : NetworkBehaviour
         if (e.newValue == State.TacticalPause)
         {
             _currentTimer = tacticalPauseDuration;
-            Player.LocalInstance.EnergyAvailable = EnergyAvailable;
+            Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new();
         }
     }

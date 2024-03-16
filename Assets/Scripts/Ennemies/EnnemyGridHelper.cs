@@ -6,12 +6,12 @@ namespace Ennemies
 {
     public class EnnemyGridHelper : GridHelper
     {
-        private CellRecorder _recorder; // Servira a verifier les dernieres positions de l'ennemi
+        private Recorder<Cell> _recorder; // Servira a verifier les dernieres positions de l'ennemi
         
-        public EnnemyGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
+        public EnnemyGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
         {
             _recorder = recorder;
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         /**
