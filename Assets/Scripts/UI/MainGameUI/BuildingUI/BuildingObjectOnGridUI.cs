@@ -6,7 +6,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingTowerOnGridUI : MonoBehaviour
+public class BuildingObjectOnGridUI : MonoBehaviour
 {
     [SerializeField] private Button closeUIButton;
     
@@ -20,7 +20,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     
     private List<Cell> _buildableCells;
     
-    private BuildableObjectSO _selectedTowerSo;
+    private BuildableObjectSO _selectedBuildableObject;
 
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void Start()
     {
-        SingleTowerSelectUI.OnAnySingleTowerSelectUISelected += SingleTowerSelectUI_OnAnySingleTowerSelectUISelected;
+        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected += SingleTowerSelectUI_OnAnySingleTowerSelectUISelected;
         
         // DEBUG
         // _buildableCells = TilingGrid.grid.GetBuildableCells();
@@ -47,7 +47,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     {
         // TODO disable player input
         
-        _selectedTowerSo = selectedTowerSo;
+        _selectedBuildableObject = selectedTowerSo;
         
         BasicShowHide.Show(gameObject);
     }
@@ -80,11 +80,11 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         SingleBuildableContentTemplateUI singleTemplate = template.GetComponent<SingleBuildableContentTemplateUI>();
             
-        singleTemplate.AddBuildableCell(buildableCell, _selectedTowerSo);
+        singleTemplate.SetTemplateInfos(buildableCell, _selectedBuildableObject);
     }
     
-    private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleTowerSelectUI.TowerData e)
+    private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
-        _selectedTowerSo = e.towerInfos;
+        _selectedBuildableObject = e.buildableObjectInfos;
     }
 }

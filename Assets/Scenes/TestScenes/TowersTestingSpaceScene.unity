@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 82869274}
   - component: {fileID: 82869276}
   m_Layer: 5
-  m_Name: SingleTowerSelectUITemplate
+  m_Name: SingleBuildableObjectSelectUITemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1110,7 +1110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700912899}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: 5.1609463e-15, z: -1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: -0.000000028391995, z: 0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1162,7 +1162,7 @@ GameObject:
   - component: {fileID: 702273565}
   - component: {fileID: 702273566}
   m_Layer: 5
-  m_Name: TowerInfoDisplayUI
+  m_Name: BuildableObjectInfoDisplayUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1201,7 +1201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   descriptionText: {fileID: 349196087}
-  towerVisuals: {fileID: 0}
+  buildableObjectVisuals: {fileID: 0}
 --- !u!1 &718486521
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1939,7 @@ GameObject:
   - component: {fileID: 1025384703}
   - component: {fileID: 1025384704}
   m_Layer: 5
-  m_Name: BuildingTowerOnGridUI
+  m_Name: BuildingObjectOnGridUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2124,7 +2124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773068531}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: 5.1609463e-15, z: -1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: -0.000000028391995, z: 0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

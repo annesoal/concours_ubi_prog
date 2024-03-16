@@ -19,8 +19,12 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         });
     }
 
-    public void AddBuildableCell(Cell buildableCell, BuildableObjectSO towerSo)
+    private Cell _associatedBuildableCell;
+    private BuildableObjectSO _associatedBuildableObjectSo;
+    
+    public void SetTemplateInfos(Cell buildableCell, BuildableObjectSO buildableObjectSo)
     {
-        
+        _associatedBuildableCell = buildableCell;
+        _associatedBuildableObjectSo = buildableObjectSo;
     }
 }

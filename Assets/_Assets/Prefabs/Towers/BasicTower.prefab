@@ -107,13 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
   shootingPoint: {fileID: 7876219794598605437}
-  towerPreview: {fileID: 2025722940407176496}
---- !u!1 &2025722940407176496 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6195419905582636604, guid: 232d4a4653874781d8eb6d4e8bad458c,
-    type: 3}
-  m_PrefabInstance: {fileID: 5325046810076988172}
-  m_PrefabAsset: {fileID: 0}
+  towerPreview: {fileID: 0}
 --- !u!4 &7876219794598605437 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2642392454959231345, guid: 232d4a4653874781d8eb6d4e8bad458c,

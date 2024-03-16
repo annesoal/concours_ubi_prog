@@ -12,7 +12,7 @@ public class BasicTower : BaseTower
 { 
     public override void Build()
     {
-        towerPreview.SetActive(false);
+        towerPreview.gameObject.SetActive(false);
         // TODO le reste
     }
 

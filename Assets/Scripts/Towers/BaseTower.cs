@@ -16,7 +16,7 @@ public abstract class BaseTower : MonoBehaviour, IBuildable
 
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
-    [SerializeField] protected GameObject towerPreview;
+    [SerializeField] protected BuildableObjectVisuals towerPreview;
 
     public abstract void Build();
     public abstract BuildableObjectSO GetBuildableObjectSO();

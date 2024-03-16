@@ -71,7 +71,7 @@ public class CircularLayoutUI : MonoBehaviour
         
         layoutItem.SetActive(true);
         
-        layoutItem.GetComponent<SingleTowerSelectUI>().SetCorrespondingTowerSO(toAdd);
+        layoutItem.GetComponent<SingleBuildableObjectSelectUI>().SetCorrespondingTowerSO(toAdd);
         
         gameObjectsToLayout.Add(layoutItem);
         
