@@ -49,6 +49,7 @@ namespace Ennemies
             }
            
         }
+        
 
         private void MoveSides()
         {
@@ -123,11 +124,11 @@ namespace Ennemies
             _helper.SetHelperPosition(currentPosition2d);
         }
 
-
-
         public override void Corrupt()
         {
-            base.Corrupt();
+            
         }
+
+       
     }
 }

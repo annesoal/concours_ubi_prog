@@ -15,23 +15,28 @@ namespace DefaultNamespace
         Fast
     }
 
-    public abstract class Ennemy : NetworkBehaviour
+    public abstract class Ennemy : NetworkBehaviour, IDamageable
     {
         [SerializeField] protected EnnemyType ennemyType;
 
         [FormerlySerializedAs("RemainingMove")] [FormerlySerializedAs("speedEnnemy")] [SerializeField]
         protected int remainingMove; //Nb de blocs restants lors dun tour
 
-        [SerializeField] protected bool state = true; // Piege
+        [FormerlySerializedAs("state")] [SerializeField]
+        protected bool stupefiedState = false; // Piege
+
         [SerializeField] protected int movementPerTurn = 2;
+        [SerializeField] protected int health;
 
         protected EnnemyGridHelper _helper;
-        protected Vector2Int currentPosition2d;
         protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
+
         protected Cell cell;
         protected Vector2Int _nextPosition2d;
+        protected Vector2Int currentPosition2d;
         protected Vector3 _currentPosition3d;
         protected Vector3 _nextPosition3d;
+
 
         // Deplacements (enum?)
         protected Vector3 _avancer = new Vector3(0, 0, -1);
@@ -40,14 +45,11 @@ namespace DefaultNamespace
         protected Vector2Int _avancer2d = new Vector2Int(0, -1);
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-        
-        
 
 
         protected void Initialize()
         {
             remainingMove = GetMovementBlocPerTurn();
-            Debug.Log(remainingMove);
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _nextPosition3d = new Vector3();
@@ -73,12 +75,23 @@ namespace DefaultNamespace
             remainingMove = GetMovementBlocPerTurn();
         }
 
-        public virtual void Move()
+        public abstract void Move();
+
+        public abstract void Corrupt();
+
+        public int Health
         {
+            get { return health; }
+            set { health = value; }
         }
 
-        public virtual void Corrupt()
+        public void Damage()
         {
+            Health--;
+            if (Health < 1)
+            {
+                Destroy(gameObject, 0.5f);
+            }
         }
     }
 }

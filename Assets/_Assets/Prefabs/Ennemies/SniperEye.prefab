@@ -183,5 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ennemyType: 0
   remainingMove: 0
-  state: 1
+  stupefiedState: 1
   movementPerTurn: 2
+  health: 0
