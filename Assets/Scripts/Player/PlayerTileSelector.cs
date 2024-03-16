@@ -106,6 +106,7 @@ public class PlayerTileSelector : MonoBehaviour
 
     public void Select()
     {
+        _quad.SetActive(true);
        ChangeSelectorVisualToSelect(); 
     }
 
