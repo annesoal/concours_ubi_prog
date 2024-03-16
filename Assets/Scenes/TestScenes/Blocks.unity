@@ -7275,7 +7275,7 @@ PrefabInstance:
         type: 3}
       propertyPath: listOfSpawners.Array.data[0]._objectToSpawn
       value: 
-      objectReference: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
+      objectReference: {fileID: 3264472064520538293, guid: aca8a258f96500008a09af5f57d01ce4,
         type: 3}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}

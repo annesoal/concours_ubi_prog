@@ -46,8 +46,5 @@ namespace Grid
         {
             currentCell.AddGameObject(gameObject);
         }
-
-
-        
     }
 }
