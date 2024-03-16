@@ -162,6 +162,7 @@ public class Player : NetworkBehaviour
     {
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         _canMove = false;
+        _selector.Confirm();
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
@@ -170,6 +171,7 @@ public class Player : NetworkBehaviour
         if (_selector.isSelecting)
             return;
         
+        _selector.Select();
         _selector.isSelecting = true;
         _selector.Initialize(transform.position); 
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);

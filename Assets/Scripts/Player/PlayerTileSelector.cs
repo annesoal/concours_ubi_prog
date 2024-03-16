@@ -9,11 +9,18 @@ using UnityEngine.Serialization;
 
 public class PlayerTileSelector : MonoBehaviour
 {
-    [SerializeField] private GameObject quad;
+    [SerializeField] private GameObject _quad;
+    private MeshRenderer _renderer;
+    [SerializeField] private Material _baseMaterial; 
+    [SerializeField] private Material _confirmedMaterial; 
     private GridHelper _helper;
     private Recorder<Cell> _recorder;
     public bool isSelecting = false;
 
+    private void Awake()
+    {
+        _renderer = _quad.GetComponent<MeshRenderer>();
+    }
     /// <summary>
     /// Permet de deplacer le Selector... 
     /// </summary>
@@ -43,7 +50,7 @@ public class PlayerTileSelector : MonoBehaviour
     {
         transform.position = new Vector3(position.x,TilingGrid.TopOfCell, position.z);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        quad.SetActive(true);
+        _quad.SetActive(true);
         InitializeHelper();
     }
 
@@ -63,7 +70,7 @@ public class PlayerTileSelector : MonoBehaviour
     public void Disable()
     {
         isSelecting = false;
-        quad.SetActive(false);
+        _quad.SetActive(false);
     }
 
     /// <summary>
@@ -91,4 +98,25 @@ public class PlayerTileSelector : MonoBehaviour
         
         return _recorder.RemoveLast().position;
     }
+
+    public void Confirm()
+    {
+       ChangeSelectorVisualToConfirm(); 
+    }
+
+    public void Select()
+    {
+       ChangeSelectorVisualToSelect(); 
+    }
+
+    private void ChangeSelectorVisualToConfirm()
+    {
+        _renderer.material = _confirmedMaterial; 
+    }
+    
+    private void ChangeSelectorVisualToSelect()
+    {
+        _renderer.material = _baseMaterial; 
+    }
+
 }
