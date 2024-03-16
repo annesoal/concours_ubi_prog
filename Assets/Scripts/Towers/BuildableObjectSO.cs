@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class TowerSO : ScriptableObject
+public class BuildableObjectSO : ScriptableObject
 {
-    public GameObject towerPrefab;
+    /// <summary>
+    /// Doit implémenter l'interface IBuildable (l'interface indiquant que l'objet peut être construit.)
+    /// </summary>
+    public GameObject prefab;
 
-    public Sprite towerIcon;
+    public Sprite icon;
 
-    public string towerName;
+    public string objectName;
 
-    public Transform towerVisuals;
+    public GameObject visuals;
 
     public string description;
 

@@ -20,7 +20,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     
     private List<Cell> _buildableCells;
     
-    private TowerSO _selectedTowerSo;
+    private BuildableObjectSO _selectedTowerSo;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         // AddBlocksToContentLayout();
     }
 
-    public void Show(TowerSO selectedTowerSo)
+    public void Show(BuildableObjectSO selectedTowerSo)
     {
         // TODO disable player input
         

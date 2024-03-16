@@ -2,7 +2,10 @@ using UnityEngine;
 
 public interface IBuildable
 {
-    GameObject BuildablePrefab { get; }
-    
     void Build();
+
+    /// <summary>
+    /// All IBuildable Objects must have a reference to their BuildableObjectSO.
+    /// </summary>
+    BuildableObjectSO GetBuildableObjectSO();
 }

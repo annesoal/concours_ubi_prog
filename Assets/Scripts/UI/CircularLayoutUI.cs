@@ -65,7 +65,7 @@ public class CircularLayoutUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
     }
     
-    public void AddObjectToLayout(TowerSO toAdd)
+    public void AddObjectToLayout(BuildableObjectSO toAdd)
     {
         GameObject layoutItem = Instantiate(layoutItemTemplate, transform);
         

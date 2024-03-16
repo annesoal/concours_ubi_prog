@@ -8,7 +8,7 @@ public class SingleTowerSelectUI : MonoBehaviour
 {
     [SerializeField] private Button selectionButton;
 
-    private TowerSO correspondingTowerSO;
+    private BuildableObjectSO correspondingTowerSO;
 
     public static event EventHandler<TowerData> OnAnySingleTowerSelectUISelected;
     
@@ -23,11 +23,11 @@ public class SingleTowerSelectUI : MonoBehaviour
         });
     }
 
-    public void SetCorrespondingTowerSO(TowerSO toSet)
+    public void SetCorrespondingTowerSO(BuildableObjectSO toSet)
     {
         correspondingTowerSO = toSet;
         
-        SetIcon(toSet.towerIcon);
+        SetIcon(toSet.icon);
     }
     
     public void SetIcon(Sprite icon)
@@ -40,7 +40,7 @@ public class SingleTowerSelectUI : MonoBehaviour
 
     public class TowerData : EventArgs
     {
-        public TowerSO towerInfos;
+        public BuildableObjectSO towerInfos;
     }
     public void OnEventTrigger_PointerEnter()
     {
