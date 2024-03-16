@@ -72,7 +72,7 @@ public class PlayerTileSelector : MonoBehaviour
     public void ResetSelf()
     {
         Disable();
-        if (!_recorder.IsEmpty())
+        if (_recorder != null && !_recorder.IsEmpty())
         {
             Cell lastCell = _recorder.RemoveLast();
             _recorder.Reset();

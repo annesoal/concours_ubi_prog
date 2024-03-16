@@ -21,7 +21,8 @@ public class EnvironmentTurnManager : MonoBehaviour
     {
         // NOTE : AIM = AI Manager
         // AIM.ComputePaths()
-        
+        PreparePlayers();
+         
         while (HasEnergyLeft(totalEnergy))
         {
             MovePlayers();
@@ -44,5 +45,10 @@ public class EnvironmentTurnManager : MonoBehaviour
     private void MovePlayers()
     {
         GameMultiplayerManager.Instance.MovePlayersClientRpc();
+    }
+
+    private void PreparePlayers()
+    {
+       GameMultiplayerManager.Instance.PreparePlayersClientRpc(); 
     }
 }

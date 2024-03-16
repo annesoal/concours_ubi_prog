@@ -213,10 +213,7 @@ public class Player : NetworkBehaviour
 
     private void DecrementEnergy(Vector2Int input)
     {
-        if (input != Vector2Int.zero)
-        {
-            _currentEnergy--; 
-        }
+       _currentEnergy--; 
     }
 
     public void OnCancel()
@@ -238,6 +235,12 @@ public class Player : NetworkBehaviour
     {
         EnergyAvailable = energy;
         _canMove = false;
+        _selector.ResetSelf();
+        _highlighters.Reset();
+    }
 
+    public void PrepareToMove()
+    {
+        _selector.GetNextPositionToGo();
     }
 }

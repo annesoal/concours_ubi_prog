@@ -402,4 +402,10 @@ public class GameMultiplayerManager : NetworkBehaviour
     {
        Player.LocalInstance.Move(); 
     }
+
+    [ClientRpc]
+    public void PreparePlayersClientRpc()
+    {
+       Player.LocalInstance.PrepareToMove(); 
+    }
 }
