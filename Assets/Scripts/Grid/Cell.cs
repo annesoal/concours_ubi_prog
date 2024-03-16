@@ -41,6 +41,11 @@ namespace Grid
             }
             objectsOnTop.Add(gameObject);
         }
+
+        public void RemoveGameObject(GameObject gameObject)
+        {
+            
+        }
     }
     
 

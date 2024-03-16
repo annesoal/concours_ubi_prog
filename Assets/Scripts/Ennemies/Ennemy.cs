@@ -99,8 +99,11 @@ namespace DefaultNamespace
         }
 
         public abstract void Move();
-        
-        
+
+        public override void OnDestroy()
+        {
+            
+        }
         
         
     }
