@@ -9,9 +9,7 @@ namespace Ennemies
 {
     public sealed class BasicEnnemy : Ennemy
     {
-        private Vector2Int _nextPosition2d;
-        private Vector3 _currentPosition3d;
-        private Vector3 _nextPosition3d;
+
 
         
         public float lerpSpeed = 0.5f;
@@ -29,24 +27,13 @@ namespace Ennemies
             Initialize();
         }
 
-   
-
-        private void Initialize()
-        {
-            remainingMove = GetMovementBlocPerTurn();
-            Debug.Log(remainingMove);
-            cell = new Cell();
-            _nextPosition2d = new Vector2Int();
-            _nextPosition3d = new Vector3();
-            _currentPosition3d = transform.position;
-            currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-            
-            _cellRecorder = new CellRecorder();
-            _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
-            _helper.AddOnTopCell(this.gameObject);
-        }
-
         
+        
+        /**
+         * Deplace un ennemi d'un block :
+         *      Vers l'avant si aucun obstacle
+         *      Gauche ou droite si un obstacle
+         */
         public override void Move()
         {
             if (!IsEndOfGrid())
@@ -65,7 +52,7 @@ namespace Ennemies
 
         private void MoveSides()
         {
-            // Algo temporaire, va plutot utiliser le recorder
+            // Algo temporaire
             if (_rand.NextDouble() < 0.5)
             {
                 if (!MoveInDirection(_gauche2d, _gauche))
@@ -91,7 +78,7 @@ namespace Ennemies
         
         private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
         {
-            _nextPosition2d = _helper.GetNeighborHelperPosition(direction2d);
+            _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
             if (_helper.IsValidCell(_nextPosition2d))
             {
                 MoveEnnemy(direction);

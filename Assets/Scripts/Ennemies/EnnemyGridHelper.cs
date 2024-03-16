@@ -15,28 +15,26 @@ namespace Ennemies
         }
 
         /**
-         * TODO Valider si fin grid
          * Verifie qu'un ennemi peut avancer
+         * TODO eviter les tours
          */
         public override bool IsValidCell(Vector2Int position)
         {
             Cell cell = TilingGrid.grid.GetCell(position);
-            //bool isValidBlockType = (cell.type & BlockType.Walkable) > 0;
+            bool isValidBlockType = (cell.type & BlockType.EnnemyWalkable) > 0;
             bool hasNoObstacle = ! ContainsObstacle(cell);
-            bool isEndOfGrid =  cell.IsNone();
-            return ! isEndOfGrid && hasNoObstacle; //isValidBlockType 
+            return isValidBlockType && hasNoObstacle; 
         }
+        
 
         public override Vector2Int GetHelperPosition()
         {
             return currentCell.position;
         }
 
-        public Vector2Int GetNeighborHelperPosition(Vector2Int direction)
+        public Vector2Int GetAdjacentHelperPosition(Vector2Int direction)
         {
-            Vector2Int test = new Vector2Int();
-            test = currentCell.position + direction;
-            return test;
+            return currentCell.position + direction;
         }
 
         public override void SetHelperPosition(Vector2Int position)
