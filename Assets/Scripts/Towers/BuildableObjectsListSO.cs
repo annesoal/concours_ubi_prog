@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[CreateAssetMenu()]
-public class TowersListSO : ScriptableObject
+public class BuildableObjectsListSO : ScriptableObject
 {
     [SerializeField] public List<BuildableObjectSO> allTowersList;
 }

@@ -11,7 +11,7 @@ public class BuildingMenuUI : MonoBehaviour
     /// <summary>
     /// Ensemble des tours pouvant être construites par les joueurs dans le niveau.
     /// </summary>
-    [SerializeField] private TowersListSO availableTowersListSO;
+    [SerializeField] private BuildableObjectsListSO availableTowersListSO;
 
     private void Awake()
     {
