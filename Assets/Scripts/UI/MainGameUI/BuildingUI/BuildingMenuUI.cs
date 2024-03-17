@@ -17,6 +17,8 @@ public class BuildingMenuUI : MonoBehaviour
     {
         showBuildingMenuButton.onClick.AddListener(() =>
         {
+            InputManager.Instance.DisablePlayerInputMap();
+            
             circularLayout.ShowLayout();
         });
     }
@@ -68,7 +70,6 @@ public class BuildingMenuUI : MonoBehaviour
     private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
-        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         BasicShowHide.Hide(circularLayout.gameObject);
         buildingTowerOnGridUI.Show(e.buildableObjectInfos);
     }
