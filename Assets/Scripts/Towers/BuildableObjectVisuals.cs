@@ -8,11 +8,11 @@ public class BuildableObjectVisuals : MonoBehaviour
 
     public void HidePreview()
     {
-        buildableObjectPreview.SetActive(true);
+        buildableObjectPreview.SetActive(false);
     }
 
     public void ShowPreview()
     {
-        buildableObjectPreview.SetActive(false);
+        buildableObjectPreview.SetActive(true);
     }
 }

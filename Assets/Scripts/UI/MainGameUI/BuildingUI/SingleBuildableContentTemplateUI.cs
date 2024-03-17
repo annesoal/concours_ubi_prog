@@ -11,12 +11,7 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
 
     private void Awake()
     {
-        selectionButton.onClick.AddListener(() =>
-        {
-            // TODO BUILDING LOGIC BASED ON :
-            // - RESOURCES AVAILABLE
-            // - IF THERE'S ALREADY A TOWER ON THE CELL
-        });
+        selectionButton.onClick.AddListener(BuildObjectOnButtonClick);
     }
 
     private Cell _associatedBuildableCell;
@@ -26,5 +21,14 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
     {
         _associatedBuildableCell = buildableCell;
         _associatedBuildableObjectSo = buildableObjectSo;
+    }
+
+    private void BuildObjectOnButtonClick()
+    {
+        IBuildable buildableObject = _associatedBuildableObjectSo.prefab.GetComponent<IBuildable>();
+        buildableObject.Build(_associatedBuildableCell);
+        // TODO BUILDING LOGIC BASED ON :
+        // - RESOURCES AVAILABLE
+        // - IF THERE'S ALREADY A TOWER ON THE CELL
     }
 }

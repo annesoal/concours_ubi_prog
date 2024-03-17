@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Grid;
 using UnityEngine;
 
 /**
@@ -16,8 +17,9 @@ public abstract class BaseTower : MonoBehaviour, IBuildable
 
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
-    [SerializeField] protected BuildableObjectVisuals towerPreview;
+    [SerializeField] protected BuildableObjectVisuals towerVisuals;
 
-    public abstract void Build();
+    public abstract void Build(Cell buildableCell);
+
     public abstract BuildableObjectSO GetBuildableObjectSO();
 }

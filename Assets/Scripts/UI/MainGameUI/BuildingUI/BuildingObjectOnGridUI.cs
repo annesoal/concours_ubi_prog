@@ -36,11 +36,9 @@ public class BuildingObjectOnGridUI : MonoBehaviour
 
     private void Start()
     {
-        // DEBUG
-        // _buildableCells = TilingGrid.grid.GetBuildableCells();
+        _buildableCells = TilingGrid.grid.GetBuildableCells();
         
-        // DEBUG
-        // AddBlocksToContentLayout();
+        AddBlocksToContentLayout();
     }
 
     public void Show(BuildableObjectSO buildableObjectSO)
@@ -49,12 +47,6 @@ public class BuildingObjectOnGridUI : MonoBehaviour
         
         InputManager.Instance.DisablePlayerInputMap();
 
-        // DEBUG
-        _buildableCells = new List<Cell>();
-        _buildableCells.Add(new Cell());
-        _buildableCells.Add(new Cell());
-        _buildableCells.Add(new Cell());
-        
         _selectedBuildableObject = buildableObjectSO;
         
         AddBlocksToContentLayout();
