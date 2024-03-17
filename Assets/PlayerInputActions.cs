@@ -477,7 +477,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""negative"",
                     ""id"": ""d75526a0-837b-47ee-bc9a-53695cb11d1d"",
-                    ""path"": ""<Keyboard>/numpad7"",
+                    ""path"": ""<Keyboard>/numpad9"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -488,7 +488,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""positive"",
                     ""id"": ""9b737a06-e962-4588-a155-e94b24354273"",
-                    ""path"": ""<Keyboard>/numpad9"",
+                    ""path"": ""<Keyboard>/numpad7"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
