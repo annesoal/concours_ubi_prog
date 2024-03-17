@@ -43,8 +43,6 @@ namespace Grid
         }
     }
     
-
-    
     public static class BlockType
     {
         public const int None =         0b0000_0000_0000_0000;

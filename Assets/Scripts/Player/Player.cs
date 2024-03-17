@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using Grid;
 using Grid.Blocks;
 using Unity.Mathematics;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
@@ -17,7 +20,13 @@ public class Player : NetworkBehaviour
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
-    
+
+    public int Resources
+    {
+        get =>_resources;
+    }
+
+    private int _resources;
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
@@ -187,9 +196,37 @@ public class Player : NetworkBehaviour
         if (nextPosition == null) return;
 
         RemoveNextHighlighter();
-        MoveToNextPosition((Vector2Int) nextPosition); 
+        MoveToNextPosition((Vector2Int) nextPosition);
+        PickUpItems((Vector2Int) nextPosition); 
     }
 
+    public void PickUpItems(Vector2Int position)
+    {
+        Debug.Log("Player is at : " + position);
+        List<GameObject> elementsOnTopOfCell =
+            PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
+        Debug.Log("Cell has list : " + elementsOnTopOfCell);
+        Debug.Log("Cell has size of : " + elementsOnTopOfCell.Count);
+
+        for (int i = 0; i < elementsOnTopOfCell.Count; i++)
+        {
+            var element = elementsOnTopOfCell[i];
+            string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
+            Debug.Log("object of type : " + stringName);
+            switch (stringName)
+            {
+                case "Ressource":
+                    _resources++;  
+                    PlayerSelectorGridHelper.RemoveElement(element, position);
+                    Destroy(element);
+                    Debug.Log("This should be destroyed : " + stringName);
+                    break;
+                default:
+                    Debug.Log(stringName + " got us here");
+                    break;
+            } 
+        }
+    }
     private void CleanHighlighters()
     {
         while (_highlighters != null && !_highlighters.IsEmpty())
