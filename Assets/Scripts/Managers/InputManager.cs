@@ -67,6 +67,16 @@ public class InputManager : MonoBehaviour
         return _playerInputActions.Camera.CameraRotation.ReadValue<float>();
     }
 
+    public void DisablePlayerInputMap()
+    {
+        _playerInputActions.Player.Disable();
+    }
+    
+    public void EnablePlayerInputMap()
+    {
+        _playerInputActions.Player.Enable();
+    }
+
     private void Select(InputAction.CallbackContext context)
     {
         _player.OnSelect();
