@@ -18,16 +18,8 @@ namespace Ennemies
             health = 1;
         }
         
-   
 
-        private void Start()
-        {
-            Initialize();
-        }
-
-   
-
-        private void Initialize()
+        protected override void Initialize()
         {
             remainingMove = GetMovementBlocPerTurn();
             Debug.Log(remainingMove);
@@ -40,6 +32,7 @@ namespace Ennemies
             _cellRecorder = new Recorder<Cell>();
             _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
             _helper.AddOnTopCell(this.gameObject);
+            AddInGame(this.gameObject);
         }
 
         
@@ -59,6 +52,7 @@ namespace Ennemies
             }
             else
             {
+                enemiesInGame.Remove(this.gameObject);
                 Destroy(this.gameObject);
             }
            
@@ -116,6 +110,14 @@ namespace Ennemies
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.Add(cell);
             remainingMove -= 1;
+            UpdatePositionInGame();
+        }
+
+
+        private void UpdatePositionInGame()
+        {
+            enemiesInGame.Remove(this.gameObject);
+            enemiesInGame.Add(this.gameObject);
         }
 
         /**

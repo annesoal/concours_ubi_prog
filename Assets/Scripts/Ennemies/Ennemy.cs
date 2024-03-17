@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Unity.Netcode;
@@ -26,7 +27,7 @@ namespace DefaultNamespace
         [FormerlySerializedAs("state")] [SerializeField]
         protected bool stupefiedState = false; // Piege
 
-        [SerializeField] protected int movementPerTurn = 2;
+        [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int energy = 2;
         [SerializeField] protected int health;
 
         protected EnnemyGridHelper _helper;
@@ -36,6 +37,7 @@ namespace DefaultNamespace
         protected Vector2Int currentPosition2d;
         protected Vector3 _currentPosition3d;
         protected Vector3 _nextPosition3d;
+        protected static List<GameObject> enemiesInGame;
 
 
         // Deplacements 
@@ -47,7 +49,7 @@ namespace DefaultNamespace
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
 
 
-        private void Initialize()
+        protected virtual void Initialize()
         {
         
         }
@@ -94,7 +96,18 @@ namespace DefaultNamespace
         public override void OnDestroy()
         {
         }
-        
+
+        protected void AddInGame(GameObject enemy)
+        {
+            enemiesInGame ??= new List<GameObject>();
+            enemiesInGame.Add(enemy);
+        }
+
+
+        public static List<GameObject>  GetEnemiesInGame()
+        {
+            return enemiesInGame;
+        }
         
     }
 }

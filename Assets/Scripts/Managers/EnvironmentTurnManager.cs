@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
 public class EnvironmentTurnManager : MonoBehaviour
@@ -33,7 +34,8 @@ public class EnvironmentTurnManager : MonoBehaviour
             
             totalEnergy--;
         }
-        
+        //IAManager.Instance.MoveEnemies();
+            
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }
 
