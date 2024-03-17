@@ -1,11 +1,13 @@
+using System;
 using DefaultNamespace;
 using Grid;
 using UnityEngine;
+using System.Collections;
 using Random = System.Random;
 
 namespace Ennemies
 {
-    public class BasicEnnemy : Ennemy
+    public sealed class BasicEnnemy : Ennemy
     {
         public float lerpSpeed = 0.5f;
         private Random _rand = new();
@@ -15,6 +17,31 @@ namespace Ennemies
             ennemyType = EnnemyType.Basic;
             health = 1;
         }
+        
+   
+
+        private void Start()
+        {
+            Initialize();
+        }
+
+   
+
+        private void Initialize()
+        {
+            remainingMove = GetMovementBlocPerTurn();
+            Debug.Log(remainingMove);
+            cell = new Cell();
+            _nextPosition2d = new Vector2Int();
+            _nextPosition3d = new Vector3();
+            _currentPosition3d = transform.position;
+            currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
+            
+            _cellRecorder = new Recorder<Cell>();
+            _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
+            _helper.AddOnTopCell(this.gameObject);
+        }
+
         
         /**
          * Deplace un ennemi d'un block :
@@ -87,7 +114,7 @@ namespace Ennemies
             float t = Mathf.Clamp01(lerpSpeed * Time.deltaTime); // Normalisation de la vitesse
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             _helper.AddOnTopCell(transform.gameObject);
-            _cellRecorder.AddCell(cell);
+            _cellRecorder.Add(cell);
             remainingMove -= 1;
         }
 
@@ -110,8 +137,5 @@ namespace Ennemies
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
             _helper.SetHelperPosition(currentPosition2d);
         }
-
-        
-       
     }
 }

@@ -30,8 +30,7 @@ namespace DefaultNamespace
         [SerializeField] protected int health;
 
         protected EnnemyGridHelper _helper;
-        protected CellRecorder _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
-
+        protected Recorder<Cell> _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
         protected Vector2Int _nextPosition2d;
         protected Vector2Int currentPosition2d;
@@ -50,15 +49,7 @@ namespace DefaultNamespace
 
         private void Initialize()
         {
-            remainingMove = GetMovementBlocPerTurn();
-            cell = new Cell();
-            _nextPosition2d = new Vector2Int();
-            _nextPosition3d = new Vector3();
-            _currentPosition3d = transform.position;
-            currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-            _cellRecorder = new CellRecorder();
-            _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
-            _helper.AddOnTopCell(this.gameObject);
+        
         }
         
         public void Start()
@@ -102,7 +93,6 @@ namespace DefaultNamespace
 
         public override void OnDestroy()
         {
-            
         }
         
         

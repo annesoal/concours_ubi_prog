@@ -7,17 +7,17 @@ namespace Grid
     {
         // Permetterait de parcourir la File pour avoir les deplacements qui se jouent dans l'ordre durant la phase 
         // d'action
-        private CellRecorder _recorder;
+        private Recorder<Cell> _recorder;
         
         public PlayerSelectorGridHelper(Vector2Int position2d) : base(position2d)
         {
             currentCell = TilingGrid.grid.GetCell(position2d);
         }
         
-        public PlayerSelectorGridHelper(Vector2Int position, CellRecorder recorder) : base(position)
+        public PlayerSelectorGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
         {
             _recorder = recorder;
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         
@@ -39,7 +39,7 @@ namespace Grid
         {
             Vector2Int next = currentCell.position + direction; 
             currentCell = TilingGrid.grid.GetCell(next); 
-            _recorder.AddCell(currentCell);
+            _recorder.Add(currentCell);
         }
 
         public override void AddOnTopCell(GameObject gameObject)
