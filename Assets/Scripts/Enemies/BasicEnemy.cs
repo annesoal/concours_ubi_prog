@@ -7,12 +7,12 @@ using Random = System.Random;
 
 namespace Ennemies
 {
-    public sealed class BasicEnnemy : Ennemy
+    public sealed class BasicEnemy : Enemy
     {
         public float lerpSpeed = 0.5f;
         private Random _rand = new();
 
-        public BasicEnnemy()
+        public BasicEnemy()
         {
             ennemyType = EnnemyType.Basic;
             health = 1;
@@ -30,7 +30,7 @@ namespace Ennemies
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
             
             _cellRecorder = new Recorder<Cell>();
-            _helper = new EnnemyGridHelper(currentPosition2d, _cellRecorder);
+            _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
             _helper.AddOnTopCell(this.gameObject);
             AddInGame(this.gameObject);
         }
@@ -90,7 +90,7 @@ namespace Ennemies
             _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
             if (_helper.IsValidCell(_nextPosition2d))
             {
-                MoveEnnemy(direction);
+                MoveEnemy(direction);
                 return true;
             }
             return false;
@@ -101,7 +101,7 @@ namespace Ennemies
          * Bouge l'ennemi
          * Enregistre sa nouvelle position dans le recorder
          */
-        private void MoveEnnemy(Vector3 direction)
+        private void MoveEnemy(Vector3 direction)
         {
             ChangeEnnemyPosition3d(direction);
             ChangeEnnemyPosition2d();

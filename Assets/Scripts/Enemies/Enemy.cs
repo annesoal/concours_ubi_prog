@@ -17,7 +17,7 @@ namespace DefaultNamespace
         Doggo
     }
 
-    public abstract class Ennemy : NetworkBehaviour, IDamageable
+    public abstract class Enemy : NetworkBehaviour, IDamageable
     {
         [SerializeField] protected EnnemyType ennemyType;
 
@@ -30,7 +30,7 @@ namespace DefaultNamespace
         [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int energy = 2;
         [SerializeField] protected int health;
 
-        protected EnnemyGridHelper _helper;
+        protected EnemyGridHelper _helper;
         protected Recorder<Cell> _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
         protected Vector2Int _nextPosition2d;

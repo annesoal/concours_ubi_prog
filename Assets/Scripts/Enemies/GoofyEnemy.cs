@@ -2,16 +2,16 @@ using DefaultNamespace;
 
 namespace Ennemies
 {
-    public class DoggoEnnemy : Ennemy
+    public class GoofyEnemy : Enemy
     {
         
-        public DoggoEnnemy()
+        public GoofyEnemy()
         {
-            ennemyType = EnnemyType.Doggo;
+            ennemyType = EnnemyType.Goofy;
         }
         public override void Move()
         {
-         
+           
         }
         
     }

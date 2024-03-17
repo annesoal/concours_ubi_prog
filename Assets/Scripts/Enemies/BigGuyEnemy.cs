@@ -2,18 +2,18 @@ using DefaultNamespace;
 
 namespace Ennemies
 {
-    public class SniperEyeEnnemy : Ennemy, ICorrupt
+    public class BigGuyEnemy : Enemy, ICorrupt
     {
-        
-        public SniperEyeEnnemy()
+        public BigGuyEnemy()
         {
-            ennemyType = EnnemyType.Flying;
+            ennemyType = EnnemyType.BigGuy;
         }
+        
         public override void Move()
         {
            
         }
-        
+
         public void Corrupt()
         {
            

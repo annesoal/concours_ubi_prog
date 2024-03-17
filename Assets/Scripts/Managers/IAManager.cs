@@ -14,17 +14,17 @@ public class IAManager : MonoBehaviour
     
         public void MoveEnemies()
         {
-            Ennemy enemy;
-            List<GameObject> enemies = Ennemy.GetEnemiesInGame();
+            Enemy enemy;
+            List<GameObject> enemies = Enemy.GetEnemiesInGame();
             foreach (var enemyObj in enemies)
             {
-                enemy = enemyObj.GetComponent<Ennemy>();
+                enemy = enemyObj.GetComponent<Enemy>();
                 StartRoutineMoveEnemy(enemy);
 
             }
         }
 
-        private void StartRoutineMoveEnemy(Ennemy enemy)
+        private void StartRoutineMoveEnemy(Enemy enemy)
         {
             enemy.Move();
         }

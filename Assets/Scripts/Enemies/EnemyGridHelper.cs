@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Ennemies
 {
-    public class EnnemyGridHelper : GridHelper
+    public class EnemyGridHelper : GridHelper
     {
         private Recorder<Cell> _recorder; // Servira a verifier les dernieres positions de l'ennemi
         
-        public EnnemyGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
+        public EnemyGridHelper(Vector2Int position, Recorder<Cell> recorder) : base(position)
         {
             _recorder = recorder;
             _recorder.Add(currentCell);
