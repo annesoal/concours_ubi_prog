@@ -202,27 +202,21 @@ public class Player : NetworkBehaviour
 
     public void PickUpItems(Vector2Int position)
     {
-        Debug.Log("Player is at : " + position);
         List<GameObject> elementsOnTopOfCell =
             PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
-        Debug.Log("Cell has list : " + elementsOnTopOfCell);
-        Debug.Log("Cell has size of : " + elementsOnTopOfCell.Count);
 
         for (int i = 0; i < elementsOnTopOfCell.Count; i++)
         {
             var element = elementsOnTopOfCell[i];
             string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
-            Debug.Log("object of type : " + stringName);
             switch (stringName)
             {
                 case "Ressource":
                     _resources++;  
                     PlayerSelectorGridHelper.RemoveElement(element, position);
                     Destroy(element);
-                    Debug.Log("This should be destroyed : " + stringName);
                     break;
                 default:
-                    Debug.Log(stringName + " got us here");
                     break;
             } 
         }
