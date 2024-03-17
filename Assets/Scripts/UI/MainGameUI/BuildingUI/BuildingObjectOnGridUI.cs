@@ -26,16 +26,16 @@ public class BuildingObjectOnGridUI : MonoBehaviour
     {
         closeUIButton.onClick.AddListener(() =>
         {
-            // TODO enable back player input
+            InputManager.Instance.EnablePlayerInputMap();
             
             BasicShowHide.Hide(gameObject);
+            
+            ClearLayouts();
         });
     }
 
     private void Start()
     {
-        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected += SingleTowerSelectUI_OnAnySingleTowerSelectUISelected;
-        
         // DEBUG
         // _buildableCells = TilingGrid.grid.GetBuildableCells();
         
@@ -43,11 +43,21 @@ public class BuildingObjectOnGridUI : MonoBehaviour
         // AddBlocksToContentLayout();
     }
 
-    public void Show(BuildableObjectSO selectedTowerSo)
+    public void Show(BuildableObjectSO buildableObjectSO)
     {
-        // TODO disable player input
+        ClearLayouts();
         
-        _selectedBuildableObject = selectedTowerSo;
+        InputManager.Instance.DisablePlayerInputMap();
+
+        // DEBUG
+        _buildableCells = new List<Cell>();
+        _buildableCells.Add(new Cell());
+        _buildableCells.Add(new Cell());
+        _buildableCells.Add(new Cell());
+        
+        _selectedBuildableObject = buildableObjectSO;
+        
+        AddBlocksToContentLayout();
         
         BasicShowHide.Show(gameObject);
     }
@@ -55,7 +65,7 @@ public class BuildingObjectOnGridUI : MonoBehaviour
     private void AddBlocksToContentLayout()
     {
         int i;
-        for (i = 0; i < maxNumberOfContentPerLayout; i++)
+        for (i = 0; i < _buildableCells.Count && i < maxNumberOfContentPerLayout; i++)
         {
             InstantiateTemplate(_buildableCells[i], leftContentLayout);
         }
@@ -78,13 +88,27 @@ public class BuildingObjectOnGridUI : MonoBehaviour
     {
         Transform template = Instantiate(buildableContentTemplate, parentLayout);
         
+        template.gameObject.SetActive(true);
+        
         SingleBuildableContentTemplateUI singleTemplate = template.GetComponent<SingleBuildableContentTemplateUI>();
             
         singleTemplate.SetTemplateInfos(buildableCell, _selectedBuildableObject);
     }
-    
-    private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
+
+    private void ClearLayouts()
     {
-        _selectedBuildableObject = e.buildableObjectInfos;
+        ClearLayout(leftContentLayout);
+        ClearLayout(rightContentLayout);
+    }
+
+    private void ClearLayout(Transform layoutToClear)
+    {
+        foreach (Transform child in layoutToClear)
+        {
+            if (child != buildableContentTemplate)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }
