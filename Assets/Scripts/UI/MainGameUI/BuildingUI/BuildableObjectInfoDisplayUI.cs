@@ -16,8 +16,12 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUIHoveredExit +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit;
+        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
+            SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUISelected;
     }
 
+    private GameObject preview;
+    
     private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
@@ -25,14 +29,28 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         
         descriptionText.text = e.buildableObjectInfos.description;
         
-        GameObject preview = Instantiate(e.buildableObjectInfos.visuals, buildableObjectVisualsPosition);
+        preview = Instantiate(e.buildableObjectInfos.visuals, buildableObjectVisualsPosition);
         preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
     }
     
     private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
+        ClearDisplay();
+    }
+
+    private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUISelected
+        (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
+    {
+        ClearDisplay();
+    }
+
+    private void ClearDisplay()
+    {
         BasicShowHide.Hide(gameObject);
+        
+        Destroy(preview);
+        preview = null;
     }
 
 }
