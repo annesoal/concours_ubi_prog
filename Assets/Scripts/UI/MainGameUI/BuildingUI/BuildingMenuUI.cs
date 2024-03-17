@@ -28,7 +28,8 @@ public class BuildingMenuUI : MonoBehaviour
         // DEBUG devra être décommenté
         // BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         
-        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        // DEBUG
+        //TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
         
