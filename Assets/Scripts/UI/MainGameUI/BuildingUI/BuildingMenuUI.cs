@@ -33,9 +33,9 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void UpdateLayoutVisuals()
     {
-        foreach (BuildableObjectSO towerSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
+        foreach (BuildableObjectSO buildableObjectSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
         {
-            circularLayout.AddObjectToLayout(towerSo);
+            circularLayout.AddObjectToLayout(buildableObjectSo);
         }
     }
 
