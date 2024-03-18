@@ -38,10 +38,8 @@ public class SynchronizeBuilding : NetworkBehaviour
         
         instance.GetComponent<IBuildable>().Build(positionToBuild);
         
-        Debug.Log("Before Spawn");
         NetworkObject buildableObjectNetworkObject = instance.GetComponent<NetworkObject>();
         buildableObjectNetworkObject.Spawn(true);
-        Debug.Log("After Spawn");
         
         SpawnBuildableObjectClientRpc(buildableObjectNetworkObject, positionToBuild);
     }
