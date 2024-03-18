@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Grid;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -407,5 +408,32 @@ public class GameMultiplayerManager : NetworkBehaviour
     public void PreparePlayersClientRpc()
     {
        Player.LocalInstance.PrepareToMove(); 
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void pickUpResourcesServerRpc(
+        int elementPosition, Vector2Int position, ServerRpcParams serverRpcParams = default)
+    {
+        pickUpResourcesClientRpc(elementPosition,position);    
+    }
+
+    [ClientRpc]
+    private void pickUpResourcesClientRpc(int elementPosition, Vector2Int position)
+    {
+        Player.LocalInstance.Resources++;
+        List<GameObject> elementsOnTopOfCell =
+                    PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
+        Debug.Log("length of array : " + elementsOnTopOfCell.Count);
+        Debug.Log("value passed : " + elementPosition);
+        GameObject element = elementsOnTopOfCell[elementPosition];
+        string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
+        switch (stringName)
+        {
+            case "Ressource":
+                PlayerSelectorGridHelper.RemoveElement(element, position);
+                Destroy(element);
+                Debug.Log(element);
+                break;
+        }
     }
 }

@@ -1,6 +1,4 @@
-using System;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Grid
@@ -17,14 +15,8 @@ namespace Grid
             PlayerSelectorGridHelper helper = 
                 new PlayerSelectorGridHelper(TilingGrid.LocalToGridPosition(position));
             helper.AddOnTopCell(gameObject);
-            transform.position = TilingGrid.GridPositionToLocal(helper.Cell.position, 0.72f );
-            (_networkObject = this.GetComponent<NetworkObject>()).Spawn();
+            transform.position = TilingGrid.GridPositionToLocal(helper.Cell.position, TopOfCell );
         }
 
-        private void OnDestroy()
-        {
-           _networkObject.Despawn();
-           Destroy(this);
-        }
     }
 }

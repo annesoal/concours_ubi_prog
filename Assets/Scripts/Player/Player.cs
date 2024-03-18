@@ -21,12 +21,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
 
-    public int Resources
-    {
-        get =>_resources;
-    }
+    public int Resources { set; get; }
+    
 
-    private int _resources;
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
@@ -209,16 +206,10 @@ public class Player : NetworkBehaviour
         {
             var element = elementsOnTopOfCell[i];
             string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
-            switch (stringName)
+            if (stringName.Trim() == "Ressource")
             {
-                case "Ressource":
-                    _resources++;  
-                    PlayerSelectorGridHelper.RemoveElement(element, position);
-                    Destroy(element);
-                    break;
-                default:
-                    break;
-            } 
+                    GameMultiplayerManager.Instance.pickUpResourcesServerRpc(i, position);
+            }
         }
     }
     private void CleanHighlighters()
