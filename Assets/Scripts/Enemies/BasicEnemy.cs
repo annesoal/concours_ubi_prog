@@ -21,8 +21,6 @@ namespace Ennemies
 
         protected override void Initialize()
         {
-            remainingMove = GetMovementBlocPerTurn();
-            Debug.Log(remainingMove);
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
             _nextPosition3d = new Vector3();
@@ -123,7 +121,6 @@ namespace Ennemies
             currentPosition2d = _helper.GetHelperPosition();
             _currentPosition3d = TilingGrid.GridPositionToLocal(currentPosition2d, TilingGrid.TopOfCell + 1);
             _currentPosition3d += direction;
-            Debug.Log("nouvelle position3d ennemi: " + _currentPosition3d);
         }
 
         /**

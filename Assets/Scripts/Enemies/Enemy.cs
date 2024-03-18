@@ -21,10 +21,8 @@ namespace DefaultNamespace
     {
         [SerializeField] protected EnnemyType ennemyType;
 
-        [FormerlySerializedAs("RemainingMove")] [FormerlySerializedAs("speedEnnemy")] [SerializeField]
-        protected int remainingMove; //Nb de blocs restants lors dun tour
-
-        [FormerlySerializedAs("state")] [SerializeField]
+        
+        [SerializeField]
         protected bool stupefiedState = false; // Piege
 
         [FormerlySerializedAs("energy")] [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int ratioMovement = 2;
@@ -35,7 +33,7 @@ namespace DefaultNamespace
         protected Cell cell;
         protected Vector2Int _nextPosition2d;
         protected Vector2Int currentPosition2d;
-        protected Vector3 _currentPosition3d;
+        public Vector3 _currentPosition3d;
         protected Vector3 _nextPosition3d;
         protected static List<GameObject> enemiesInGame;
 
@@ -81,16 +79,8 @@ namespace DefaultNamespace
         
 
 
-        public virtual int GetMovementBlocPerTurn() => 2;
-
-        /**
-        * Reinitialise le nombre de mouvement d'un Ennemi
-        */
-        public void ResetMovement()
-        {
-            remainingMove = GetMovementBlocPerTurn();
-        }
-
+        public virtual int GetMovementBlocPerTurn() => 3;
+        
         public abstract void Move(int energy);
 
 
