@@ -39,6 +39,8 @@ public class BuildingObjectOnGridUI : MonoBehaviour
         _buildableCells = TilingGrid.grid.GetBuildableCells();
         
         AddBlocksToContentLayout();
+        
+        gameObject.SetActive(false);
     }
 
     public void Show(BuildableObjectSO buildableObjectSO)
