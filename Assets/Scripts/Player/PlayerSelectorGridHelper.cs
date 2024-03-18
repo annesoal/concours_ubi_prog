@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Grid.Interface;
 using UnityEngine;
 
 namespace Grid
@@ -45,21 +46,26 @@ namespace Grid
 
         public override void AddOnTopCell(GameObject gameObject)
         {
-            currentCell.AddGameObject(gameObject);
+           currentCell.AddGameObject(gameObject);
+           TilingGrid.grid.UpdateCell(currentCell);
+        }
+
+        public void AddOnTopCell(GameObject gameObject, ITopOfCell topOfCell = null)
+        {
+            currentCell.AddGameObject(gameObject, topOfCell);
             TilingGrid.grid.UpdateCell(currentCell);
         }
 
-        public static List<GameObject> GetElementsOnTopOfCell(Vector2Int position)
+        public static List<ITopOfCell> GetElementsOnTopOfCell(Vector2Int position)
         {
             try
             {
                 var cell = TilingGrid.grid.GetCell(position);
-                Debug.Log(cell.position);
-                var objectsOnTop = cell.objectsOnTop;
+                var objectsOnTop = cell.objectsTopOfCell;
                 if (objectsOnTop == null)
                 {
                     Debug.Log("List was null");
-                    return new List<GameObject>();
+                    return new List<ITopOfCell>();
                 }
 
                 return objectsOnTop;
@@ -67,7 +73,7 @@ namespace Grid
             catch (ArgumentException e)
             {
                 Debug.Log("Got wrong position?");
-                return new List<GameObject>();
+                return new List<ITopOfCell>();
             }
         }
 

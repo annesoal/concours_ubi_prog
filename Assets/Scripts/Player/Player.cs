@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Grid;
 using Grid.Blocks;
+using Grid.Interface;
 using Unity.Mathematics;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
@@ -199,14 +200,14 @@ public class Player : NetworkBehaviour
 
     public void PickUpItems(Vector2Int position)
     {
-        List<GameObject> elementsOnTopOfCell =
+        List<ITopOfCell> elementsOnTopOfCell =
             PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
 
         for (int i = 0; i < elementsOnTopOfCell.Count; i++)
         {
             var element = elementsOnTopOfCell[i];
-            string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
-            if (stringName.Trim() == "Ressource")
+            TypeTopOfCell type = element.GetType();
+            if (type == TypeTopOfCell.Resource)
             {
                     GameMultiplayerManager.Instance.pickUpResourcesServerRpc(i, position);
             }

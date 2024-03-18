@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -421,19 +422,17 @@ public class GameMultiplayerManager : NetworkBehaviour
     private void pickUpResourcesClientRpc(int elementPosition, Vector2Int position)
     {
         Player.LocalInstance.Resources++;
-        List<GameObject> elementsOnTopOfCell =
+        List<ITopOfCell> elementsOnTopOfCell =
                     PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
         Debug.Log("length of array : " + elementsOnTopOfCell.Count);
         Debug.Log("value passed : " + elementPosition);
-        GameObject element = elementsOnTopOfCell[elementPosition];
-        string stringName = element.ToString().Replace("(Clone) (UnityEngine.GameObject)","");
-        switch (stringName)
+        ITopOfCell element = elementsOnTopOfCell[elementPosition];
+        if (element.GetType() == TypeTopOfCell.Resource)
         {
-            case "Ressource":
-                PlayerSelectorGridHelper.RemoveElement(element, position);
-                Destroy(element);
-                Debug.Log(element);
-                break;
+            GameObject gameObject = element.ToGameObject();
+            PlayerSelectorGridHelper.RemoveElement(gameObject, position);
+            Destroy(gameObject);
+            Debug.Log(element);
         }
     }
 }
