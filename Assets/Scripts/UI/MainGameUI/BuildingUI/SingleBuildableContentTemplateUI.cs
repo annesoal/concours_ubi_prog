@@ -25,10 +25,9 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
 
     private void BuildObjectOnButtonClick()
     {
-        IBuildable buildableObject = _associatedBuildableObjectSo.prefab.GetComponent<IBuildable>();
-        buildableObject.Build(_associatedBuildableCell);
         // TODO BUILDING LOGIC BASED ON :
         // - RESOURCES AVAILABLE
         // - IF THERE'S ALREADY A TOWER ON THE CELL
+        SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
     }
 }

@@ -11,16 +11,10 @@ using UnityEngine;
  */
 public class BasicTower : BaseTower
 { 
-    public override void Build(Cell buildableCell)
+    public override void Build(Vector3 positionToBuild)
     {
-        GameObject instance = Instantiate(gameObject);
-        BasicTower basicTower = instance.GetComponent<BasicTower>();
-        
-        basicTower.towerVisuals.HidePreview();
-        basicTower.transform.position = TilingGrid.GridPositionToLocal(buildableCell.position);
-        
-        // TODO le reste
-        Debug.Log("Build dans basic tower pour cell at position 2int : " + buildableCell.position);
+        towerVisuals.HidePreview();
+        transform.position = positionToBuild;
     }
 
     public override BuildableObjectSO GetBuildableObjectSO()

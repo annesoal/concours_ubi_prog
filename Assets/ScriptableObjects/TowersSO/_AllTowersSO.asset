@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 261eb23c4e2c02e1a97751a955c3f46d, type: 3}
   m_Name: _AllTowersSO
   m_EditorClassIdentifier: 
-  allTowersList:
+  list:
   - {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}

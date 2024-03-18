@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IBuildable
 {
-    void Build(Cell buildableCell);
+    void Build(Vector3 positionToBuild);
 
     /// <summary>
     /// All IBuildable Objects must have a reference to their BuildableObjectSO.

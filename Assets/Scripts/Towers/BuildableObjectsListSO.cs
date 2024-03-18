@@ -5,5 +5,5 @@ using UnityEngine;
 //[CreateAssetMenu()]
 public class BuildableObjectsListSO : ScriptableObject
 {
-    [SerializeField] public List<BuildableObjectSO> allTowersList;
+    [SerializeField] public List<BuildableObjectSO> list;
 }

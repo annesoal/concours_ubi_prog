@@ -8,11 +8,6 @@ using UnityEngine.UI;
 
 public class BuildingMenuUI : MonoBehaviour
 {
-    /// <summary>
-    /// Ensemble des tours pouvant être construites par les joueurs dans le niveau.
-    /// </summary>
-    [SerializeField] private BuildableObjectsListSO availableTowersListSO;
-
     private void Awake()
     {
         showBuildingMenuButton.onClick.AddListener(() =>
@@ -25,11 +20,9 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void Start()
     {
-        // DEBUG devra être décommenté
-        // BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         
-        // DEBUG
-        //TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
         
@@ -40,7 +33,7 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void UpdateLayoutVisuals()
     {
-        foreach (BuildableObjectSO towerSo in availableTowersListSO.allTowersList)
+        foreach (BuildableObjectSO towerSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
         {
             circularLayout.AddObjectToLayout(towerSo);
         }
