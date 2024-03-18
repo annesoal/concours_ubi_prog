@@ -7270,7 +7270,7 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[0]._timeSlot
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
