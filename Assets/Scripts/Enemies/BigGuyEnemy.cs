@@ -9,7 +9,7 @@ namespace Ennemies
             ennemyType = EnnemyType.BigGuy;
         }
         
-        public override void Move()
+        public override void Move(int energy)
         {
            
         }

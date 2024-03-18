@@ -31,10 +31,10 @@ public class EnvironmentTurnManager : MonoBehaviour
             // AIM.PlaySubordinatesTurn();
             
             // TowerManager.PlayTowersTurn();
-            
+            IAManager.MoveEnemies(totalEnergy);
             totalEnergy--;
         }
-        //IAManager.Instance.MoveEnemies();
+        
             
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }

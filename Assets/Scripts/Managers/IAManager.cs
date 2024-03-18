@@ -12,22 +12,20 @@ public class IAManager : MonoBehaviour
         Instance = this;
     }
     
-        public void MoveEnemies()
+        public static void MoveEnemies(int energy)
         {
             Enemy enemy;
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
-            foreach (var enemyObj in enemies)
+            for(int i = enemies.Count -1; i >= 0 ; i--)
             {
-                enemy = enemyObj.GetComponent<Enemy>();
-                StartRoutineMoveEnemy(enemy);
-
+                enemy = enemies[i].GetComponent<Enemy>();
+                enemy.Move(energy);
             }
+            
+            
         }
 
-        private void StartRoutineMoveEnemy(Enemy enemy)
-        {
-            enemy.Move();
-        }
+      
 
 
     

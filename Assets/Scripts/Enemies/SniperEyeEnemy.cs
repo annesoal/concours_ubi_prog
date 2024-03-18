@@ -9,7 +9,7 @@ namespace Ennemies
         {
             ennemyType = EnnemyType.Flying;
         }
-        public override void Move()
+        public override void Move(int energy)
         {
            
         }

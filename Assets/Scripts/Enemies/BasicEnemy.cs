@@ -41,14 +41,18 @@ namespace Ennemies
          *      Vers l'avant si aucun obstacle
          *      Gauche ou droite si un obstacle
          */
-        public override void Move()
+        public override void Move(int energy)
         {
             if (!IsEndOfGrid())
             {
-                if (!MoveInDirection(_avancer2d, _avancer))
+                if (energy % ratioMovement == 0)
                 {
-                    MoveSides();
+                    if (!MoveInDirection(_avancer2d, _avancer))
+                    {
+                        MoveSides();
+                    }
                 }
+               
             }
             else
             {
@@ -61,7 +65,6 @@ namespace Ennemies
 
         private void MoveSides()
         {
-            // Algo temporaire
             if (_rand.NextDouble() < 0.5)
             {
                 if (!MoveInDirection(_gauche2d, _gauche))
@@ -109,16 +112,8 @@ namespace Ennemies
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.Add(cell);
-            remainingMove -= 1;
-            UpdatePositionInGame();
         }
-
-
-        private void UpdatePositionInGame()
-        {
-            enemiesInGame.Remove(this.gameObject);
-            enemiesInGame.Add(this.gameObject);
-        }
+        
 
         /**
          *  Modifie la position 3d courante de l'ennemi
@@ -128,6 +123,7 @@ namespace Ennemies
             currentPosition2d = _helper.GetHelperPosition();
             _currentPosition3d = TilingGrid.GridPositionToLocal(currentPosition2d, TilingGrid.TopOfCell + 1);
             _currentPosition3d += direction;
+            Debug.Log("nouvelle position3d ennemi: " + _currentPosition3d);
         }
 
         /**

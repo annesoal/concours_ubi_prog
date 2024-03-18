@@ -27,7 +27,7 @@ namespace DefaultNamespace
         [FormerlySerializedAs("state")] [SerializeField]
         protected bool stupefiedState = false; // Piege
 
-        [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int energy = 2;
+        [FormerlySerializedAs("energy")] [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int ratioMovement = 2;
         [SerializeField] protected int health;
 
         protected EnemyGridHelper _helper;
@@ -91,7 +91,9 @@ namespace DefaultNamespace
             remainingMove = GetMovementBlocPerTurn();
         }
 
-        public abstract void Move();
+        public abstract void Move(int energy);
+
+
 
         public override void OnDestroy()
         {

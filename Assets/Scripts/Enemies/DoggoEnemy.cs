@@ -9,7 +9,7 @@ namespace Ennemies
         {
             ennemyType = EnnemyType.Doggo;
         }
-        public override void Move()
+        public override void Move(int energy)
         {
          
         }
