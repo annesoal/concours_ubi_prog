@@ -6,7 +6,6 @@ namespace Grid
     public class Ressource : MonoBehaviour
     {
         [SerializeField] private float TopOfCell = 0.72f;
-        private NetworkObject _networkObject;
 
         // Start is called before the first frame update
         void Start()
