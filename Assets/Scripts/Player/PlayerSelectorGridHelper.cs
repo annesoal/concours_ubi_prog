@@ -84,7 +84,6 @@ namespace Grid
                 var cell = TilingGrid.grid.GetCell(position);
                 cell.objectsOnTop.Remove(element);
                 TilingGrid.grid.UpdateCell(cell);
-                Debug.Log(element + " has been removed");
             }
             catch (ArgumentException e)
             {

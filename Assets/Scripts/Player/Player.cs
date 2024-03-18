@@ -22,7 +22,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
 
-    public int Resources { set; get; }
+    public int Resources { private set; get; }
     
 
     private Recorder<GameObject> _highlighters;
@@ -209,7 +209,7 @@ public class Player : NetworkBehaviour
             TypeTopOfCell type = element.GetType();
             if (type == TypeTopOfCell.Resource)
             {
-                    GameMultiplayerManager.Instance.pickUpResourcesServerRpc(i, position);
+                    GameMultiplayerManager.Instance.PickUpResourcesServerRpc(i, position);
             }
         }
     }
@@ -269,5 +269,10 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
+    }
+
+    public void IncrementResource()
+    {
+        Resources++;
     }
 }

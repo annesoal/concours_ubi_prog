@@ -412,27 +412,25 @@ public class GameMultiplayerManager : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void pickUpResourcesServerRpc(
+    public void PickUpResourcesServerRpc(
         int elementPosition, Vector2Int position, ServerRpcParams serverRpcParams = default)
     {
-        pickUpResourcesClientRpc(elementPosition,position);    
+        PickUpResourcesClientRpc(elementPosition,position);    
     }
 
     [ClientRpc]
-    private void pickUpResourcesClientRpc(int elementPosition, Vector2Int position)
+    private void PickUpResourcesClientRpc(int elementPosition, Vector2Int position)
     {
-        Player.LocalInstance.Resources++;
+        Player.LocalInstance.IncrementResource();
+        
         List<ITopOfCell> elementsOnTopOfCell =
                     PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
-        Debug.Log("length of array : " + elementsOnTopOfCell.Count);
-        Debug.Log("value passed : " + elementPosition);
-        ITopOfCell element = elementsOnTopOfCell[elementPosition];
-        if (element.GetType() == TypeTopOfCell.Resource)
-        {
-            GameObject gameObject = element.ToGameObject();
-            PlayerSelectorGridHelper.RemoveElement(gameObject, position);
-            Destroy(gameObject);
-            Debug.Log(element);
-        }
+        var element = elementsOnTopOfCell[elementPosition];
+        
+        if (element.GetType() != TypeTopOfCell.Resource) return;
+        
+        var gameobject = element.ToGameObject();
+        PlayerSelectorGridHelper.RemoveElement(gameobject, position);
+        Destroy(gameobject);
     }
 }
