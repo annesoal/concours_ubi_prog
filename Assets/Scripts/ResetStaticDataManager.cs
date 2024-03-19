@@ -8,6 +8,6 @@ public class ResetStaticDataManager : MonoBehaviour
     private void Awake()
     {
         CharacterSelectUI.ResetStaticData();
-        SingleTowerSelectUI.ResetStaticData();
+        SingleBuildableObjectSelectUI.ResetStaticData();
     }
 }

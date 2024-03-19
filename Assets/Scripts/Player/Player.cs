@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
 using Grid;
 using Grid.Blocks;
+using Grid.Interface;
 using Unity.Mathematics;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
 using UnityEngine;
@@ -17,7 +21,10 @@ public class Player : NetworkBehaviour
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
+
+    public int Resources { private set; get; }
     
+
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
@@ -187,9 +194,25 @@ public class Player : NetworkBehaviour
         if (nextPosition == null) return;
 
         RemoveNextHighlighter();
-        MoveToNextPosition((Vector2Int) nextPosition); 
+        MoveToNextPosition((Vector2Int) nextPosition);
+        PickUpItems((Vector2Int) nextPosition); 
     }
 
+    public void PickUpItems(Vector2Int position)
+    {
+        List<ITopOfCell> elementsOnTopOfCell =
+            PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
+
+        for (int i = 0; i < elementsOnTopOfCell.Count; i++)
+        {
+            var element = elementsOnTopOfCell[i];
+            TypeTopOfCell type = element.GetType();
+            if (type == TypeTopOfCell.Resource)
+            {
+                    GameMultiplayerManager.Instance.PickUpResourcesServerRpc(i, position);
+            }
+        }
+    }
     private void CleanHighlighters()
     {
         while (_highlighters != null && !_highlighters.IsEmpty())
@@ -246,5 +269,10 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
+    }
+
+    public void IncrementResource()
+    {
+        Resources++;
     }
 }

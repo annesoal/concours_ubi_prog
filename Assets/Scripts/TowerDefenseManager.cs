@@ -372,7 +372,7 @@ public class TowerDefenseManager : NetworkBehaviour
             {
                 _playerReadyToPassDictionary.Add(clientIdOfPlayerReady, value);
             }
-            catch (ArgumentException argumentException)
+            catch (ArgumentException)
             {
                 _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
             }

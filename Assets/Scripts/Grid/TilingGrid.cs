@@ -18,7 +18,7 @@ namespace Grid
         static public TilingGrid grid { get; private set; }
         
         public const int Size = 100; 
-        private Cell [,] _cells = new Cell[Size, Size];
+        private readonly Cell [,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
        
@@ -92,6 +92,12 @@ namespace Grid
             }
 
             return buildableCells;
+        }
+
+        public void UpdateCell(Cell cell)
+        {
+            _cells[cell.position.x, cell.position.y] = cell;
+
         }
 
         //--------------------------------------------------------------------------------------------------------------

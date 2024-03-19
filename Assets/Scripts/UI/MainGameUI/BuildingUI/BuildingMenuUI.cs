@@ -8,27 +8,23 @@ using UnityEngine.UI;
 
 public class BuildingMenuUI : MonoBehaviour
 {
-    /// <summary>
-    /// Ensemble des tours pouvant être construites par les joueurs dans le niveau.
-    /// </summary>
-    [SerializeField] private TowersListSO availableTowersListSO;
-
     private void Awake()
     {
         showBuildingMenuButton.onClick.AddListener(() =>
         {
+            InputManager.Instance.DisablePlayerInputMap();
+            
             circularLayout.ShowLayout();
         });
     }
 
     private void Start()
     {
-        // DEBUG devra être décommenté
-        // BasicShowHide.Hide(showBuildingMenuButton.gameObject);
+        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         
-        // DEBUG devra être décommenté
-        //TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
-        SingleTowerSelectUI.OnAnySingleTowerSelectUISelected += SingleTowerSelectUI_OnAnySingleTowerSelectUISelected;
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
+            SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
         
         circularLayout.HideLayout();
         
@@ -37,9 +33,9 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void UpdateLayoutVisuals()
     {
-        foreach (TowerSO towerSo in availableTowersListSO.allTowersList)
+        foreach (BuildableObjectSO buildableObjectSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
         {
-            circularLayout.AddObjectToLayout(towerSo);
+            circularLayout.AddObjectToLayout(buildableObjectSo);
         }
     }
 
@@ -62,13 +58,13 @@ public class BuildingMenuUI : MonoBehaviour
         }
     }
 
-    [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
+    [SerializeField] private BuildingObjectOnGridUI buildingTowerOnGridUI;
     
-    private void SingleTowerSelectUI_OnAnySingleTowerSelectUISelected(object sender, SingleTowerSelectUI.TowerData e)
+    private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
+        (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
-        BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         BasicShowHide.Hide(circularLayout.gameObject);
-        buildingTowerOnGridUI.Show();
+        buildingTowerOnGridUI.Show(e.buildableObjectInfos);
     }
 
     private bool PlayerIsOnBuildingBlock()

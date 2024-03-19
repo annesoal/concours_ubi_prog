@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Grid.Blocks;
+using Grid.Interface;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Grid
         public int type;
         public Vector2Int position;
         public List<GameObject> objectsOnTop;
+        public List<ITopOfCell> objectsTopOfCell; 
         
         // Check que le type soit le meme (exactement) que le type de la cellule
         public bool IsOf(int blockType)
@@ -33,13 +35,20 @@ namespace Grid
             return this.type == 0;
         }
 
-        public void AddGameObject(GameObject gameObject)
+        public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
         {
             if (objectsOnTop == null)
             {
                 objectsOnTop = new List<GameObject>();
             }
             objectsOnTop.Add(gameObject);
+
+            if (objectsTopOfCell == null)
+            {
+                objectsTopOfCell = new();
+            }
+
+            objectsTopOfCell?.Add(objectTopOfCell);
         }
 
         public void RemoveGameObject(GameObject gameObject)
@@ -47,8 +56,6 @@ namespace Grid
             
         }
     }
-    
-
     
     public static class BlockType
     {

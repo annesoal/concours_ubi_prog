@@ -26,6 +26,7 @@ public class InputManager : MonoBehaviour
         
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
+        _playerInputActions.Camera.Enable();
         _playerInputActions.Player.Select.performed += Select;
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
@@ -51,19 +52,29 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetCameraMoveInput()
     {
-        Vector2 cameraInputVector = _playerInputActions.Player.CameraMove.ReadValue<Vector2>();
+        Vector2 cameraInputVector = _playerInputActions.Camera.CameraMove.ReadValue<Vector2>();
 
         return cameraInputVector;
     }
 
     public float GetCameraZoomInput()
     {
-        return _playerInputActions.Player.CameraZoom.ReadValue<float>();
+        return _playerInputActions.Camera.CameraZoom.ReadValue<float>();
     }
 
     public float GetCameraRotationInput()
     {
-        return _playerInputActions.Player.CameraRotation.ReadValue<float>();
+        return _playerInputActions.Camera.CameraRotation.ReadValue<float>();
+    }
+
+    public void DisablePlayerInputMap()
+    {
+        _playerInputActions.Player.Disable();
+    }
+    
+    public void EnablePlayerInputMap()
+    {
+        _playerInputActions.Player.Enable();
     }
 
     private void Select(InputAction.CallbackContext context)
