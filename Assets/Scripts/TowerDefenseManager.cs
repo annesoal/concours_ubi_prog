@@ -227,7 +227,10 @@ public class TowerDefenseManager : NetworkBehaviour
     [ClientRpc]
     private void SetPlayerReadyToPlayClientRpc(ulong clientIdOfPlayerReady)
     {
-        _playerReadyToPlayDictionary.Add(clientIdOfPlayerReady, true);
+        if (! _playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayerReady))
+        {
+            _playerReadyToPlayDictionary.Add(clientIdOfPlayerReady, true);
+        }
     }
 
     private bool ConnectedPlayerIsNotReady(ulong clientIdOfPlayer)
