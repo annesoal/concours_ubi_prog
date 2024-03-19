@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Grid;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -47,6 +48,17 @@ namespace Managers
                 _gameObjectsToSpawn.Add(spawner.ObjectToSpawn);
               
             } 
+        }
+        
+        public void PlaceObjects(Vector2Int[] positionToObstacles, int indexInGameObjectList)
+        {
+            foreach (Vector2Int positionOfSpawn in positionToObstacles)
+            {
+                GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
+                instance.GetComponent<NetworkObject>().Spawn(true);
+                
+                TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+            }
         }
         
         /// <summary>

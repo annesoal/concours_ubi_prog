@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Grid.Blocks;
+using Grid.Interface;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
@@ -99,6 +100,38 @@ namespace Grid
             _cells[cell.position.x, cell.position.y] = cell;
 
         }
+        
+        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
+        {
+            Vector2Int destination = LocalToGridPosition(transform.position);
+            
+            PlaceObjectAtPositionOnGrid(toPlace, destination);
+        }
+
+        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
+        {
+            RemoveObjectFromCurrentCell(toPlace);
+
+            AddObjectToCellAtPosition(toPlace, destination);
+        }
+        
+        private void RemoveObjectFromCurrentCell(GameObject toPlace)
+        {
+            Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
+            
+            PlayerSelectorGridHelper.RemoveElement(gameObject, initialGridPosition);
+        }
+        
+        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
+        {
+            PlayerSelectorGridHelper helper = 
+                new PlayerSelectorGridHelper(cellPosition);
+            
+            helper.AddOnTopCell(gameObject, toPlace.GetComponent<ITopOfCell>());
+            
+            transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
+        }
+
 
         //--------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 

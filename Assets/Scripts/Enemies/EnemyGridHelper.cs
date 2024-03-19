@@ -46,9 +46,9 @@ namespace Ennemies
         //TODO autre maniere de faire ?
         private bool ContainsObstacle(Cell cell)
         {
-            if (cell.objectsOnTop != null)
+            if (cell.ObjectsOnTop != null)
             {
-                foreach (GameObject obj in cell.objectsOnTop)
+                foreach (GameObject obj in cell.ObjectsOnTop)
                 {
                     if (obj.GetComponent<Obstacle>() != null)
                     {

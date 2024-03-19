@@ -61,7 +61,7 @@ namespace Grid
             try
             {
                 var cell = TilingGrid.grid.GetCell(position);
-                var objectsOnTop = cell.objectsTopOfCell;
+                var objectsOnTop = cell.ObjectsTopOfCell;
                 if (objectsOnTop == null)
                 {
                     Debug.Log("List was null");
@@ -82,7 +82,7 @@ namespace Grid
             try
             {
                 var cell = TilingGrid.grid.GetCell(position);
-                cell.objectsOnTop.Remove(element);
+                cell.ObjectsOnTop.Remove(element);
                 TilingGrid.grid.UpdateCell(cell);
             }
             catch (ArgumentException)

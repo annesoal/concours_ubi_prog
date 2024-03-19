@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
+using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,7 +18,7 @@ namespace DefaultNamespace
         Doggo
     }
 
-    public abstract class Enemy : NetworkBehaviour, IDamageable
+    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell
     {
         [SerializeField] protected EnnemyType ennemyType;
 
@@ -95,7 +96,16 @@ namespace DefaultNamespace
         {
             return enemiesInGame;
         }
-        
-        
+
+
+        public new TypeTopOfCell GetType()
+        {
+            return TypeTopOfCell.Enemy;
+        }
+
+        public GameObject ToGameObject()
+        {
+            return gameObject;
+        }
     }
 }

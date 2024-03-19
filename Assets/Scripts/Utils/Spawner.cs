@@ -138,7 +138,7 @@ namespace Utils
                         var positions = GeneratePositions();
                         if (SpawnersManager.Instance == null)
                             throw new Exception("SpawnersManager instance has not been set !");
-                        SpawnersManager.Instance.PlaceObjectsClientRpc(positions.ToArray(), _positionInList);
+                        SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList);
                     }
         }
     }

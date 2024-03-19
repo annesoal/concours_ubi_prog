@@ -11,9 +11,42 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        public List<GameObject> objectsOnTop;
-        public List<ITopOfCell> objectsTopOfCell; 
-        
+        public List<GameObject> ObjectsOnTop
+        {
+            get
+            {
+                if (_objectsOnTop == null)
+                {
+                    _objectsOnTop = new List<GameObject>();
+                    return _objectsOnTop;
+                }
+                else
+                {
+                    return _objectsOnTop;
+                }
+            }
+            private set => _objectsOnTop = value;
+        }
+        private List<GameObject> _objectsOnTop;
+
+        public List<ITopOfCell> ObjectsTopOfCell
+        {
+            get
+            {
+                if (_objectsTopOfCell == null)
+                {
+                    _objectsTopOfCell = new List<ITopOfCell>();
+                    return _objectsTopOfCell;
+                }
+                else
+                {
+                    return _objectsTopOfCell;
+                }
+            }
+            private set => _objectsTopOfCell = value;
+        }
+        private List<ITopOfCell> _objectsTopOfCell;
+
         // Check que le type soit le meme (exactement) que le type de la cellule
         public bool IsOf(int blockType)
         {
@@ -37,18 +70,18 @@ namespace Grid
 
         public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
         {
-            if (objectsOnTop == null)
+            if (ObjectsOnTop == null)
             {
-                objectsOnTop = new List<GameObject>();
+                ObjectsOnTop = new List<GameObject>();
             }
-            objectsOnTop.Add(gameObject);
+            ObjectsOnTop.Add(gameObject);
 
-            if (objectsTopOfCell == null)
+            if (ObjectsTopOfCell == null)
             {
-                objectsTopOfCell = new();
+                ObjectsTopOfCell = new();
             }
 
-            objectsTopOfCell?.Add(objectTopOfCell);
+            ObjectsTopOfCell?.Add(objectTopOfCell);
         }
 
         public void RemoveGameObject(GameObject gameObject)

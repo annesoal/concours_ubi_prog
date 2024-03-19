@@ -8,16 +8,6 @@ namespace Grid
     {
         [SerializeField] private float TopOfCell = 0.72f;
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            Vector3 position = transform.position;
-            PlayerSelectorGridHelper helper = 
-                new PlayerSelectorGridHelper(TilingGrid.LocalToGridPosition(position));
-            helper.AddOnTopCell(gameObject, this);
-            transform.position = TilingGrid.GridPositionToLocal(helper.Cell.position, TopOfCell );
-        }
-
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Resource;

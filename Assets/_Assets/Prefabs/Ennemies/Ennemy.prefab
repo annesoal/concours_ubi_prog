@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7144109569043832097}
   - component: {fileID: 2652567110894939592}
   - component: {fileID: -5281524653170225075}
+  - component: {fileID: 2787633167480664852}
   m_Layer: 0
   m_Name: Ennemy
   m_TagString: Untagged
@@ -67,10 +68,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ennemyType: 0
-  remainingMove: 2
-  state: 1
-  movementPerTurn: 2
+  stupefiedState: 0
+  ratioMovement: 3
+  health: 1
+  _currentPosition3d: {x: 0, y: 0, z: 0}
   lerpSpeed: 0.5
+--- !u!114 &2787633167480664852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955291028793845129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &7119734614541666815
 GameObject:
   m_ObjectHideFlags: 0
