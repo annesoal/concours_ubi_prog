@@ -23,7 +23,6 @@ namespace Enemies
         {
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
-            _nextPosition3d = new Vector3();
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
             next_cell = new Cell();
             _cellRecorder = new Recorder<Cell>();
