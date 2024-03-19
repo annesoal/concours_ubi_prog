@@ -130,6 +130,8 @@ namespace Grid
             helper.AddOnTopCell(gameObject, toPlace.GetComponent<ITopOfCell>());
             
             toPlace.transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
+            toPlace.transform.position =
+                new Vector3(toPlace.transform.position.x, TopOfCell, toPlace.transform.position.z);
         }
 
 
