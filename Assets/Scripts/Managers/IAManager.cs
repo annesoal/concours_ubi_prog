@@ -17,13 +17,13 @@ public class IAManager : MonoBehaviour
         {
             Enemy enemy;
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
+            
+            
             for(int i = enemies.Count -1; i >= 0 ; i--)
             {
                 enemy = enemies[i].GetComponent<Enemy>();
                 enemy.Move(totalEnergy);
-
             }
-            
             
         }
 
@@ -34,8 +34,8 @@ public class IAManager : MonoBehaviour
             enemy.Move(totalEnergy);
         }
 
-      
 
+        
 
     
 

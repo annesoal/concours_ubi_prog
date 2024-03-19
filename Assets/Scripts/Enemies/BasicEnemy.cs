@@ -11,6 +11,7 @@ namespace Ennemies
     {
         public float lerpSpeed = 0.5f;
         private Random _rand = new();
+        private Cell next_cell;
 
         public BasicEnemy()
         {
@@ -26,7 +27,7 @@ namespace Ennemies
             _nextPosition3d = new Vector3();
             _currentPosition3d = transform.position;
             currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
-            
+            next_cell = new Cell();
             _cellRecorder = new Recorder<Cell>();
             _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
             _helper.AddOnTopCell(this.gameObject);
@@ -41,23 +42,25 @@ namespace Ennemies
          */
         public override void Move(int energy)
         {
-            if (!IsEndOfGrid())
             {
+                Debug.Log("total energy basic: " + energy);
+                Debug.Log("ratio" + ratioMovement);
+                Debug.Log("modulo" + energy % ratioMovement );
                 if (energy % ratioMovement == 0)
                 {
-                    if (!MoveInDirection(_avancer2d, _avancer))
+                    if (!IsEndOfGrid())
                     {
-                        MoveSides();
+                        if (!MoveInDirection(_avancer2d, _avancer))
+                        {
+                            MoveSides();
+                        }
+                    } else
+                    {
+                        Destroy(this.gameObject);
                     }
                 }
                
             }
-            else
-            {
-                enemiesInGame.Remove(this.gameObject);
-                Destroy(this.gameObject);
-            }
-           
         }
         
 
@@ -81,7 +84,6 @@ namespace Ennemies
 
         private bool IsEndOfGrid()
         {
-            Cell next_cell = new Cell();
             next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
             return next_cell.IsNone();
         }
@@ -106,8 +108,9 @@ namespace Ennemies
         {
             ChangeEnnemyPosition3d(direction);
             ChangeEnnemyPosition2d();
-            float t = Mathf.Clamp01(lerpSpeed * Time.deltaTime); // Normalisation de la vitesse
+            float t = lerpSpeed * Time.deltaTime; 
             transform.position = Vector3.Lerp(_currentPosition3d, _nextPosition3d, t);
+            _helper.AddOnTopCell(transform.gameObject);
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.Add(cell);
         }
@@ -118,9 +121,12 @@ namespace Ennemies
          */
         private void ChangeEnnemyPosition3d(Vector3 direction)
         {
+           
             currentPosition2d = _helper.GetHelperPosition();
             _currentPosition3d = TilingGrid.GridPositionToLocal(currentPosition2d, TilingGrid.TopOfCell + 1);
+            Debug.Log("POSITION AVANT: " + _currentPosition3d);
             _currentPosition3d += direction;
+            Debug.Log("POSITION apres: " + _currentPosition3d);
         }
 
         /**

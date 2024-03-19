@@ -22,10 +22,9 @@ namespace DefaultNamespace
         [SerializeField] protected EnnemyType ennemyType;
 
         
-        [SerializeField]
-        protected bool stupefiedState = false; // Piege
+        [SerializeField] protected bool stupefiedState = false; // Piege
 
-        [FormerlySerializedAs("energy")] [FormerlySerializedAs("movementPerTurn")] [SerializeField] protected int ratioMovement = 2;
+        [SerializeField] protected int ratioMovement = 3;
         [SerializeField] protected int health;
 
         protected EnemyGridHelper _helper;
@@ -35,6 +34,7 @@ namespace DefaultNamespace
         protected Vector2Int currentPosition2d;
         public Vector3 _currentPosition3d;
         protected Vector3 _nextPosition3d;
+        
         protected static List<GameObject> enemiesInGame;
 
 
@@ -100,6 +100,7 @@ namespace DefaultNamespace
         {
             return enemiesInGame;
         }
+        
         
     }
 }
