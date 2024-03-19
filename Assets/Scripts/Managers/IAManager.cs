@@ -24,7 +24,6 @@ public class IAManager : MonoBehaviour
                 enemy = enemies[i].GetComponent<Enemy>();
                 enemy.Move(totalEnergy);
             }
-            
         }
 
         // TODO 
