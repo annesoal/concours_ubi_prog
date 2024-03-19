@@ -68,7 +68,7 @@ namespace Enemies
             return next_cell.IsNone();
         }
         
-        
+        //Commence a aller vers la droite ou la gauche aleatoirement
         private void MoveSides()
         {
             if (_rand.NextDouble() < 0.5)
@@ -88,6 +88,7 @@ namespace Enemies
         }
         
         // Besoin de direction 2d pour valider ce quil a sur la cell
+        //Retourne true si a pu effectuer le deplacement
         private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
         {
             _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
