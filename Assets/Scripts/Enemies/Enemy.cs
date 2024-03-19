@@ -77,13 +77,8 @@ namespace DefaultNamespace
             }
         }
         
-
-
-        public virtual int GetMovementBlocPerTurn() => 3;
-        
         public abstract void Move(int energy);
-
-
+        
 
         public override void OnDestroy()
         {
