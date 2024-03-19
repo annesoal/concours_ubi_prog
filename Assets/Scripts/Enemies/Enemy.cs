@@ -105,5 +105,10 @@ namespace DefaultNamespace
         {
             return gameObject;
         }
+
+        public static void ResetSaticData()
+        {
+            enemiesInGame = null;
+        }
     }
 }
