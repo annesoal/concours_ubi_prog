@@ -10,7 +10,6 @@ namespace Enemies
 {
     public sealed class BasicEnemy : Enemy
     {
-        public float lerpSpeed = 0.5f;
         private Random _rand = new();
         private Cell next_cell;
 
@@ -42,9 +41,9 @@ namespace Enemies
         public override void Move(int energy)
         {
             {
-                if (energy % ratioMovement == 0)
+                if (IsTimeToMove(energy))
                 {
-                    if (!IsEndOfGrid())
+                    if (!IsEndOfGrid()) 
                     {
                         if (!MoveInDirection(_avancer2d, _avancer))
                         {
@@ -55,10 +54,14 @@ namespace Enemies
                         Destroy(this.gameObject);
                     }
                 }
-               
             }
         }
-        
+
+        private bool IsTimeToMove(int energy)
+        {
+            return energy % ratioMovement == 0;
+        }
+
         private bool IsEndOfGrid()
         {
             next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
@@ -84,6 +87,7 @@ namespace Enemies
             }
         }
         
+        // Besoin de direction 2d pour valider ce quil a sur la cell
         private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
         {
             _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
@@ -102,10 +106,8 @@ namespace Enemies
          */
         private void MoveEnemy(Vector3 direction)
         {
-            Debug.Log("positoina aavant" + transform.position);
             Vector3 nextPosition = transform.position + direction;
             transform.position = nextPosition;
-            Debug.Log("positoina apres" + transform.position);
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.Add(cell);
         }
