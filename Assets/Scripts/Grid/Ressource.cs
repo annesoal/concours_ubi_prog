@@ -18,7 +18,7 @@ namespace Grid
             transform.position = TilingGrid.GridPositionToLocal(helper.Cell.position, TopOfCell );
         }
 
-        public TypeTopOfCell GetType()
+        public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Resource;
         }
