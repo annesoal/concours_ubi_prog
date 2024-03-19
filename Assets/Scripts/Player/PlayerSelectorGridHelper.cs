@@ -70,7 +70,7 @@ namespace Grid
 
                 return objectsOnTop;
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 Debug.Log("Got wrong position?");
                 return new List<ITopOfCell>();
@@ -85,7 +85,7 @@ namespace Grid
                 cell.objectsOnTop.Remove(element);
                 TilingGrid.grid.UpdateCell(cell);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
             }
         }
