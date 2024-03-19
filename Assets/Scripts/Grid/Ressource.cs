@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Grid
 {
-    public class Ressource : MonoBehaviour, ITopOfCell
+    public class Ressource : NetworkBehaviour, ITopOfCell
     {
         [SerializeField] private float TopOfCell = 0.72f;
 

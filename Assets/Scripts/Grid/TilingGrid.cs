@@ -64,9 +64,9 @@ namespace Grid
         {
             bool outOfBound = 
                 position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
-            
+
             if (outOfBound)
-                throw new ArgumentException();
+                throw new ArgumentException("Aucune cellule à la position donnée.");
             
             return _cells[position.x,position.y];
         }
@@ -129,7 +129,7 @@ namespace Grid
             
             helper.AddOnTopCell(gameObject, toPlace.GetComponent<ITopOfCell>());
             
-            transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
+            toPlace.transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
         }
 
 

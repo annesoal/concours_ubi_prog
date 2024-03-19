@@ -98,7 +98,7 @@ public class Player : NetworkBehaviour
             LocalInstance = this;
             InputManager.Player = this;
         }
-        
+
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 

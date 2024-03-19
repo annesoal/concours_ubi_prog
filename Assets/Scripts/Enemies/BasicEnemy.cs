@@ -1,4 +1,5 @@
 
+using System;
 using DefaultNamespace;
 using Ennemies;
 using Grid;
@@ -28,7 +29,6 @@ namespace Enemies
             next_cell = new Cell();
             _cellRecorder = new Recorder<Cell>();
             _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
-            _helper.AddOnTopCell(this.gameObject);
             AddInGame(this.gameObject);
         }
 
@@ -64,8 +64,15 @@ namespace Enemies
 
         private bool IsEndOfGrid()
         {
-            next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
-            return next_cell.IsNone();
+            try
+            {
+                next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
+                return next_cell.IsNone();
+            }
+            catch (ArgumentException e)
+            {
+                return true;
+            }
         }
         
         //Commence a aller vers la droite ou la gauche aleatoirement
