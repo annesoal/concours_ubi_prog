@@ -32,7 +32,6 @@ namespace DefaultNamespace
         protected Cell cell;
         protected Vector2Int _nextPosition2d;
         protected Vector2Int currentPosition2d;
-        public Vector3 _currentPosition3d;
         
         protected static List<GameObject> enemiesInGame;
 

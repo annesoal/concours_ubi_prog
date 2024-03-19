@@ -1,7 +1,9 @@
+
 using DefaultNamespace;
 using Ennemies;
 using Grid;
 using UnityEngine;
+
 using Random = System.Random;
 
 namespace Enemies
@@ -23,7 +25,7 @@ namespace Enemies
         {
             cell = new Cell();
             _nextPosition2d = new Vector2Int();
-            currentPosition2d = TilingGrid.LocalToGridPosition(_currentPosition3d);
+            currentPosition2d = TilingGrid.LocalToGridPosition(transform.position);
             next_cell = new Cell();
             _cellRecorder = new Recorder<Cell>();
             _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
@@ -100,8 +102,10 @@ namespace Enemies
          */
         private void MoveEnemy(Vector3 direction)
         {
+            Debug.Log("positoina aavant" + transform.position);
             Vector3 nextPosition = transform.position + direction;
             transform.position = nextPosition;
+            Debug.Log("positoina apres" + transform.position);
             _helper.AddOnTopCell(transform.gameObject);
             _cellRecorder.Add(cell);
         }
