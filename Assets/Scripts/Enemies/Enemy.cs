@@ -34,7 +34,7 @@ namespace DefaultNamespace
         protected Vector2Int _nextPosition2d;
         protected Vector2Int currentPosition2d;
         
-        protected static List<GameObject> enemiesInGame;
+        protected static List<GameObject> enemiesInGame = new List<GameObject>();
 
 
         // Deplacements 

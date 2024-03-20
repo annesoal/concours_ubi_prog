@@ -70,7 +70,7 @@ public class TowerDefenseManager : NetworkBehaviour
         Instance = this;
 
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
-        
+        _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
 
@@ -83,7 +83,13 @@ public class TowerDefenseManager : NetworkBehaviour
         {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
             Instance.OnCurrentStateChanged += BeginTacticalPause;
+            //OnCurrentStateChanged += DebugStateChange;
         }
+    }
+
+    private void DebugStateChange(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        Debug.Log(e.newValue);
     }
 
     private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
@@ -148,11 +154,11 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-        if (_isEnvironmentTurnNotCalled)
-        {
-            _isEnvironmentTurnNotCalled = false;
-            EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
-        }
+      //  if (_isEnvironmentTurnNotCalled)
+      //  {
+      //      _isEnvironmentTurnNotCalled = false;
+      //       EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
+      //  }
     }
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)

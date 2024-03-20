@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Grid;
 using Grid.Blocks;
 using Grid.Interface;
@@ -47,7 +49,7 @@ public class Player : NetworkBehaviour
         _timer = new(cooldown);
         _highlighters = new();
     }
-    public void Move(Vector2 direction)
+    public void InputMove(Vector2 direction)
     {
         if (IsMovementInvalid()) return;
         if (direction == Vector2.zero) return;
@@ -187,15 +189,15 @@ public class Player : NetworkBehaviour
         _canMove = true; 
     }
 
-    public void Move()
+    public IEnumerator Move()
     {
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
-        if (nextPosition == null) return;
+        if (nextPosition == null) yield break;
 
         RemoveNextHighlighter();
         MoveToNextPosition((Vector2Int) nextPosition);
-        PickUpItems((Vector2Int) nextPosition); 
+        PickUpItems((Vector2Int) nextPosition);
     }
 
     private static void PickUpItems(Vector2Int position)

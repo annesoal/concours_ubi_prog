@@ -47,7 +47,7 @@ public class InputManager : MonoBehaviour
         if (_player == null) return; 
         Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
 
-        _player.Move(input);
+        _player.InputMove(input);
     }
 
     public Vector2 GetCameraMoveInput()

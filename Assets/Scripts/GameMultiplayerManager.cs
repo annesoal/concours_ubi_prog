@@ -402,7 +402,8 @@ public class GameMultiplayerManager : NetworkBehaviour
     [ClientRpc]
     public void MovePlayersClientRpc()
     {
-       Player.LocalInstance.Move(); 
+        IEnumerator coroutinePlayerMove = Player.LocalInstance.Move();
+        StartCoroutine(coroutinePlayerMove);
     }
 
     [ClientRpc]
