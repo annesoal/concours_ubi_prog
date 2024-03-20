@@ -417,13 +417,22 @@ public class GameMultiplayerManager : NetworkBehaviour
         List<ITopOfCell> elementsOnTopOfCell =
                     PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
 
+        List<ITopOfCell> elementsPickedUp = new List<ITopOfCell>();
+
         foreach (var element in elementsOnTopOfCell)
         {
             TypeTopOfCell type = element.GetType();
             if (type == TypeTopOfCell.Resource)
             {
                 PickUpResource(element);
+                elementsPickedUp.Add(element);
             }
+        }
+        
+        // clean picked up elements
+        foreach (ITopOfCell toDelete in elementsPickedUp)
+        {
+            elementsOnTopOfCell.Remove(toDelete);
         }
     }
 
@@ -431,7 +440,7 @@ public class GameMultiplayerManager : NetworkBehaviour
     {
         Player.LocalInstance.IncrementResource();
         var gameobject = element.ToGameObject();
-        gameobject.GetComponent<NetworkObject>().Despawn(); 
+        
         Destroy(gameobject);
     }
 }
