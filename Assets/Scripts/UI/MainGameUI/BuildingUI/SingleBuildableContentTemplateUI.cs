@@ -23,6 +23,11 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         _associatedBuildableCell = buildableCell;
         _associatedBuildableObjectSo = buildableObjectSo;
     }
+    
+    public void SelectThisSelectionButton()
+    {
+        selectionButton.Select();
+    }
 
     private void BuildObjectOnButtonClick()
     {

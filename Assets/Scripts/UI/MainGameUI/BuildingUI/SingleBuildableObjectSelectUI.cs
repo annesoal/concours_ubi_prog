@@ -60,6 +60,11 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
         });
     }
 
+    public void SelectThisSelectionButton()
+    {
+        selectionButton.Select();
+    }
+    
     public static void ResetStaticData()
     {
         OnAnySingleBuildableObjectSelectUIHoveredEnter = null;

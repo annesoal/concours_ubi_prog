@@ -29,6 +29,8 @@ public class BuildingMenuUI : MonoBehaviour
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
         
+        InputManager.Instance.OnPlayerInteractPerformed += InputManager_OnPlayerInteractPerformed;
+        
         circularLayout.HideLayout();
         
         UpdateLayoutVisuals();
@@ -51,12 +53,14 @@ public class BuildingMenuUI : MonoBehaviour
         {
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             BasicShowHide.Hide(circularLayout.gameObject);
+            _playerIsNearWorkshop = false;
         }
     }
     
     private void Workshop_OnAnyWorkshopNearPlayer(object sender, EventArgs e)
     {
         BasicShowHide.Show(showBuildingMenuButton.gameObject);
+        _playerIsNearWorkshop = true;
     }
 
 
@@ -69,12 +73,11 @@ public class BuildingMenuUI : MonoBehaviour
         buildingTowerOnGridUI.Show(e.buildableObjectInfos);
     }
 
-    private bool PlayerIsOnBuildingBlock()
+    private bool _playerIsNearWorkshop = false;
+    
+    private void InputManager_OnPlayerInteractPerformed(object sender, EventArgs e)
     {
-        Vector2Int playerPositionOnGrid = TilingGrid.LocalToGridPosition(Player.LocalInstance.transform.position);
-
-        Cell underPlayerCell = TilingGrid.grid.GetCell(playerPositionOnGrid);
-
-        return underPlayerCell.IsOf(BlockType.Buildable);
+        showBuildingMenuButton.onClick.Invoke();
     }
+    
 }

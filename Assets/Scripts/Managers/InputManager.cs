@@ -30,16 +30,7 @@ public class InputManager : MonoBehaviour
         _playerInputActions.Player.Select.performed += Select;
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
-    }
-
-    private void Confirm(InputAction.CallbackContext obj)
-    {
-        _player.OnConfirm();
-    }
-
-    private void Cancel(InputAction.CallbackContext obj)
-    {
-        _player.OnCancel();
+        _playerInputActions.Player.Interact.performed += PlayerInput_OnInteractperformed;
     }
 
     private void Update()
@@ -81,4 +72,21 @@ public class InputManager : MonoBehaviour
     {
         _player.OnSelect();
     }
+    
+    private void Cancel(InputAction.CallbackContext obj)
+    {
+        _player.OnCancel();
+    }
+    
+    private void Confirm(InputAction.CallbackContext obj)
+    {
+        _player.OnConfirm();
+    }
+
+    public event EventHandler OnPlayerInteractPerformed;
+    private void PlayerInput_OnInteractperformed(InputAction.CallbackContext obj)
+    {
+        OnPlayerInteractPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
 }

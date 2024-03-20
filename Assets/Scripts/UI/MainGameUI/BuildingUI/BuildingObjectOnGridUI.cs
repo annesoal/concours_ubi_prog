@@ -53,7 +53,28 @@ public class BuildingObjectOnGridUI : MonoBehaviour
         
         AddBlocksToContentLayout();
         
+        SetControllerSelectionOnFirstButton();
+        
         BasicShowHide.Show(gameObject);
+    }
+    
+    private void SetControllerSelectionOnFirstButton()
+    {
+        Transform contentToSelect = null;
+        
+        for (int i = 0; i < leftContentLayout.childCount; i++)
+        {
+            if (leftContentLayout.GetChild(i) != buildableContentTemplate)
+            {
+                contentToSelect = leftContentLayout.GetChild(i);
+                break;
+            }
+        }
+
+        if (contentToSelect != null)
+        {
+            contentToSelect.GetComponent<SingleBuildableContentTemplateUI>().SelectThisSelectionButton();
+        }
     }
     
     private void AddBlocksToContentLayout()
