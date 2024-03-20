@@ -8,7 +8,6 @@ using UnityEngine;
 public class BuildableObjectInfoDisplayUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private Transform buildableObjectVisualsPosition;
     
     private void Start()
     {
@@ -18,9 +17,12 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUISelected;
+
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
     }
 
     private GameObject preview;
+    private const float PREVIEW_DISTANCE = 10f;
     
     private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
@@ -29,7 +31,10 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         
         descriptionText.text = e.buildableObjectInfos.description;
         
-        preview = Instantiate(e.buildableObjectInfos.visuals, buildableObjectVisualsPosition);
+        preview = Instantiate(e.buildableObjectInfos.visuals);
+        
+        preview.AddComponent<FollowTransform>().SetFollowParameters(Camera.main.gameObject, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
+            
         preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
     }
     
@@ -52,5 +57,12 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         Destroy(preview);
         preview = null;
     }
+    
+    private void TowerDefenseManager_OnCurrentStateChanged
+        (object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        ClearDisplay();
+    }
+
 
 }
