@@ -7,11 +7,12 @@ using Grid.Blocks;
 using Grid.Interface;
 using Unity.Mathematics;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
-using Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
+using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 
 public class Player : NetworkBehaviour
 {
@@ -38,6 +39,8 @@ public class Player : NetworkBehaviour
             _currentEnergy = value;
         }
     }
+
+    private bool _hasFinishedToMove;
 
     private bool _canMove;
 
@@ -158,7 +161,6 @@ public class Player : NetworkBehaviour
         {
             translation.y = +1;
         }
-
         if (value.y < -MinPressure)
         {
             translation.y = -1;
@@ -196,8 +198,14 @@ public class Player : NetworkBehaviour
         if (nextPosition == null) yield break;
 
         RemoveNextHighlighter();
-        MoveToNextPosition((Vector2Int) nextPosition);
+        StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
+        yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
+    }
+
+    private bool IsReadyToPickUp()
+    {
+        return  _hasFinishedToMove;
     }
 
     private static void PickUpItems(Vector2Int position)
@@ -242,11 +250,21 @@ public class Player : NetworkBehaviour
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
     }
 
-    private void MoveToNextPosition(Vector2Int toPosition)
+    private IEnumerator MoveToNextPosition(Vector2Int toPosition)
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
         transform.LookAt(cellLocalPosition);
-        transform.position = cellLocalPosition;
+        _hasFinishedToMove = false;
+        int i = 0;
+        while (i < 10)
+        {
+            float f = ((float)i) / 10;
+            transform.position = Vector3.Lerp( transform.position, cellLocalPosition, f);
+            yield return new WaitForSeconds(0.05f);
+            i++;
+        }
+
+        _hasFinishedToMove = true;
     }
 
     public void ResetPlayer(int energy)
