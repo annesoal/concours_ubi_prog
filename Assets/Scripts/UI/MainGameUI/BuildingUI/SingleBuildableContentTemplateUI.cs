@@ -41,6 +41,8 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
             SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
             
             _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+
+            selectionButton.GetComponent<SingleBuildableContentButtonUI>().DestroyPreview();
         }
     }
 
@@ -60,5 +62,15 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
     public Vector2Int GetAssociatedCellPosition()
     {
         return _associatedBuildableCell.position;
+    }
+
+    public BuildableObjectSO GetAssociatedBuildableObjectSO()
+    {
+        return _associatedBuildableObjectSo;
+    }
+
+    public List<ITopOfCell> GetAssociatedCellITopOfCells()
+    {
+        return _associatedBuildableCell.ObjectsTopOfCell;
     }
 }
