@@ -18,7 +18,6 @@ namespace Managers
         public void Start()
         {
             Instance = this;
-            Debug.Log("Instance has been added");   
             AddSpawnersToTowerDefenseManager();
             FillListOfGameObjectsToSpawn();
         }
