@@ -124,14 +124,11 @@ namespace Grid
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
-            PlayerSelectorGridHelper helper = 
-                new PlayerSelectorGridHelper(cellPosition);
-
-            helper.AddOnTopCell(toPlace, toPlace.GetComponent<ITopOfCell>());
+            Cell cell = GetCell(cellPosition);
+            cell.AddGameObject(toPlace, toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(cell);
             
-            toPlace.transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
-            toPlace.transform.position =
-                new Vector3(toPlace.transform.position.x, TopOfCell, toPlace.transform.position.z);
+            toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
         }
 
 

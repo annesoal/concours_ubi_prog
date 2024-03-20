@@ -25,17 +25,4 @@ public class IAManager : MonoBehaviour
                 enemy.Move(totalEnergy);
             }
         }
-
-        // TODO 
-        [ClientRpc]
-        public static void MoveEnemyClientRpc(Enemy enemy, int totalEnergy)
-        {
-            enemy.Move(totalEnergy);
-        }
-
-
-        
-
-    
-
 }

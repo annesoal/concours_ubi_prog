@@ -18,7 +18,6 @@ namespace Managers
         public void Start()
         {
             Instance = this;
-            Debug.Log("Instance has been added");   
             AddSpawnersToTowerDefenseManager();
             FillListOfGameObjectsToSpawn();
         }
@@ -55,23 +54,9 @@ namespace Managers
             foreach (Vector2Int positionOfSpawn in positionToObstacles)
             {
                 GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
-                instance.GetComponent<NetworkObject>().Spawn(true);
-                
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+                instance.GetComponent<NetworkObject>().Spawn(true);
             }
-        }
-        
-        /// <summary>
-        /// Place les objets dans le server et le client
-        /// </summary>
-        /// <param name="positionToObstacles"> positions des objets </param>
-        /// <param name="positionInGameObjectList"> position de l'objet a spawn dans la list des objets</param>
-        [ClientRpc]
-        public void PlaceObjectsClientRpc(Vector2Int[] positionToObstacles, int positionInGameObjectList)
-        {
-            List<Vector2Int> positions = positionToObstacles.ToList();
-            Spawner.InstantiateObstacles(positions, _gameObjectsToSpawn.ElementAt(positionInGameObjectList));
-       
         }
     }
 }
