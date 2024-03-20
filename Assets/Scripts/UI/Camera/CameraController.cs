@@ -16,6 +16,11 @@ public class CameraController : MonoBehaviour
         HandleCameraZoom();
     }
 
+    public void MoveCameraToPosition(Vector3 destination)
+    {
+        transform.position = destination;
+    }
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
     

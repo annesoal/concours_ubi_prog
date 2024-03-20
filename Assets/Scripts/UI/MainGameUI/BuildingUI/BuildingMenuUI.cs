@@ -77,7 +77,10 @@ public class BuildingMenuUI : MonoBehaviour
     
     private void InputManager_OnPlayerInteractPerformed(object sender, EventArgs e)
     {
-        showBuildingMenuButton.onClick.Invoke();
+        if (_playerIsNearWorkshop)
+        {
+            showBuildingMenuButton.onClick.Invoke();
+        }
     }
     
 }

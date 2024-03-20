@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Grid;
-using Grid.Interface;
+using Grid; using Grid.Interface;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SingleBuildableContentTemplateUI : MonoBehaviour
@@ -55,5 +55,10 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         }
 
         return true;
+    }
+
+    public Vector2Int GetAssociatedCellPosition()
+    {
+        return _associatedBuildableCell.position;
     }
 }
