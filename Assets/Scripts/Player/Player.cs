@@ -200,18 +200,9 @@ public class Player : NetworkBehaviour
 
     public void PickUpItems(Vector2Int position)
     {
-        List<ITopOfCell> elementsOnTopOfCell =
-            PlayerSelectorGridHelper.GetElementsOnTopOfCell(position);
-
-        for (int i = 0; i < elementsOnTopOfCell.Count; i++)
-        {
-            var element = elementsOnTopOfCell[i];
-            TypeTopOfCell type = element.GetType();
-            if (type == TypeTopOfCell.Resource)
-            {
-                    GameMultiplayerManager.Instance.PickUpResourcesServerRpc(i, position);
-            }
-        }
+        
+        GameMultiplayerManager.Instance.PickUpResourcesServerRpc(position);
+       
     }
     private void CleanHighlighters()
     {

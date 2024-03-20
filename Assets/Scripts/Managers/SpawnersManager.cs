@@ -60,18 +60,5 @@ namespace Managers
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
             }
         }
-        
-        /// <summary>
-        /// Place les objets dans le server et le client
-        /// </summary>
-        /// <param name="positionToObstacles"> positions des objets </param>
-        /// <param name="positionInGameObjectList"> position de l'objet a spawn dans la list des objets</param>
-        [ClientRpc]
-        public void PlaceObjectsClientRpc(Vector2Int[] positionToObstacles, int positionInGameObjectList)
-        {
-            List<Vector2Int> positions = positionToObstacles.ToList();
-            Spawner.InstantiateObstacles(positions, _gameObjectsToSpawn.ElementAt(positionInGameObjectList));
-       
-        }
     }
 }
