@@ -198,11 +198,9 @@ public class Player : NetworkBehaviour
         PickUpItems((Vector2Int) nextPosition); 
     }
 
-    public void PickUpItems(Vector2Int position)
+    private static void PickUpItems(Vector2Int position)
     {
-        
         GameMultiplayerManager.Instance.PickUpResourcesServerRpc(position);
-       
     }
     private void CleanHighlighters()
     {
