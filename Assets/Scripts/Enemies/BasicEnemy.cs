@@ -69,7 +69,7 @@ namespace Enemies
                 next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
                 return next_cell.IsNone();
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return true;
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +28,24 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
     {
         // TODO BUILDING LOGIC BASED ON :
         // - RESOURCES AVAILABLE
-        // - IF THERE'S ALREADY A TOWER ON THE CELL
-        SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
+        if (HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell))
+        {
+            SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
+            
+            _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+        }
+    }
+
+    private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)
+    {
+        foreach (ITopOfCell objectOnTop in objectsOnTopOfCell)
+        {
+            if (objectOnTop.GetType() == TypeTopOfCell.Building)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

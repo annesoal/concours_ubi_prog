@@ -26,17 +26,13 @@ public class SynchronizeBuilding : NetworkBehaviour
                            "Maybe the buildableObjectList is missing a buildableObject.");
         }
         
-        Vector3 positionToBuild = TilingGrid.GridPositionToLocal(buildableBlock.position);
-        
-        SpawnBuildableObjectServerRpc(indexOfBuildableObjectSO, positionToBuild);
+        SpawnBuildableObjectServerRpc(indexOfBuildableObjectSO, buildableBlock.position);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnBuildableObjectServerRpc(int indexOfBuildableObjectSO, Vector3 positionToBuild)
+    private void SpawnBuildableObjectServerRpc(int indexOfBuildableObjectSO, Vector2Int positionToBuild)
     {
         GameObject instance = Instantiate(allBuildableObjectSO.list[indexOfBuildableObjectSO].prefab);
-        
-        instance.GetComponent<IBuildable>().Build(positionToBuild);
         
         NetworkObject buildableObjectNetworkObject = instance.GetComponent<NetworkObject>();
         buildableObjectNetworkObject.Spawn(true);
@@ -45,14 +41,10 @@ public class SynchronizeBuilding : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SpawnBuildableObjectClientRpc(NetworkObjectReference buildableObjectNetworkObject, Vector3 positionToBuild)
+    private void SpawnBuildableObjectClientRpc(NetworkObjectReference buildableObjectNetworkObject, Vector2Int positionToBuild)
     {
         buildableObjectNetworkObject.TryGet(out NetworkObject buildableObjectNetwork);
         buildableObjectNetwork.GetComponent<IBuildable>().Build(positionToBuild);
-        
-        Vector2Int cellPosition = TilingGrid.LocalToGridPosition(positionToBuild);
-        Cell cellWithNewObject = TilingGrid.grid.GetCell(cellPosition);
-        // TODO set cellWithNewObject.hasObjectOnTop = true
     }
     
     public BuildableObjectsListSO GetAllBuildableObjectSo()
