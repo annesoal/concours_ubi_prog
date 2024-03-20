@@ -29,7 +29,9 @@ public class EnvironmentTurnManager : MonoBehaviour
             
             // AIM.PlaySubordinatesTurn();
             
-            // TowerManager.PlayTowersTurn();
+            BaseTower.PlayTowersInGameTurn();
+            // Play Trap turn
+            
             IAManager.MoveEnemies(totalEnergy);
             totalEnergy--;
         }

@@ -38,6 +38,14 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         return gameObject;
     }
 
+    public static void PlayTowersInGameTurn()
+    {
+        foreach (BaseTower tower in _towersInGame)
+        {
+            tower.PlayTurn();
+        }
+    }
+    
     protected void RegisterTower(BaseTower toAdd)
     {
         _towersInGame.Add(toAdd);
