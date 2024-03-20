@@ -13,6 +13,7 @@ namespace Grid.Interface
         Enemy,
         Player,
         Obstacle,
-        Resource
+        Resource,
+        Building
     }
 }
