@@ -16,11 +16,11 @@ public class FollowTransform : MonoBehaviour
         Left,
     }
 
-    public void SetFollowParameters(GameObject toFollow, float distance, DirectionOfFollow directionOfFollow)
+    public void SetFollowParameters(GameObject _toFollow, float _distance, DirectionOfFollow _directionOfFollow)
     {
-        toFollow = toFollow;
-        distance = distance;
-        directionOfFollow = directionOfFollow;
+        toFollow = _toFollow;
+        distance = _distance;
+        directionOfFollow = _directionOfFollow;
     }
     
     void Update()

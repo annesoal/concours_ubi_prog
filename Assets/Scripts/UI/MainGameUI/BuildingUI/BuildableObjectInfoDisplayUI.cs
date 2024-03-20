@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -32,8 +33,9 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         descriptionText.text = e.buildableObjectInfos.description;
         
         preview = Instantiate(e.buildableObjectInfos.visuals);
-        
-        preview.AddComponent<FollowTransform>().SetFollowParameters(Camera.main.gameObject, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
+
+        GameObject toFollow = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject;
+        preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
             
         preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
     }
