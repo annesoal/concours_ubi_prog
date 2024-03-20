@@ -15,7 +15,6 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler
         
         Vector3 cameraDestination = TilingGrid.GridPositionToLocal(cameraDestinationInt);
         
-        // TODO move camera to destination
         cameraController.MoveCameraToPosition(cameraDestination);
         
         // TODO highlight destination
