@@ -20,7 +20,7 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     [SerializeField] protected Transform shootingPoint;
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
 
-    private static List<BaseTower> _towersInGame;
+    private static List<BaseTower> _towersInGame = new List<BaseTower>();
 
     public abstract void Build(Vector2Int positionToBuild);
 
