@@ -84,10 +84,14 @@ public class TowerDefenseManager : NetworkBehaviour
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
             Instance.OnCurrentStateChanged += BeginTacticalPause;
         }
+        
+        InputManager.Instance.DisablePlayerInputMap();
     }
 
     private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
     {
+        InputManager.Instance.EnablePlayerInputMap();
+        
         if (e.newValue == State.TacticalPause)
         {
             _currentTimer = tacticalPauseDuration;
