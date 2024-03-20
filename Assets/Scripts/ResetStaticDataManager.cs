@@ -11,5 +11,6 @@ public class ResetStaticDataManager : MonoBehaviour
         CharacterSelectUI.ResetStaticData();
         SingleBuildableObjectSelectUI.ResetStaticData();
         Enemy.ResetSaticData();
+        Workshop.ResetStaticData();
     }
 }

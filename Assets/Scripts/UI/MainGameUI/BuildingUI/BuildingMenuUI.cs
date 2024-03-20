@@ -23,6 +23,9 @@ public class BuildingMenuUI : MonoBehaviour
         BasicShowHide.Hide(showBuildingMenuButton.gameObject);
         
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
+        Workshop.OnAnyWorkshopNearPlayer += Workshop_OnAnyWorkshopNearPlayer;
+        
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
         
@@ -44,19 +47,18 @@ public class BuildingMenuUI : MonoBehaviour
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
-        if (e.newValue == TowerDefenseManager.State.TacticalPause)
-        {
-            if (PlayerIsOnBuildingBlock())
-            {
-                BasicShowHide.Show(showBuildingMenuButton.gameObject);
-            }
-        }
-        else
+        if (e.newValue != TowerDefenseManager.State.TacticalPause)
         {
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             BasicShowHide.Hide(circularLayout.gameObject);
         }
     }
+    
+    private void Workshop_OnAnyWorkshopNearPlayer(object sender, EventArgs e)
+    {
+        BasicShowHide.Show(showBuildingMenuButton.gameObject);
+    }
+
 
     [SerializeField] private BuildingObjectOnGridUI buildingTowerOnGridUI;
     
