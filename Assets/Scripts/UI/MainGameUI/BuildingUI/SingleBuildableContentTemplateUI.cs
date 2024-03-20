@@ -42,8 +42,17 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
             
             _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
 
-            selectionButton.GetComponent<SingleBuildableContentButtonUI>().DestroyPreview();
+            UpdatePreviewUI();
         }
+    }
+
+    private void UpdatePreviewUI()
+    {
+        SingleBuildableContentButtonUI buttonUI = selectionButton.GetComponent<SingleBuildableContentButtonUI>();
+        
+        buttonUI.DestroyPreview();
+        
+        buttonUI.ShowAlreadyHasObjectText();
     }
 
     private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)

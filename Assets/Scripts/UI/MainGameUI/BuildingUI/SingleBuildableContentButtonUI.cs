@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
+using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,8 +12,11 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
 {
     [SerializeField] private SingleBuildableContentTemplateUI associatedTemplate;
     [SerializeField] private CameraController cameraController;
+    [SerializeField] private TextMeshProUGUI errorText;
 
     private GameObject _buildableObjectPreview;
+
+    private const string ALREADY_HAS_BUILDING_MESSAGE = "The selected block already has a building on it !";
 
     public void OnSelect(BaseEventData eventData)
     {
@@ -24,6 +29,12 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
         if (HasNotBuildingOnTop(associatedTemplate.GetAssociatedCellITopOfCells()))
         {
             InstantiatePreviewAtPosition(cameraDestination + Vector3.up * TilingGrid.TopOfCell);
+            BasicShowHide.Hide(errorText.gameObject);
+        }
+        else
+        {
+            errorText.text = ALREADY_HAS_BUILDING_MESSAGE;
+            BasicShowHide.Show(errorText.gameObject);
         }
     }
     
@@ -43,6 +54,8 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
     public void OnDeselect(BaseEventData eventData)
     {
         DestroyPreview();
+        
+        BasicShowHide.Hide(errorText.gameObject);
     }
 
     private void InstantiatePreviewAtPosition(Vector3 position)
@@ -61,5 +74,12 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
             Destroy(_buildableObjectPreview);
             _buildableObjectPreview = null;
         }
+    }
+
+    public void ShowAlreadyHasObjectText()
+    {
+        errorText.text = ALREADY_HAS_BUILDING_MESSAGE;
+        
+        BasicShowHide.Show(errorText.gameObject);
     }
 }
