@@ -20,9 +20,13 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     [SerializeField] protected Transform shootingPoint;
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
 
+    private static List<BaseTower> _towersInGame;
+
     public abstract void Build(Vector2Int positionToBuild);
 
     public abstract BuildableObjectSO GetBuildableObjectSO();
+
+    public abstract void PlayTurn();
     
     public new TypeTopOfCell GetType()
     {
@@ -32,5 +36,20 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     public GameObject ToGameObject()
     {
         return gameObject;
+    }
+
+    protected void RegisterTower(BaseTower toAdd)
+    {
+        _towersInGame.Add(toAdd);
+    }
+
+    public void UnregisterTower(BaseTower toDelete)
+    {
+        _towersInGame.Remove(toDelete);
+    }
+
+    public static void ResetStaticData()
+    {
+        _towersInGame = null;
     }
 }

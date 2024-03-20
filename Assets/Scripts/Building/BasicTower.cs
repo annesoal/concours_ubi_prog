@@ -14,11 +14,19 @@ public class BasicTower : BaseTower
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
+        
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
+        
+        RegisterTower(this);
     }
 
     public override BuildableObjectSO GetBuildableObjectSO()
     {
         return buildableObjectSO;
+    }
+
+    public override void PlayTurn()
+    {
+        Debug.Log("Tour basique joue son tour");
     }
 }
