@@ -103,7 +103,7 @@ namespace Grid
         
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
         {
-            Vector2Int destination = LocalToGridPosition(transform.position);
+            Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
             
             PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
@@ -119,15 +119,15 @@ namespace Grid
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
             
-            PlayerSelectorGridHelper.RemoveElement(gameObject, initialGridPosition);
+            PlayerSelectorGridHelper.RemoveElement(toPlace, initialGridPosition);
         }
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
             PlayerSelectorGridHelper helper = 
                 new PlayerSelectorGridHelper(cellPosition);
-            
-            helper.AddOnTopCell(gameObject, toPlace.GetComponent<ITopOfCell>());
+
+            helper.AddOnTopCell(toPlace, toPlace.GetComponent<ITopOfCell>());
             
             toPlace.transform.position = GridPositionToLocal(helper.Cell.position, TopOfCell);
             toPlace.transform.position =
