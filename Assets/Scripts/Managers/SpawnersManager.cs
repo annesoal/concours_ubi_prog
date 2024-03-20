@@ -55,9 +55,8 @@ namespace Managers
             foreach (Vector2Int positionOfSpawn in positionToObstacles)
             {
                 GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
-                instance.GetComponent<NetworkObject>().Spawn(true);
-                
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+                instance.GetComponent<NetworkObject>().Spawn(true);
             }
         }
     }
