@@ -18,6 +18,11 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
 
     private const string ALREADY_HAS_BUILDING_MESSAGE = "The selected block already has a building on it !";
 
+    private void Start()
+    {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+    }
+
     public void OnSelect(BaseEventData eventData)
     {
         Vector2Int cameraDestinationInt = associatedTemplate.GetAssociatedCellPosition();
@@ -26,7 +31,7 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
         
         cameraController.MoveCameraToPosition(cameraDestination);
 
-        if (HasNotBuildingOnTop(associatedTemplate.GetAssociatedCellITopOfCells()))
+        if (associatedTemplate.AssociatedCellHasNotBuildingOnTop())
         {
             InstantiatePreviewAtPosition(cameraDestination + Vector3.up * TilingGrid.TopOfCell);
             BasicShowHide.Hide(errorText.gameObject);
@@ -38,20 +43,12 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
         }
     }
     
-    private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)
+    public void OnDeselect(BaseEventData eventData)
     {
-        foreach (ITopOfCell objectOnTop in objectsOnTopOfCell)
-        {
-            if (objectOnTop.GetType() == TypeTopOfCell.Building)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        ResetUI();
     }
 
-    public void OnDeselect(BaseEventData eventData)
+    private void ResetUI()
     {
         DestroyPreview();
         
@@ -82,4 +79,13 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
         
         BasicShowHide.Show(errorText.gameObject);
     }
+    
+    private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
+        {
+            ResetUI();
+        }
+    }
+
 }

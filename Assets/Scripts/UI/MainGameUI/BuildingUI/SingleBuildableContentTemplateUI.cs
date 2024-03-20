@@ -78,8 +78,8 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         return _associatedBuildableObjectSo;
     }
 
-    public List<ITopOfCell> GetAssociatedCellITopOfCells()
+    public bool AssociatedCellHasNotBuildingOnTop()
     {
-        return _associatedBuildableCell.ObjectsTopOfCell;
+        return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell);
     }
 }
