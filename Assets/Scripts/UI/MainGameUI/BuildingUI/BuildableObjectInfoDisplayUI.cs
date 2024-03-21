@@ -13,19 +13,21 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     private void Start()
     {
         SingleBuildableObjectSelectUI.OnAnySelectUI +=
-            SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter;
+            SingleBuildableObjectSelectUI_OnAnySelectUI;
         SingleBuildableObjectSelectUI.OnAnyDeselectUI +=
-            SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit;
+            SingleBuildableObjectSelectUI_OnAnyDeselectUI;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUISelected;
 
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
+        BasicShowHide.Hide(gameObject);
     }
 
-    private GameObject preview;
+    private GameObject _preview;
     private const float PREVIEW_DISTANCE = 10f;
     
-    private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter
+    private void SingleBuildableObjectSelectUI_OnAnySelectUI
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
         ClearOldPreview();
@@ -34,23 +36,23 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         
         descriptionText.text = e.buildableObjectInfos.description;
         
-        preview = Instantiate(e.buildableObjectInfos.visuals);
+        _preview = Instantiate(e.buildableObjectInfos.visuals);
 
         GameObject toFollow = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject;
-        preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
+        _preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
             
-        preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
+        _preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
     }
 
     private void ClearOldPreview()
     {
-        if (preview != null)
+        if (_preview != null)
         {
-            Destroy(preview);
+            Destroy(_preview);
         }
     }
     
-    private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit
+    private void SingleBuildableObjectSelectUI_OnAnyDeselectUI
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
         ClearDisplay();
@@ -66,8 +68,8 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     {
         BasicShowHide.Hide(gameObject);
         
-        Destroy(preview);
-        preview = null;
+        Destroy(_preview);
+        _preview = null;
     }
     
     private void TowerDefenseManager_OnCurrentStateChanged

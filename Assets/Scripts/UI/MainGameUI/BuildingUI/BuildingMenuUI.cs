@@ -35,8 +35,6 @@ public class BuildingMenuUI : MonoBehaviour
         
         InputManager.Instance.OnPlayerInteractPerformed += InputManager_OnPlayerInteractPerformed;
         
-        circularLayout.HideLayout();
-        
         UpdateLayoutVisuals();
     }
 
