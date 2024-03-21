@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class InputManager : MonoBehaviour
     private PlayerInputActions _playerInputActions;
 
     private static Player _player;
+    private bool _canMovePlayer = false; 
     public static Player Player
     {
         set
@@ -32,22 +34,45 @@ public class InputManager : MonoBehaviour
         _playerInputActions.Player.Confirm.performed += Confirm;
     }
 
+
+    private void Start()
+    {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += UpdateCanPlayState;
+    }
+
+    private void UpdateCanPlayState(object o, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == TowerDefenseManager.State.TacticalPause)
+        {
+            _canMovePlayer = true;
+        }
+        else 
+        {
+            _canMovePlayer = false;
+        }
+    }
+
     private void Confirm(InputAction.CallbackContext obj)
     {
-        _player.OnConfirm();
+        if(_canMovePlayer)
+            _player.OnConfirm();
+        
     }
 
     private void Cancel(InputAction.CallbackContext obj)
     {
-        _player.OnCancel();
+        if(_canMovePlayer)
+            _player.OnCancel();
     }
 
     private void Update()
     {
         if (_player == null) return; 
-        Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
 
-        _player.InputMove(input);
+        if(_canMovePlayer){
+            Vector2 input = _playerInputActions.Player.Movement.ReadValue<Vector2>();
+            _player.InputMove(input);
+        }
     }
 
     public Vector2 GetCameraMoveInput()
@@ -79,6 +104,7 @@ public class InputManager : MonoBehaviour
 
     private void Select(InputAction.CallbackContext context)
     {
-        _player.OnSelect();
+        if(_canMovePlayer)
+            _player.OnSelect();
     }
 }
