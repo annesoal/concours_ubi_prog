@@ -28,6 +28,8 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
+        ClearOldPreview();
+        
         BasicShowHide.Show(gameObject);
         
         descriptionText.text = e.buildableObjectInfos.description;
@@ -38,6 +40,14 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
             
         preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
+    }
+
+    private void ClearOldPreview()
+    {
+        if (preview != null)
+        {
+            Destroy(preview);
+        }
     }
     
     private void SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit

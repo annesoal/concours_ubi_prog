@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Grid;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BuildingMenuUI : MonoBehaviour
@@ -12,9 +13,12 @@ public class BuildingMenuUI : MonoBehaviour
     {
         showBuildingMenuButton.onClick.AddListener(() =>
         {
-            InputManager.Instance.DisablePlayerInputMap();
+            if (IsBuildingInactive())
+            {
+                InputManager.Instance.DisablePlayerInputMap();
             
-            circularLayout.ShowLayout();
+                circularLayout.ShowLayout();
+            }
         });
     }
 
@@ -44,6 +48,11 @@ public class BuildingMenuUI : MonoBehaviour
         }
     }
 
+    private bool IsBuildingInactive()
+    {
+        return !circularLayout.gameObject.activeSelf && !buildingTowerOnGridUI.gameObject.activeSelf;
+    }
+
     [SerializeField] private Button showBuildingMenuButton;
     [SerializeField] private CircularLayoutUI circularLayout;
     
@@ -51,6 +60,9 @@ public class BuildingMenuUI : MonoBehaviour
     {
         if (e.newValue != TowerDefenseManager.State.TacticalPause)
         {
+            // Aucune sélection de UI lors de la sortie de la pause tactique
+            EventSystem.current.SetSelectedGameObject(null);
+            
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             BasicShowHide.Hide(circularLayout.gameObject);
             BasicShowHide.Hide(buildingTowerOnGridUI.gameObject);

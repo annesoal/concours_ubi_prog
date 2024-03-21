@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SingleBuildableObjectSelectUI : MonoBehaviour
@@ -69,7 +70,7 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
 
     public void SelectThisSelectionButton()
     {
-        selectionButton.Select();
+        EventSystem.current.SetSelectedGameObject(selectionButton.gameObject);
         EmitSelectionSignal(OnAnySelectUI);
     }
     
