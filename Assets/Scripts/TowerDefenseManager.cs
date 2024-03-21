@@ -26,7 +26,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private int totalRounds;
 
     // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
-    [field: SerializeField] public int EnergyAvailable { get; private set; }
+    [field: SerializeField] private int EnergyAvailable { get;  set; }
+     public int energyToUse;
 
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
@@ -73,8 +74,8 @@ public class TowerDefenseManager : NetworkBehaviour
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
-
         currentRoundNumber = 0;
+        
     }
 
     private void Start()
@@ -85,6 +86,7 @@ public class TowerDefenseManager : NetworkBehaviour
             Instance.OnCurrentStateChanged += BeginTacticalPause;
             //OnCurrentStateChanged += DebugStateChange;
         }
+        energyToUse = 0;
     }
 
     private void DebugStateChange(object sender, OnCurrentStateChangedEventArgs e)
@@ -96,6 +98,7 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         if (e.newValue == State.TacticalPause)
         {
+            energyToUse = EnergyAvailable;
             _currentTimer = tacticalPauseDuration;
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new();
@@ -154,11 +157,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
-      //  if (_isEnvironmentTurnNotCalled)
-      //  {
-      //      _isEnvironmentTurnNotCalled = false;
-      //       EnvironmentTurnManager.Instance.EnableEnvironmentTurn(EnergyAvailable);
-      //  }
+    
     }
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
