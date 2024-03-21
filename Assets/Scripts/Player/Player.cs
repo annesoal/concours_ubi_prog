@@ -68,6 +68,7 @@ public class Player : NetworkBehaviour
     {
         if (!IsOwner) return true;
         if (!CooldownHasPassed()) return true;
+    
         return !HasEnergy();
     }
 
@@ -248,6 +249,7 @@ public class Player : NetworkBehaviour
         CleanHighlighters();
         _selector.ResetSelf();
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
+        _canMove = false; 
     }
 
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
