@@ -12,9 +12,9 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     
     private void Start()
     {
-        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUIHoveredEnter +=
+        SingleBuildableObjectSelectUI.OnAnySelectUI +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredEnter;
-        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUIHoveredExit +=
+        SingleBuildableObjectSelectUI.OnAnyDeselectUI +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUIHoveredExit;
         SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
             SingleBuildableObjectSelectUI_OnAnySingleBuildableObjectSelectUISelected;
