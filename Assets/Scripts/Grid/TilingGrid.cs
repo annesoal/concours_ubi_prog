@@ -53,9 +53,11 @@ namespace Grid
         // Traduit une position local a la position dans la grille 
         public static Vector2Int LocalToGridPosition(Vector3 position)
         {
-            Vector2Int gridPosition = new Vector2Int(); 
-            gridPosition.x = (int)position.x; 
-            gridPosition.y = (int)position.z; 
+            Vector2Int gridPosition = new Vector2Int
+            {
+                x = (int)Math.Round(position.x),
+                y = (int)Math.Round(position.z)
+            };
             return gridPosition;
         }
         
