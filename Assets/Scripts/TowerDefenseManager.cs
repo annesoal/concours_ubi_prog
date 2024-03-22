@@ -80,10 +80,11 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Start()
     {
+        Instance.OnCurrentStateChanged += BeginTacticalPause;
+            
         if (IsServer)
         {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
-            Instance.OnCurrentStateChanged += BeginTacticalPause;
             //OnCurrentStateChanged += DebugStateChange;
         }
         energyToUse = 0;
