@@ -5,7 +5,7 @@ using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CentralizedInventory : MonoBehaviour
+public class CentralizedInventory : NetworkBehaviour
 {
     public static CentralizedInventory Instance { get; private set; }
 
