@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -52,6 +53,15 @@ public class SynchronizeBuilding : NetworkBehaviour
     {
         buildableObjectNetworkObject.TryGet(out NetworkObject buildableObjectNetwork);
         buildableObjectNetwork.GetComponent<IBuildable>().Build(positionToBuild);
+
+        Cell withNewObjectOnTop = TilingGrid.grid.GetCell(positionToBuild);
+        
+        withNewObjectOnTop.AddGameObject(
+            buildableObjectNetwork.gameObject, 
+            buildableObjectNetwork.GetComponent<ITopOfCell>()
+        );
+
+        TilingGrid.grid.UpdateCell(withNewObjectOnTop);
     }
     
     public BuildableObjectsListSO GetAllBuildableObjectSo()

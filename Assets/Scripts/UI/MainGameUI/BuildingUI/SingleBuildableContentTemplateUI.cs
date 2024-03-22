@@ -82,6 +82,8 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
 
     public bool AssociatedCellHasNotBuildingOnTop()
     {
+        _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+        
         return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell);
     }
 }
