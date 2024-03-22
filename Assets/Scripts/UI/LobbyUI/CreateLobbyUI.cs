@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CreateLobbyUI : MonoBehaviour
@@ -18,6 +19,7 @@ public class CreateLobbyUI : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             BasicShowHide.Hide(gameObject);
+            EventSystem.current.firstSelectedGameObject.GetComponent<Selectable>().Select();
         });
         
         createPrivateLobbyButton.onClick.AddListener(() =>
@@ -39,5 +41,12 @@ public class CreateLobbyUI : MonoBehaviour
     public void Show()
     {
         BasicShowHide.Show(gameObject);
+        
+        SetFirstButtonSelect();
+    }
+
+    private void SetFirstButtonSelect()
+    {
+        lobbyNameInputField.Select();
     }
 }

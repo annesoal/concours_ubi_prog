@@ -5,6 +5,7 @@ using TMPro;
 using UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ErrorLobbyUI : MonoBehaviour
@@ -17,6 +18,7 @@ public class ErrorLobbyUI : MonoBehaviour
         closeErrorLobbyButton.onClick.AddListener(() =>
         {
             BasicShowHide.Hide(gameObject);
+            EventSystem.current.firstSelectedGameObject.GetComponent<Selectable>().Select();
         });
     }
 
@@ -66,7 +68,15 @@ public class ErrorLobbyUI : MonoBehaviour
     private void ShowWithErrorText(string errorToShow)
     {
         errorText.text = errorToShow;
+        
         BasicShowHide.Show(gameObject);
+        
+        SetFirstButtonSelect();
+    }
+
+    private void SetFirstButtonSelect()
+    {
+        closeErrorLobbyButton.Select();
     }
     
     private void OnDestroy()
