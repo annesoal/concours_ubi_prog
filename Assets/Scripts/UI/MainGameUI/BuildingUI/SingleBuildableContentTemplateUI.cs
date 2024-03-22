@@ -31,12 +31,7 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
 
     private void BuildObjectOnButtonClick()
     {
-        // Si l'autre joueur modifie la cell entre-temps, on veut la cell la plus à jour au moment de la construction.
-        _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
-        
-        // TODO BUILDING LOGIC BASED ON :
-        // - RESOURCES AVAILABLE
-        if (HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell))
+        if (IsAbleToBuild())
         {
             SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
             
@@ -46,13 +41,20 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         }
     }
 
+    private bool IsAbleToBuild()
+    {
+        // Si l'autre joueur modifie la cell entre-temps, on veut la cell la plus à jour au moment de la construction.
+        _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+        
+        return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell) &&
+               CentralizedInventory.Instance.HasResourcesForBuilding(_associatedBuildableObjectSo);
+    }
+
     private void UpdatePreviewUI()
     {
         SingleBuildableContentButtonUI buttonUI = selectionButton.GetComponent<SingleBuildableContentButtonUI>();
-        
-        buttonUI.DestroyPreview();
-        
-        buttonUI.ShowAlreadyHasObjectText();
+
+        buttonUI.UpdatePreviewAfterBuilding();
     }
 
     private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)

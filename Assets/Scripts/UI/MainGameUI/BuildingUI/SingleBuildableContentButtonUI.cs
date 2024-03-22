@@ -25,22 +25,50 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
 
     public void OnSelect(BaseEventData eventData)
     {
+        Vector3 cameraDestination = MoveCameraToBuildingCellPosition();
+        
+        TrySpawnPreviewAtPosition(cameraDestination);
+
+        if (CantBuildTemplate())
+        {
+            errorText.text = "You don't have the resources necessary for " +
+                             associatedTemplate.GetAssociatedBuildableObjectSO().objectName;
+            BasicShowHide.Show(errorText.gameObject);
+        }
+    }
+
+    /// <returns>The world position at which the camera was moved,
+    ///          without the vertical offset that puts objects on top of blocks.</returns>
+    private Vector3 MoveCameraToBuildingCellPosition()
+    {
         Vector2Int cameraDestinationInt = associatedTemplate.GetAssociatedCellPosition();
         
         Vector3 cameraDestination = TilingGrid.GridPositionToLocal(cameraDestinationInt, 0f);
         
         cameraController.MoveCameraToPosition(cameraDestination);
 
+        return cameraDestination;
+    }
+
+    /// <param name="spawnPosition">The spawn position WITHOUT the vertical offset that put objects on top of block.</param>
+    private void TrySpawnPreviewAtPosition(Vector3 spawnPosition)
+    {
         if (associatedTemplate.AssociatedCellHasNotBuildingOnTop())
         {
-            InstantiatePreviewAtPosition(cameraDestination + Vector3.up * TilingGrid.TopOfCell);
+            InstantiatePreviewAtPosition(spawnPosition + Vector3.up * TilingGrid.TopOfCell);
             BasicShowHide.Hide(errorText.gameObject);
         }
         else
         {
-            errorText.text = ALREADY_HAS_BUILDING_MESSAGE;
-            BasicShowHide.Show(errorText.gameObject);
+            ShowErrorText(ALREADY_HAS_BUILDING_MESSAGE);
         }
+    }
+
+    private bool CantBuildTemplate()
+    {
+        return ! CentralizedInventory.Instance.HasResourcesForBuilding(
+            associatedTemplate.GetAssociatedBuildableObjectSO()
+        );
     }
     
     public void OnDeselect(BaseEventData eventData)
@@ -72,10 +100,17 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
             _buildableObjectPreview = null;
         }
     }
-
-    public void ShowAlreadyHasObjectText()
+    
+    public void UpdatePreviewAfterBuilding()
     {
-        errorText.text = ALREADY_HAS_BUILDING_MESSAGE;
+        DestroyPreview();
+        
+        ShowErrorText(ALREADY_HAS_BUILDING_MESSAGE);
+    }
+
+    public void ShowErrorText(string error)
+    {
+        errorText.text = error;
         
         BasicShowHide.Show(errorText.gameObject);
     }
@@ -87,5 +122,4 @@ public class SingleBuildableContentButtonUI : MonoBehaviour, ISelectHandler, IDe
             ResetUI();
         }
     }
-
 }

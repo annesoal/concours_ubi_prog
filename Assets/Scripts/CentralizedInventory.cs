@@ -34,6 +34,20 @@ public class CentralizedInventory : NetworkBehaviour
             Debug.LogError(e);
         }
     }
+    
+    public bool HasResourcesForBuilding(BuildableObjectSO buildableObjectSo)
+    {
+        foreach (BuildableObjectSO.BuildingMaterialAndQuantityPair pair in buildableObjectSo.materialAndQuantityPairs)
+        {
+            int numberRequired = GetNumberAvailableResource(pair.buildingMaterialSO);
+            if (numberRequired < pair.quantityOfMaterialRequired)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /// Throws NoMatchingBuildingMaterialSOException when the BuildingMaterialSO specified does not exist in inventory.
     private int GetNumberAvailableResource(BuildingMaterialSO resourceData)
