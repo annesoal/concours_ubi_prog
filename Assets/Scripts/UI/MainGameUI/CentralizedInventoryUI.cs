@@ -9,20 +9,7 @@ public class CentralizedInventoryUI : MonoBehaviour
 
     void Start()
     {
-        // TODO CHANGE FOR CUSTOM EVENT, WITH THE BUILDABLE OBJECT SO OF WHICH THE VALUE HAS CHANGED
-        CentralizedInventory.Instance.NumberOfGreyResources.OnValueChanged += CentralizedInventory_OnNumberOfGreyResourcesChanged;
-    }
-    
-    private void CentralizedInventory_OnNumberOfGreyResourcesChanged(int previousValue, int newValue)
-    {
-        foreach (SingleResourceTemplateUI template in resourceTemplates)
-        {
-            if (template.ResourceData.type == BuildingMaterialSO.BuildingMaterialType.GreyMaterial)
-            {
-                template.SetNumberOfResource(newValue);
-                break;
-            }
-        }
+        CentralizedInventory.Instance.OnNumberResourceChanged += CentralizedInventory_OnNumberResourceChanged;
     }
 
     public void ShowCostForResource(BuildingMaterialSO resourceData, int availableNumber, int cost)
@@ -44,4 +31,17 @@ public class CentralizedInventoryUI : MonoBehaviour
             template.ClearMaterialCostUI();
         }
     }
+    
+    private void CentralizedInventory_OnNumberResourceChanged(object sender, CentralizedInventory.OnNumberResourceChangedEventArgs e)
+    {
+        foreach (SingleResourceTemplateUI template in resourceTemplates)
+        {
+            if (template.ResourceData.type == e.ResourceChanged.type)
+            {
+                template.SetNumberOfResource(e.NewValue);
+                break;
+            }
+        }
+    }
+
 }

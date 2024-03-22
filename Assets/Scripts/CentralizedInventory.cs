@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Grid;
 using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,6 +12,15 @@ public class CentralizedInventory : NetworkBehaviour
 
     [SerializeField] private CentralizedInventoryUI correspondingUI;
 
+    [SerializeField] private List<BuildingMaterialSO> allBuildingMaterialSO;
+
+    public event EventHandler<OnNumberResourceChangedEventArgs> OnNumberResourceChanged;
+    public class OnNumberResourceChangedEventArgs
+    {
+        public int NewValue;
+        public BuildingMaterialSO ResourceChanged;
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -18,9 +28,22 @@ public class CentralizedInventory : NetworkBehaviour
 
     public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
 
+    /// <summary>
+    /// throw new ITopOfCellNotAResourceException(); when element is not a resource.
+    /// </summary>
     public void AddResource(ITopOfCell element)
     {
-        NumberOfGreyResources.Value++;
+        if (element.GetType() != TypeTopOfCell.Resource) { throw new ITopOfCellNotAResourceException(); }
+
+        Ressource resourceOfElement = element.ToGameObject().GetComponent<Ressource>();
+        
+        NetworkVariable<int> resourceNetworkVariable = GetNetworkVariableOfResource(resourceOfElement.BuildingMaterialSO);
+
+        resourceNetworkVariable.Value++;
+        
+        EmitResourceChangedEventClientRpc(
+            resourceNetworkVariable.Value, 
+            allBuildingMaterialSO.IndexOf(resourceOfElement.BuildingMaterialSO));
     }
 
     public void DecreaseResourceForBuilding(BuildableObjectSO builtObjectSO)
@@ -63,8 +86,21 @@ public class CentralizedInventory : NetworkBehaviour
         {
             case BuildingMaterialSO.BuildingMaterialType.GreyMaterial:
                 NumberOfGreyResources.Value = NumberOfGreyResources.Value - cost;
+                EmitResourceChangedEventClientRpc(NumberOfGreyResources.Value, allBuildingMaterialSO.IndexOf(resourceData));
                 break;
         }
+    }
+
+    /// <exception cref="NoMatchingBuildingMaterialSOException"></exception>
+    private NetworkVariable<int> GetNetworkVariableOfResource(BuildingMaterialSO buildingMaterialSo)
+    {
+        switch (buildingMaterialSo.type)
+        {
+            case BuildingMaterialSO.BuildingMaterialType.GreyMaterial:
+                return NumberOfGreyResources;
+        }
+
+        throw new NoMatchingBuildingMaterialSOException();
     }
 
     /// Throws NoMatchingBuildingMaterialSOException when the BuildingMaterialSO specified does not exist in inventory.
@@ -78,6 +114,18 @@ public class CentralizedInventory : NetworkBehaviour
 
         throw new NoMatchingBuildingMaterialSOException("No match is found, maybe a new building material was" +
                                                         "not coded in the inventory yet !");
+    }
+
+    [ClientRpc]
+    private void EmitResourceChangedEventClientRpc(int newValue, int indexOfBuildingMaterialSO)
+    {
+        BuildingMaterialSO resourceChanged = allBuildingMaterialSO[indexOfBuildingMaterialSO];
+        
+        OnNumberResourceChanged?.Invoke(this, new OnNumberResourceChangedEventArgs
+        {
+            NewValue = newValue,
+            ResourceChanged = resourceChanged,
+        });
     }
 
     public void ClearAllMaterialsCostUI()
