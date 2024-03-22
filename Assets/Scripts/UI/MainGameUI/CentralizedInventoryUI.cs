@@ -5,17 +5,44 @@ using UnityEngine;
 
 public class CentralizedInventoryUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI numberOfResourcesText;
+    [SerializeField] private List<SingleResourceTemplateUI> resourceTemplates;
 
-    private const string NUMBER_OF_RESOURCES_TEXT = "RESOURCES AVAILABLE : ";
-    
     void Start()
     {
-        CentralizedInventory.Instance.NumberOfResources.OnValueChanged += CentralizedInventory_OnNumberOfResourcesChanged;
+        // TODO CHANGE FOR CUSTOM EVENT, WITH THE BUILDABLE OBJECT SO OF WHICH THE VALUE HAS CHANGED
+        CentralizedInventory.Instance.NumberOfGreyResources.OnValueChanged += CentralizedInventory_OnNumberOfGreyResourcesChanged;
+    }
+    
+    private void CentralizedInventory_OnNumberOfGreyResourcesChanged(int previousValue, int newValue)
+    {
+        foreach (SingleResourceTemplateUI template in resourceTemplates)
+        {
+            if (template.ResourceData.type == BuildingMaterialSO.BuildingMaterialType.GreyMaterial)
+            {
+                template.SetNumberOfResource(newValue);
+                break;
+            }
+        }
     }
 
-    private void CentralizedInventory_OnNumberOfResourcesChanged(int previousValue, int newValue)
+    public void ShowCostForResource(BuildingMaterialSO resourceData, int availableNumber, int cost)
     {
-        numberOfResourcesText.text = NUMBER_OF_RESOURCES_TEXT + newValue;
+        foreach (SingleResourceTemplateUI template in resourceTemplates)
+        {
+            if (template.ResourceData == resourceData)
+            {
+                Debug.Log("Juste before show individual resource cost in CentralizedInventoryUI.cs");
+                template.ShowResourceCost(availableNumber, cost);
+                break;
+            }
+        }
+    }
+    
+    public void ClearAllMaterialsCostUI()
+    {
+        foreach (SingleResourceTemplateUI template in resourceTemplates)
+        {
+            template.ClearMaterialCostUI();
+        }
     }
 }

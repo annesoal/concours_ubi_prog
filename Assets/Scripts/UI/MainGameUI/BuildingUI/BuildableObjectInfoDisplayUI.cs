@@ -32,16 +32,33 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     {
         ClearOldPreview();
         
+        ClearOldMaterialCostUI();
+        
         BasicShowHide.Show(gameObject);
         
         descriptionText.text = e.buildableObjectInfos.description;
         
-        _preview = Instantiate(e.buildableObjectInfos.visuals);
+        ShowPreviewInFrontOfCamera(e);
+        
+        ShowMaterialCost(e);
+    }
+
+    private void ShowPreviewInFrontOfCamera(SingleBuildableObjectSelectUI.BuildableObjectData buildableObjectData)
+    {
+        _preview = Instantiate(buildableObjectData.buildableObjectInfos.visuals);
 
         GameObject toFollow = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject;
         _preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
             
         _preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
+    }
+
+    private void ShowMaterialCost(SingleBuildableObjectSelectUI.BuildableObjectData buildableObjectData)
+    {
+        foreach (BuildableObjectSO.BuildingMaterialAndQuantityPair pair in buildableObjectData.buildableObjectInfos.materialAndQuantityPairs)
+        {
+            CentralizedInventory.Instance.ShowCostForResource(pair.buildingMaterialSO, pair.quantityOfMaterialRequired);
+        }
     }
 
     private void ClearOldPreview()
@@ -50,6 +67,11 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         {
             Destroy(_preview);
         }
+    }
+    
+    private void ClearOldMaterialCostUI()
+    {
+        CentralizedInventory.Instance.ClearAllMaterialsCostUI();
     }
     
     private void SingleBuildableObjectSelectUI_OnAnyDeselectUI
