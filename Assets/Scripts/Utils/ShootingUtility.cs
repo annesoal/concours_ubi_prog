@@ -4,27 +4,49 @@ using Unity.Collections;
 using System;
 using Unity.VisualScripting;
 using Unity.Mathematics;
+using System.Drawing;
+using UnityEditor.Media;
 
 namespace Utils
 {
     public class ShootingUtility :  MonoBehaviour
     {
     
-        public float TimeToFly { set; private get; }
-        public GameObject ObjectToFire{ set; private get; }
+        [SerializeField] public float TimeToFly;
+        [SerializeField] public GameObject ObjectToFire;
 
-        public float Gravity
+        [SerializeField] public GameObject Destination;
+        [SerializeField] public GameObject Origin;
+        [SerializeField] public float startingAngle;
+        public void Start()
         {
-            set => _gravity.y = value;
-            get => _gravity.y; 
+            FireBetween(Origin.transform.position, Destination.transform.position, startingAngle);
         }
-        private Vector3 _gravity = new Vector3();
-        
-        public void FireBetween(Vector3 initialPosition, Vector3 targetPosition, float radAngle)
+
+        public void FireBetween(Vector3 startPosition, Vector3 endPosition, float radAngle)
         {
-            Vector3 thirdPosition = GetThirdPoint(initialPosition, targetPosition,radAngle);
+            Vector3 middlePosition = GetThirdPoint(startPosition, endPosition,radAngle);
+            StartCoroutine(MoveObject(startPosition, middlePosition, endPosition));
+
         }
   
+        private IEnumerator MoveObject(Vector3 startPoint, Vector3 middlePoint, Vector3 endPoint)
+        {
+            float timer = 0; 
+            while (timer < TimeToFly)
+            {
+                timer += Time.deltaTime ;
+                float ratio = Math.Min(timer / TimeToFly, 1.0f);
+                ObjectToFire.transform.position = RunBezier(startPoint, middlePoint, endPoint, ratio);                
+                yield return null;
+            }
+        }
+
+        private Vector3 RunBezier(Vector3 startPoint, Vector3 middlePoint,Vector3 endPoint, float ratio )
+        {
+            Vector3 bezierPosition = (1-ratio) * startPoint + (2 * ratio)* (1-ratio) * middlePoint + ratio * ratio *endPoint;
+            return bezierPosition;
+        }
         private static Vector3 GetThirdPoint(Vector3 initpos, Vector3 targetPos, float startingAngle)
         {
             // On cherche le point du milieu entre init et target
