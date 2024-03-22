@@ -109,16 +109,6 @@ public class InputManager : MonoBehaviour
             _player.OnSelect();
     }
     
-    private void Cancel(InputAction.CallbackContext obj)
-    {
-        _player.OnCancel();
-    }
-    
-    private void Confirm(InputAction.CallbackContext obj)
-    {
-        _player.OnConfirm();
-    }
-
     public event EventHandler OnPlayerInteractPerformed;
     private void PlayerInput_OnInteractperformed(InputAction.CallbackContext obj)
     {
