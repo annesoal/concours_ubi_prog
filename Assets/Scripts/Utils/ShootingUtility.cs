@@ -1,11 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using Unity.Collections;
+using System;
+using Unity.VisualScripting;
+using Unity.Mathematics;
 
 namespace Utils
 {
     public class ShootingUtility :  MonoBehaviour
     {
+    
         public float TimeToFly { set; private get; }
         public GameObject ObjectToFire{ set; private get; }
 
@@ -16,31 +20,23 @@ namespace Utils
         }
         private Vector3 _gravity = new Vector3();
         
-        public void FireBetween(Vector3 initialPosition, Vector3 targetPosition, float angle)
+        public void FireBetween(Vector3 initialPosition, Vector3 targetPosition, float radAngle)
         {
-            StartCoroutine( Fire(initialPosition, targetPosition, angle));
+            Vector3 thirdPosition = GetThirdPoint(initialPosition, targetPosition,radAngle);
         }
-
-        private IEnumerator Fire(Vector3 initialPosition, Vector3 targetPosition, float startingForce)
+  
+        private static Vector3 GetThirdPoint(Vector3 initpos, Vector3 targetPos, float startingAngle)
         {
-            float timer = TimeToFly;
-            Vector3 currentPosition = initialPosition;
-            while (!HasReachedTarget(currentPosition, targetPosition))
-            {
-                float ratio = timer / Time.deltaTime; 
-                Vector3 nextPosition = FindNextPosition(currentPosition, targetPosition, startingForce, ratio);
-                yield return null;
-            }
+            // On cherche le point du milieu entre init et target
+            Vector3 midPoint = (targetPos + initpos) / 2;
+        
+            float distance = Vector3.Distance(initpos, midPoint);
+            float oppositeLength = (float) Math.Tan(startingAngle) * distance; 
+            Vector3 oppositeVector = Vector3.up * oppositeLength;
+            Vector3 thirdPointPosition = midPoint + oppositeVector;
+             
+            return thirdPointPosition;
         }
-
-        private static bool HasReachedTarget(Vector3 position, Vector3 targetPosition)
-        {
-            return position.Equals(targetPosition);
-        }
-
-        private Vector3 FindNextPosition(Vector3 initialPosition, Vector3 targetPosition, float angle, float ratio)
-        {
-            return new Vector3();
-        }
+        
     }
 }
