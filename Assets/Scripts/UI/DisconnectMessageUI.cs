@@ -34,6 +34,7 @@ public class DisconnectMessageUI : MonoBehaviour
         }
         
         BasicShowHide.Show(gameObject);
+        mainMenuButton.Select();
     }
 
     public void Show(string messageToShow)

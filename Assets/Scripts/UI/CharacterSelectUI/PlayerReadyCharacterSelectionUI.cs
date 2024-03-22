@@ -5,6 +5,7 @@ using TMPro;
 using UI;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerReadyCharacterSelectionUI : MonoBehaviour
@@ -62,6 +63,7 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
 
     private void SetReadyButtonEnabled(bool isEnabled, string errorMessage)
     {
+        bool readyButtonWasEnabled = readyButton.enabled;
         readyButton.enabled = isEnabled;
 
         if (isEnabled)
@@ -71,6 +73,11 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
         else
         {
             ShowErrorMessage(errorMessage);
+        }
+
+        if (readyButtonWasEnabled && ! readyButton.enabled)
+        {
+            EventSystem.current.SetSelectedGameObject(EventSystem.current.firstSelectedGameObject);
         }
     }
 
