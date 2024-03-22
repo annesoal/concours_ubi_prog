@@ -32,7 +32,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Pause Tactique")]
     [SerializeField] private float tacticalPauseDuration;
 
-    private float _currentTimer; 
+    private NetworkVariable<float> _currentTimer;
+    public float TacticalPauseTimer => _currentTimer.Value;
 
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
@@ -69,6 +70,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
+        _currentTimer = new NetworkVariable<float>(tacticalPauseDuration);
 
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
@@ -104,9 +106,13 @@ public class TowerDefenseManager : NetworkBehaviour
         if (e.newValue == State.TacticalPause)
         {
             energyToUse = EnergyAvailable;
-            _currentTimer = tacticalPauseDuration;
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new();
+            
+            if (IsServer)
+            {
+                _currentTimer.Value = tacticalPauseDuration;
+            }
         }
     }
 
@@ -186,9 +192,9 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
         
-        _currentTimer -= Time.deltaTime;
+        _currentTimer.Value -= Time.deltaTime;
         
-        if (_currentTimer <= 0f  || PlayersAreReadyToPass())
+        if (_currentTimer.Value <= 0f  || PlayersAreReadyToPass())
         {
             IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
