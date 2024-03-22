@@ -25,9 +25,6 @@ public class Player : NetworkBehaviour
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
 
-    public int Resources { private set; get; }
-    
-
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
 
@@ -280,10 +277,5 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
-    }
-
-    public void IncrementResource()
-    {
-        Resources++;
     }
 }

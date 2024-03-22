@@ -439,7 +439,8 @@ public class GameMultiplayerManager : NetworkBehaviour
 
     private static void PickUpResource(ITopOfCell element)
     {
-        Player.LocalInstance.IncrementResource();
+        CentralizedInventory.Instance.AddResource(element);
+        
         var gameobject = element.ToGameObject();
         
         Destroy(gameobject);
