@@ -31,6 +31,8 @@ public class BuildingObjectOnGridUI : MonoBehaviour
             BasicShowHide.Hide(gameObject);
             
             ClearLayouts();
+            
+            CentralizedInventory.Instance.ClearAllMaterialsCostUI();
         });
     }
 

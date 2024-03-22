@@ -85,6 +85,12 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
     {
         ClearDisplay();
     }
+    
+    private void TowerDefenseManager_OnCurrentStateChanged
+        (object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        ClearDisplay();
+    }
 
     private void ClearDisplay()
     {
@@ -93,12 +99,5 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         Destroy(_preview);
         _preview = null;
     }
-    
-    private void TowerDefenseManager_OnCurrentStateChanged
-        (object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
-    {
-        ClearDisplay();
-    }
-
 
 }

@@ -31,7 +31,6 @@ public class CentralizedInventoryUI : MonoBehaviour
         {
             if (template.ResourceData == resourceData)
             {
-                Debug.Log("Juste before show individual resource cost in CentralizedInventoryUI.cs");
                 template.ShowResourceCost(availableNumber, cost);
                 break;
             }

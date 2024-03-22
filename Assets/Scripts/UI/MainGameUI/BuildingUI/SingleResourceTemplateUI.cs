@@ -24,9 +24,10 @@ public class SingleResourceTemplateUI : MonoBehaviour
 
     private void Start()
     {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
         BasicShowHide.Hide(costText.gameObject);
     }
-
 
     private const string NUMBER_OF_RESOURCES_TEXT = "RESOURCES AVAILABLE : ";
     
@@ -60,10 +61,7 @@ public class SingleResourceTemplateUI : MonoBehaviour
 
         int horizontalCostOffset = HORIZONTAL_COST_OFFSET_FACTOR * numberOffsets;
 
-        Debug.Log("Numbers of offsets = " + numberOffsets);
-        Debug.Log("initial cost anchoredPosition : " + _initialCostTextAnchoredPosition);
         _costTextRectTransform.anchoredPosition = _initialCostTextAnchoredPosition + Vector2.right * horizontalCostOffset;
-        Debug.Log("destination" + _costTextRectTransform.anchoredPosition);
     }
 
     private const int STARTING_MODULO_COMPUTE_OFFSETS = 10;
@@ -80,4 +78,10 @@ public class SingleResourceTemplateUI : MonoBehaviour
             return 0;
         }
     }
+    
+    private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        BasicShowHide.Hide(costText.gameObject);
+    }
+
 }
