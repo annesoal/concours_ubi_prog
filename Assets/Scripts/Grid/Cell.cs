@@ -92,14 +92,14 @@ namespace Grid
     
     public static class BlockType
     {
-        public const int None =         0b0000_0000_0000_0000;
-        public const int Walkable =     0b0000_0000_0000_0001;
-        public const int Buildable =    0b0000_0000_0000_0010;
-        public const int Movable =      0b0000_0000_0000_0100;
+        public const int None =            0b0000_0000_0000_0000;
+        public const int Walkable =        0b0000_0000_0000_0001;
+        public const int Buildable =       0b0000_0000_0000_0010;
+        public const int Movable =         0b0000_0000_0000_0100;
         public const int EnemySpawnBlock = 0b0000_0000_0000_1000;
-        public const int SpawnBlock =  0b0000_0000_0001_0000;
-        public const int BasicBlock =   0b0000_0000_0100_0000; 
-        public const int EnnemyWalkable =   0b0000_0000_1000_0000; 
+        public const int SpawnBlock =      0b0000_0000_0001_0000;
+        public const int BasicBlock =      0b0000_0000_0100_0000; 
+        public const int EnnemyWalkable =  0b0000_0000_1000_0000; 
         
         public static int Translate(Type type)
         {

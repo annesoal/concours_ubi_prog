@@ -36,6 +36,12 @@ public class EnvironmentTurnManager : MonoBehaviour
         {   
             MovePlayers();
             yield return new WaitForSeconds(0.5f);
+            
+            // AIM.PlaySubordinatesTurn();
+            
+            BaseTower.PlayTowersInGameTurn();
+            // Play Trap turn
+            
             IAManager.MoveEnemies(totalEnergy);
             yield return new WaitForSeconds(0.5f);
             totalEnergy--;

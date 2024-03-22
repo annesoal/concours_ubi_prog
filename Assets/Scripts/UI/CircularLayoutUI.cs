@@ -53,16 +53,20 @@ public class CircularLayoutUI : MonoBehaviour
     private void Start()
     {
         PlaceObjectsAroundCircle();
+        
+        BasicShowHide.Hide(gameObject);
     }
 
     public void ShowLayout()
     {
         BasicShowHide.Show(gameObject);
+        
+        SetControllerSelectionOnFirstButton();
     }
-    
-    public void HideLayout()
+
+    private void SetControllerSelectionOnFirstButton()
     {
-        BasicShowHide.Hide(gameObject);
+        gameObjectsToLayout[0].GetComponent<SingleBuildableObjectSelectUI>().SelectThisSelectionButton();
     }
     
     public void AddObjectToLayout(BuildableObjectSO toAdd)

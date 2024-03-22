@@ -47,6 +47,8 @@ public class BuildingObjectOnGridUI : MonoBehaviour
     {
         ClearLayouts();
         
+        _buildableCells = TilingGrid.grid.GetBuildableCells();
+        
         InputManager.Instance.DisablePlayerInputMap();
 
         _selectedBuildableObject = buildableObjectSO;
@@ -54,6 +56,8 @@ public class BuildingObjectOnGridUI : MonoBehaviour
         AddBlocksToContentLayout();
         
         BasicShowHide.Show(gameObject);
+        
+        closeUIButton.Select();
     }
     
     private void AddBlocksToContentLayout()

@@ -92,10 +92,14 @@ public class TowerDefenseManager : NetworkBehaviour
     private void DebugStateChange(object sender, OnCurrentStateChangedEventArgs e)
     {
         Debug.Log(e.newValue);
+        
+        InputManager.Instance.DisablePlayerInputMap();
     }
 
     private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
     {
+        InputManager.Instance.EnablePlayerInputMap();
+        
         if (e.newValue == State.TacticalPause)
         {
             energyToUse = EnergyAvailable;

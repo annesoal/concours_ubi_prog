@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Grid;
+using Grid; using Grid.Interface;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SingleBuildableContentTemplateUI : MonoBehaviour
@@ -22,12 +23,63 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         _associatedBuildableCell = buildableCell;
         _associatedBuildableObjectSo = buildableObjectSo;
     }
+    
+    public void SelectThisSelectionButton()
+    {
+        selectionButton.Select();
+    }
 
     private void BuildObjectOnButtonClick()
     {
+        // Si l'autre joueur modifie la cell entre-temps, on veut la cell la plus à jour au moment de la construction.
+        _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+        
         // TODO BUILDING LOGIC BASED ON :
         // - RESOURCES AVAILABLE
-        // - IF THERE'S ALREADY A TOWER ON THE CELL
-        SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
+        if (HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell))
+        {
+            SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
+            
+            _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+
+            UpdatePreviewUI();
+        }
+    }
+
+    private void UpdatePreviewUI()
+    {
+        SingleBuildableContentButtonUI buttonUI = selectionButton.GetComponent<SingleBuildableContentButtonUI>();
+        
+        buttonUI.DestroyPreview();
+        
+        buttonUI.ShowAlreadyHasObjectText();
+    }
+
+    private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)
+    {
+        foreach (ITopOfCell objectOnTop in objectsOnTopOfCell)
+        {
+            if (objectOnTop.GetType() == TypeTopOfCell.Building)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Vector2Int GetAssociatedCellPosition()
+    {
+        return _associatedBuildableCell.position;
+    }
+
+    public BuildableObjectSO GetAssociatedBuildableObjectSO()
+    {
+        return _associatedBuildableObjectSo;
+    }
+
+    public bool AssociatedCellHasNotBuildingOnTop()
+    {
+        return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SingleBuildableObjectSelectUI : MonoBehaviour
@@ -23,6 +24,15 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
         });
     }
 
+    private void Start()
+    {
+        SingleBuildableObjectSelectButtonUI selectButtonUI =
+            selectionButton.GetComponent<SingleBuildableObjectSelectButtonUI>();
+        
+        selectButtonUI.OnButtonSelectedByController += SelectButtonUI_OnButtonSelectedByController;
+        selectButtonUI.OnButtonDeselectedByController += SelectButtonUI_OnButtonDeselectedByController;
+    }
+
     public void SetCorrespondingTowerSO(BuildableObjectSO toSet)
     {
         correspondingBuildableObjectSo = toSet;
@@ -35,8 +45,8 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
         selectionButton.image.sprite = icon;
     }
 
-    public static event EventHandler<BuildableObjectData> OnAnySingleBuildableObjectSelectUIHoveredEnter;
-    public static event EventHandler<BuildableObjectData> OnAnySingleBuildableObjectSelectUIHoveredExit;
+    public static event EventHandler<BuildableObjectData> OnAnySelectUI;
+    public static event EventHandler<BuildableObjectData> OnAnyDeselectUI;
 
     public class BuildableObjectData : EventArgs
     {
@@ -44,8 +54,7 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
     }
     public void OnEventTrigger_PointerEnter()
     {
-        Debug.Log("MOUSE OVER !");
-        OnAnySingleBuildableObjectSelectUIHoveredEnter?.Invoke(this, new BuildableObjectData
+        OnAnySelectUI?.Invoke(this, new BuildableObjectData
         {
             buildableObjectInfos = correspondingBuildableObjectSo
         });
@@ -53,17 +62,40 @@ public class SingleBuildableObjectSelectUI : MonoBehaviour
 
     public void OnEventTrigger_PointerExit()
     {
-        Debug.Log("Mouse exit");
-        OnAnySingleBuildableObjectSelectUIHoveredExit?.Invoke(this, new BuildableObjectData
+        OnAnyDeselectUI?.Invoke(this, new BuildableObjectData
         {
             buildableObjectInfos = correspondingBuildableObjectSo
         });
     }
 
+    public void SelectThisSelectionButton()
+    {
+        EventSystem.current.SetSelectedGameObject(selectionButton.gameObject);
+        EmitSelectionSignal(OnAnySelectUI);
+    }
+    
+    private void SelectButtonUI_OnButtonSelectedByController(object sender, EventArgs e)
+    {
+        EmitSelectionSignal(OnAnySelectUI);
+    }
+    
+    private void SelectButtonUI_OnButtonDeselectedByController(object sender, EventArgs e)
+    {
+        EmitSelectionSignal(OnAnyDeselectUI);
+    }
+
+    private void EmitSelectionSignal(EventHandler<BuildableObjectData> toEmit)
+    {
+        toEmit?.Invoke(this, new BuildableObjectData
+        {
+            buildableObjectInfos = correspondingBuildableObjectSo
+        });
+    }
+    
     public static void ResetStaticData()
     {
-        OnAnySingleBuildableObjectSelectUIHoveredEnter = null;
-        OnAnySingleBuildableObjectSelectUIHoveredExit = null;
+        OnAnySelectUI = null;
+        OnAnyDeselectUI = null;
         OnAnySingleBuildableObjectSelectUISelected = null;
     }
 }
