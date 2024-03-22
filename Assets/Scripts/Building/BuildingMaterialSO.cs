@@ -10,4 +10,11 @@ public class BuildingMaterialSO : ScriptableObject
     public Sprite buildingMaterialicon;
 
     public string buildingMaterialname;
+
+    public BuildingMaterialType type;
+    
+    public enum BuildingMaterialType
+    {
+        GreyMaterial,
+    }
 }
