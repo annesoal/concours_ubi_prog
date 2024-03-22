@@ -32,12 +32,19 @@ public class SynchronizeBuilding : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SpawnBuildableObjectServerRpc(int indexOfBuildableObjectSO, Vector2Int positionToBuild)
     {
+        TakeResourcesFromInventory(allBuildableObjectSO.list[indexOfBuildableObjectSO]);
+        
         GameObject instance = Instantiate(allBuildableObjectSO.list[indexOfBuildableObjectSO].prefab);
         
         NetworkObject buildableObjectNetworkObject = instance.GetComponent<NetworkObject>();
         buildableObjectNetworkObject.Spawn(true);
         
         SpawnBuildableObjectClientRpc(buildableObjectNetworkObject, positionToBuild);
+    }
+
+    private void TakeResourcesFromInventory(BuildableObjectSO buildableObjectSo)
+    {
+        CentralizedInventory.Instance.DecreaseResourceForBuilding(buildableObjectSo);
     }
 
     [ClientRpc]

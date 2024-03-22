@@ -23,6 +23,14 @@ public class CentralizedInventory : NetworkBehaviour
         NumberOfGreyResources.Value++;
     }
 
+    public void DecreaseResourceForBuilding(BuildableObjectSO builtObjectSO)
+    {
+        foreach (BuildableObjectSO.BuildingMaterialAndQuantityPair pair in builtObjectSO.materialAndQuantityPairs)
+        {
+            DecreaseIndividualResource(pair.buildingMaterialSO, pair.quantityOfMaterialRequired);
+        }
+    }
+
     public void ShowCostForResource(BuildingMaterialSO resourceData, int cost)
     {
         try
@@ -47,6 +55,16 @@ public class CentralizedInventory : NetworkBehaviour
         }
 
         return true;
+    }
+
+    private void DecreaseIndividualResource(BuildingMaterialSO resourceData, int cost)
+    {
+        switch (resourceData.type)
+        {
+            case BuildingMaterialSO.BuildingMaterialType.GreyMaterial:
+                NumberOfGreyResources.Value = NumberOfGreyResources.Value - cost;
+                break;
+        }
     }
 
     /// Throws NoMatchingBuildingMaterialSOException when the BuildingMaterialSO specified does not exist in inventory.
