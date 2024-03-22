@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3584351955
+  GlobalObjectIdHash: 1272192845
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -97,7 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b8617e293f442a2aae873f9a7abb918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TopOfCell: 0.72
+  topOfCell: 0.72
+  <BuildingMaterialSO>k__BackingField: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
+    type: 2}
 --- !u!1 &7162741063182819588
 GameObject:
   m_ObjectHideFlags: 0

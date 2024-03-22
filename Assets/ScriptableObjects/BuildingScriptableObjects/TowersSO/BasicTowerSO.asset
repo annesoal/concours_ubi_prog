@@ -17,4 +17,6 @@ MonoBehaviour:
   objectName: Basic Tower
   visuals: {fileID: 2891917162457659208, guid: f11ad6cb94e99092abb41deeb4dbf3ab, type: 3}
   description: "Je d\xE9cris cette tour de mani\xE8re hasardeuse."
-  materialAndQuantityPairs: []
+  materialAndQuantityPairs:
+  - quantityOfMaterialRequired: 0
+    buildingMaterialSO: {fileID: 0}

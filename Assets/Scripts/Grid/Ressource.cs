@@ -11,6 +11,8 @@ namespace Grid
     {
         [SerializeField] private float topOfCell = 0.72f;
 
+        [field: SerializeField] public BuildingMaterialSO BuildingMaterialSO { get; private set; }
+
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Resource;
