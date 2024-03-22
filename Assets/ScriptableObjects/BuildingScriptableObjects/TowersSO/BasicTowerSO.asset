@@ -18,5 +18,6 @@ MonoBehaviour:
   visuals: {fileID: 2891917162457659208, guid: f11ad6cb94e99092abb41deeb4dbf3ab, type: 3}
   description: "Je d\xE9cris cette tour de mani\xE8re hasardeuse."
   materialAndQuantityPairs:
-  - quantityOfMaterialRequired: 0
-    buildingMaterialSO: {fileID: 0}
+  - quantityOfMaterialRequired: 3
+    buildingMaterialSO: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
+      type: 2}
