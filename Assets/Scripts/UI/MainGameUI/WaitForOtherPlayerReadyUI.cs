@@ -21,6 +21,8 @@ public class WaitForOtherPlayerReadyUI : MonoBehaviour
             areYouReadyText.gameObject.SetActive(false);
             waitForOtherPlayerText.gameObject.SetActive(true);
         });
+        
+        readyButton.Select();
     }
 
     private void Start()
