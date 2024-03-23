@@ -91,6 +91,16 @@ namespace Grid
             return localPosition;
         }
 
+        public static Vector3 CellPositionToLocal(Cell cell, float yPos = TopOfCell)
+        {
+            Vector2Int position = new Vector2Int()
+            {
+                x = cell.position.x,
+                y = cell.position.y,
+            };
+            return GridPositionToLocal(position, yPos);
+        }
+
         public List<Cell> GetBuildableCells()
         {
             List<Cell> buildableCells = new List<Cell>();
@@ -130,7 +140,7 @@ namespace Grid
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
             
-            PlayerSelectorGridHelper.RemoveElement(toPlace, initialGridPosition);
+            RemoveElement(toPlace, initialGridPosition);
         }
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
@@ -152,7 +162,7 @@ namespace Grid
            int maxY = Math.Min(origin.y + radius, Size - 1);  
             for (int i = minX; i <= maxX; i ++)
             {
-                for (int j = minY; i <= maxY; j++)
+                for (int j = minY; j <= maxY; j++)
                 {
                     cells.Add(GetCell(i, j));
                 }
@@ -160,6 +170,31 @@ namespace Grid
             return cells;
         }
 
+        public static void RemoveElement(GameObject element, Vector2Int position)
+        {
+            try
+            {
+                var cell = TilingGrid.grid.GetCell(position);
+                cell.ObjectsOnTop.Remove(element);
+                TilingGrid.grid.UpdateCell(cell);
+            }
+            catch (ArgumentException)
+            {
+            }
+            
+        }
+        
+        public static void RemoveElement(GameObject element, Vector3 position)
+        {
+            try
+            {
+                Vector2Int gridPosition = TilingGrid.LocalToGridPosition(position);
+                RemoveElement(element, gridPosition);
+            }
+            catch (ArgumentException)
+            {
+            }
+        }
 
         //--------------------------------------------------------------------------------------------------------------
         // Fonctions utilitaires pour le deboggage ! 
