@@ -45,6 +45,9 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
             tower.PlayTurn();
         }
     }
+
+    /// <returns>List of cells targeted by the tower.</returns>
+    protected abstract List<Cell> TargetEnemies();
     
     protected void RegisterTower(BaseTower toAdd)
     {
