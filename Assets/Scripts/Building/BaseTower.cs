@@ -19,6 +19,10 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
+    
+    [Header("Projectiles setting")]
+    [SerializeField] protected int numberOfProjectilesToShootInTurn;
+    [SerializeField] protected EnemyDirection enemyDirection;
 
     private static List<BaseTower> _towersInGame = new List<BaseTower>();
 
@@ -62,5 +66,15 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     public static void ResetStaticData()
     {
         _towersInGame = null;
+    }
+
+    protected enum EnemyDirection
+    {
+        ZPositive,
+        ZNegative,
+        YPositive,
+        YNegative,
+        XPositive,
+        XNegative,
     }
 }

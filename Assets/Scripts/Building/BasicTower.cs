@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
@@ -10,7 +11,6 @@ using UnityEngine;
 public class BasicTower : BaseTower
 {
     [SerializeField] private int shootingRange;
-    [SerializeField] private int numberOfProjectilesToShootInTurn;
     
     public override void Build(Vector2Int positionToBuild)
     {
@@ -134,7 +134,7 @@ public class BasicTower : BaseTower
     private int SearchIndexOfFarthestEnemyCell(List<Cell> cellsInShootingRange)
     {
         int indexOfFarthestEnemyCell = NO_ENEMY_FOUND_IN_LIST;
-        float lastMaxDistance = 0f;
+        Vector2Int farthestEnemyPosition = TilingGrid.LocalToGridPosition(transform.position);
             
         for (int i = cellsInShootingRange.Count - 1; i >= 0; i--)
         {
@@ -142,11 +142,9 @@ public class BasicTower : BaseTower
                 
             if (CellHasTargetOnTopOfCells(contender))
             {
-                float contenderDistance = CellDistanceIsGreater(contender, lastMaxDistance);
-                
-                if (contenderDistance != DISTANCE_IS_SHORTER)
+                if (CellDistanceIsGreater(contender, farthestEnemyPosition))
                 {
-                    lastMaxDistance = contenderDistance;
+                    farthestEnemyPosition = contender.position;
                     indexOfFarthestEnemyCell = i;
                 }
             }
@@ -171,20 +169,59 @@ public class BasicTower : BaseTower
     private const float DISTANCE_IS_SHORTER = -1f;
     
     /// <returns>Returns the new max distance, or DISTANCE_IS_SHORTER if distance contender is shorter</returns>
-    private float CellDistanceIsGreater(Cell contender, float lastMaxDistance)
+    private bool CellDistanceIsGreater(Cell contender, Vector2Int farthestEnemyPosition)
     {
+        if (EarlyReturnBasedOnDirection(contender, farthestEnemyPosition))
+        {
+            return false;
+        }
+        
         Vector2Int thisGridPosition = TilingGrid.LocalToGridPosition(transform.position);
         
         float contenderDistance = Vector2Int.Distance(thisGridPosition, contender.position);
+        float lastMaxDistance = Vector2Int.Distance(thisGridPosition, contender.position);
         
         if (contenderDistance > lastMaxDistance)
         {
-            return contenderDistance;
+            return true;
         }
         else
         {
-            return DISTANCE_IS_SHORTER;
+            return false;
         }
     }
 
+    private bool EarlyReturnBasedOnDirection(Cell contender, Vector2Int farthestEnemyPosition)
+    {
+        Func<Vector3, Vector3, bool> earlyReturnPredicate = GetEarlyReturnPredicateBasedOnEnemyDirection();
+        
+        Vector3 contenderWorldPosition = TilingGrid.GridPositionToLocal(contender.position);
+        Vector3 farthestEnemyWorldPosition = TilingGrid.GridPositionToLocal(farthestEnemyPosition);
+
+        return earlyReturnPredicate(contenderWorldPosition, farthestEnemyWorldPosition);
+    }
+
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    private Func<Vector3, Vector3, bool> GetEarlyReturnPredicateBasedOnEnemyDirection()
+    {
+        switch (enemyDirection)
+        {
+            case EnemyDirection.ZPositive:
+                return (contenderPosition, lasMaxPosition) => contenderPosition.z < lasMaxPosition.z;
+                break;
+            case EnemyDirection.ZNegative:
+                break;
+            case EnemyDirection.YPositive:
+                break;
+            case EnemyDirection.YNegative:
+                break;
+            case EnemyDirection.XPositive:
+                break;
+            case EnemyDirection.XNegative:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
 }
