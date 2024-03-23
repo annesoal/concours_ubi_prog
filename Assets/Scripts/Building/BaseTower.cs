@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
@@ -67,5 +68,9 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     }
 
     public abstract void FireOnEnemy();
+    public static bool HasEnemyInRadius(List<Enemy> enemies)
+    {
+        return enemies.Count > 0; 
+    }
     
 }
