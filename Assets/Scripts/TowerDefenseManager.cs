@@ -21,9 +21,8 @@ public class TowerDefenseManager : NetworkBehaviour
 {
     
     private List<Vector2Int> positions = new List<Vector2Int>();
-    [Header("Information du jeu")]
-    // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
-    [SerializeField] private int totalRounds;
+    [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
+    [field: SerializeField] public int totalRounds { get; private set; }
 
     // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
     [field: SerializeField] private int EnergyAvailable { get;  set; }
@@ -105,6 +104,8 @@ public class TowerDefenseManager : NetworkBehaviour
         
         if (e.newValue == State.TacticalPause)
         {
+            IncreaseRoundNumber();
+        
             energyToUse = EnergyAvailable;
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new();
@@ -185,6 +186,8 @@ public class TowerDefenseManager : NetworkBehaviour
         _isEnvironmentTurnNotCalled = true;
     }
     
+     public int currentRoundNumber;
+     
     private void ProgressTacticalTimer()
     {
         if (AllRoundsAreDone())
@@ -196,7 +199,6 @@ public class TowerDefenseManager : NetworkBehaviour
         
         if (_currentTimer.Value <= 0f  || PlayersAreReadyToPass())
         {
-            IncreaseRoundNumber();
             GoToSpecifiedState(State.EnvironmentTurn);
         }
     }
@@ -206,11 +208,12 @@ public class TowerDefenseManager : NetworkBehaviour
         return currentRoundNumber == totalRounds;
     }
 
-     public int currentRoundNumber;
+    public event EventHandler OnRoundNumberIncreased;
     
     private void IncreaseRoundNumber()
     {
         currentRoundNumber += 1;
+        OnRoundNumberIncreased?.Invoke(this, EventArgs.Empty);
     }
 
     private bool PlayersAreReadyToPlay()

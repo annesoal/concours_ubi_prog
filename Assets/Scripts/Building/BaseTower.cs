@@ -25,6 +25,10 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
+    
+    [Header("Projectiles setting")]
+    [SerializeField] protected int numberOfProjectilesToShootInTurn;
+    [SerializeField] protected EnemyDirection enemyDirection;
 
     [Header("BulletToFire")]
     [SerializeField] protected GameObject _bullet;
@@ -60,6 +64,9 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         }
         _hasFinishedTowersTurn = true;
     }
+
+    /// <returns>List of cells targeted by the tower.</returns>
+    protected abstract List<Cell> TargetEnemies();
     
     protected void RegisterTower(BaseTower toAdd)
     {
@@ -156,5 +163,14 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
                 highPriorityEnemy = currentEnemy;            
         }
         return highPriorityEnemy;
+
+    protected enum EnemyDirection
+    {
+        ZPositive,
+        ZNegative,
+        YPositive,
+        YNegative,
+        XPositive,
+        XNegative,
     }
 }
