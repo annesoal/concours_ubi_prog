@@ -29,11 +29,13 @@ public class LobbyUI : MonoBehaviour
         
         quickJoinLobbyButton.onClick.AddListener(() =>
         {
+            EventSystem.current.SetSelectedGameObject(null);
             GameLobbyManager.Instance.QuickJoin();
         });
         
         joinWithCodeButton.onClick.AddListener(() =>
         {
+            EventSystem.current.SetSelectedGameObject(null);
             GameLobbyManager.Instance.JoinLobbyByCode(lobbyCodeInputField.text.Trim());
         });
     }

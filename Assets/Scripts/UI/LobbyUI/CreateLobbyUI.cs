@@ -24,11 +24,13 @@ public class CreateLobbyUI : MonoBehaviour
         
         createPrivateLobbyButton.onClick.AddListener(() =>
         {
+            EventSystem.current.SetSelectedGameObject(null);
             GameLobbyManager.Instance.CarryOutCreateLobbyProcedure(lobbyNameInputField.text.Trim(), true);
         });
         
         createPublicLobbyButton.onClick.AddListener(() =>
         {
+            EventSystem.current.SetSelectedGameObject(null);
             GameLobbyManager.Instance.CarryOutCreateLobbyProcedure(lobbyNameInputField.text.Trim(), false);
         });
     }
