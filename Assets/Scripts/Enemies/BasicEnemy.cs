@@ -115,8 +115,9 @@ namespace Enemies
         private void MoveEnemy(Vector3 direction)
         {
             Vector3 nextPosition = transform.position + direction;
+            TilingGrid.RemoveElement(this.gameObject, transform.position); 
             transform.position = nextPosition;
-            _helper.AddOnTopCell(transform.gameObject);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
             _cellRecorder.Add(cell);
         }
         
