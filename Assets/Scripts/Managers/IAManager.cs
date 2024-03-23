@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using DefaultNamespace;
+using Enemies;
 using Unity.Netcode;
 using UnityEngine;
 

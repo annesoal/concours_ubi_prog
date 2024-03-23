@@ -1,6 +1,6 @@
 
 using System;
-using DefaultNamespace;
+using Enemies;
 using Ennemies;
 using Grid;
 using UnityEngine;
