@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Enemies;
 using Grid.Blocks;
 using Grid.Interface;
 using Unity.VisualScripting;
@@ -87,6 +88,28 @@ namespace Grid
         public void RemoveGameObject(GameObject gameObject)
         {
             
+        }
+
+        public bool ContainsEnemy()
+        {
+            foreach (ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
+                    return true;
+            }
+            return false;
+        }
+
+        public Enemy GetEnemy()
+        {
+            foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Player)
+                {
+                    return objectTopOfCell.ToGameObject().GetComponent<Enemy>();   
+                }
+            }
+            return null;
         }
     }
     
