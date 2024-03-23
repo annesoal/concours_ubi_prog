@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Unity.Mathematics;
-using TMPro.EditorUtilities;
 
 
 namespace Utils
@@ -10,15 +9,17 @@ namespace Utils
     public class ShootingUtility :  MonoBehaviour
     {
     
-        public float TimeToFly;
-        public float Angle; 
-        public GameObject ObjectToFire;
+        public float TimeToFly {set; private get;}
+        public float Angle {set; private get;} 
+        public GameObject ObjectToFire {set; private get;}
+
+        private bool _hasFinished; 
 
         private GameObject _objectInstance;
 
-
         public void FireBetween(Vector3 startPosition, Vector3 endPosition)
         {
+            _hasFinished = false;
             InstantiateObjectToFire(startPosition);
             Vector3 middlePosition = GetThirdPoint(startPosition, endPosition, Angle);
             StartCoroutine(MoveObject(startPosition, middlePosition, endPosition));
@@ -40,6 +41,7 @@ namespace Utils
                 _objectInstance.transform.position = RunBezier(startPoint, middlePoint, endPoint, ratio);                
                 yield return null;
             }
+            _hasFinished = true;
         }
 
         private static Vector3 RunBezier(Vector3 startPoint, Vector3 middlePoint,Vector3 endPoint, float ratio )
@@ -59,6 +61,10 @@ namespace Utils
              
             return thirdPointPosition;
         }
+        public bool HasFinished()
+        {
+            return _hasFinished;
+        } 
         
     }
 }
