@@ -43,6 +43,8 @@ public class InputFieldControllerInput : MonoBehaviour
         if (_isControllerInputActive)
         {
             EventSystem.current.SetSelectedGameObject(toSelectAfterDeactivation.gameObject);
+            
+            StartCoroutine(ActivateNavigationEventAfterTime(TIMER_ACTIVATE_NAV_EVENT));
         }
     }
 
