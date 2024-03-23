@@ -6,7 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace DefaultNamespace
+namespace Enemies
 {
     public enum EnnemyType
     {
