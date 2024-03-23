@@ -110,5 +110,19 @@ namespace Enemies
         {
             enemiesInGame = null;
         }
+        public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
+        {
+            List<Enemy> enemies = new List<Enemy>();
+            foreach (Cell cell in cells)
+            {
+                if (cell.ContainsEnemy())
+                {
+                    Enemy enemy = cell.GetEnemy();
+                    if (enemy != null)
+                        enemies.Add(enemy);
+                }
+            }
+            return enemies;
+        }
     }
 }
