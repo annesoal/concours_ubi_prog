@@ -29,9 +29,6 @@ namespace Grid
 
         // Change la position du Helper sur la grille
         public abstract void SetHelperPosition(Vector2Int direction);
-
-        public abstract void AddOnTopCell(GameObject gameObject);
-
         
     }
 
