@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using UnityEngine;
 
 /**
@@ -133,7 +134,7 @@ public class BasicTower : BaseTower
     private int SearchIndexOfFarthestEnemyCell(List<Cell> cellsInShootingRange)
     {
         int indexOfFarthestEnemyCell = NO_ENEMY_FOUND_IN_LIST;
-        Vector2Int lastMaxDistance = Vector2Int.zero;
+        float lastMaxDistance = 0f;
             
         for (int i = cellsInShootingRange.Count - 1; i >= 0; i--)
         {
@@ -141,8 +142,11 @@ public class BasicTower : BaseTower
                 
             if (CellHasTargetOnTopOfCells(contender))
             {
-                if (CellDistanceIsGreater(contender, lastMaxDistance))
+                float contenderDistance = CellDistanceIsGreater(contender, lastMaxDistance);
+                
+                if (contenderDistance != DISTANCE_IS_SHORTER)
                 {
+                    lastMaxDistance = contenderDistance;
                     indexOfFarthestEnemyCell = i;
                 }
             }
@@ -153,13 +157,34 @@ public class BasicTower : BaseTower
 
     private bool CellHasTargetOnTopOfCells(Cell cell)
     {
-        // TODO
+        foreach (ITopOfCell objectOnTop in cell.ObjectsTopOfCell)
+        {
+            if (objectOnTop.GetType() == TypeTopOfCell.Enemy)
+            {
+                return true;
+            }
+        }
+        
         return false;
     }
     
-    private bool CellDistanceIsGreater(Cell contender, Vector2Int lastMaxDistance)
+    private const float DISTANCE_IS_SHORTER = -1f;
+    
+    /// <returns>Returns the new max distance, or DISTANCE_IS_SHORTER if distance contender is shorter</returns>
+    private float CellDistanceIsGreater(Cell contender, float lastMaxDistance)
     {
-        throw new System.NotImplementedException();
+        Vector2Int thisGridPosition = TilingGrid.LocalToGridPosition(transform.position);
+        
+        float contenderDistance = Vector2Int.Distance(thisGridPosition, contender.position);
+        
+        if (contenderDistance > lastMaxDistance)
+        {
+            return contenderDistance;
+        }
+        else
+        {
+            return DISTANCE_IS_SHORTER;
+        }
     }
 
 }
