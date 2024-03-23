@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,6 +33,7 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
 
     [Header("BulletToFire")]
     [SerializeField] protected GameObject _bullet;
+    
     private static List<BaseTower> _towersInGame = new List<BaseTower>();
 
     protected ShootingUtility shooter; 
@@ -50,6 +52,11 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     public GameObject ToGameObject()
     {
         return gameObject;
+    }
+
+    public void Start()
+    {
+        SetShooter();
     }
 
     public static IEnumerator PlayTowersInGameTurn()
@@ -83,17 +90,17 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         _towersInGame = null;
     }
 
-    public static bool HasEnemyInRadius(List<Enemy> enemies)
+    private static bool HasEnemyInRadius(List<Cell> cellsWithEnemies)
     {
-        return enemies.Count > 0; 
+        return cellsWithEnemies.Count > 0; 
     }
 
-    public void DamageEnemy() 
+    private void DamageEnemy() 
     {
         Debug.Log("Damage an enemy");
     }
 
-    public bool HasPlayed()
+    private bool HasPlayed()
     {
         return _hasPlayed;
     }
@@ -118,21 +125,27 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     private IEnumerator PlayTurnCoroutine()
     {
         Debug.Log("Tour basique joue son tour (coroutine)");
-        List<Enemy> enemies = GetEnemiesInRadius(); 
+        List<Cell> cellsWithEnemies = TargetEnemies();
 
         Debug.Log("before hasEnemyInRadius");
-        if (!HasEnemyInRadius(enemies)) 
+        if (!HasEnemyInRadius(cellsWithEnemies))
         {
             _hasPlayed = true;
             yield break;
         }
+
         Debug.Log("Passed hasEnemyInRadius");
-        Enemy enemyToFireTo = GetHighPriorityEnemy(enemies);
-        StartCoroutine(FireOnEnemy(enemyToFireTo));
-        yield return new WaitUntil(HasPlayed); 
+        for (int i = 0; i < cellsWithEnemies.Count; i++)
+        {
+            Debug.Log("number of cells " + cellsWithEnemies.Count);
+            Cell cellToFireTo = cellsWithEnemies[i];
+            StartCoroutine(FireOnCellWithEnemy(cellToFireTo));
+            yield return new WaitUntil(HasPlayed); 
+        }
+
     }
 
-    protected void SetShooter()
+    private void SetShooter()
     {
         shooter = gameObject.AddComponent<Utils.ShootingUtility>();
         shooter.TimeToFly = _timeToFly;
@@ -140,11 +153,11 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         shooter.ObjectToFire = _bullet;
     }
 
-    public IEnumerator FireOnEnemy(Enemy enemy)
+    private IEnumerator FireOnCellWithEnemy(Cell cellWithEnemy)
     {
         Debug.Log("FireEnemy Coroutine inside Tower");
         Vector3 towerPosition = transform.position;
-        Vector3 enemyPosition = enemy.GetComponent<Transform>().position;
+        Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
         shooter.FireBetween(towerPosition, enemyPosition);
         yield return new WaitUntil(shooter.HasFinished);
         DamageEnemy();
@@ -155,14 +168,16 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
 
     private Enemy GetHighPriorityEnemy(List<Enemy> enemies)
     {
-        Enemy highPriorityEnemy = enemies[0]; 
-        for(int i = 1; i < enemies.Count; i++)
+        Enemy highPriorityEnemy = enemies[0];
+        for (int i = 1; i < enemies.Count; i++)
         {
             Enemy currentEnemy = enemies[i];
             if (currentEnemy.distanceFromEnd < highPriorityEnemy.distanceFromEnd)
-                highPriorityEnemy = currentEnemy;            
+                highPriorityEnemy = currentEnemy;
         }
+
         return highPriorityEnemy;
+    }
 
     protected enum EnemyDirection
     {
