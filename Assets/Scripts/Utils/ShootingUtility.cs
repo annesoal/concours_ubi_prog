@@ -11,15 +11,16 @@ namespace Utils
     {
     
         public float TimeToFly;
+        public float Angle; 
         public GameObject ObjectToFire;
 
         private GameObject _objectInstance;
 
 
-        public void FireBetween(Vector3 startPosition, Vector3 endPosition, float radAngle)
+        public void FireBetween(Vector3 startPosition, Vector3 endPosition)
         {
             InstantiateObjectToFire(startPosition);
-            Vector3 middlePosition = GetThirdPoint(startPosition, endPosition,radAngle);
+            Vector3 middlePosition = GetThirdPoint(startPosition, endPosition, Angle);
             StartCoroutine(MoveObject(startPosition, middlePosition, endPosition));
 
         }
