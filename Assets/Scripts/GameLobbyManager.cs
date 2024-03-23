@@ -181,9 +181,12 @@ public class GameLobbyManager : MonoBehaviour
         {
             _joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             
-            await CreateClientRelay();
-        
-            GameMultiplayerManager.Instance.StartClient();
+            bool hasNoError = await CreateClientRelay();
+
+            if (hasNoError)
+            {
+                GameMultiplayerManager.Instance.StartClient();
+            }
         }
         catch (LobbyServiceException e)
         {
@@ -199,9 +202,12 @@ public class GameLobbyManager : MonoBehaviour
         {
             _joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
                 
-            await CreateClientRelay();
-            
-            GameMultiplayerManager.Instance.StartClient();
+            bool hasNoError = await CreateClientRelay();
+
+            if (hasNoError)
+            {
+                GameMultiplayerManager.Instance.StartClient();
+            }
         }
         catch (LobbyServiceException e)
         {
@@ -218,9 +224,12 @@ public class GameLobbyManager : MonoBehaviour
         {
             _joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
                 
-            await CreateClientRelay();
-            
-            GameMultiplayerManager.Instance.StartClient();
+            bool hasNoError = await CreateClientRelay();
+
+            if (hasNoError)
+            {
+                GameMultiplayerManager.Instance.StartClient();
+            }
         }
         catch (LobbyServiceException e)
         {
@@ -305,20 +314,43 @@ public class GameLobbyManager : MonoBehaviour
             });
     }
     
-    private async Task CreateClientRelay()
+    private async Task<bool> CreateClientRelay()
     {
         try
         {
+            Dictionary<string, DataObject> dataObjectDictionary = _joinedLobby.Data;
+            
+            if (TriedJoinLobbyWhenItWasInitializing(dataObjectDictionary))
+            {
+                ManageTriedJoinLobbyTooEarlyError();
+                return false;
+            }
+            
             string relayJoinCode = _joinedLobby.Data[MultiplayerRelay.RELAY_JOIN_CODE_KEY].Value;
             
             JoinAllocation joinAllocation = await MultiplayerRelay.JoinRelay(relayJoinCode);
         
             MultiplayerRelay.SetNetworkManagerRelayServer(joinAllocation);
+
+            return true;
         }
         catch (RelayServiceException e)
         {
             Debug.Log(e);
+            return false;
         }
+    }
+
+    private bool TriedJoinLobbyWhenItWasInitializing(Dictionary<string, DataObject> dataObjects)
+    {
+        return dataObjects == null;
+    }
+    
+    private void ManageTriedJoinLobbyTooEarlyError()
+    {
+        OnJoinFailed?.Invoke(this, EventArgs.Empty);
+        
+        LeaveLobby();
     }
     
     private bool IsLobbyHost()
