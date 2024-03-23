@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using Utils;
 
 /**
  * Classe d'exemple d'une tour de base.
@@ -22,12 +23,16 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
 
     private static List<BaseTower> _towersInGame = new List<BaseTower>();
 
+    protected ShootingUtility shooter; 
+
     public abstract void Build(Vector2Int positionToBuild);
 
     public abstract BuildableObjectSO GetBuildableObjectSO();
 
     public abstract void PlayTurn();
-    
+
+    protected abstract void SetShooter();
+        
     public new TypeTopOfCell GetType()
     {
         return TypeTopOfCell.Building;
@@ -60,4 +65,7 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     {
         _towersInGame = null;
     }
+
+    public abstract void FireOnEnemy();
+    
 }
