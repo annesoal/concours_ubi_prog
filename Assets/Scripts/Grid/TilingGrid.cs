@@ -4,6 +4,7 @@ using Grid.Blocks;
 using Grid.Interface;
 using TMPro;
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -72,6 +73,14 @@ namespace Grid
             
             return _cells[position.x,position.y];
         }
+        public Cell GetCell(int x, int y)
+        {
+            Vector2Int position = new Vector2Int(){
+               x = x,
+               y = y, 
+            };
+            return GetCell(position); 
+        }
         // Traduit une position dans la grille a une position local
         public static Vector3 GridPositionToLocal(Vector2Int position, float yPos = TopOfCell)
         {
@@ -131,6 +140,24 @@ namespace Grid
             UpdateCell(cell);
             
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
+        }
+
+        public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
+        {
+           List<Cell> cells = new List<Cell>();     
+
+           int minX = Math.Max(origin.x - radius, 0);  
+           int maxX = Math.Min(origin.x + radius, Size - 1);  
+           int minY = Math.Max(origin.y - radius, 0);  
+           int maxY = Math.Min(origin.y + radius, Size - 1);  
+            for (int i = minX; i <= maxX; i ++)
+            {
+                for (int j = minY; i <= maxY; j++)
+                {
+                    cells.Add(GetCell(i, j));
+                }
+            }
+            return cells;
         }
 
 
