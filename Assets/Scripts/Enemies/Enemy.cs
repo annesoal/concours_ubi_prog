@@ -22,7 +22,6 @@ namespace Enemies
     {
         [SerializeField] protected EnnemyType ennemyType;
 
-        
         [SerializeField] protected bool stupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 3;
@@ -45,6 +44,7 @@ namespace Enemies
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
 
+        public float distanceFromEnd = 10.0f; 
 
         protected virtual void Initialize()
         {
