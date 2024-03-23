@@ -37,15 +37,6 @@ public class BasicTower : BaseTower
     {
         return buildableObjectSO;
     }
-
-    public override void PlayTurn()
-    {
-        Debug.Log("Tour basique joue son tour");
-        List<Cell> targetedEnemiesCells = TargetEnemies();
-        
-        // TODO SHOOT
-    }
-
     protected override List<Cell> TargetEnemies()
     {
         List<Cell> cellsInShootingRange = GetCellsInShootingRange();
@@ -99,6 +90,7 @@ public class BasicTower : BaseTower
             targetedCells.Add(cellsInShootingRange[indexOfFarthestEnemyCell]);
             
             numberOfTargetSet++;
+            Debug.Log("" + numberOfTargetSet);
         }
 
         return targetedCells;
@@ -174,7 +166,6 @@ public class BasicTower : BaseTower
                 return true;
             }
         }
-        
         return false;
     }
     
@@ -220,23 +211,26 @@ public class BasicTower : BaseTower
                 return (contenderPosition, lasMaxPosition) => contenderPosition.z < lasMaxPosition.z;
                 break;
             case EnemyDirection.ZNegative:
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
                 break;
             case EnemyDirection.YPositive:
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
                 break;
             case EnemyDirection.YNegative:
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
                 break;
             case EnemyDirection.XPositive:
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
                 break;
             case EnemyDirection.XNegative:
-                throw new NotImplementedException();
+                // throw new NotImplementedException();
                 break;
             default:
-                throw new ArgumentOutOfRangeException();
+                // throw new ArgumentOutOfRangeException();
+                break;
         }
+
+        return null;
     }
     
 }
