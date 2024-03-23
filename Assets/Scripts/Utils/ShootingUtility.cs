@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using Unity.Mathematics;
+using TMPro.EditorUtilities;
 
 
 namespace Utils
@@ -8,22 +10,23 @@ namespace Utils
     public class ShootingUtility :  MonoBehaviour
     {
     
-        [SerializeField] public float TimeToFly;
-        [SerializeField] public GameObject ObjectToFire;
+        public float TimeToFly;
+        public GameObject ObjectToFire;
 
-        [SerializeField] public GameObject Destination;
-        [SerializeField] public GameObject Origin;
-        [SerializeField] public float startingAngle;
-        public void Start()
-        {
-            FireBetween(Origin.transform.position, Destination.transform.position, startingAngle);
-        }
+        private GameObject _objectInstance;
+
 
         public void FireBetween(Vector3 startPosition, Vector3 endPosition, float radAngle)
         {
+            InstantiateObjectToFire(startPosition);
             Vector3 middlePosition = GetThirdPoint(startPosition, endPosition,radAngle);
             StartCoroutine(MoveObject(startPosition, middlePosition, endPosition));
 
+        }
+
+        private void InstantiateObjectToFire(Vector3 position)
+        {
+            _objectInstance = Instantiate(ObjectToFire, position, quaternion.identity);
         }
   
         private IEnumerator MoveObject(Vector3 startPoint, Vector3 middlePoint, Vector3 endPoint)
@@ -33,12 +36,12 @@ namespace Utils
             {
                 timer += Time.deltaTime ;
                 float ratio = Math.Min(timer / TimeToFly, 1.0f);
-                ObjectToFire.transform.position = RunBezier(startPoint, middlePoint, endPoint, ratio);                
+                _objectInstance.transform.position = RunBezier(startPoint, middlePoint, endPoint, ratio);                
                 yield return null;
             }
         }
 
-        private Vector3 RunBezier(Vector3 startPoint, Vector3 middlePoint,Vector3 endPoint, float ratio )
+        private static Vector3 RunBezier(Vector3 startPoint, Vector3 middlePoint,Vector3 endPoint, float ratio )
         {
             Vector3 bezierPosition = (1-ratio) * startPoint + (2 * ratio)* (1-ratio) * middlePoint + ratio * ratio *endPoint;
             return bezierPosition;
