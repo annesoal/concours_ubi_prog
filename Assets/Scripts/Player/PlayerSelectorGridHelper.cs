@@ -43,19 +43,6 @@ namespace Grid
             currentCell = TilingGrid.grid.GetCell(next);
             _recorder.Add(currentCell);
         }
-
-        public override void AddOnTopCell(GameObject gameObject)
-        {
-           currentCell.AddGameObject(gameObject);
-           TilingGrid.grid.UpdateCell(currentCell);
-        }
-
-        public void AddOnTopCell(GameObject gameObject, ITopOfCell topOfCell = null)
-        {
-            currentCell.AddGameObject(gameObject, topOfCell);
-            TilingGrid.grid.UpdateCell(currentCell);
-        }
-
         public static List<ITopOfCell> GetElementsOnTopOfCell(Vector2Int position)
         {
             try
@@ -77,17 +64,6 @@ namespace Grid
             }
         }
 
-        public static void RemoveElement(GameObject element, Vector2Int position)
-        {
-            try
-            {
-                var cell = TilingGrid.grid.GetCell(position);
-                cell.ObjectsOnTop.Remove(element);
-                TilingGrid.grid.UpdateCell(cell);
-            }
-            catch (ArgumentException)
-            {
-            }
-        }
+
     }
 }

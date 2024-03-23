@@ -35,9 +35,5 @@ namespace Grid
             currentCell.position = position;
         }
 
-        public override void AddOnTopCell(GameObject gameObject)
-        {
-           
-        }
     }
 }
