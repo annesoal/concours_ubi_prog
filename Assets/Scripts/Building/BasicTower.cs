@@ -166,8 +166,6 @@ public class BasicTower : BaseTower
         return false;
     }
     
-    private const float DISTANCE_IS_SHORTER = -1f;
-    
     /// <returns>Returns the new max distance, or DISTANCE_IS_SHORTER if distance contender is shorter</returns>
     private bool CellDistanceIsGreater(Cell contender, Vector2Int farthestEnemyPosition)
     {
@@ -210,14 +208,19 @@ public class BasicTower : BaseTower
                 return (contenderPosition, lasMaxPosition) => contenderPosition.z < lasMaxPosition.z;
                 break;
             case EnemyDirection.ZNegative:
+                throw new NotImplementedException();
                 break;
             case EnemyDirection.YPositive:
+                throw new NotImplementedException();
                 break;
             case EnemyDirection.YNegative:
+                throw new NotImplementedException();
                 break;
             case EnemyDirection.XPositive:
+                throw new NotImplementedException();
                 break;
             case EnemyDirection.XNegative:
+                throw new NotImplementedException();
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
