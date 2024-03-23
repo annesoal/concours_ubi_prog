@@ -4,14 +4,12 @@ using Grid;
 using UnityEngine;
 
 /**
- * Classe d'exemple d'une tour spécifique.
- *
- * Une tour spécifique hérite de la classe BaseTower.
- * La classe implémente les fonctions spécifiques à la tour.
+ * Tour tirant les ennemis les plus loins d'elle sur un axe particulier.
  */
 public class BasicTower : BaseTower
 {
     [SerializeField] private int shootingRange;
+    [SerializeField] private int numberOfProjectilesToShootInTurn;
     
     public override void Build(Vector2Int positionToBuild)
     {
@@ -31,12 +29,15 @@ public class BasicTower : BaseTower
     {
         Debug.Log("Tour basique joue son tour");
         List<Cell> targetedEnemiesCells = TargetEnemies();
+        
+        // TODO SHOOT
     }
 
     protected override List<Cell> TargetEnemies()
     {
         List<Cell> cellsInShootingRange = GetCellsInShootingRange();
-        throw new System.NotImplementedException();
+        
+        return TargetFarthestEnemies(cellsInShootingRange);
     }
 
     private const int MINIMUM_RANGE_OF_TOWER = 1;
@@ -63,6 +64,31 @@ public class BasicTower : BaseTower
         }
 
         return cellsInShootingRange;
+    }
+
+    private const int INITIAL_NUMBER_OF_TARGET_SET = 0;
+    private const int NO_ENEMY_FOUND_IN_LIST = -1;
+    
+    private List<Cell> TargetFarthestEnemies(List<Cell> cellsInShootingRange)
+    {
+        int numberOfTargetSet = INITIAL_NUMBER_OF_TARGET_SET;
+        List<Cell> targetedCells = new List<Cell>();
+
+        while (numberOfTargetSet != numberOfProjectilesToShootInTurn)
+        {
+            int indexOfFarthestEnemyCell = SearchIndexOfFarthestEnemyCell(cellsInShootingRange);
+
+            if (indexOfFarthestEnemyCell == NO_ENEMY_FOUND_IN_LIST)
+            {
+                break;
+            }
+            
+            targetedCells.Add(cellsInShootingRange[indexOfFarthestEnemyCell]);
+            
+            numberOfTargetSet++;
+        }
+
+        return targetedCells;
     }
 
     /// <summary>
@@ -103,4 +129,37 @@ public class BasicTower : BaseTower
     {
         receiver.Add(TilingGrid.grid.GetCell(positionOfCell));
     }
+
+    private int SearchIndexOfFarthestEnemyCell(List<Cell> cellsInShootingRange)
+    {
+        int indexOfFarthestEnemyCell = NO_ENEMY_FOUND_IN_LIST;
+        Vector2Int lastMaxDistance = Vector2Int.zero;
+            
+        for (int i = cellsInShootingRange.Count - 1; i >= 0; i--)
+        {
+            Cell contender = cellsInShootingRange[i];
+                
+            if (CellHasTargetOnTopOfCells(contender))
+            {
+                if (CellDistanceIsGreater(contender, lastMaxDistance))
+                {
+                    indexOfFarthestEnemyCell = i;
+                }
+            }
+        }
+
+        return indexOfFarthestEnemyCell;
+    }
+
+    private bool CellHasTargetOnTopOfCells(Cell cell)
+    {
+        // TODO
+        return false;
+    }
+    
+    private bool CellDistanceIsGreater(Cell contender, Vector2Int lastMaxDistance)
+    {
+        throw new System.NotImplementedException();
+    }
+
 }
