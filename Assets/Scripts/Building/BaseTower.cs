@@ -121,7 +121,6 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         }
         Debug.Log("Passed hasEnemyInRadius");
         Enemy enemyToFireTo = GetHighPriorityEnemy(enemies);
-        _hasPlayed = false;
         StartCoroutine(FireOnEnemy(enemyToFireTo));
         yield return new WaitUntil(HasPlayed); 
     }
