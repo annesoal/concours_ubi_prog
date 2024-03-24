@@ -115,6 +115,21 @@ namespace Grid
 
             return buildableCells;
         }
+        
+        public List<Cell> GetEnemyWalkableCells()
+        {
+            List<Cell> enemyWalkableCells = new List<Cell>();
+            
+            foreach (Cell cell in _cells)
+            {
+                if (cell.Has(BlockType.EnnemyWalkable))
+                {
+                    enemyWalkableCells.Add(cell);
+                }
+            }
+
+            return enemyWalkableCells;
+        }
 
         public void UpdateCell(Cell cell)
         {
