@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class BaseTrap : BuildableObject
 {
+    [SerializeField] private BuildableObjectVisuals trapVisuals;
+    
     public override void Build(Vector2Int positionToBuild)
     {
         throw new System.NotImplementedException();

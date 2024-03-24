@@ -45,9 +45,6 @@ public class CircularLayoutUI : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        
-        _placementAngleInterval = (maxAngle - minAngle) / gameObjectsToLayout.Count;
-        _placementAngleInterval = Mathf.Deg2Rad * _placementAngleInterval;
     }
 
     private void Start()
@@ -71,6 +68,7 @@ public class CircularLayoutUI : MonoBehaviour
     
     public void AddObjectToLayout(BuildableObjectSO toAdd)
     {
+        Debug.Log("IN ADD OBJECT TO LAYOUT");
         GameObject layoutItem = Instantiate(layoutItemTemplate, transform);
         
         layoutItem.SetActive(true);
@@ -79,13 +77,23 @@ public class CircularLayoutUI : MonoBehaviour
         
         gameObjectsToLayout.Add(layoutItem);
         
+        ComputePlacementInterval();
+        
         PlaceObjectsAroundCircle();
+    }
+
+    private void ComputePlacementInterval()
+    {
+        _placementAngleInterval = (maxAngle - minAngle) / gameObjectsToLayout.Count;
+        _placementAngleInterval = Mathf.Deg2Rad * _placementAngleInterval;
     }
     
     private void PlaceObjectsAroundCircle()
     {
         float angleToLayout = Mathf.Deg2Rad * startAngle;
 
+        Debug.Log("angle to layout : " + angleToLayout);
+        Debug.Log("distance from center" + distanceFromCenter);
         foreach (GameObject toLayout in gameObjectsToLayout)
         {
             toLayout.GetComponent<RectTransform>().localPosition = new Vector3(
