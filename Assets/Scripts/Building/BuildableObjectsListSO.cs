@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu()]
+[CreateAssetMenu()]
 public class BuildableObjectsListSO : ScriptableObject
 {
     [SerializeField] public List<BuildableObjectSO> list;
