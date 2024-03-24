@@ -28,6 +28,7 @@ public abstract class BaseTower : BuildableObject
     [SerializeField] private float firingAngle;
     [SerializeField] private int TowerDamage = 1;
 
+    [SerializeField] private int timeBetweenShots = 2; 
 
     [Header("BulletToFire")]
     [SerializeField] protected GameObject _bullet;
@@ -36,6 +37,7 @@ public abstract class BaseTower : BuildableObject
 
     private ShootingUtility _shooter; 
     private bool _hasPlayed = true;
+    private int timeSinceLastShot = 0;
 
     public void Start()
     {
@@ -73,11 +75,19 @@ public abstract class BaseTower : BuildableObject
         _hasFinishedTowersTurn = false;
         foreach (BaseTower tower in _towersInGame)
         {
-            tower._hasPlayed = false;
-            tower.PlayTurn();
-            yield return new WaitUntil(tower.HasPlayed);
+            if (tower.CanPlay())
+            {
+                tower._hasPlayed = false;
+                tower.PlayTurn();
+                yield return new WaitUntil(tower.HasPlayed);
+            }
         }
         _hasFinishedTowersTurn = true;
+    }
+
+    public bool CanPlay()
+    {
+      return timeSinceLastShot++ >= timeBetweenShots; 
     }
     
     public static bool HasFinishedTowersTurn()
@@ -99,6 +109,7 @@ public abstract class BaseTower : BuildableObject
     {
         Debug.Log("Inside PlayTurn");
         StartCoroutine(PlayTurnCoroutine());
+        timeSinceLastShot = 0;
     }
     
     private IEnumerator PlayTurnCoroutine()
