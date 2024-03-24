@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Grid.Interface;
 using UnityEngine;
 
-public abstract class BuildingObject : MonoBehaviour, IBuildable, ITopOfCell
+public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
 {
     [field: Header("Buildable Object")]
     [SerializeField] protected BuildableObjectSO buildableObjectSO;

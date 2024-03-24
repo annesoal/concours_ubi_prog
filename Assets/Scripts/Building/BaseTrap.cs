@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Grid.Interface;
 using UnityEngine;
 
-public abstract class BaseTrap : BuildingObject
+public abstract class BaseTrap : BuildableObject
 {
     public override void Build(Vector2Int positionToBuild)
     {

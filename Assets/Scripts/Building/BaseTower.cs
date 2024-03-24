@@ -14,7 +14,7 @@ using Utils;
  * Cette classe est destinée à être héritée par des tours plus spécifiques.
  * Elle contient tous les comportements communs aux tours.
  */
-public abstract class BaseTower : BuildingObject
+public abstract class BaseTower : BuildableObject
 {
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
