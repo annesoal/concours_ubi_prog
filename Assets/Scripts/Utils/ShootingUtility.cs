@@ -46,14 +46,13 @@ namespace Utils
 
         private static Vector3 RunBezier(Vector3 startPoint, Vector3 middlePoint,Vector3 endPoint, float ratio )
         {
-            Vector3 bezierPosition = (1-ratio) * startPoint + (2 * ratio)* (1-ratio) * middlePoint + ratio * ratio *endPoint;
+            Vector3 bezierPosition = (1-ratio) * (1-ratio) * startPoint + (2 * ratio)* (1-ratio) * middlePoint + ratio * ratio *endPoint;
             return bezierPosition;
         }
         private static Vector3 GetThirdPoint(Vector3 initpos, Vector3 targetPos, float startingAngle)
         {
             // On cherche le point du milieu entre init et target
-            Vector3 midPoint = (targetPos + initpos) / 2;
-        
+            Vector3 midPoint = Vector3.Lerp(initpos, targetPos, 0.5f);
             float distance = Vector3.Distance(initpos, midPoint);
             float oppositeLength = (float) Math.Tan(startingAngle) * distance; 
             Vector3 oppositeVector = Vector3.up * oppositeLength;
