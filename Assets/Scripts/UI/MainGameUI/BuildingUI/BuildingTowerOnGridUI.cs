@@ -6,7 +6,7 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingObjectOnGridUI : MonoBehaviour
+public class BuildingTowerOnGridUI : MonoBehaviour
 {
     [SerializeField] private Button closeUIButton;
     
