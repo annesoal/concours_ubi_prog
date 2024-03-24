@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
@@ -143,11 +144,13 @@ public class BasicTower : BaseTower
         for (int i = cellsInShootingRange.Count - 1; i >= 0; i--)
         {
             Cell contender = cellsInShootingRange[i];
-                
+            Debug.Log("Cell at pos : " + contender.position);
             if (CellHasTargetOnTopOfCells(contender))
             {
+                Debug.Log("Cell had Enemy");
                 if (CellDistanceIsGreater(contender, farthestEnemyPosition))
                 {
+                    Debug.Log("CellDistanceIsGreater !");
                     farthestEnemyPosition = contender.position;
                     indexOfFarthestEnemyCell = i;
                 }
@@ -159,14 +162,7 @@ public class BasicTower : BaseTower
 
     private bool CellHasTargetOnTopOfCells(Cell cell)
     {
-        foreach (ITopOfCell objectOnTop in cell.ObjectsTopOfCell)
-        {
-            if (objectOnTop.GetType() == TypeTopOfCell.Enemy)
-            {
-                return true;
-            }
-        }
-        return false;
+        return cell.ObjectsTopOfCell.Any(objectOnTop => objectOnTop.GetType() == TypeTopOfCell.Enemy);
     }
     
     /// <returns>Returns the new max distance, or DISTANCE_IS_SHORTER if distance contender is shorter</returns>
@@ -174,22 +170,27 @@ public class BasicTower : BaseTower
     {
         if (EarlyReturnBasedOnDirection(contender, farthestEnemyPosition))
         {
+            Debug.Log("EarlyReturn!");
             return false;
         }
         
         Vector2Int thisGridPosition = TilingGrid.LocalToGridPosition(transform.position);
-        
+       /* 
         float contenderDistance = Vector2Int.Distance(thisGridPosition, contender.position);
         float lastMaxDistance = Vector2Int.Distance(thisGridPosition, contender.position);
         
         if (contenderDistance > lastMaxDistance)
         {
+            Debug.Log("contender >  lasMax");
             return true;
         }
         else
         {
+            Debug.Log("lastMax > contender");
             return false;
         }
+        */
+        return true;
     }
 
     private bool EarlyReturnBasedOnDirection(Cell contender, Vector2Int farthestEnemyPosition)
