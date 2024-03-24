@@ -55,18 +55,12 @@ namespace Grid
 
         public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
         {
-
             if (ObjectsTopOfCell == null)
             {
                 ObjectsTopOfCell = new();
             }
 
             ObjectsTopOfCell?.Add(objectTopOfCell);
-        }
-
-        public void RemoveGameObject(GameObject gameObject)
-        {
-            
         }
 
         public bool ContainsEnemy()
@@ -83,7 +77,7 @@ namespace Grid
         {
             foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
-                if (objectTopOfCell.GetType() == TypeTopOfCell.Player)
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                 {
                     return objectTopOfCell.ToGameObject().GetComponent<Enemy>();   
                 }
