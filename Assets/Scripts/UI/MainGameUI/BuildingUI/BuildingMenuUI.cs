@@ -64,6 +64,7 @@ public class BuildingMenuUI : MonoBehaviour
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             BasicShowHide.Hide(circularLayout.gameObject);
             BasicShowHide.Hide(buildingTowerOnGridUI.gameObject);
+            BasicShowHide.Hide(buildingTrapOnGridUI.gameObject);
             
             _playerIsNearWorkshop = false;
         }
@@ -76,13 +77,22 @@ public class BuildingMenuUI : MonoBehaviour
     }
 
 
-    [SerializeField] private BuildingObjectOnGridUI buildingTowerOnGridUI;
+    [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
+    [SerializeField] private BuildingTrapOnGridUI buildingTrapOnGridUI;
     
     private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
         (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
     {
         BasicShowHide.Hide(circularLayout.gameObject);
-        buildingTowerOnGridUI.Show(e.buildableObjectInfos);
+        
+        if (e.buildableObjectInfos.type == BuildableObjectSO.TypeOfBuildableObject.Tower)
+        {
+            buildingTowerOnGridUI.Show(e.buildableObjectInfos);
+        }
+        else
+        {
+            buildingTrapOnGridUI.Show(e.buildableObjectInfos);
+        }
     }
 
     private bool _playerIsNearWorkshop = false;

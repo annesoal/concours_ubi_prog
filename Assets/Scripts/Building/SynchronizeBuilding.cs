@@ -62,6 +62,8 @@ public class SynchronizeBuilding : NetworkBehaviour
         );
 
         TilingGrid.grid.UpdateCell(withNewObjectOnTop);
+        
+        // TODO lancer event OnBuildingBuilt
     }
     
     public BuildableObjectsListSO GetAllBuildableObjectSo()
