@@ -135,9 +135,9 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         }
 
         Debug.Log("Passed hasEnemyInRadius");
+        Debug.Log("number of cells " + cellsWithEnemies.Count);
         for (int i = 0; i < cellsWithEnemies.Count; i++)
         {
-            Debug.Log("number of cells " + cellsWithEnemies.Count);
             Cell cellToFireTo = cellsWithEnemies[i];
             StartCoroutine(FireOnCellWithEnemy(cellToFireTo));
             yield return new WaitUntil(HasPlayed); 
