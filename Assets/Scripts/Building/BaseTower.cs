@@ -14,15 +14,8 @@ using Utils;
  * Cette classe est destinée à être héritée par des tours plus spécifiques.
  * Elle contient tous les comportements communs aux tours.
  */
-public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
+public abstract class BaseTower : BuildableObject
 {
-    protected int _radius;
-    protected float _timeToFly;
-    protected float _firingAngle;
-
-    [field: Header("Buildable Object")]
-    [SerializeField] protected BuildableObjectSO buildableObjectSO;
-
     [Header("Tower specifics")]
     [SerializeField] protected Transform shootingPoint;
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
@@ -30,35 +23,49 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
     [Header("Projectiles setting")]
     [SerializeField] protected int numberOfProjectilesToShootInTurn;
     [SerializeField] protected EnemyDirection enemyDirection;
+    [SerializeField] private float timeToFly;
+    /// En radiant
+    [SerializeField] private float firingAngle;
+
 
     [Header("BulletToFire")]
     [SerializeField] protected GameObject _bullet;
     
     private static List<BaseTower> _towersInGame = new List<BaseTower>();
 
-    protected ShootingUtility shooter; 
-    protected bool _hasPlayed = true;
-
-    public abstract void Build(Vector2Int positionToBuild);
-
-    public abstract BuildableObjectSO GetBuildableObjectSO();
-
-    private static bool _hasFinishedTowersTurn;
-    public new TypeTopOfCell GetType()
-    {
-        return TypeTopOfCell.Building;
-    }
-
-    public GameObject ToGameObject()
-    {
-        return gameObject;
-    }
+    private ShootingUtility _shooter; 
+    private bool _hasPlayed = true;
 
     public void Start()
     {
         SetShooter();
     }
+    
+    public override void Build(Vector2Int positionToBuild)
+    {
+        towerVisuals.HidePreview();
+        
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
+        
+        RegisterTower(this);
+    }
+    
+    /// <returns>List of cells targeted by the tower.</returns>
+    protected abstract List<Cell> TargetEnemies();
+    
+    protected void RegisterTower(BaseTower toAdd)
+    {
+        _towersInGame.Add(toAdd);
+    }
 
+    public override TypeTopOfCell GetType()
+    {
+        return TypeTopOfCell.Building;
+    }
+
+    
+    private static bool _hasFinishedTowersTurn;
+    
     public static IEnumerator PlayTowersInGameTurn()
     {
         Debug.Log("Inside PlayTowersInGameTurn");
@@ -71,13 +78,10 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         }
         _hasFinishedTowersTurn = true;
     }
-
-    /// <returns>List of cells targeted by the tower.</returns>
-    protected abstract List<Cell> TargetEnemies();
     
-    protected void RegisterTower(BaseTower toAdd)
+    public static bool HasFinishedTowersTurn()
     {
-        _towersInGame.Add(toAdd);
+        return _hasFinishedTowersTurn;
     }
 
     public void UnregisterTower(BaseTower toDelete)
@@ -90,38 +94,12 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         _towersInGame = null;
     }
 
-    private static bool HasEnemyInRadius(List<Cell> cellsWithEnemies)
-    {
-        return cellsWithEnemies.Count > 0; 
-    }
-
-    private void DamageEnemy() 
-    {
-        Debug.Log("Damage an enemy");
-    }
-
-    private bool HasPlayed()
-    {
-        return _hasPlayed;
-    }
-    public static bool HasFinishedTowersTurn()
-    {
-        return _hasFinishedTowersTurn;
-    }
-    protected List<Enemy> GetEnemiesInRadius()
-    {
-        Vector2Int position = TilingGrid.LocalToGridPosition(transform.position);
-        List<Cell> cells = TilingGrid.grid.GetCellsInRadius(position, _radius);
-        List<Enemy> enemies = Enemy.GetEnemiesInCells(cells);
-
-        return enemies;
-    }
     public void PlayTurn()
     {
         Debug.Log("Inside PlayTurn");
         StartCoroutine(PlayTurnCoroutine());
     }
-
+    
     private IEnumerator PlayTurnCoroutine()
     {
         Debug.Log("Tour basique joue son tour (coroutine)");
@@ -139,39 +117,38 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
             StartCoroutine(FireOnCellWithEnemy(cellToFireTo));
             yield return new WaitUntil(HasPlayed); 
         }
-
     }
-
-    private void SetShooter()
+    
+    private static bool HasEnemyInRadius(List<Cell> cellsWithEnemies)
     {
-        shooter = gameObject.AddComponent<Utils.ShootingUtility>();
-        shooter.TimeToFly = _timeToFly;
-        shooter.Angle = _firingAngle;
-        shooter.ObjectToFire = _bullet;
+        return cellsWithEnemies.Count > 0; 
     }
 
     private IEnumerator FireOnCellWithEnemy(Cell cellWithEnemy)
     {
         Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
-        shooter.FireBetween(shootingPoint.position, enemyPosition);
-        yield return new WaitUntil(shooter.HasFinished);
+        _shooter.FireBetween(shootingPoint.position, enemyPosition);
+        yield return new WaitUntil(_shooter.HasFinished);
         DamageEnemy();
         _hasPlayed = true;
     }
-
-
-
-    private Enemy GetHighPriorityEnemy(List<Enemy> enemies)
+    
+    private bool HasPlayed()
     {
-        Enemy highPriorityEnemy = enemies[0];
-        for (int i = 1; i < enemies.Count; i++)
-        {
-            Enemy currentEnemy = enemies[i];
-            if (currentEnemy.distanceFromEnd < highPriorityEnemy.distanceFromEnd)
-                highPriorityEnemy = currentEnemy;
-        }
-
-        return highPriorityEnemy;
+        return _hasPlayed;
+    }
+    
+    private void DamageEnemy() 
+    {
+        Debug.Log("Damage an enemy");
+    }
+    
+    private void SetShooter()
+    {
+        _shooter = gameObject.AddComponent<Utils.ShootingUtility>();
+        _shooter.TimeToFly = timeToFly;
+        _shooter.Angle = firingAngle;
+        _shooter.ObjectToFire = _bullet;
     }
 
     protected enum EnemyDirection

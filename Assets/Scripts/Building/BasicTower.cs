@@ -13,31 +13,8 @@ using Unity.VisualScripting;
  */
 public class BasicTower : BaseTower
 {
-    const float TimeToFly = 1.0f; 
-    const int Radius = 2;
-    const float FiringAngle = 0.9f; // En Radian !
     [SerializeField] private int shootingRange;
 
-    public BasicTower()
-    {
-        _radius = Radius; 
-        _timeToFly = TimeToFly;
-        _firingAngle = FiringAngle;
-    }
-
-    public override void Build(Vector2Int positionToBuild)
-    {
-        towerVisuals.HidePreview();
-        
-        TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
-        
-        RegisterTower(this);
-    }
-
-    public override BuildableObjectSO GetBuildableObjectSO()
-    {
-        return buildableObjectSO;
-    }
     protected override List<Cell> TargetEnemies()
     {
         List<Cell> cellsInShootingRange = GetCellsInShootingRange();
