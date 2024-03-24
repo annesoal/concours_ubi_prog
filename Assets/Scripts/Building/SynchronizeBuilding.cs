@@ -48,6 +48,12 @@ public class SynchronizeBuilding : NetworkBehaviour
         CentralizedInventory.Instance.DecreaseResourceForBuilding(buildableObjectSo);
     }
 
+    public event EventHandler<OnBuildingBuiltEventArgs> OnBuildingBuilt;
+    public class OnBuildingBuiltEventArgs : EventArgs
+    {
+        public Vector2Int BuildingPosition;
+    }
+    
     [ClientRpc]
     private void SpawnBuildableObjectClientRpc(NetworkObjectReference buildableObjectNetworkObject, Vector2Int positionToBuild)
     {
@@ -63,7 +69,10 @@ public class SynchronizeBuilding : NetworkBehaviour
 
         TilingGrid.grid.UpdateCell(withNewObjectOnTop);
         
-        // TODO lancer event OnBuildingBuilt
+        OnBuildingBuilt?.Invoke(this, new OnBuildingBuiltEventArgs
+        {
+            BuildingPosition = positionToBuild,
+        });
     }
     
     public BuildableObjectsListSO GetAllBuildableObjectSo()
