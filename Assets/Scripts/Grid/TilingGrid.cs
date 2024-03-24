@@ -175,7 +175,7 @@ namespace Grid
             try
             {
                 var cell =grid.GetCell(position);
-                cell.ObjectsOnTop.Remove(element);
+                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
                 grid.UpdateCell(cell);
             }
             catch (ArgumentException)

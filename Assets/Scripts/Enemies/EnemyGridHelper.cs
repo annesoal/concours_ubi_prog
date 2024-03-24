@@ -1,5 +1,6 @@
 using System;
 using Grid;
+using Grid.Interface;
 using UnityEngine;
 
 namespace Ennemies
@@ -46,14 +47,19 @@ namespace Ennemies
         //TODO autre maniere de faire ?
         private bool ContainsObstacle(Cell cell)
         {
-            if (cell.ObjectsOnTop != null)
+            if (cell.ObjectsTopOfCell != null)
             {
-                foreach (GameObject obj in cell.ObjectsOnTop)
+                foreach (ITopOfCell obj in cell.ObjectsTopOfCell)
                 {
-                    if (obj.GetComponent<Obstacle>() != null)
+                    if (obj.GetType() == TypeTopOfCell.Obstacle)
                     {
                         return true;
                     }
+
+                    if(obj.GetType() == TypeTopOfCell.Obstacle)
+                    {
+                        return true;
+                    } 
                 }
             }
             return false; 
