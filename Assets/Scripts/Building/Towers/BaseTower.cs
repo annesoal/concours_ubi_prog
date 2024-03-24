@@ -26,6 +26,7 @@ public abstract class BaseTower : BuildableObject
     [SerializeField] private float timeToFly;
     /// En radiant
     [SerializeField] private float firingAngle;
+    [SerializeField] private int TowerDamage = 1;
 
 
     [Header("BulletToFire")]
@@ -129,7 +130,7 @@ public abstract class BaseTower : BuildableObject
         Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
         _shooter.FireBetween(shootingPoint.position, enemyPosition);
         yield return new WaitUntil(_shooter.HasFinished);
-        DamageEnemy();
+        DamageEnemy(cellWithEnemy);
         _hasPlayed = true;
     }
     
@@ -138,9 +139,10 @@ public abstract class BaseTower : BuildableObject
         return _hasPlayed;
     }
     
-    private void DamageEnemy() 
+    private void DamageEnemy(Cell cellWithEnemy) 
     {
-        Debug.Log("Damage an enemy");
+        Enemy enemy = cellWithEnemy.GetEnemy();
+        enemy.Damage(TowerDamage);
     }
     
     private void SetShooter()
