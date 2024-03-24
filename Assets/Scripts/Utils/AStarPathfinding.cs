@@ -7,19 +7,22 @@ namespace Utils
 {
     public class AStarPathfinding
     {
-        private static List<Cell> GetPath(Cell origin, Cell destination, Func<bool> cellValidator)
+        private static List<Cell> GetPath(Cell origin, Cell destination, Func<Cell, bool> cellValidator)
         {
+            // Variables 
             List<Cell> openSet = new List<Cell>();
-            openSet.Add(origin);
             Dictionary<Cell, Cell> cameFrom = new(); // K : current, V : previous
-            Dictionary<Cell, float> gScore = new(); // distance depuis origin
-            gScore.Add(origin, 0.0f);
-            Dictionary<Cell, float> fScore = new(); // distance depuis destination
-            fScore.Add(origin, Cell.Distance(origin, destination));
+            Dictionary<Cell, float> originDistance = new(); // distance depuis origin
+            Dictionary<Cell, float> destinationDistance = new(); // distance depuis destination
+            
+            // introduire origin dans les variables
+            openSet.Add(origin);
+            originDistance.Add(origin, 0.0f);
+            destinationDistance.Add(origin, Cell.Distance(origin, destination));
 
             while (openSet.Count > 0)
             {
-                Cell current = GetMinFScoreCell(openSet, fScore);
+                Cell current = GetMinFScoreCell(openSet, destinationDistance);
                 if (current.Equals(destination))
                     return ReconstructPath(cameFrom, current);
 
@@ -27,13 +30,15 @@ namespace Utils
                 List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current,1);
                 foreach (var neighbor in neighbors)
                 {
-                    float tentativeGScore = gScore[current] + Cell.Distance(current, neighbor);
-                    float gScoreNeighbor = GScoreNeighbor(gScore, neighbor);
-                    if (tentativeGScore < gScoreNeighbor)
+                    if (!cellValidator(neighbor)) continue;
+                    
+                    float tentativeDistanceOrigin = originDistance[current] + Cell.Distance(current, neighbor);
+                    float neighborDistanceOrigin = GScoreNeighbor(originDistance, neighbor);
+                    if (tentativeDistanceOrigin < neighborDistanceOrigin)
                     {
                        cameFrom.Add(neighbor, current);
-                       gScore[neighbor] = tentativeGScore;
-                       fScore[neighbor] = tentativeGScore + Cell.Distance(neighbor, destination);
+                       originDistance[neighbor] = tentativeDistanceOrigin;
+                       destinationDistance[neighbor] = tentativeDistanceOrigin + Cell.Distance(neighbor, destination);
                        if (!openSet.Contains(neighbor))
                        {
                            openSet.Add(neighbor);
@@ -61,17 +66,17 @@ namespace Utils
             return gScoreNeighbor;
         }
 
-        private static Cell GetMinFScoreCell(List<Cell> cells, Dictionary<Cell, float> fscores)
+        private static Cell GetMinFScoreCell(List<Cell> cells, Dictionary<Cell, float> distancesDestination)
         {
             int indexSmallest = 0; 
-            float minFScore = fscores[cells[0]];
+            float minDistanceDestination = distancesDestination[cells[0]];
             for (int i = 0; i < cells.Count; i++)
             {
                 Cell currentCell = cells[i];
-                float currentFScore = fscores[currentCell];
-                if (currentFScore < minFScore)
+                float currentDistanceDestionation = distancesDestination[currentCell];
+                if (currentDistanceDestionation < minDistanceDestination)
                 {
-                    minFScore = currentFScore;
+                    minDistanceDestination = currentDistanceDestionation;
                     indexSmallest = i;
                 }
             }
