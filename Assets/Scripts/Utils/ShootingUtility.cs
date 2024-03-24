@@ -41,6 +41,7 @@ namespace Utils
                 _objectInstance.transform.position = RunBezier(startPoint, middlePoint, endPoint, ratio);                
                 yield return null;
             }
+            Destroy(_objectInstance);
             _hasFinished = true;
         }
 
