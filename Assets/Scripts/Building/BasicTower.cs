@@ -172,11 +172,9 @@ public class BasicTower : BaseTower
         }
         
         Vector2Int thisGridPosition = TilingGrid.LocalToGridPosition(transform.position);
-        // TODO : Le probleme c'est que les deux flaot sont egaux donc le if d'apres est toujours faux
-        // Je comprends pas trop ce que la methode essaye de faire :// 
-       /* 
+        
         float contenderDistance = Vector2Int.Distance(thisGridPosition, contender.position);
-        float lastMaxDistance = Vector2Int.Distance(thisGridPosition, contender.position);
+        float lastMaxDistance = Vector2Int.Distance(thisGridPosition, farthestEnemyPosition);
         
         if (contenderDistance > lastMaxDistance)
         {
@@ -188,8 +186,6 @@ public class BasicTower : BaseTower
             Debug.Log("lastMax > contender");
             return false;
         }
-        */
-        return true;
     }
 
     private bool EarlyReturnBasedOnDirection(Cell contender, Vector2Int farthestEnemyPosition)
