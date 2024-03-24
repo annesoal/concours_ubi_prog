@@ -152,6 +152,10 @@ namespace Grid
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
         }
 
+        public List<Cell> GetCellsInRadius(Cell origin, int radius)
+        {
+            return GetCellsInRadius(origin.position, radius);
+        }
         public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
         {
            List<Cell> cells = new List<Cell>();     
