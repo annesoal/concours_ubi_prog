@@ -67,13 +67,19 @@ namespace Enemies
             set { health = value; }
         }
 
-        public void Damage()
+        public void Damage(int damage)
         {
-            Health--;
+            Health -= damage;
             if (Health < 1)
             {
-                Destroy(gameObject, 0.5f);
+                Die();
             }
+        }
+        private void Die()
+        {
+            enemiesInGame.Remove(gameObject);
+            TilingGrid.RemoveElement(gameObject,transform.position);
+            Destroy(gameObject, 0.5f);
         }
         
         public abstract void Move(int energy);
