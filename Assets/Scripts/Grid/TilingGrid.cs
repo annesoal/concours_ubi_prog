@@ -174,9 +174,9 @@ namespace Grid
         {
             try
             {
-                var cell = TilingGrid.grid.GetCell(position);
+                var cell =grid.GetCell(position);
                 cell.ObjectsOnTop.Remove(element);
-                TilingGrid.grid.UpdateCell(cell);
+                grid.UpdateCell(cell);
             }
             catch (ArgumentException)
             {
@@ -188,7 +188,7 @@ namespace Grid
         {
             try
             {
-                Vector2Int gridPosition = TilingGrid.LocalToGridPosition(position);
+                Vector2Int gridPosition = LocalToGridPosition(position);
                 RemoveElement(element, gridPosition);
             }
             catch (ArgumentException)
