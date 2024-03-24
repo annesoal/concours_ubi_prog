@@ -84,6 +84,13 @@ namespace Grid
             }
             return null;
         }
+        
+        public static float Distance(Cell origin, Cell destination)
+        {
+            Vector3 originPosition = TilingGrid.GridPositionToLocal(origin.position);
+            Vector3 destinationPosition = TilingGrid.GridPositionToLocal(destination.position);
+            return Vector3.Distance(originPosition, destinationPosition);
+        }
     }
     
     public static class BlockType
