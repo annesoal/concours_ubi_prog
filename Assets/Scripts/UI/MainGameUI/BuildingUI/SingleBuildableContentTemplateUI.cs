@@ -15,6 +15,11 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         selectionButton.onClick.AddListener(BuildObjectOnButtonClick);
     }
 
+    private void Start()
+    {
+        SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
+    }
+
     private Cell _associatedBuildableCell;
     private BuildableObjectSO _associatedBuildableObjectSo;
     
@@ -35,9 +40,7 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         {
             SynchronizeBuilding.Instance.SpawnBuildableObject(_associatedBuildableObjectSo, _associatedBuildableCell);
             
-            _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
-
-            UpdatePreviewUI();
+            UpdateAssociatedCell();
         }
     }
 
@@ -48,13 +51,6 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         
         return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell) &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_associatedBuildableObjectSo);
-    }
-
-    private void UpdatePreviewUI()
-    {
-        SingleBuildableContentButtonUI buttonUI = selectionButton.GetComponent<SingleBuildableContentButtonUI>();
-
-        buttonUI.UpdatePreviewAfterBuilding();
     }
 
     private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)
@@ -85,5 +81,27 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
         
         return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell);
+    }
+
+    private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
+    {
+        if (_associatedBuildableCell.position == e.BuildingPosition)
+        {
+            UpdateAssociatedCell();
+        }
+    }
+
+    private void UpdateAssociatedCell()
+    {
+        _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
+        
+        UpdatePreviewUI();
+    }
+
+    private void UpdatePreviewUI()
+    {
+        SingleBuildableContentButtonUI buttonUI = selectionButton.GetComponent<SingleBuildableContentButtonUI>();
+
+        buttonUI.UpdatePreviewAfterBuilding();
     }
 }
