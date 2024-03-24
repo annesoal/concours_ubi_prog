@@ -15,7 +15,7 @@ public class BasicTower : BaseTower
 {
     const float TimeToFly = 1.0f; 
     const int Radius = 2;
-    const float FiringAngle = 0.4f; // En Radian !
+    const float FiringAngle = 0.9f; // En Radian !
     [SerializeField] private int shootingRange;
 
     public BasicTower()
@@ -144,13 +144,10 @@ public class BasicTower : BaseTower
         for (int i = cellsInShootingRange.Count - 1; i >= 0; i--)
         {
             Cell contender = cellsInShootingRange[i];
-            Debug.Log("Cell at pos : " + contender.position);
             if (CellHasTargetOnTopOfCells(contender))
             {
-                Debug.Log("Cell had Enemy");
                 if (CellDistanceIsGreater(contender, farthestEnemyPosition))
                 {
-                    Debug.Log("CellDistanceIsGreater !");
                     farthestEnemyPosition = contender.position;
                     indexOfFarthestEnemyCell = i;
                 }

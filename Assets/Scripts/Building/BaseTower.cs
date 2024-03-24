@@ -127,15 +127,12 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
         Debug.Log("Tour basique joue son tour (coroutine)");
         List<Cell> cellsWithEnemies = TargetEnemies();
 
-        Debug.Log("before hasEnemyInRadius");
         if (!HasEnemyInRadius(cellsWithEnemies))
         {
             _hasPlayed = true;
             yield break;
         }
 
-        Debug.Log("Passed hasEnemyInRadius");
-        Debug.Log("number of cells " + cellsWithEnemies.Count);
         for (int i = 0; i < cellsWithEnemies.Count; i++)
         {
             Cell cellToFireTo = cellsWithEnemies[i];
@@ -155,10 +152,8 @@ public abstract class BaseTower : MonoBehaviour, IBuildable, ITopOfCell
 
     private IEnumerator FireOnCellWithEnemy(Cell cellWithEnemy)
     {
-        Debug.Log("FireEnemy Coroutine inside Tower");
-        Vector3 towerPosition = transform.position;
         Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
-        shooter.FireBetween(towerPosition, enemyPosition);
+        shooter.FireBetween(shootingPoint.position, enemyPosition);
         yield return new WaitUntil(shooter.HasFinished);
         DamageEnemy();
         _hasPlayed = true;
