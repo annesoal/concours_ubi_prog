@@ -12,22 +12,6 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        public List<GameObject> ObjectsOnTop
-        {
-            get
-            {
-                if (_objectsOnTop == null)
-                {
-                    _objectsOnTop = new List<GameObject>();
-                    return _objectsOnTop;
-                }
-                else
-                {
-                    return _objectsOnTop;
-                }
-            }
-            private set => _objectsOnTop = value;
-        }
         private List<GameObject> _objectsOnTop;
 
         public List<ITopOfCell> ObjectsTopOfCell
@@ -71,11 +55,6 @@ namespace Grid
 
         public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
         {
-            if (ObjectsOnTop == null)
-            {
-                ObjectsOnTop = new List<GameObject>();
-            }
-            ObjectsOnTop.Add(gameObject);
 
             if (ObjectsTopOfCell == null)
             {
