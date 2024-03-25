@@ -132,12 +132,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
         
-        UpdatePreviewUI();
-    }
-    
-    private void UpdatePreviewUI()
-    {
-        // TODO
+        UpdateUI();
     }
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
