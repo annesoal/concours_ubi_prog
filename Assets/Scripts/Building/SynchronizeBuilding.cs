@@ -57,7 +57,6 @@ public class SynchronizeBuilding : NetworkBehaviour
         Cell withNewObjectOnTop = TilingGrid.grid.GetCell(positionToBuild);
         
         withNewObjectOnTop.AddGameObject(
-            buildableObjectNetwork.gameObject, 
             buildableObjectNetwork.GetComponent<ITopOfCell>()
         );
 

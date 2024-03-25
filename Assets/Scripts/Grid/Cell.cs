@@ -53,7 +53,7 @@ namespace Grid
             return this.type == 0;
         }
 
-        public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
+        public void AddGameObject(ITopOfCell objectTopOfCell)
         {
             if (ObjectsTopOfCell == null)
             {
