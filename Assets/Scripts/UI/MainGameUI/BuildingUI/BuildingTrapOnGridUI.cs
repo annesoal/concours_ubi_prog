@@ -21,13 +21,15 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Button closeButton;
     [SerializeField] private TextMeshProUGUI errorText;
+    
+    private List<Cell> _enemyWalkableCells;
+    private Cell _selectedCell;
+
+    private BuildableObjectSO _trapSO;
 
     private void Awake()
     {
-        buildButton.onClick.AddListener(() =>
-        {
-            // TODO
-        });
+        buildButton.onClick.AddListener(BuildTrapOnButtonClick);
         
         closeButton.onClick.AddListener(() =>
         {
@@ -38,8 +40,6 @@ public class BuildingTrapOnGridUI : MonoBehaviour
             CentralizedInventory.Instance.ClearAllMaterialsCostUI();
         });
     }
-
-    private List<Cell> _enemyWalkableCells;
     
     private void Start()
     {
@@ -49,9 +49,41 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     public void Show(BuildableObjectSO trapSO)
     {
         Debug.Log(trapSO.objectName);
+        _trapSO = trapSO;
         
         _enemyWalkableCells = TilingGrid.grid.GetEnemyWalkableCells();
+        _selectedCell = _enemyWalkableCells[0];
         
         BasicShowHide.Show(gameObject);
+    }
+    
+    private void BuildTrapOnButtonClick()
+    {
+        if (IsAbleToBuild())
+        {
+            SynchronizeBuilding.Instance.SpawnBuildableObject(_trapSO, _selectedCell);
+            
+            UpdateSelectedCell();
+        }
+    }
+
+    private bool IsAbleToBuild()
+    {
+        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        
+        return _selectedCell.HasNotBuildingOnTop() &&
+               CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO);
+    }
+    
+    private void UpdateSelectedCell()
+    {
+        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        
+        UpdatePreviewUI();
+    }
+    
+    private void UpdatePreviewUI()
+    {
+        // TODO
     }
 }
