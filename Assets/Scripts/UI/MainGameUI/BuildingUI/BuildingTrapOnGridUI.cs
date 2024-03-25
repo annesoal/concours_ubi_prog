@@ -191,5 +191,12 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     private void DestroyPreview()
     {
         Destroy(_trapPreview);
+
+        RemoveHighlighter();
+    }
+
+    private void RemoveHighlighter()
+    {
+        Destroy(_currentHighlighter.gameObject);
     }
 }
