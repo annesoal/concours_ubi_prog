@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Grid;
 using TMPro;
 using UI;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +22,14 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     [Header("Other")]
     [SerializeField] private Button closeButton;
     [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private GameObject highlighterGameObject;
     
     private List<Cell> _enemyWalkableCells;
     private Cell _selectedCell;
 
     private BuildableObjectSO _trapSO;
     private GameObject _trapPreview;
+    private GameObject _currentHighlighter;
 
     private void Awake()
     {
@@ -74,17 +77,24 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         }
         else
         {
+            DestroyPreview();
             errorText.text = ALREADY_HAS_BUILDING_ERROR;
         }
     }
     
     private void ShowPreviewOnSelectedCell()
     {
-        // TODO add preview on _selectedCell
         GameObject trapVisuals = Instantiate(_trapSO.visuals);
         trapVisuals.GetComponent<BuildableObjectVisuals>().ShowPreview();
 
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(trapVisuals, _selectedCell.position);
+        AddHighlighter(TilingGrid.CellPositionToLocal(_selectedCell));
+    }
+    
+    private void AddHighlighter(Vector3 position)
+    {
+        Destroy(_currentHighlighter);
+        _currentHighlighter = Instantiate(highlighterGameObject, position, quaternion.identity);
     }
     
     private void BuildTrapOnButtonClick()
