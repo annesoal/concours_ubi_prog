@@ -1,4 +1,4 @@
-using System;
+using Grid.Interface;
 using UnityEngine;
 
 
@@ -12,26 +12,24 @@ namespace Grid
     }
     
 
-    public class Obstacle : MonoBehaviour
+    public class Obstacle : MonoBehaviour, ITopOfCell
     {
         public GameObject obstacle;
-        private Vector2Int _position2d;
-        private Vector3 _position3d;
-        private Recorder<Cell> recorder;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
         
         private void Start()
         {
-            _position3d = transform.position;
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, _position3d); 
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
         }
-        
-        public ObstacleType GetObstacleType()
+        public TypeTopOfCell GetType()
         {
-            return obstacleType;
+            return TypeTopOfCell.Obstacle;
         }
-        
-        
+
+        public GameObject ToGameObject()
+        {
+            return this.gameObject;
+        }
     }
     
 
