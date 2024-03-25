@@ -7,7 +7,7 @@ namespace Utils
 {
     public class AStarPathfinding
     {
-        private static List<Cell> GetPath(Cell origin, Cell destination, Func<Cell, bool> cellValidator)
+        public static List<Cell> GetPath(Cell origin, Cell destination, Func<Cell, bool> cellValidator)
         {
             // Variables 
             List<Cell> openSet = new List<Cell>();
@@ -30,13 +30,18 @@ namespace Utils
                 List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current,1);
                 foreach (var neighbor in neighbors)
                 {
-                    if (!cellValidator(neighbor)) continue;
+                    if (cellValidator(neighbor)) continue;
                     
                     float tentativeDistanceOrigin = originDistance[current] + Cell.Distance(current, neighbor);
                     float neighborDistanceOrigin = GScoreNeighbor(originDistance, neighbor);
                     if (tentativeDistanceOrigin < neighborDistanceOrigin)
                     {
-                       cameFrom.Add(neighbor, current);
+                       bool wasAdded = cameFrom.TryAdd(neighbor, current);
+                       // TODO 
+                       if (!wasAdded)
+                       {
+                           cameFrom[neighbor] = current;
+                       }
                        originDistance[neighbor] = tentativeDistanceOrigin;
                        destinationDistance[neighbor] = tentativeDistanceOrigin + Cell.Distance(neighbor, destination);
                        if (!openSet.Contains(neighbor))
