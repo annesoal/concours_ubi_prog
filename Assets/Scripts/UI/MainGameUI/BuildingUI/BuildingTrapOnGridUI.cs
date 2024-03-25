@@ -73,12 +73,15 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         if (_selectedCell.HasNotBuildingOnTop())
         {
+            BasicShowHide.Hide(errorText.gameObject);
             ShowPreviewOnSelectedCell();
         }
         else
         {
             DestroyPreview();
+            
             errorText.text = ALREADY_HAS_BUILDING_ERROR;
+            BasicShowHide.Show(errorText.gameObject);
         }
     }
     
