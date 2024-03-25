@@ -6,6 +6,7 @@ using TMPro;
 using UI;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BuildingTrapOnGridUI : MonoBehaviour
@@ -34,6 +35,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     private void Awake()
     {
         buildButton.onClick.AddListener(BuildTrapOnButtonClick);
+        
+        upArrowButton.onClick.AddListener(ChangeSelectedCellUp);
+        downArrowButton.onClick.AddListener(ChangeSelectedCellDown);
+        leftArrowButton.onClick.AddListener(ChangeSelectedCellLeft);
+        rightArrowButton.onClick.AddListener(ChangeSelectedCellRight);
         
         closeButton.onClick.AddListener(() =>
         {
@@ -95,6 +101,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell);
         
         _trapPreview.transform.position = previewDestination;
+        
         AddHighlighter(previewDestination);
     }
 
@@ -140,6 +147,37 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
         
         UpdateUI();
+    }
+
+    private void ChangeSelectedCellUp()
+    {
+        ChangeSelectedCell(Vector2Int.up);
+    }
+    
+    private void ChangeSelectedCellDown()
+    {
+        ChangeSelectedCell(Vector2Int.down);
+    }
+    
+    private void ChangeSelectedCellRight()
+    {
+        ChangeSelectedCell(Vector2Int.right);
+    }
+    
+    private void ChangeSelectedCellLeft()
+    {
+        ChangeSelectedCell(Vector2Int.left);
+    }
+
+    private void ChangeSelectedCell(Vector2Int direction)
+    {
+        Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.position + direction);
+
+        if (nextCell.Has(BlockType.EnnemyWalkable) && !nextCell.Has(BlockType.Buildable))
+        {
+            _selectedCell = nextCell;
+            UpdateUI();
+        }
     }
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
