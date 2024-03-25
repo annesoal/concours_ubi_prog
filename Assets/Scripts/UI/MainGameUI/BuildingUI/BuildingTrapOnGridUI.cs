@@ -87,13 +87,20 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void ShowPreviewOnSelectedCell()
     {
-        GameObject trapVisuals = Instantiate(_trapSO.visuals);
-        trapVisuals.GetComponent<BuildableObjectVisuals>().ShowPreview();
+        DestroyLastPreview();
+        
+        _trapPreview = Instantiate(_trapSO.visuals);
+        _trapPreview.GetComponent<BuildableObjectVisuals>().ShowPreview();
 
         Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell);
         
-        trapVisuals.transform.position = previewDestination;
+        _trapPreview.transform.position = previewDestination;
         AddHighlighter(previewDestination);
+    }
+
+    private void DestroyLastPreview()
+    {
+        Destroy(_trapPreview);
     }
     
     private void AddHighlighter(Vector3 position)
