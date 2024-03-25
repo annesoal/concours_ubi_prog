@@ -26,6 +26,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     private Cell _selectedCell;
 
     private BuildableObjectSO _trapSO;
+    private GameObject _trapPreview;
 
     private void Awake()
     {
@@ -43,6 +44,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void Start()
     {
+        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
         
         BasicShowHide.Hide(gameObject);
@@ -56,7 +59,32 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         _enemyWalkableCells = TilingGrid.grid.GetEnemyWalkableCells();
         _selectedCell = _enemyWalkableCells[0];
         
+        UpdateUI();
+        
         BasicShowHide.Show(gameObject);
+    }
+
+    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
+    
+    private void UpdateUI()
+    {
+        if (_selectedCell.HasNotBuildingOnTop())
+        {
+            ShowPreviewOnSelectedCell();
+        }
+        else
+        {
+            errorText.text = ALREADY_HAS_BUILDING_ERROR;
+        }
+    }
+    
+    private void ShowPreviewOnSelectedCell()
+    {
+        // TODO add preview on _selectedCell
+        GameObject trapVisuals = Instantiate(_trapSO.visuals);
+        trapVisuals.GetComponent<BuildableObjectVisuals>().ShowPreview();
+
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(trapVisuals, _selectedCell.position);
     }
     
     private void BuildTrapOnButtonClick()
@@ -95,5 +123,18 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     private void UpdatePreviewUI()
     {
         // TODO
+    }
+    
+    private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
+        {
+            DestroyPreview();
+        }
+    }
+
+    private void DestroyPreview()
+    {
+        Destroy(_trapPreview);
     }
 }
