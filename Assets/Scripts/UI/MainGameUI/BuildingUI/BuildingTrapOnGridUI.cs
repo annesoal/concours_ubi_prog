@@ -90,8 +90,10 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         GameObject trapVisuals = Instantiate(_trapSO.visuals);
         trapVisuals.GetComponent<BuildableObjectVisuals>().ShowPreview();
 
-        TilingGrid.grid.PlaceObjectAtPositionOnGrid(trapVisuals, _selectedCell.position);
-        AddHighlighter(TilingGrid.CellPositionToLocal(_selectedCell));
+        Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell);
+        
+        trapVisuals.transform.position = previewDestination;
+        AddHighlighter(previewDestination);
     }
     
     private void AddHighlighter(Vector3 position)
