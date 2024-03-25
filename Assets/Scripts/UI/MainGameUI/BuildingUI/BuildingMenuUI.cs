@@ -48,7 +48,9 @@ public class BuildingMenuUI : MonoBehaviour
 
     private bool IsBuildingInactive()
     {
-        return !circularLayout.gameObject.activeSelf && !buildingTowerOnGridUI.gameObject.activeSelf;
+        return !circularLayout.gameObject.activeSelf &&
+               !buildingTowerOnGridUI.gameObject.activeSelf &&
+               !buildingTrapOnGridUI.gameObject.activeSelf;
     }
 
     [SerializeField] private Button showBuildingMenuButton;
