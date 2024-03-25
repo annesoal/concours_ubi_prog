@@ -111,8 +111,21 @@ namespace Grid
             }
             return null;
         }
-    }
     
+        public bool HasNotBuildingOnTop()
+        {
+            foreach (ITopOfCell objectOnTop in ObjectsTopOfCell)
+            {
+                if (objectOnTop.GetType() == TypeTopOfCell.Building)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    
+    }
     public static class BlockType
     {
         public const int None =            0b0000_0000_0000_0000;

@@ -49,21 +49,8 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
         // Si l'autre joueur modifie la cell entre-temps, on veut la cell la plus à jour au moment de la construction.
         _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
         
-        return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell) &&
+        return _associatedBuildableCell.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_associatedBuildableObjectSo);
-    }
-
-    private bool HasNotBuildingOnTop(List<ITopOfCell> objectsOnTopOfCell)
-    {
-        foreach (ITopOfCell objectOnTop in objectsOnTopOfCell)
-        {
-            if (objectOnTop.GetType() == TypeTopOfCell.Building)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public Vector2Int GetAssociatedCellPosition()
@@ -79,8 +66,8 @@ public class SingleBuildableContentTemplateUI : MonoBehaviour
     public bool AssociatedCellHasNotBuildingOnTop()
     {
         _associatedBuildableCell = TilingGrid.grid.GetCell(_associatedBuildableCell.position);
-        
-        return HasNotBuildingOnTop(_associatedBuildableCell.ObjectsTopOfCell);
+
+        return _associatedBuildableCell.HasNotBuildingOnTop();
     }
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)

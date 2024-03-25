@@ -24,6 +24,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
     private void Awake()
     {
+        buildButton.onClick.AddListener(() =>
+        {
+            // TODO
+        });
+        
         closeButton.onClick.AddListener(() =>
         {
             InputManager.Instance.EnablePlayerInputMap();
