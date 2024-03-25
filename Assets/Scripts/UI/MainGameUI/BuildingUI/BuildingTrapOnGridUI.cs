@@ -43,6 +43,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void Start()
     {
+        SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
+        
         BasicShowHide.Hide(gameObject);
     }
 
@@ -73,6 +75,14 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         
         return _selectedCell.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO);
+    }
+    
+    private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
+    {
+        if (e.BuildingPosition == _selectedCell.position)
+        {
+            UpdateSelectedCell();
+        }
     }
     
     private void UpdateSelectedCell()
