@@ -21,10 +21,7 @@ namespace Ennemies
          */
         public override bool IsValidCell(Vector2Int position)
         {
-            Cell cell = TilingGrid.grid.GetCell(position);
-            bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoObstacle = ! ContainsObstacle(cell);
-            return isValidBlockType && hasNoObstacle; 
+            return true;
         }
         
 
