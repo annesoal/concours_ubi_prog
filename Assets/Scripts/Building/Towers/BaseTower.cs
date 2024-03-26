@@ -26,7 +26,9 @@ public abstract class BaseTower : BuildableObject
     [SerializeField] private float timeToFly;
     /// En radiant
     [SerializeField] private float firingAngle;
+    [SerializeField] private int TowerDamage = 1;
 
+    [SerializeField] private int timeBetweenShots = 2; 
 
     [Header("BulletToFire")]
     [SerializeField] protected GameObject _bullet;
@@ -35,6 +37,7 @@ public abstract class BaseTower : BuildableObject
 
     private ShootingUtility _shooter; 
     private bool _hasPlayed = true;
+    private int timeSinceLastShot = 0;
 
     public void Start()
     {
@@ -72,11 +75,19 @@ public abstract class BaseTower : BuildableObject
         _hasFinishedTowersTurn = false;
         foreach (BaseTower tower in _towersInGame)
         {
-            tower._hasPlayed = false;
-            tower.PlayTurn();
-            yield return new WaitUntil(tower.HasPlayed);
+            if (tower.CanPlay())
+            {
+                tower._hasPlayed = false;
+                tower.PlayTurn();
+                yield return new WaitUntil(tower.HasPlayed);
+            }
         }
         _hasFinishedTowersTurn = true;
+    }
+
+    public bool CanPlay()
+    {
+      return timeSinceLastShot++ >= timeBetweenShots; 
     }
     
     public static bool HasFinishedTowersTurn()
@@ -98,6 +109,7 @@ public abstract class BaseTower : BuildableObject
     {
         Debug.Log("Inside PlayTurn");
         StartCoroutine(PlayTurnCoroutine());
+        timeSinceLastShot = 0;
     }
     
     private IEnumerator PlayTurnCoroutine()
@@ -129,7 +141,7 @@ public abstract class BaseTower : BuildableObject
         Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
         _shooter.FireBetween(shootingPoint.position, enemyPosition);
         yield return new WaitUntil(_shooter.HasFinished);
-        DamageEnemy();
+        DamageEnemy(cellWithEnemy);
         _hasPlayed = true;
     }
     
@@ -138,9 +150,10 @@ public abstract class BaseTower : BuildableObject
         return _hasPlayed;
     }
     
-    private void DamageEnemy() 
+    private void DamageEnemy(Cell cellWithEnemy) 
     {
-        Debug.Log("Damage an enemy");
+        Enemy enemy = cellWithEnemy.GetEnemy();
+        enemy.Damage(TowerDamage);
     }
     
     private void SetShooter()

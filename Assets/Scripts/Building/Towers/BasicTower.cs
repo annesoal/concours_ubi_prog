@@ -14,7 +14,7 @@ using Unity.VisualScripting;
 public class BasicTower : BaseTower
 {
     [SerializeField] private int shootingRange;
-
+    protected int EnergyBetweenShots;
     protected override List<Cell> TargetEnemies()
     {
         List<Cell> cellsInShootingRange = GetCellsInShootingRange();

@@ -46,7 +46,6 @@ namespace Grid
             cell.type = block.GetBlockType();
 
             Vector2Int position = LocalToGridPosition(block.GetPosition());
-            // TODO : Refactor? car duplication de l'information
             cell.position = position;
             _cells[position.x, position.y] = cell;
         }
@@ -101,6 +100,19 @@ namespace Grid
             return GridPositionToLocal(position, yPos);
         }
 
+        public List<Cell> GetCellsOfType(Type type)
+        {
+            List<Cell> cells = new List<Cell>();
+            foreach (Cell cell in _cells)
+            {
+                if (cell.Has(BlockType.Translate(type)))
+                {
+                    Debug.Log(cell.type + " has been added !");
+                   cells.Add(cell); 
+                }
+            }
+            return cells;
+        }
         public List<Cell> GetBuildableCells()
         {
             List<Cell> buildableCells = new List<Cell>();
@@ -161,12 +173,16 @@ namespace Grid
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
             Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace, toPlace.GetComponent<ITopOfCell>());
+            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
             UpdateCell(cell);
             
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
         }
 
+        public List<Cell> GetCellsInRadius(Cell origin, int radius)
+        {
+            return GetCellsInRadius(origin.position, radius);
+        }
         public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
         {
            List<Cell> cells = new List<Cell>();     
@@ -190,7 +206,7 @@ namespace Grid
             try
             {
                 var cell =grid.GetCell(position);
-                cell.ObjectsOnTop.Remove(element);
+                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
                 grid.UpdateCell(cell);
             }
             catch (ArgumentException)

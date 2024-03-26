@@ -12,22 +12,6 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        public List<GameObject> ObjectsOnTop
-        {
-            get
-            {
-                if (_objectsOnTop == null)
-                {
-                    _objectsOnTop = new List<GameObject>();
-                    return _objectsOnTop;
-                }
-                else
-                {
-                    return _objectsOnTop;
-                }
-            }
-            private set => _objectsOnTop = value;
-        }
         private List<GameObject> _objectsOnTop;
 
         public List<ITopOfCell> ObjectsTopOfCell
@@ -69,25 +53,14 @@ namespace Grid
             return this.type == 0;
         }
 
-        public void AddGameObject(GameObject gameObject, ITopOfCell objectTopOfCell = null)
+        public void AddGameObject(ITopOfCell objectTopOfCell)
         {
-            if (ObjectsOnTop == null)
-            {
-                ObjectsOnTop = new List<GameObject>();
-            }
-            ObjectsOnTop.Add(gameObject);
-
             if (ObjectsTopOfCell == null)
             {
                 ObjectsTopOfCell = new();
             }
 
             ObjectsTopOfCell?.Add(objectTopOfCell);
-        }
-
-        public void RemoveGameObject(GameObject gameObject)
-        {
-            
         }
 
         public bool ContainsEnemy()
@@ -104,13 +77,21 @@ namespace Grid
         {
             foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
-                if (objectTopOfCell.GetType() == TypeTopOfCell.Player)
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                 {
                     return objectTopOfCell.ToGameObject().GetComponent<Enemy>();   
                 }
             }
             return null;
         }
+        
+        public static float Distance(Cell origin, Cell destination)
+        {
+            Vector3 originPosition = TilingGrid.GridPositionToLocal(origin.position);
+            Vector3 destinationPosition = TilingGrid.GridPositionToLocal(destination.position);
+            return Vector3.Distance(originPosition, destinationPosition);
+        }
+    }
     
         public bool HasNotBuildingOnTop()
         {
