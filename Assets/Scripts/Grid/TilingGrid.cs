@@ -27,7 +27,10 @@ namespace Grid
         private void Awake()
         {
             grid = this;
-            
+        }
+
+        void Start()
+        {
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
 
             foreach (var block in blocks)
@@ -35,7 +38,6 @@ namespace Grid
                 AddBlockAsCell(block);
             }
         }
-
         // Ajoute un bloc dans la liste de Cells
         private void AddBlockAsCell(BasicBlock block)
         {
