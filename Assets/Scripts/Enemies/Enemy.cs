@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
@@ -5,6 +6,7 @@ using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Type = Grid.Type;
 
 namespace Enemies
 {
@@ -26,20 +28,18 @@ namespace Enemies
 
         [SerializeField] protected int ratioMovement = 3;
         [SerializeField] protected int health;
+        private List<Cell> _destinationsCell;
 
         protected EnemyGridHelper _helper;
         protected Recorder<Cell> _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
-        protected Vector2Int _nextPosition2d;
         protected Vector2Int currentPosition2d;
+        public List<Cell> path; 
         
         protected static List<GameObject> enemiesInGame = new List<GameObject>();
 
 
         // Deplacements 
-        protected Vector3 _avancer = new Vector3(0, 0, -1);
-        protected Vector3 _gauche = new Vector3(-1, 0, 0);
-        protected Vector3 _droite = new Vector3(1, 0, 0);
         protected Vector2Int _avancer2d = new Vector2Int(0, -1);
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
@@ -48,12 +48,38 @@ namespace Enemies
 
         protected virtual void Initialize()
         {
-        
+            
         }
         
         public void Start()
         {
             Initialize();
+            SetDestinations();
+        }
+
+        private void SetDestinations()
+        {
+            _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
+        }
+
+        private Cell GetClosestDestination()
+        {
+            if (_destinationsCell == null || _destinationsCell.Count == 0)
+                throw new Exception("Destination cells are not set or were not found !");
+
+            Cell destinationToReturn = _destinationsCell[0];
+            float destinationDistance = Cell.Distance(cell, destinationToReturn);
+            for (int i = 1; i < _destinationsCell.Count; i++)
+            {
+                Cell currentCell = _destinationsCell[i];
+                float currentCellDistance = Cell.Distance(currentCell, cell);
+                if (currentCellDistance < destinationDistance)
+                {
+                    destinationDistance = currentCellDistance;
+                    destinationToReturn = currentCell;
+                }
+            }
+            return destinationToReturn;
         }
 
         public EnnemyType GetEnnemyType()
@@ -129,6 +155,18 @@ namespace Enemies
                 }
             }
             return enemies;
+        }
+
+        public abstract bool PathfindingInvalidCell(Cell cell);
+
+        public Cell GetCurrentPosition()
+        {
+            return cell;
+        }
+
+        public Cell GetDestination()
+        {
+            return GetClosestDestination();
         }
     }
 }

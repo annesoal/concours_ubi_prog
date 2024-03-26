@@ -3,6 +3,7 @@ using System;
 using Enemies;
 using Ennemies;
 using Grid;
+using Grid.Interface;
 using UnityEngine;
 
 using Random = System.Random;
@@ -23,9 +24,8 @@ namespace Enemies
 
         protected override void Initialize()
         {
-            cell = new Cell();
-            _nextPosition2d = new Vector2Int();
             currentPosition2d = TilingGrid.LocalToGridPosition(transform.position);
+            cell = TilingGrid.grid.GetCell(currentPosition2d);
             next_cell = new Cell();
             _cellRecorder = new Recorder<Cell>();
             _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
@@ -41,20 +41,27 @@ namespace Enemies
         public override void Move(int energy)
         {
             {
-                if (IsTimeToMove(energy))
+                if (!IsTimeToMove(energy)) return;
+                if (!IsEndOfGrid()) 
                 {
-                    if (!IsEndOfGrid()) 
+                    if (!TryMoveOnNextCell())
                     {
-                        if (!MoveInDirection(_avancer2d, _avancer))
+                        if (!MoveSides())
                         {
-                            MoveSides();
+                            throw new Exception("moveside did not work, case not implemented yet !");
                         }
-                    } else
-                    {
-                        Destroy(this.gameObject);
                     }
+                } else
+                {
+                    Destroy(this.gameObject);
                 }
             }
+        }
+
+        public override bool PathfindingInvalidCell(Cell cellToCheck)
+        {
+            return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
+                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
         }
 
         private bool IsTimeToMove(int energy)
@@ -76,37 +83,52 @@ namespace Enemies
         }
         
         //Commence a aller vers la droite ou la gauche aleatoirement
-        private void MoveSides()
+        private bool MoveSides()
         {
             if (_rand.NextDouble() < 0.5)
             {
-                if (!MoveInDirection(_gauche2d, _gauche))
+                if (!TryMoveOnNextCell(_gauche2d))
                 {
-                    MoveInDirection(_droite2d, _droite);
+                    return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
-                if(!MoveInDirection(_droite2d, _droite))
+                if(!TryMoveOnNextCell(_droite2d))
                 {
-                    MoveInDirection(_gauche2d, _gauche);
+                    return TryMoveOnNextCell(_gauche2d);
                 }
             }
+
+            return false; 
         }
         
         // Besoin de direction 2d pour valider ce quil a sur la cell
         //Retourne true si a pu effectuer le deplacement
-        private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
+        private bool TryMoveOnNextCell()
         {
-            _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
-            if (_helper.IsValidCell(_nextPosition2d))
+            Cell nextCell = path[0];
+            if (_helper.IsValidCell(nextCell.position))
             {
-                MoveEnemy(direction);
+                cell = nextCell; 
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
             return false;
         }
-        
+
+        private bool TryMoveOnNextCell(Vector2Int direction)
+        {
+            Vector2Int nextPosition = cell.position + direction;
+            
+             if (_helper.IsValidCell(nextPosition))
+             {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                return true;
+            }
+            return false;
+        }
 
         /*
          * Bouge l'ennemi
