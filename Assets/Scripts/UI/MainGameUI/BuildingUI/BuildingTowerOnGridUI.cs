@@ -15,9 +15,6 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     [SerializeField] private Button rightArrow;
     [SerializeField] private Button leftArrow;
 
-    [Header("Camera")]
-    [SerializeField] private CameraController cameraController;
-    
     [Header("Other")]
     [SerializeField] private TextMeshProUGUI errorText;
 
@@ -133,7 +130,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
         Vector3 previewPosition = TilingGrid.GridPositionToLocal(_selectedCell.Value.position);
 
-        cameraController.MoveCameraToPosition(previewPosition);
+        CameraController.Instance.MoveCameraToPosition(previewPosition);
 
         _preview = Instantiate(_towerToBuild.visuals);
 
