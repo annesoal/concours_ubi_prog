@@ -13,7 +13,6 @@ namespace Enemies
     public sealed class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        private Cell next_cell;
 
         public BasicEnemy()
         {
@@ -24,11 +23,6 @@ namespace Enemies
 
         protected override void Initialize()
         {
-            currentPosition2d = TilingGrid.LocalToGridPosition(transform.position);
-            cell = TilingGrid.grid.GetCell(currentPosition2d);
-            next_cell = new Cell();
-            _cellRecorder = new Recorder<Cell>();
-            _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
             AddInGame(this.gameObject);
         }
 
@@ -42,8 +36,7 @@ namespace Enemies
         {
             {
                 if (!IsTimeToMove(energy)) return;
-                if (!IsEndOfGrid()) 
-                {
+                
                     if (!TryMoveOnNextCell())
                     {
                         if (!MoveSides())
@@ -51,10 +44,6 @@ namespace Enemies
                             throw new Exception("moveside did not work, case not implemented yet !");
                         }
                     }
-                } else
-                {
-                    Destroy(this.gameObject);
-                }
             }
         }
 
@@ -69,19 +58,6 @@ namespace Enemies
             return energy % ratioMovement == 0;
         }
 
-        private bool IsEndOfGrid()
-        {
-            try
-            {
-                next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
-                return next_cell.IsNone();
-            }
-            catch (ArgumentException)
-            {
-                return true;
-            }
-        }
-        
         //Commence a aller vers la droite ou la gauche aleatoirement
         private bool MoveSides()
         {
@@ -107,10 +83,14 @@ namespace Enemies
         //Retourne true si a pu effectuer le deplacement
         private bool TryMoveOnNextCell()
         {
+            
             Cell nextCell = path[0];
-            if (_helper.IsValidCell(nextCell.position))
+            Debug.Log(nextCell.position);
+            path.RemoveAt(0);
+            if (IsValidCell(nextCell))
             {
                 cell = nextCell; 
+                Debug.Log("moving to " + cell.position);
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
@@ -119,9 +99,11 @@ namespace Enemies
 
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
-            Vector2Int nextPosition = cell.position + direction;
-            
-             if (_helper.IsValidCell(nextPosition))
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
+            Cell nextCell = TilingGrid.grid.GetCell(new Vector2Int());
+            Debug.Log("cellPos + direction == " +  nextPosition);
+                
+             if (IsValidCell(nextCell))
              {
                 cell = TilingGrid.grid.GetCell(nextPosition);
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
@@ -136,11 +118,16 @@ namespace Enemies
          */
         private void MoveEnemy(Vector3 direction)
         {
-            Vector3 nextPosition = transform.position + direction;
             TilingGrid.RemoveElement(this.gameObject, transform.position); 
-            transform.position = nextPosition;
+            transform.position = direction;
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
-            _cellRecorder.Add(cell);
+        }
+
+        private static bool IsValidCell(Cell cell)
+        { 
+            bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
+            bool hasNoObstacle = ! cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
+            return isValidBlockType && hasNoObstacle; 
         }
         
     }

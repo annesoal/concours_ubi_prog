@@ -30,21 +30,15 @@ namespace Enemies
         [SerializeField] protected int health;
         private List<Cell> _destinationsCell;
 
-        protected EnemyGridHelper _helper;
-        protected Recorder<Cell> _cellRecorder; // Permet a Ennemi de verifier ses derniers mouvements
         protected Cell cell;
-        protected Vector2Int currentPosition2d;
         public List<Cell> path; 
         
         protected static List<GameObject> enemiesInGame = new List<GameObject>();
 
 
         // Deplacements 
-        protected Vector2Int _avancer2d = new Vector2Int(0, -1);
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-
-        public float distanceFromEnd = 10.0f; 
 
         protected virtual void Initialize()
         {
@@ -161,6 +155,8 @@ namespace Enemies
 
         public Cell GetCurrentPosition()
         {
+            Vector2Int positionOnGrid = TilingGrid.LocalToGridPosition(gameObject.transform.position);
+            cell = TilingGrid.grid.GetCell(positionOnGrid);
             return cell;
         }
 
