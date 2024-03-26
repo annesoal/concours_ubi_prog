@@ -126,6 +126,8 @@ public class Player : NetworkBehaviour
         {
             Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
         }
+        
+        CameraController.Instance.MoveCameraToPosition(transform.position);
     }
     /// <summary>
     /// Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
