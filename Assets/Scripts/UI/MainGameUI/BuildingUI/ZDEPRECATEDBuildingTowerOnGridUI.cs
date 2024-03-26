@@ -6,7 +6,10 @@ using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingTowerOnGridUI : MonoBehaviour
+/// <summary>
+/// DEPRECATED
+/// </summary>
+public class ZDEPRECATEDBuildingTowerOnGridUI : MonoBehaviour
 {
     [SerializeField] private Button closeUIButton;
     
