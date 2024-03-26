@@ -63,7 +63,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         BasicShowHide.Show(gameObject);
         
-        ShowPreview();
+        UpdateUI();
         
         buildButton.Select();
     }
@@ -106,7 +106,12 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         {
             _selectedCell.Value = TilingGrid.grid.GetCell(cellToUpdate);
         }
+        
+        UpdateUI();
+    }
 
+    private void UpdateUI()
+    {
         if (_selectedCell.Value.HasNotBuildingOnTop())
         {
             BasicShowHide.Hide(errorText.gameObject);
@@ -144,6 +149,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         if (_preview != null)
         {
             Destroy(_preview);
+            _preview = null;
         }
     }
     
