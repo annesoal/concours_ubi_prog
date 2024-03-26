@@ -17,30 +17,36 @@ public class IAManager : MonoBehaviour
         Instance = this;
     }
     
-        public static void MoveEnemies(int totalEnergy)
-        {
-            List<GameObject> enemies = Enemy.GetEnemiesInGame();
-            for(int i = enemies.Count -1; i >= 0 ; i--)
-            {
-                var enemy = enemies[i].GetComponent<Enemy>();
-               
-                SetEnemyPath(enemy);
-                enemy.Move(totalEnergy);
-            }
-        }
+     public static void MoveEnemies(int totalEnergy)
+     {
+         List<GameObject> enemies = Enemy.GetEnemiesInGame();
+         for (int i = enemies.Count - 1; i >= 0; i--)
+         {
+             var enemy = enemies[i].GetComponent<Enemy>();
 
-        private static void SetEnemyPath(Enemy enemy)
-        {
-            Cell origin = enemy.GetCurrentPosition();
-            Cell destination = enemy.GetDestination();
-            Func<Cell, bool> invalidCellPredicate = enemy.PathfindingInvalidCell;
-            Highlight(destination); 
-            enemy.path = AStarPathfinding.GetPath(origin, destination, invalidCellPredicate); 
-        }
-        
-        private static void Highlight(Cell cell)
-        {
-            Instantiate(TowerDefenseManager.highlighter, TilingGrid.CellPositionToLocal(cell), quaternion.identity);
-            
-        }
+             enemy.Move(totalEnergy);
+         }
+     }
+     public static void SetEnemiesPath()
+     {
+         List<GameObject> enemies = Enemy.GetEnemiesInGame();
+         foreach (var enemy in enemies)
+         {
+             SetEnemyPath(enemy.GetComponent<Enemy>());
+         }
+     }
+     private static void SetEnemyPath(Enemy enemy)
+     {
+         Cell origin = enemy.GetCurrentPosition();
+         Cell destination = enemy.GetDestination();
+         Func<Cell, bool> invalidCellPredicate = enemy.PathfindingInvalidCell;
+         Highlight(destination); 
+         enemy.path = AStarPathfinding.GetPath(origin, destination, invalidCellPredicate); 
+     }
+     
+     private static void Highlight(Cell cell)
+     {
+         Instantiate(TowerDefenseManager.highlighter, TilingGrid.CellPositionToLocal(cell), quaternion.identity);
+         
+     }
 }

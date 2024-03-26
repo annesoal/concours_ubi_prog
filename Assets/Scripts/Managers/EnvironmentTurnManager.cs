@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
 public class EnvironmentTurnManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     {
         if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
         {
+            
             IEnumerator coroutineEnvTurn = EnvironmentTurn(TowerDefenseManager.Instance.energyToUse);
             StartCoroutine(coroutineEnvTurn);
         }
@@ -32,6 +34,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     private IEnumerator EnvironmentTurn(int totalEnergy)
     {
         PreparePlayers();
+        
         while (HasEnergyLeft(totalEnergy))
         {   
             MovePlayers();
@@ -43,6 +46,7 @@ public class EnvironmentTurnManager : MonoBehaviour
             // Play Trap turn
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
             
+            IAManager.SetEnemiesPath();
             IAManager.MoveEnemies(totalEnergy);
             yield return new WaitForSeconds(0.5f);
             totalEnergy--;
