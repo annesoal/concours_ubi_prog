@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/// <summary>
+/// Deprecated
+/// </summary>
 public class SingleBuildableContentTemplateUI : MonoBehaviour
 {
     [SerializeField] private Button selectionButton;
