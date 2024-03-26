@@ -37,7 +37,6 @@ namespace Utils
                     if (tentativeDistanceOrigin < neighborDistanceOrigin)
                     {
                        bool wasAdded = cameFrom.TryAdd(neighbor, current);
-                       // TODO 
                        if (!wasAdded)
                        {
                            cameFrom[neighbor] = current;

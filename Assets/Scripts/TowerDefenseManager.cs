@@ -36,6 +36,10 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
+    
+    public static GameObject highlighter;
+    [SerializeField] private GameObject _hightlighter;
+
     public enum State
     {
         WaitingToStart = 0,
@@ -68,6 +72,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Awake()
     {
+        highlighter = _hightlighter;
         Instance = this;
         _currentTimer = new NetworkVariable<float>(tacticalPauseDuration);
 
