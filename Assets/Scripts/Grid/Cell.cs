@@ -91,7 +91,6 @@ namespace Grid
             Vector3 destinationPosition = TilingGrid.GridPositionToLocal(destination.position);
             return Vector3.Distance(originPosition, destinationPosition);
         }
-    }
     
         public bool HasNotBuildingOnTop()
         {
