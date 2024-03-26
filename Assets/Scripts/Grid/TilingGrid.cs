@@ -113,15 +113,15 @@ namespace Grid
             }
             return cells;
         }
-        public List<Cell> GetBuildableCells()
+        public LinkedList<Cell> GetBuildableCells()
         {
-            List<Cell> buildableCells = new List<Cell>();
+            LinkedList<Cell> buildableCells = new LinkedList<Cell>();
             
             foreach (Cell cell in _cells)
             {
                 if (cell.Has(BlockType.Buildable))
                 {
-                    buildableCells.Add(cell);
+                    buildableCells.AddLast(cell);
                 }
             }
 
