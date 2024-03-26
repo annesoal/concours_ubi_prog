@@ -130,13 +130,13 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
         cameraController.MoveCameraToPosition(previewPosition);
 
-        GameObject newPreview = Instantiate(_towerToBuild.visuals);
+        _preview = Instantiate(_towerToBuild.visuals);
 
-        BuildableObjectVisuals previewVisualsComponent = newPreview.GetComponent<BuildableObjectVisuals>();
+        BuildableObjectVisuals previewVisualsComponent = _preview.GetComponent<BuildableObjectVisuals>();
         
         previewVisualsComponent.ShowPreview();
 
-        newPreview.transform.position = previewPosition;
+        _preview.transform.position = previewPosition;
     }
 
     private void HidePreview()
