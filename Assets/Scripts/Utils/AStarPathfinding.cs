@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
+using UnityEngine;
 
 namespace Utils
 {
@@ -9,6 +10,8 @@ namespace Utils
     {
         public static List<Cell> GetPath(Cell origin, Cell destination, Func<Cell, bool> cellValidator)
         {
+            Debug.Log("origin " + origin.position);
+            Debug.Log("destination " + destination.position);
             // Variables 
             List<Cell> openSet = new List<Cell>();
             Dictionary<Cell, Cell> cameFrom = new(); // K : current, V : previous
