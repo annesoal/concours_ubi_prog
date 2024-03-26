@@ -54,7 +54,15 @@ public class CentralizedInventory : NetworkBehaviour
         }
     }
 
-    public void ShowCostForResource(BuildingMaterialSO resourceData, int cost)
+    public void ShowCostForBuildableObject(BuildableObjectSO toShowResourcesCost)
+    {
+        foreach (BuildableObjectSO.BuildingMaterialAndQuantityPair pair in toShowResourcesCost.materialAndQuantityPairs)
+        {
+            ShowCostForResource(pair.buildingMaterialSO, pair.quantityOfMaterialRequired);
+        }
+    }
+    
+    private void ShowCostForResource(BuildingMaterialSO resourceData, int cost)
     {
         try
         {
