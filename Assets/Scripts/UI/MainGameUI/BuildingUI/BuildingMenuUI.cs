@@ -79,7 +79,7 @@ public class BuildingMenuUI : MonoBehaviour
     }
 
 
-    [SerializeField] private ZDEPRECATEDBuildingTowerOnGridUI buildingTowerOnGridUI;
+    [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
     [SerializeField] private BuildingTrapOnGridUI buildingTrapOnGridUI;
     
     private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
