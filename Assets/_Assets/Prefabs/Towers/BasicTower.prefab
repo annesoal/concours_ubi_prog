@@ -63,6 +63,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8505941377173109573, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8688604499782487918, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -144,6 +154,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2642392454959231345, guid: 232d4a4653874781d8eb6d4e8bad458c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.574
+      objectReference: {fileID: 0}
     - target: {fileID: 5143270676341507282, guid: 232d4a4653874781d8eb6d4e8bad458c,
         type: 3}
       propertyPath: m_Name
@@ -208,6 +223,8 @@ MonoBehaviour:
   enemyDirection: 0
   timeToFly: 1
   firingAngle: 0.9
+  TowerDamage: 1
+  timeBetweenShots: 2
   _bullet: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
   shootingRange: 2
 --- !u!4 &6343251929679007998 stripped

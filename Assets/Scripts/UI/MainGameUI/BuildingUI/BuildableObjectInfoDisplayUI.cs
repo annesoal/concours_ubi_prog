@@ -48,17 +48,14 @@ public class BuildableObjectInfoDisplayUI : MonoBehaviour
         _preview = Instantiate(buildableObjectData.buildableObjectInfos.visuals);
 
         GameObject toFollow = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera.VirtualCameraGameObject;
-        _preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, PREVIEW_DISTANCE, FollowTransform.DirectionOfFollow.Front);
+        _preview.AddComponent<FollowTransform>().SetFollowParameters(toFollow, new Vector3(0, 0,PREVIEW_DISTANCE), FollowTransform.DirectionOfFollow.Front);
             
         _preview.GetComponent<BuildableObjectVisuals>().ShowPreview();
     }
 
     private void ShowMaterialCost(SingleBuildableObjectSelectUI.BuildableObjectData buildableObjectData)
     {
-        foreach (BuildableObjectSO.BuildingMaterialAndQuantityPair pair in buildableObjectData.buildableObjectInfos.materialAndQuantityPairs)
-        {
-            CentralizedInventory.Instance.ShowCostForResource(pair.buildingMaterialSO, pair.quantityOfMaterialRequired);
-        }
+        CentralizedInventory.Instance.ShowCostForBuildableObject(buildableObjectData.buildableObjectInfos);
     }
 
     private void ClearOldPreview()

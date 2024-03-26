@@ -17,7 +17,7 @@ public class BuildingMenuUI : MonoBehaviour
             {
                 InputManager.Instance.DisablePlayerInputMap();
             
-                circularLayout.ShowLayout();
+                buildingCarrouselUI.Show();
             }
         });
     }
@@ -30,31 +30,20 @@ public class BuildingMenuUI : MonoBehaviour
         
         Workshop.OnAnyWorkshopNearPlayer += Workshop_OnAnyWorkshopNearPlayer;
         
-        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
-            SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
+        buildingCarrouselUI.OnBuildingSelected += BuildingCarrouselUI_OnBuildingSelected;
         
         InputManager.Instance.OnPlayerInteractPerformed += InputManager_OnPlayerInteractPerformed;
-        
-        UpdateLayoutVisuals();
-    }
-
-    private void UpdateLayoutVisuals()
-    {
-        foreach (BuildableObjectSO buildableObjectSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
-        {
-            circularLayout.AddObjectToLayout(buildableObjectSo);
-        }
     }
 
     private bool IsBuildingInactive()
     {
-        return !circularLayout.gameObject.activeSelf &&
+        return !buildingCarrouselUI.gameObject.activeSelf &&
                !buildingTowerOnGridUI.gameObject.activeSelf &&
                !buildingTrapOnGridUI.gameObject.activeSelf;
     }
 
     [SerializeField] private Button showBuildingMenuButton;
-    [SerializeField] private CircularLayoutUI circularLayout;
+    [SerializeField] private BuildingCarrouselUI buildingCarrouselUI;
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
@@ -64,7 +53,7 @@ public class BuildingMenuUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
             
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
-            BasicShowHide.Hide(circularLayout.gameObject);
+            buildingCarrouselUI.Hide();
             buildingTowerOnGridUI.Hide();
             BasicShowHide.Hide(buildingTrapOnGridUI.gameObject);
             
@@ -81,19 +70,18 @@ public class BuildingMenuUI : MonoBehaviour
 
     [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
     [SerializeField] private BuildingTrapOnGridUI buildingTrapOnGridUI;
-    
-    private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
-        (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
+
+    private void BuildingCarrouselUI_OnBuildingSelected(object sender, BuildingCarrouselUI.OnBuildingSelectedEventArgs e)
     {
-        BasicShowHide.Hide(circularLayout.gameObject);
+        buildingCarrouselUI.HideForNextBuildStep();
         
-        if (e.buildableObjectInfos.type == BuildableObjectSO.TypeOfBuildableObject.Tower)
+        if (e.SelectedBuildableObjectSO.type == BuildableObjectSO.TypeOfBuildableObject.Tower)
         {
-            buildingTowerOnGridUI.Show(e.buildableObjectInfos);
+            buildingTowerOnGridUI.Show(e.SelectedBuildableObjectSO);
         }
         else
         {
-            buildingTrapOnGridUI.Show(e.buildableObjectInfos);
+            buildingTrapOnGridUI.Show(e.SelectedBuildableObjectSO);
         }
     }
 
