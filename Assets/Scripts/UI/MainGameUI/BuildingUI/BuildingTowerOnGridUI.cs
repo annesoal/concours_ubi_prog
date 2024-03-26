@@ -33,7 +33,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         {
             InputManager.Instance.EnablePlayerInputMap();
             
-            BasicShowHide.Hide(gameObject);
+            Hide();
             
             CentralizedInventory.Instance.ClearAllMaterialsCostUI();
         });
@@ -109,7 +109,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
         if (_selectedCell.Value.HasNotBuildingOnTop())
         {
-            BasicShowHide.Show(errorText.gameObject);
+            BasicShowHide.Hide(errorText.gameObject);
+            
             ShowPreview();
         }
         else
