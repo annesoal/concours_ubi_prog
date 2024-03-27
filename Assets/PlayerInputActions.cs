@@ -623,9 +623,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""MinimalLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a797f6b-3335-47f3-876c-2b932f652bcd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Right"",
                     ""type"": ""Button"",
                     ""id"": ""2df3eb4a-670d-44ab-b0d9-dc7614077426"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MinimalRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""a2d6a193-6a93-4c98-ad90-fb2373daf3b6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -742,6 +760,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""110a36dd-f051-4847-91a3-0d6d7b1df4e6"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e6e8784-9dee-4f1f-8743-e3f4ff75674c"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -790,7 +830,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_Down = m_UI.FindAction("Down", throwIfNotFound: true);
         m_UI_Up = m_UI.FindAction("Up", throwIfNotFound: true);
         m_UI_Left = m_UI.FindAction("Left", throwIfNotFound: true);
+        m_UI_MinimalLeft = m_UI.FindAction("MinimalLeft", throwIfNotFound: true);
         m_UI_Right = m_UI.FindAction("Right", throwIfNotFound: true);
+        m_UI_MinimalRight = m_UI.FindAction("MinimalRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -997,7 +1039,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Down;
     private readonly InputAction m_UI_Up;
     private readonly InputAction m_UI_Left;
+    private readonly InputAction m_UI_MinimalLeft;
     private readonly InputAction m_UI_Right;
+    private readonly InputAction m_UI_MinimalRight;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1007,7 +1051,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_UI_Down;
         public InputAction @Up => m_Wrapper.m_UI_Up;
         public InputAction @Left => m_Wrapper.m_UI_Left;
+        public InputAction @MinimalLeft => m_Wrapper.m_UI_MinimalLeft;
         public InputAction @Right => m_Wrapper.m_UI_Right;
+        public InputAction @MinimalRight => m_Wrapper.m_UI_MinimalRight;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1032,9 +1078,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
+            @MinimalLeft.started += instance.OnMinimalLeft;
+            @MinimalLeft.performed += instance.OnMinimalLeft;
+            @MinimalLeft.canceled += instance.OnMinimalLeft;
             @Right.started += instance.OnRight;
             @Right.performed += instance.OnRight;
             @Right.canceled += instance.OnRight;
+            @MinimalRight.started += instance.OnMinimalRight;
+            @MinimalRight.performed += instance.OnMinimalRight;
+            @MinimalRight.canceled += instance.OnMinimalRight;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1054,9 +1106,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
+            @MinimalLeft.started -= instance.OnMinimalLeft;
+            @MinimalLeft.performed -= instance.OnMinimalLeft;
+            @MinimalLeft.canceled -= instance.OnMinimalLeft;
             @Right.started -= instance.OnRight;
             @Right.performed -= instance.OnRight;
             @Right.canceled -= instance.OnRight;
+            @MinimalRight.started -= instance.OnMinimalRight;
+            @MinimalRight.performed -= instance.OnMinimalRight;
+            @MinimalRight.canceled -= instance.OnMinimalRight;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1113,6 +1171,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
+        void OnMinimalLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnMinimalRight(InputAction.CallbackContext context);
     }
 }

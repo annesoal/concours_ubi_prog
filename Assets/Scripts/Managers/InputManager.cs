@@ -40,6 +40,9 @@ public class InputManager : MonoBehaviour
         _playerInputActions.UI.Right.performed += UserInterfaceInput_OnRightPerformed;
         _playerInputActions.UI.Up.performed += UserInterfaceInput_OnUpPerformed;
         _playerInputActions.UI.Down.performed += UserInterfaceInput_OnDownPerformed;
+        
+        _playerInputActions.UI.MinimalLeft.performed += UserInterfaceInput_OnMinimalLeftPerformed;
+        _playerInputActions.UI.MinimalRight.performed += UserInterfaceInput_OnMinimalRightPerformed;
     }
 
     private void Start()
@@ -165,6 +168,18 @@ public class InputManager : MonoBehaviour
     private void UserInterfaceInput_OnDownPerformed(InputAction.CallbackContext obj)
     {
         OnUserInterfaceDownPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceMinimalLeftPerformed;
+    private void UserInterfaceInput_OnMinimalLeftPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceMinimalLeftPerformed?.Invoke(this, EventArgs.Empty);
+    }
+    
+    public event EventHandler OnUserInterfaceMinimalRightPerformed;
+    private void UserInterfaceInput_OnMinimalRightPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceMinimalRightPerformed?.Invoke(this, EventArgs.Empty);
     }
 
 }

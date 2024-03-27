@@ -601,9 +601,27 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "MinimalLeft",
+                    "type": "Button",
+                    "id": "9a797f6b-3335-47f3-876c-2b932f652bcd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Right",
                     "type": "Button",
                     "id": "2df3eb4a-670d-44ab-b0d9-dc7614077426",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MinimalRight",
+                    "type": "Button",
+                    "id": "a2d6a193-6a93-4c98-ad90-fb2373daf3b6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -718,6 +736,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "110a36dd-f051-4847-91a3-0d6d7b1df4e6",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MinimalLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e6e8784-9dee-4f1f-8743-e3f4ff75674c",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MinimalRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
