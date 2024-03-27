@@ -10,8 +10,6 @@ namespace Utils
     {
         public static List<Cell> GetPath(Cell origin, Cell destination, Func<Cell, bool> cellValidator)
         {
-            Debug.Log("origin " + origin.position);
-            Debug.Log("destination " + destination.position);
             // Variables 
             List<Cell> openSet = new List<Cell>();
             Dictionary<Cell, Cell> cameFrom = new(); // K : current, V : previous
@@ -54,7 +52,8 @@ namespace Utils
                 }
             }
             //TODO changer!
-            throw new Exception("Path not found");
+            openSet.Add(origin);
+            return openSet;
         }
 
         private static float GScoreNeighbor(Dictionary<Cell, float> gScore, Cell neighbor)
