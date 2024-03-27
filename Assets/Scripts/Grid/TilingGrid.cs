@@ -133,7 +133,7 @@ namespace Grid
             
             foreach (Cell cell in _cells)
             {
-                if (cell.Has(BlockType.EnnemyWalkable))
+                if (cell.Has(BlockType.EnemyWalkable))
                 {
                     enemyWalkableCells.Add(cell);
                 }

@@ -21,7 +21,7 @@ namespace Grid
         {
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
         }
-        public TypeTopOfCell GetType()
+        public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Obstacle;
         }

@@ -197,7 +197,6 @@ public class TowerDefenseManager : NetworkBehaviour
         CountDownToStartTimer -= Time.deltaTime;
     }
     
-    private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
     
@@ -219,7 +218,6 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.TacticalPause);
         }
         
-        _isEnvironmentTurnNotCalled = true;
     }
     
      public int currentRoundNumber;

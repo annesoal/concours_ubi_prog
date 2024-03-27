@@ -180,7 +180,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.position + direction);
 
-        if (nextCell.Has(BlockType.EnnemyWalkable) && !nextCell.Has(BlockType.Buildable))
+        if (nextCell.Has(BlockType.EnemyWalkable) && !nextCell.Has(BlockType.Buildable))
         {
             _selectedCell = nextCell;
             UpdateUI();
