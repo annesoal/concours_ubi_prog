@@ -83,11 +83,15 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void BuildingTrapOnGridUI_OnCloseUI(object sender, EventArgs e)
     {
+        CameraController.Instance.MoveCameraToPosition(Player.LocalInstance.transform.position);
+        
         ShowBuildingCarrouselUI();
     }
     
     private void BuildingTowerOnGridUI_OnCloseUI(object sender, EventArgs e)
     {
+        CameraController.Instance.MoveCameraToPosition(Player.LocalInstance.transform.position);
+        
         ShowBuildingCarrouselUI();
     }
 }
