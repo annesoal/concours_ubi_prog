@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
@@ -26,14 +27,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void Awake()
     {
-        closeUIButton.onClick.AddListener(() =>
-        {
-            InputManager.Instance.EnablePlayerInputMap();
-            
-            Hide();
-            
-            CentralizedInventory.Instance.ClearAllMaterialsCostUI();
-        });
+        closeUIButton.onClick.AddListener(CloseUI);
         
         buildButton.onClick.AddListener(OnBuildButtonClicked);
         
@@ -44,6 +38,10 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     private void Start()
     {
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
+
+        InputManager.Instance.OnUserInterfaceCancelPerformed += InputManager_OnUserInterfaceCancelPerformed;
+        InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
+        InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
         
         _buildableCells = TilingGrid.grid.GetBuildableCells();
         
@@ -151,6 +149,39 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         {
             Destroy(_preview);
             _preview = null;
+        }
+    }
+    
+    private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            ChangeSelectedCellRight();
+        }
+    }
+    
+    private void InputManager_OnUserInterfaceCancelPerformed(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            CloseUI();
+        }
+    }
+
+    private void CloseUI()
+    {
+        InputManager.Instance.EnablePlayerInputMap();
+            
+        Hide();
+            
+        CentralizedInventory.Instance.ClearAllMaterialsCostUI();
+    }
+    
+    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            ChangeSelectedCellLeft();
         }
     }
     
