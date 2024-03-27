@@ -26,14 +26,15 @@ namespace Enemies
 
         [SerializeField] protected bool stupefiedState = false; // Piege
 
-        [SerializeField] protected int ratioMovement = 3;
+        [SerializeField] protected int ratioMovement = 1;
         [SerializeField] protected int health;
         private List<Cell> _destinationsCell;
 
         protected Cell cell;
-        public List<Cell> path; 
+        public bool hasPath = false;
+        public List<Cell> path;
         
-        protected static List<GameObject> enemiesInGame = new List<GameObject>();
+        public static List<GameObject> enemiesInGame = new List<GameObject>();
 
 
         // Deplacements 
@@ -95,11 +96,12 @@ namespace Enemies
                 Die();
             }
         }
-        private void Die()
+
+        protected void Die()
         {
-            enemiesInGame.Remove(gameObject);
+            enemiesInGame.Remove(this.gameObject);
             TilingGrid.RemoveElement(gameObject,transform.position);
-            Destroy(gameObject, 0.5f);
+            Destroy(this);
         }
         
         public abstract void Move(int energy);

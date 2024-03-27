@@ -35,6 +35,7 @@ namespace Enemies
         public override void Move(int energy)
         {
             {
+                if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
                 
                     if (!TryMoveOnNextCell())
@@ -83,14 +84,14 @@ namespace Enemies
         //Retourne true si a pu effectuer le deplacement
         private bool TryMoveOnNextCell()
         {
+            if (path == null || path.Count == 0)
+                return true;
             
             Cell nextCell = path[0];
-            Debug.Log(nextCell.position);
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell; 
-                Debug.Log("moving to " + cell.position);
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
@@ -118,9 +119,8 @@ namespace Enemies
          */
         private void MoveEnemy(Vector3 direction)
         {
-            TilingGrid.RemoveElement(this.gameObject, transform.position); 
-            transform.position = direction;
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+            if (!IsServer) return;
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
         }
 
         private static bool IsValidCell(Cell cell)
