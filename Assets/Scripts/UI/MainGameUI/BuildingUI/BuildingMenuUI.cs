@@ -17,6 +17,9 @@ public class BuildingMenuUI : MonoBehaviour
         Workshop.OnAnyWorkshopNearPlayer += Workshop_OnAnyWorkshopNearPlayer;
         
         buildingCarrouselUI.OnBuildingSelected += BuildingCarrouselUI_OnBuildingSelected;
+        
+        buildingTrapOnGridUI.OnCloseUI += BuildingTrapOnGridUI_OnCloseUI;
+        buildingTowerOnGridUI.OnCloseUI += BuildingTowerOnGridUI_OnCloseUI;
     }
 
     private bool IsBuildingInactive()
@@ -47,10 +50,15 @@ public class BuildingMenuUI : MonoBehaviour
     {
         if (IsBuildingInactive())
         {
-            InputManager.Instance.EnableUserInterfaceInputMap();
-            
-            buildingCarrouselUI.Show();
+            ShowBuildingCarrouselUI();
         }
+    }
+
+    private void ShowBuildingCarrouselUI()
+    {
+        InputManager.Instance.EnableUserInterfaceInputMap();
+            
+        buildingCarrouselUI.Show();
     }
 
 
@@ -71,5 +79,15 @@ public class BuildingMenuUI : MonoBehaviour
         {
             buildingTrapOnGridUI.Show(e.SelectedBuildableObjectSO);
         }
+    }
+
+    private void BuildingTrapOnGridUI_OnCloseUI(object sender, EventArgs e)
+    {
+        ShowBuildingCarrouselUI();
+    }
+    
+    private void BuildingTowerOnGridUI_OnCloseUI(object sender, EventArgs e)
+    {
+        ShowBuildingCarrouselUI();
     }
 }

@@ -168,6 +168,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         }
     }
 
+    public event EventHandler OnCloseUI;
     private void CloseUI()
     {
         InputManager.Instance.EnablePlayerInputMap();
@@ -175,6 +176,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         Hide();
             
         CentralizedInventory.Instance.ClearAllMaterialsCostUI();
+        
+        OnCloseUI?.Invoke(this, EventArgs.Empty);
     }
     
     private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)

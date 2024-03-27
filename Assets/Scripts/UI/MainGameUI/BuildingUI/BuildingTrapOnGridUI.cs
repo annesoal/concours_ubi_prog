@@ -237,6 +237,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         CloseUI();
     }
 
+    public event EventHandler OnCloseUI;
     private void CloseUI()
     {
         InputManager.Instance.EnablePlayerInputMap();
@@ -244,6 +245,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         Hide();
             
         CentralizedInventory.Instance.ClearAllMaterialsCostUI();
+        
+        OnCloseUI?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetSelectedCellAtDirection(Vector2Int direction)
