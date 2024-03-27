@@ -143,6 +143,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
     {
+        if (!gameObject.activeSelf) { return; }
+        
         if (e.BuildingPosition == _selectedCell.Value.position)
         {
             UpdateSelectedCell();
