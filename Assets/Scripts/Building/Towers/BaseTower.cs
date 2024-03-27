@@ -71,7 +71,6 @@ public abstract class BaseTower : BuildableObject
     
     public static IEnumerator PlayTowersInGameTurn()
     {
-        Debug.Log("Inside PlayTowersInGameTurn");
         _hasFinishedTowersTurn = false;
         foreach (BaseTower tower in _towersInGame)
         {
