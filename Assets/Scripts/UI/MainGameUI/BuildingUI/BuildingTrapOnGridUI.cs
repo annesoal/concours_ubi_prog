@@ -40,15 +40,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         downArrowButton.onClick.AddListener(ChangeSelectedCellDown);
         leftArrowButton.onClick.AddListener(ChangeSelectedCellLeft);
         rightArrowButton.onClick.AddListener(ChangeSelectedCellRight);
-        
-        closeButton.onClick.AddListener(() =>
-        {
-            InputManager.Instance.EnablePlayerInputMap();
-            
-            Hide();
-            
-            CentralizedInventory.Instance.ClearAllMaterialsCostUI();
-        });
+
+        closeButton.onClick.AddListener(CloseUI);
     }
     
     private void Start()
@@ -59,6 +52,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
         InputManager.Instance.OnUserInterfaceUpPerformed += InputManager_OnUserInterfaceUpPerformed;
         InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
+        
+        InputManager.Instance.OnUserInterfaceCancelPerformed += InputManager_OnUserInterfaceCancelPerformed;
         
         BasicShowHide.Hide(gameObject);
     }
@@ -233,6 +228,20 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         if (!gameObject.activeSelf) { return; }
         
         SetSelectedCellAtDirection(Vector2Int.down);
+    }
+    
+    private void InputManager_OnUserInterfaceCancelPerformed(object sender, EventArgs e)
+    {
+        CloseUI();
+    }
+
+    private void CloseUI()
+    {
+        InputManager.Instance.EnablePlayerInputMap();
+            
+        Hide();
+            
+        CentralizedInventory.Instance.ClearAllMaterialsCostUI();
     }
 
     private void SetSelectedCellAtDirection(Vector2Int direction)
