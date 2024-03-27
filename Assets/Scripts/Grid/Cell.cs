@@ -125,8 +125,20 @@ namespace Grid
 
             return false;
         }
-    }
 
+
+        public bool HasObjectOfTypeOnTop(TypeTopOfCell type)
+        {
+            if (ObjectsTopOfCell == null)
+                return false; 
+            foreach (var objectOnTop in ObjectsTopOfCell)
+            {
+                if (objectOnTop.GetType() == type)
+                    return true;
+            }
+
+            return false; 
+        }
         public bool HasNotBuildingOnTop()
         {
             foreach (ITopOfCell objectOnTop in ObjectsTopOfCell)
