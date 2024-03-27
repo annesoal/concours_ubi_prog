@@ -45,7 +45,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         {
             InputManager.Instance.EnablePlayerInputMap();
             
-            BasicShowHide.Hide(gameObject);
+            Hide();
             
             CentralizedInventory.Instance.ClearAllMaterialsCostUI();
         });
@@ -53,8 +53,6 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void Start()
     {
-        TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
-        
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
         
         BasicShowHide.Hide(gameObject);
@@ -70,7 +68,16 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         
         UpdateUI();
         
+        buildButton.Select();
+        
         BasicShowHide.Show(gameObject);
+    }
+    
+    public void Hide()
+    {
+        DestroyPreview();
+        
+        BasicShowHide.Hide(gameObject);
     }
 
     private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
@@ -177,14 +184,6 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         {
             _selectedCell = nextCell;
             UpdateUI();
-        }
-    }
-    
-    private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
-    {
-        if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
-        {
-            DestroyPreview();
         }
     }
 

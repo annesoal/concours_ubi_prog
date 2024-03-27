@@ -59,7 +59,7 @@ public class BuildingMenuUI : MonoBehaviour
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
             buildingCarrouselUI.Hide();
             buildingTowerOnGridUI.Hide();
-            BasicShowHide.Hide(buildingTrapOnGridUI.gameObject);
+            buildingTrapOnGridUI.Hide();
             
             _playerIsNearWorkshop = false;
         }
