@@ -12,7 +12,6 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        private List<GameObject> _objectsOnTop;
 
         public List<ITopOfCell> ObjectsTopOfCell
         {
@@ -64,12 +63,15 @@ namespace Grid
         }
 
         public bool ContainsEnemy()
-        {
+        { 
+            Debug.Log(this.position);
+            Debug.Log(_objectsTopOfCell == null  || _objectsTopOfCell.Count == 0);
             if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
                 return false; 
             
             foreach (ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
+                Debug.Log(objectTopOfCell.GetType());
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                     return true;
             }
@@ -78,6 +80,8 @@ namespace Grid
 
         public Enemy GetEnemy()
         {
+            if (_objectsTopOfCell == null)
+                return null;
             foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
@@ -86,6 +90,21 @@ namespace Grid
                 }
             }
             return null;
+        }
+        
+        public List<Enemy> GetEnemies()
+        {
+            List<Enemy> enemies = new List<Enemy>();
+            if (_objectsTopOfCell == null)
+                return null;
+            foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
+                {
+                    enemies.Add(objectTopOfCell.ToGameObject().GetComponent<Enemy>());   
+                }
+            }
+            return enemies;
         }
         public static float Distance(Cell origin, Cell destination)
         {

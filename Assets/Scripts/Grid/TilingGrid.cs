@@ -107,7 +107,6 @@ namespace Grid
             {
                 if (cell.Has(BlockType.Translate(type)))
                 {
-                    Debug.Log(cell.type + " has been added !");
                    cells.Add(cell); 
                 }
             }
