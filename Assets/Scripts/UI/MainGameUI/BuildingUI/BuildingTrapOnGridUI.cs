@@ -77,6 +77,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void UpdateUI()
     {
+        CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.position));
+        
         if (_selectedCell.HasNotBuildingOnTop())
         {
             BasicShowHide.Hide(errorText.gameObject);
