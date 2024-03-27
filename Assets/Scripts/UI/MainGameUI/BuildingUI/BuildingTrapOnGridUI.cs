@@ -25,8 +25,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private GameObject highlighterGameObject;
     
-    private List<Cell> _enemyWalkableCells;
-    private Cell _selectedCell;
+    private LinkedList<Cell> _enemyWalkableCells;
+    private LinkedListNode<Cell> _selectedCell;
 
     private BuildableObjectSO _trapSO;
     private GameObject _trapPreview;
@@ -69,7 +69,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         _trapSO = trapSO;
         
         _enemyWalkableCells = TilingGrid.grid.GetEnemyWalkableCells();
-        _selectedCell = _enemyWalkableCells[0];
+        _selectedCell = _enemyWalkableCells.First;
         
         UpdateUI();
         
@@ -89,9 +89,9 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void UpdateUI()
     {
-        CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.position));
+        CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
-        if (_selectedCell.HasNotBuildingOnTop())
+        if (_selectedCell.Value.HasNotBuildingOnTop())
         {
             BasicShowHide.Hide(errorText.gameObject);
             ShowPreviewOnSelectedCell();
@@ -109,7 +109,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         DestroyLastPreview();
         
-        Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell);
+        Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell.Value);
         
         _trapPreview = Instantiate(_trapSO.visuals);
         _trapPreview.GetComponent<BuildableObjectVisuals>().ShowPreview(previewDestination);
@@ -132,7 +132,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         if (IsAbleToBuild())
         {
-            SynchronizeBuilding.Instance.SpawnBuildableObject(_trapSO, _selectedCell);
+            SynchronizeBuilding.Instance.SpawnBuildableObject(_trapSO, _selectedCell.Value);
             
             UpdateSelectedCell();
         }
@@ -140,15 +140,15 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
     private bool IsAbleToBuild()
     {
-        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
-        return _selectedCell.HasNotBuildingOnTop() &&
+        return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
     {
-        if (e.BuildingPosition == _selectedCell.position)
+        if (e.BuildingPosition == _selectedCell.Value.position)
         {
             UpdateSelectedCell();
         }
@@ -156,7 +156,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void UpdateSelectedCell()
     {
-        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
         UpdateUI();
     }
@@ -183,11 +183,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
     private void ChangeSelectedCell(Vector2Int direction)
     {
-        Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.position + direction);
+        Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.Value.position + direction);
 
         if (nextCell.Has(BlockType.EnnemyWalkable) && !nextCell.Has(BlockType.Buildable))
         {
-            _selectedCell = nextCell;
+            _selectedCell.Value = nextCell;
             UpdateUI();
         }
     }
