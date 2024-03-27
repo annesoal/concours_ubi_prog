@@ -115,19 +115,38 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         CameraController.Instance.MoveCameraToPosition
             (TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
-        if (_selectedCell.Value.HasNotBuildingOnTop())
-        {
-            BasicShowHide.Hide(errorText.gameObject);
+        if (TryShowMissingResourceError()) { return; }
+        
+        if (TryShowAlreadyHasBuildingError()) { return; }
+        
+        BasicShowHide.Hide(errorText.gameObject);
             
-            ShowPreview();
-        }
-        else
-        {
-            errorText.text = ALREADY_HAS_BUILDING_ERROR;
-            BasicShowHide.Show(errorText.gameObject);
+        ShowPreview();
+    }
+
+    private bool TryShowAlreadyHasBuildingError()
+    {
+        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        
+        HidePreview();
             
-            HidePreview();
-        }
+        errorText.text = ALREADY_HAS_BUILDING_ERROR;
+        BasicShowHide.Show(errorText.gameObject);
+
+        return true;
+    }
+
+    private const string MISSING_RESOURCE_ERROR = "Resources Missing For Building !";
+    private bool TryShowMissingResourceError()
+    {
+        if (CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild)) { return false; } 
+        
+        HidePreview();
+            
+        errorText.text = MISSING_RESOURCE_ERROR;
+        BasicShowHide.Show(errorText.gameObject);
+
+        return true;
     }
 
     private void ShowPreview()

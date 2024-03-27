@@ -80,24 +80,43 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
     }
 
-    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
-    
     private void UpdateUI()
     {
         CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
-        if (_selectedCell.Value.HasNotBuildingOnTop())
-        {
-            BasicShowHide.Hide(errorText.gameObject);
-            ShowPreviewOnSelectedCell();
-        }
-        else
-        {
-            DestroyPreview();
+        if (TryShowMissingResourceError()) { return; }
+        
+        if (TryShowAlreadyHasBuildingError()) { return; }
+        
+        BasicShowHide.Hide(errorText.gameObject);
+        ShowPreviewOnSelectedCell();
+    }
+
+    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
+    
+    private bool TryShowAlreadyHasBuildingError()
+    {
+        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        
+        DestroyPreview();
             
-            errorText.text = ALREADY_HAS_BUILDING_ERROR;
-            BasicShowHide.Show(errorText.gameObject);
-        }
+        errorText.text = ALREADY_HAS_BUILDING_ERROR;
+        BasicShowHide.Show(errorText.gameObject);
+
+        return true;
+    }
+
+    private const string MISSING_RESOURCE_ERROR = "Resources Missing For Building !";
+    private bool TryShowMissingResourceError()
+    {
+        if (CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO)) { return false; } 
+        
+        DestroyPreview();
+            
+        errorText.text = MISSING_RESOURCE_ERROR;
+        BasicShowHide.Show(errorText.gameObject);
+
+        return true;
     }
     
     private void ShowPreviewOnSelectedCell()
