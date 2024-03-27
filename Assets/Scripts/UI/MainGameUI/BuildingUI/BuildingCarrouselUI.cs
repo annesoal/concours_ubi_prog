@@ -31,8 +31,6 @@ public class BuildingCarrouselUI : MonoBehaviour
     
     private void Awake()
     {
-        chooseBuildingButton.onClick.AddListener(EmitOnBuildingSelected);
-        
         _buildableObjectsSO = new LinkedList<BuildableObjectSO>();
     }
 
@@ -42,6 +40,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         
         InputManager.Instance.OnUserInterfaceMinimalRightPerformed += InputManager_OnUserInterfaceMinimalRightPerformed;
         InputManager.Instance.OnUserInterfaceMinimalLeftPerformed += InputManager_OnUserInterfaceMinimalLeftPerformed;
+        InputManager.Instance.OnPlayerInteractPerformed += InputManager_OnPlayerInteractPerformed;
         
         _selectedBuilding = _buildableObjectsSO.First;
         
@@ -53,9 +52,6 @@ public class BuildingCarrouselUI : MonoBehaviour
         UpdateUI();
         
         BasicShowHide.Show(gameObject);
-        
-        // TODO change pour OnInteract
-        chooseBuildingButton.Select();
     }
 
     private void UpdateUI()
@@ -188,14 +184,6 @@ public class BuildingCarrouselUI : MonoBehaviour
         }
     }
 
-    private void EmitOnBuildingSelected()
-    {
-        OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs
-        {
-            SelectedBuildableObjectSO = _selectedBuilding.Value,
-        });
-    }
-
     private void InputManager_OnUserInterfaceMinimalRightPerformed(object sender, EventArgs e)
     {
         if (!gameObject.activeSelf) { return; }
@@ -222,6 +210,21 @@ public class BuildingCarrouselUI : MonoBehaviour
         }
         
         UpdateUI();
+    }
+    
+    private void InputManager_OnPlayerInteractPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        EmitOnBuildingSelected();
+    }
+    
+    private void EmitOnBuildingSelected()
+    {
+        OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs
+        {
+            SelectedBuildableObjectSO = _selectedBuilding.Value,
+        });
     }
 
 }

@@ -59,6 +59,8 @@ public class BuildingMenuUI : MonoBehaviour
 
     private void BuildingCarrouselUI_OnBuildingSelected(object sender, BuildingCarrouselUI.OnBuildingSelectedEventArgs e)
     {
+        InputManager.Instance.DisablePlayerInputMap();
+        
         buildingCarrouselUI.HideForNextBuildStep();
         
         if (e.SelectedBuildableObjectSO.type == BuildableObjectSO.TypeOfBuildableObject.Tower)
