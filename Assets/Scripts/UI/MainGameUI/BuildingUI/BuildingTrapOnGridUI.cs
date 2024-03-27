@@ -55,6 +55,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
         
+        InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
+        InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
+        InputManager.Instance.OnUserInterfaceUpPerformed += InputManager_OnUserInterfaceUpPerformed;
+        InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
+        
         BasicShowHide.Hide(gameObject);
     }
 
@@ -201,4 +206,25 @@ public class BuildingTrapOnGridUI : MonoBehaviour
             Destroy(_currentHighlighter.gameObject);
         }
     }
+    
+    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void InputManager_OnUserInterfaceUpPerformed(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void InputManager_OnUserInterfaceDownPerformed(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
 }
