@@ -10,6 +10,8 @@ using Debug = System.Diagnostics.Debug;
 
 public class BuildingCarrouselUI : MonoBehaviour
 {
+    [SerializeField] private Button chooseBuildingButton;
+    
     [SerializeField] private Image centerImage;
     [SerializeField] private Image leftImage;
     [SerializeField] private Image rightImage;
@@ -29,6 +31,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     
     private void Awake()
     {
+        chooseBuildingButton.onClick.AddListener(EmitOnBuildingSelected);
+        
         _buildableObjectsSO = new LinkedList<BuildableObjectSO>();
     }
 
@@ -36,8 +40,6 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         InitializeBuildableObjectsList();
         
-        InputManager.Instance.OnUserInterfaceSelected += InputManager_OnUserInterfaceSelected;
-
         _selectedBuilding = _buildableObjectsSO.First;
         
         BasicShowHide.Hide(gameObject);
@@ -54,6 +56,8 @@ public class BuildingCarrouselUI : MonoBehaviour
         ShowMaterialCost(_selectedBuilding.Value);
         
         BasicShowHide.Show(gameObject);
+        
+        chooseBuildingButton.Select();
     }
 
     public void HideForNextBuildStep()
@@ -174,8 +178,8 @@ public class BuildingCarrouselUI : MonoBehaviour
             _buildableObjectsSO.AddLast(buildableObjectSo);
         }
     }
-    
-    private void InputManager_OnUserInterfaceSelected(object sender, EventArgs e)
+
+    private void EmitOnBuildingSelected()
     {
         OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs
         {

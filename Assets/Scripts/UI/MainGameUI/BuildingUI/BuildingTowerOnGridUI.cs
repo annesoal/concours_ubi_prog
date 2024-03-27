@@ -74,6 +74,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     
     private void OnBuildButtonClicked()
     {
+        Debug.Log("BUILD BUTTON CLICKED !");
+        
         if (IsAbleToBuild())
         {
             SynchronizeBuilding.Instance.SpawnBuildableObject(_towerToBuild, _selectedCell.Value);
