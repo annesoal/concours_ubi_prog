@@ -112,19 +112,34 @@ namespace Grid
             }
             return cells;
         }
-        public List<Cell> GetBuildableCells()
+        public LinkedList<Cell> GetBuildableCells()
         {
-            List<Cell> buildableCells = new List<Cell>();
+            LinkedList<Cell> buildableCells = new LinkedList<Cell>();
             
             foreach (Cell cell in _cells)
             {
                 if (cell.Has(BlockType.Buildable))
                 {
-                    buildableCells.Add(cell);
+                    buildableCells.AddLast(cell);
                 }
             }
 
             return buildableCells;
+        }
+        
+        public List<Cell> GetEnemyWalkableCells()
+        {
+            List<Cell> enemyWalkableCells = new List<Cell>();
+            
+            foreach (Cell cell in _cells)
+            {
+                if (cell.Has(BlockType.EnnemyWalkable))
+                {
+                    enemyWalkableCells.Add(cell);
+                }
+            }
+
+            return enemyWalkableCells;
         }
 
         public void UpdateCell(Cell cell)

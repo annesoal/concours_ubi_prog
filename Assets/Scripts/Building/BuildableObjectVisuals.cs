@@ -15,4 +15,11 @@ public class BuildableObjectVisuals : MonoBehaviour
     {
         buildableObjectPreview.SetActive(true);
     }
+    
+    public void ShowPreview(Vector3 position)
+    {
+        transform.position = position;
+        
+        buildableObjectPreview.SetActive(true);
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using UI;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,8 +17,9 @@ public class BuildingMenuUI : MonoBehaviour
             if (IsBuildingInactive())
             {
                 InputManager.Instance.DisablePlayerInputMap();
+                InputManager.Instance.EnableUserInterfaceInputMap();
             
-                circularLayout.ShowLayout();
+                buildingCarrouselUI.Show();
             }
         });
     }
@@ -30,40 +32,34 @@ public class BuildingMenuUI : MonoBehaviour
         
         Workshop.OnAnyWorkshopNearPlayer += Workshop_OnAnyWorkshopNearPlayer;
         
-        SingleBuildableObjectSelectUI.OnAnySingleBuildableObjectSelectUISelected +=
-            SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected;
+        buildingCarrouselUI.OnBuildingSelected += BuildingCarrouselUI_OnBuildingSelected;
         
         InputManager.Instance.OnPlayerInteractPerformed += InputManager_OnPlayerInteractPerformed;
-        
-        UpdateLayoutVisuals();
-    }
-
-    private void UpdateLayoutVisuals()
-    {
-        foreach (BuildableObjectSO buildableObjectSo in SynchronizeBuilding.Instance.GetAllBuildableObjectSo().list)
-        {
-            circularLayout.AddObjectToLayout(buildableObjectSo);
-        }
     }
 
     private bool IsBuildingInactive()
     {
-        return !circularLayout.gameObject.activeSelf && !buildingTowerOnGridUI.gameObject.activeSelf;
+        return !buildingCarrouselUI.gameObject.activeSelf &&
+               !buildingTowerOnGridUI.gameObject.activeSelf &&
+               !buildingTrapOnGridUI.gameObject.activeSelf;
     }
 
     [SerializeField] private Button showBuildingMenuButton;
-    [SerializeField] private CircularLayoutUI circularLayout;
+    [SerializeField] private BuildingCarrouselUI buildingCarrouselUI;
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
         if (e.newValue != TowerDefenseManager.State.TacticalPause)
         {
+            InputManager.Instance.DisableUserInterfaceInputMap();
+            
             // Aucune sélection de UI lors de la sortie de la pause tactique
             EventSystem.current.SetSelectedGameObject(null);
             
             BasicShowHide.Hide(showBuildingMenuButton.gameObject);
-            BasicShowHide.Hide(circularLayout.gameObject);
-            BasicShowHide.Hide(buildingTowerOnGridUI.gameObject);
+            buildingCarrouselUI.Hide();
+            buildingTowerOnGridUI.Hide();
+            buildingTrapOnGridUI.Hide();
             
             _playerIsNearWorkshop = false;
         }
@@ -76,13 +72,21 @@ public class BuildingMenuUI : MonoBehaviour
     }
 
 
-    [SerializeField] private BuildingObjectOnGridUI buildingTowerOnGridUI;
-    
-    private void SingleTowerSelectUI_OnAnySingleBuildableObjectSelectUISelected
-        (object sender, SingleBuildableObjectSelectUI.BuildableObjectData e)
+    [SerializeField] private BuildingTowerOnGridUI buildingTowerOnGridUI;
+    [SerializeField] private BuildingTrapOnGridUI buildingTrapOnGridUI;
+
+    private void BuildingCarrouselUI_OnBuildingSelected(object sender, BuildingCarrouselUI.OnBuildingSelectedEventArgs e)
     {
-        BasicShowHide.Hide(circularLayout.gameObject);
-        buildingTowerOnGridUI.Show(e.buildableObjectInfos);
+        buildingCarrouselUI.HideForNextBuildStep();
+        
+        if (e.SelectedBuildableObjectSO.type == BuildableObjectSO.TypeOfBuildableObject.Tower)
+        {
+            buildingTowerOnGridUI.Show(e.SelectedBuildableObjectSO);
+        }
+        else
+        {
+            buildingTrapOnGridUI.Show(e.SelectedBuildableObjectSO);
+        }
     }
 
     private bool _playerIsNearWorkshop = false;

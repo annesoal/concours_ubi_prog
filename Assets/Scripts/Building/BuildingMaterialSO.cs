@@ -13,6 +13,7 @@ public class BuildingMaterialSO : ScriptableObject
 
     public BuildingMaterialType type;
     
+    // Make sure to update CentralizedInventory.cs switch case base on building material type
     public enum BuildingMaterialType
     {
         GreyMaterial,

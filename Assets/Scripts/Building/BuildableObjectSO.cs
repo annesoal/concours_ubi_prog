@@ -19,6 +19,8 @@ public class BuildableObjectSO : ScriptableObject
 
     public string description;
 
+    public TypeOfBuildableObject type;
+
     public List<BuildingMaterialAndQuantityPair> materialAndQuantityPairs;
 
     /// <summary>
@@ -29,5 +31,11 @@ public class BuildableObjectSO : ScriptableObject
     {
         public int quantityOfMaterialRequired;
         public BuildingMaterialSO buildingMaterialSO;
+    }
+
+    public enum TypeOfBuildableObject
+    {
+        Tower,
+        Trap,
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -5,8 +6,15 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera associatedCamera;
+    public static CameraController Instance { get; private set; }
     
+    [SerializeField] private CinemachineVirtualCamera associatedCamera;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Update()
     {
         HandleCameraMovement();

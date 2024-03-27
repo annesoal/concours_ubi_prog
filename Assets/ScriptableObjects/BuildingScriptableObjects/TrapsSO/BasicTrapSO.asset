@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df2a32ede7bbf3bfb6b817e14614c61, type: 3}
   m_Name: BasicTrapSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 2773368944696159311, guid: 22a0021b39b048cf0a3b029d1b7760c4, type: 3}
   icon: {fileID: 0}
   objectName: Basic Trap
-  visuals: {fileID: 0}
+  visuals: {fileID: 6450326503996897373, guid: 3fd77c610f31ede11a48523dcd47c1a4, type: 3}
   description: "C'est la premier pi\xE8ge h\xE9\xE9h\xE9\xE9"
-  materialAndQuantityPairs: []
+  type: 1
+  materialAndQuantityPairs:
+  - quantityOfMaterialRequired: 1
+    buildingMaterialSO: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
+      type: 2}

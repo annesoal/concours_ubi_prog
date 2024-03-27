@@ -112,7 +112,6 @@ namespace Grid
             Vector3 destinationPosition = TilingGrid.GridPositionToLocal(destination.position);
             return Vector3.Distance(originPosition, destinationPosition);
         }
-
         public bool HasTopOfCellOfType( TypeTopOfCell type)
         {
             if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
@@ -127,7 +126,21 @@ namespace Grid
             return false;
         }
     }
+
+        public bool HasNotBuildingOnTop()
+        {
+            foreach (ITopOfCell objectOnTop in ObjectsTopOfCell)
+            {
+                if (objectOnTop.GetType() == TypeTopOfCell.Building)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     
+    }
     public static class BlockType
     {
         public const int None =               0b0000_0000_0000_0000;
