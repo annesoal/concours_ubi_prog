@@ -46,11 +46,12 @@ public class EnvironmentTurnManager : MonoBehaviour
             // Play Trap turn
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
             
-            IAManager.SetEnemiesPath();
             IAManager.MoveEnemies(totalEnergy);
             yield return new WaitForSeconds(0.5f);
             totalEnergy--;
         }
+
+        IAManager.ResetEnemies();
 
         yield return new WaitForSeconds(0.01f);
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
