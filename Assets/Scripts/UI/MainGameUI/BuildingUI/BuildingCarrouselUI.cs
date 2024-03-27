@@ -128,6 +128,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         CentralizedInventory.Instance.ClearAllMaterialsCostUI();
     }
 
+    private const string MISSING_RESOURCE_ERROR = "Resources Missing For Building !";
     private void ShowDescription()
     {
         if (HasResourceForBuilding())
@@ -139,7 +140,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         else
         {
             selectedBuildingText.color = Color.red;
-            selectedBuildingText.text = "Resources Missing For Building !";
+            selectedBuildingText.text = MISSING_RESOURCE_ERROR;
         }
         
         BasicShowHide.Show(selectedBuildingText.gameObject);
