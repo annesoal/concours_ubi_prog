@@ -25,8 +25,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private GameObject highlighterGameObject;
     
-    private List<Cell> _enemyWalkableCells;
-    private Cell _selectedCell;
+    private LinkedList<Cell> _enemyWalkableCells;
+    private LinkedListNode<Cell> _selectedCell;
 
     private BuildableObjectSO _trapSO;
     private GameObject _trapPreview;
@@ -40,20 +40,20 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         downArrowButton.onClick.AddListener(ChangeSelectedCellDown);
         leftArrowButton.onClick.AddListener(ChangeSelectedCellLeft);
         rightArrowButton.onClick.AddListener(ChangeSelectedCellRight);
-        
-        closeButton.onClick.AddListener(() =>
-        {
-            InputManager.Instance.EnablePlayerInputMap();
-            
-            Hide();
-            
-            CentralizedInventory.Instance.ClearAllMaterialsCostUI();
-        });
+
+        closeButton.onClick.AddListener(CloseUI);
     }
     
     private void Start()
     {
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
+        
+        InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
+        InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
+        InputManager.Instance.OnUserInterfaceUpPerformed += InputManager_OnUserInterfaceUpPerformed;
+        InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
+        
+        InputManager.Instance.OnUserInterfaceCancelPerformed += InputManager_OnUserInterfaceCancelPerformed;
         
         BasicShowHide.Hide(gameObject);
     }
@@ -64,7 +64,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         _trapSO = trapSO;
         
         _enemyWalkableCells = TilingGrid.grid.GetEnemyWalkableCells();
-        _selectedCell = _enemyWalkableCells[0];
+        _selectedCell = _enemyWalkableCells.First;
         
         UpdateUI();
         
@@ -84,9 +84,9 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void UpdateUI()
     {
-        CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.position));
+        CameraController.Instance.MoveCameraToPosition(TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
-        if (_selectedCell.HasNotBuildingOnTop())
+        if (_selectedCell.Value.HasNotBuildingOnTop())
         {
             BasicShowHide.Hide(errorText.gameObject);
             ShowPreviewOnSelectedCell();
@@ -104,7 +104,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         DestroyLastPreview();
         
-        Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell);
+        Vector3 previewDestination = TilingGrid.CellPositionToLocal(_selectedCell.Value);
         
         _trapPreview = Instantiate(_trapSO.visuals);
         _trapPreview.GetComponent<BuildableObjectVisuals>().ShowPreview(previewDestination);
@@ -127,7 +127,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         if (IsAbleToBuild())
         {
-            SynchronizeBuilding.Instance.SpawnBuildableObject(_trapSO, _selectedCell);
+            SynchronizeBuilding.Instance.SpawnBuildableObject(_trapSO, _selectedCell.Value);
             
             UpdateSelectedCell();
         }
@@ -135,15 +135,15 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
     private bool IsAbleToBuild()
     {
-        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
-        return _selectedCell.HasNotBuildingOnTop() &&
+        return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
     {
-        if (e.BuildingPosition == _selectedCell.position)
+        if (e.BuildingPosition == _selectedCell.Value.position)
         {
             UpdateSelectedCell();
         }
@@ -151,7 +151,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void UpdateSelectedCell()
     {
-        _selectedCell = TilingGrid.grid.GetCell(_selectedCell.position);
+        _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
         UpdateUI();
     }
@@ -178,11 +178,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
     private void ChangeSelectedCell(Vector2Int direction)
     {
-        Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.position + direction);
+        Cell nextCell = TilingGrid.grid.GetCell(_selectedCell.Value.position + direction);
 
         if (nextCell.Has(BlockType.EnemyWalkable) && !nextCell.Has(BlockType.Buildable))
         {
-            _selectedCell = nextCell;
+            _selectedCell.Value = nextCell;
             UpdateUI();
         }
     }
@@ -201,4 +201,60 @@ public class BuildingTrapOnGridUI : MonoBehaviour
             Destroy(_currentHighlighter.gameObject);
         }
     }
+    
+    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.left);
+    }
+    
+    private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.right);
+    }
+    
+    private void InputManager_OnUserInterfaceUpPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.up);
+    }
+
+    private void InputManager_OnUserInterfaceDownPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.down);
+    }
+    
+    private void InputManager_OnUserInterfaceCancelPerformed(object sender, EventArgs e)
+    {
+        CloseUI();
+    }
+
+    private void CloseUI()
+    {
+        InputManager.Instance.EnablePlayerInputMap();
+            
+        Hide();
+            
+        CentralizedInventory.Instance.ClearAllMaterialsCostUI();
+    }
+
+    private void SetSelectedCellAtDirection(Vector2Int direction)
+    {
+        Cell dirCell = TilingGrid.grid.GetCell(_selectedCell.Value.position + direction);
+
+        LinkedListNode<Cell> dirCellNode = _enemyWalkableCells.Find(dirCell);
+
+        if (dirCellNode != null)
+        {
+            _selectedCell = dirCellNode;
+            UpdateSelectedCell();
+        }
+    }
+
 }

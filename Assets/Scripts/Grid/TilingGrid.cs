@@ -127,15 +127,15 @@ namespace Grid
             return buildableCells;
         }
         
-        public List<Cell> GetEnemyWalkableCells()
+        public LinkedList<Cell> GetEnemyWalkableCells()
         {
-            List<Cell> enemyWalkableCells = new List<Cell>();
+            LinkedList<Cell> enemyWalkableCells = new LinkedList<Cell>();
             
             foreach (Cell cell in _cells)
             {
                 if (cell.Has(BlockType.EnemyWalkable))
                 {
-                    enemyWalkableCells.Add(cell);
+                    enemyWalkableCells.AddLast(cell);
                 }
             }
 
