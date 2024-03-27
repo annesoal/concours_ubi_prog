@@ -94,7 +94,10 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
     {
-        UpdateSelectedCell(e.BuildingPosition);
+        if (gameObject.activeSelf)
+        {
+            UpdateSelectedCell(e.BuildingPosition);
+        }
     }
 
     private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
