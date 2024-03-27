@@ -33,9 +33,11 @@ public class InputManager : MonoBehaviour
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
         _playerInputActions.Player.Interact.performed += PlayerInput_OnInteractperformed;
+        
         _playerInputActions.UI.Select.performed += UserInterfaceInput_OnSelectperformed;
+        _playerInputActions.UI.Left.performed += UserInterfaceInput_OnLeftPerformed ;
+        _playerInputActions.UI.Right.performed += UserInterfaceInput_OnRightPerformed;
     }
-
 
     private void Start()
     {
@@ -126,10 +128,22 @@ public class InputManager : MonoBehaviour
         OnPlayerInteractPerformed?.Invoke(this, EventArgs.Empty);
     }
 
-    public event EventHandler OnUserInterfaceSelected;
+    public event EventHandler OnUserInterfacePerformed;
     private void UserInterfaceInput_OnSelectperformed(InputAction.CallbackContext obj)
     {
-        OnUserInterfaceSelected?.Invoke(this, EventArgs.Empty);
+        OnUserInterfacePerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceLeftPerformed;
+    private void UserInterfaceInput_OnLeftPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceLeftPerformed?.Invoke(this, EventArgs.Empty);
+    }
+    
+    public event EventHandler OnUserInterfaceRightPerformed;
+    private void UserInterfaceInput_OnRightPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceRightPerformed?.Invoke(this, EventArgs.Empty);
     }
 
 }

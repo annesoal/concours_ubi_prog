@@ -612,6 +612,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""cbec8106-b4e1-458c-a1e6-adf1216ac4ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""2df3eb4a-670d-44ab-b0d9-dc7614077426"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -680,6 +698,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb2686f4-9f5a-48c9-9d63-4c9128f5dfaa"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7bf445f6-349d-4efc-8216-e3e2566a4ff6"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8547990e-8c9e-478b-a517-02c1835c786e"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f89b56f3-fbd7-494c-ba61-1e7d08345642"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -727,6 +789,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
         m_UI_Down = m_UI.FindAction("Down", throwIfNotFound: true);
         m_UI_Up = m_UI.FindAction("Up", throwIfNotFound: true);
+        m_UI_Left = m_UI.FindAction("Left", throwIfNotFound: true);
+        m_UI_Right = m_UI.FindAction("Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -932,6 +996,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Cancel;
     private readonly InputAction m_UI_Down;
     private readonly InputAction m_UI_Up;
+    private readonly InputAction m_UI_Left;
+    private readonly InputAction m_UI_Right;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -940,6 +1006,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
         public InputAction @Down => m_Wrapper.m_UI_Down;
         public InputAction @Up => m_Wrapper.m_UI_Up;
+        public InputAction @Left => m_Wrapper.m_UI_Left;
+        public InputAction @Right => m_Wrapper.m_UI_Right;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -961,6 +1029,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Up.started += instance.OnUp;
             @Up.performed += instance.OnUp;
             @Up.canceled += instance.OnUp;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -977,6 +1051,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Up.started -= instance.OnUp;
             @Up.performed -= instance.OnUp;
             @Up.canceled -= instance.OnUp;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1032,5 +1112,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCancel(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
     }
 }

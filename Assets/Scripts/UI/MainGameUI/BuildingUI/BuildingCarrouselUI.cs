@@ -40,12 +40,24 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         InitializeBuildableObjectsList();
         
+        InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
+        InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
+        
         _selectedBuilding = _buildableObjectsSO.First;
         
         BasicShowHide.Hide(gameObject);
     }
 
     public void Show()
+    {
+        UpdateUI();
+        
+        BasicShowHide.Show(gameObject);
+        
+        chooseBuildingButton.Select();
+    }
+
+    private void UpdateUI()
     {
         SetCarrouselImages();
         
@@ -54,10 +66,6 @@ public class BuildingCarrouselUI : MonoBehaviour
         ShowDescription();
         
         ShowMaterialCost(_selectedBuilding.Value);
-        
-        BasicShowHide.Show(gameObject);
-        
-        chooseBuildingButton.Select();
     }
 
     public void HideForNextBuildStep()
@@ -186,4 +194,33 @@ public class BuildingCarrouselUI : MonoBehaviour
             SelectedBuildableObjectSO = _selectedBuilding.Value,
         });
     }
+
+    private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+        
+        _selectedBuilding = _selectedBuilding.Next;
+
+        if (_selectedBuilding == null)
+        {
+            _selectedBuilding = _buildableObjectsSO.First;
+        }
+        
+        UpdateUI();
+    }
+    
+    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+
+        _selectedBuilding = _selectedBuilding.Previous;
+        
+        if (_selectedBuilding == null)
+        {
+            _selectedBuilding = _buildableObjectsSO.Last;
+        }
+        
+        UpdateUI();
+    }
+
 }
