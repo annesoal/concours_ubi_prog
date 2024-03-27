@@ -54,6 +54,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         
         BasicShowHide.Show(gameObject);
         
+        // TODO change pour OnInteract
         chooseBuildingButton.Select();
     }
 
