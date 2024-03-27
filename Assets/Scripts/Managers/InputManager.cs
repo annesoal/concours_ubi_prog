@@ -33,6 +33,7 @@ public class InputManager : MonoBehaviour
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
         _playerInputActions.Player.Interact.performed += PlayerInput_OnInteractperformed;
+        _playerInputActions.UI.Select.performed += UserInterfaceInput_OnSelectperformed;
     }
 
 
@@ -102,6 +103,16 @@ public class InputManager : MonoBehaviour
     {
         _playerInputActions.Player.Enable();
     }
+    
+    public void EnableUserInterfaceInputMap()
+    {
+        _playerInputActions.UI.Enable();
+    }
+    
+    public void DisableUserInterfaceInputMap()
+    {
+        _playerInputActions.UI.Disable();
+    }
 
     private void Select(InputAction.CallbackContext context)
     {
@@ -113,6 +124,12 @@ public class InputManager : MonoBehaviour
     private void PlayerInput_OnInteractperformed(InputAction.CallbackContext obj)
     {
         OnPlayerInteractPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceSelected;
+    private void UserInterfaceInput_OnSelectperformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceSelected?.Invoke(this, EventArgs.Empty);
     }
 
 }
