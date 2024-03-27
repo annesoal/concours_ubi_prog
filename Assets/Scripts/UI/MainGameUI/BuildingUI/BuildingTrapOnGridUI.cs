@@ -209,22 +209,43 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.left);
     }
     
     private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.right);
     }
     
     private void InputManager_OnUserInterfaceUpPerformed(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.up);
     }
 
     private void InputManager_OnUserInterfaceDownPerformed(object sender, EventArgs e)
     {
-        throw new NotImplementedException();
+        if (!gameObject.activeSelf) { return; }
+        
+        SetSelectedCellAtDirection(Vector2Int.down);
+    }
+
+    private void SetSelectedCellAtDirection(Vector2Int direction)
+    {
+        Cell dirCell = TilingGrid.grid.GetCell(_selectedCell.Value.position + direction);
+
+        LinkedListNode<Cell> dirCellNode = _enemyWalkableCells.Find(dirCell);
+
+        if (dirCellNode != null)
+        {
+            _selectedCell = dirCellNode;
+            UpdateSelectedCell();
+        }
     }
 
 }
