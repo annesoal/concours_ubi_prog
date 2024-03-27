@@ -12,7 +12,6 @@ namespace Grid
     {
         public int type;
         public Vector2Int position;
-        private List<GameObject> _objectsOnTop;
 
         public List<ITopOfCell> ObjectsTopOfCell
         {
@@ -64,9 +63,15 @@ namespace Grid
         }
 
         public bool ContainsEnemy()
-        {
+        { 
+            Debug.Log(this.position);
+            Debug.Log(_objectsTopOfCell == null  || _objectsTopOfCell.Count == 0);
+            if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
+                return false; 
+            
             foreach (ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
+                Debug.Log(objectTopOfCell.GetType());
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                     return true;
             }
@@ -75,6 +80,8 @@ namespace Grid
 
         public Enemy GetEnemy()
         {
+            if (_objectsTopOfCell == null)
+                return null;
             foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
@@ -85,13 +92,53 @@ namespace Grid
             return null;
         }
         
+        public List<Enemy> GetEnemies()
+        {
+            List<Enemy> enemies = new List<Enemy>();
+            if (_objectsTopOfCell == null)
+                return null;
+            foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
+                {
+                    enemies.Add(objectTopOfCell.ToGameObject().GetComponent<Enemy>());   
+                }
+            }
+            return enemies;
+        }
         public static float Distance(Cell origin, Cell destination)
         {
             Vector3 originPosition = TilingGrid.GridPositionToLocal(origin.position);
             Vector3 destinationPosition = TilingGrid.GridPositionToLocal(destination.position);
             return Vector3.Distance(originPosition, destinationPosition);
         }
-    
+        public bool HasTopOfCellOfType( TypeTopOfCell type)
+        {
+            if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
+                return false;
+
+            foreach (var objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == type)
+                    return true;
+            }
+
+            return false;
+        }
+
+
+        public bool HasObjectOfTypeOnTop(TypeTopOfCell type)
+        {
+            if (ObjectsTopOfCell == null)
+                return false; 
+            foreach (var objectOnTop in ObjectsTopOfCell)
+            {
+                if (objectOnTop.GetType() == type)
+                    return true;
+            }
+
+            return false; 
+        }
         public bool HasNotBuildingOnTop()
         {
             foreach (ITopOfCell objectOnTop in ObjectsTopOfCell)
@@ -108,14 +155,15 @@ namespace Grid
     }
     public static class BlockType
     {
-        public const int None =            0b0000_0000_0000_0000;
-        public const int Walkable =        0b0000_0000_0000_0001;
-        public const int Buildable =       0b0000_0000_0000_0010;
-        public const int Movable =         0b0000_0000_0000_0100;
-        public const int EnemySpawnBlock = 0b0000_0000_0000_1000;
-        public const int SpawnBlock =      0b0000_0000_0001_0000;
-        public const int BasicBlock =      0b0000_0000_0100_0000; 
-        public const int EnnemyWalkable =  0b0000_0000_1000_0000; 
+        public const int None =               0b0000_0000_0000_0000;
+        public const int Walkable =           0b0000_0000_0000_0001;
+        public const int Buildable =          0b0000_0000_0000_0010;
+        public const int Movable =            0b0000_0000_0000_0100;
+        public const int EnemySpawnBlock =    0b0000_0000_0000_1000;
+        public const int SpawnBlock =         0b0000_0000_0001_0000;
+        public const int BasicBlock =         0b0000_0000_0100_0000; 
+        public const int EnemyWalkable =     0b0000_0000_1000_0000; 
+        public const int EnemyDestination =  0b0000_0001_0000_0000; 
         
         public static int Translate(Type type)
         {
@@ -134,7 +182,9 @@ namespace Grid
                 case Type.BasicBlock:
                     return BlockType.BasicBlock; 
                 case Type.EnemyWalkable:
-                    return BlockType.EnnemyWalkable;
+                    return BlockType.EnemyWalkable;
+                case Type.EnemyDestination:
+                    return BlockType.EnemyDestination;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -150,5 +200,6 @@ namespace Grid
          BasicBlock,
          EnemyWalkable,
          EnemySpawnBlock,
+         EnemyDestination,
     }
 }

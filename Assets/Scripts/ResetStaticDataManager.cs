@@ -13,5 +13,6 @@ public class ResetStaticDataManager : MonoBehaviour
         Enemy.ResetSaticData();
         Workshop.ResetStaticData();
         BaseTower.ResetStaticData();
+        TowerDefenseManager.ResetStaticData();
     }
 }

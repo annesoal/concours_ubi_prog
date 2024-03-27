@@ -9,6 +9,7 @@ namespace Grid
 {
     public class Ressource : NetworkBehaviour, ITopOfCell
     {
+        
         [SerializeField] private float topOfCell = 0.72f;
 
         [field: SerializeField] public BuildingMaterialSO BuildingMaterialSO { get; private set; }

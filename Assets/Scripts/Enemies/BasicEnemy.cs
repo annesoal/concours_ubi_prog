@@ -3,6 +3,7 @@ using System;
 using Enemies;
 using Ennemies;
 using Grid;
+using Grid.Interface;
 using UnityEngine;
 
 using Random = System.Random;
@@ -12,7 +13,6 @@ namespace Enemies
     public sealed class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        private Cell next_cell;
 
         public BasicEnemy()
         {
@@ -23,12 +23,6 @@ namespace Enemies
 
         protected override void Initialize()
         {
-            cell = new Cell();
-            _nextPosition2d = new Vector2Int();
-            currentPosition2d = TilingGrid.LocalToGridPosition(transform.position);
-            next_cell = new Cell();
-            _cellRecorder = new Recorder<Cell>();
-            _helper = new EnemyGridHelper(currentPosition2d, _cellRecorder);
             AddInGame(this.gameObject);
         }
 
@@ -41,20 +35,23 @@ namespace Enemies
         public override void Move(int energy)
         {
             {
-                if (IsTimeToMove(energy))
-                {
-                    if (!IsEndOfGrid()) 
+                if (!IsServer) return;
+                if (!IsTimeToMove(energy)) return;
+                
+                    if (!TryMoveOnNextCell())
                     {
-                        if (!MoveInDirection(_avancer2d, _avancer))
+                        if (!MoveSides())
                         {
-                            MoveSides();
+                            throw new Exception("moveside did not work, case not implemented yet !");
                         }
-                    } else
-                    {
-                        Destroy(this.gameObject);
                     }
-                }
             }
+        }
+
+        public override bool PathfindingInvalidCell(Cell cellToCheck)
+        {
+            return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
+                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
         }
 
         private bool IsTimeToMove(int energy)
@@ -62,51 +59,59 @@ namespace Enemies
             return energy % ratioMovement == 0;
         }
 
-        private bool IsEndOfGrid()
-        {
-            try
-            {
-                next_cell = TilingGrid.grid.GetCell(currentPosition2d + _avancer2d);
-                return next_cell.IsNone();
-            }
-            catch (ArgumentException)
-            {
-                return true;
-            }
-        }
-        
         //Commence a aller vers la droite ou la gauche aleatoirement
-        private void MoveSides()
+        private bool MoveSides()
         {
             if (_rand.NextDouble() < 0.5)
             {
-                if (!MoveInDirection(_gauche2d, _gauche))
+                if (!TryMoveOnNextCell(_gauche2d))
                 {
-                    MoveInDirection(_droite2d, _droite);
+                    return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
-                if(!MoveInDirection(_droite2d, _droite))
+                if(!TryMoveOnNextCell(_droite2d))
                 {
-                    MoveInDirection(_gauche2d, _gauche);
+                    return TryMoveOnNextCell(_gauche2d);
                 }
             }
+
+            return false; 
         }
         
         // Besoin de direction 2d pour valider ce quil a sur la cell
         //Retourne true si a pu effectuer le deplacement
-        private bool MoveInDirection(Vector2Int direction2d, Vector3 direction)
+        private bool TryMoveOnNextCell()
         {
-            _nextPosition2d = _helper.GetAdjacentHelperPosition(direction2d);
-            if (_helper.IsValidCell(_nextPosition2d))
+            if (path == null || path.Count == 0)
+                return true;
+            
+            Cell nextCell = path[0];
+            path.RemoveAt(0);
+            if (IsValidCell(nextCell))
             {
-                MoveEnemy(direction);
+                cell = nextCell; 
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
             return false;
         }
-        
+
+        private bool TryMoveOnNextCell(Vector2Int direction)
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
+            Cell nextCell = TilingGrid.grid.GetCell(new Vector2Int());
+            Debug.Log("cellPos + direction == " +  nextPosition);
+                
+             if (IsValidCell(nextCell))
+             {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                return true;
+            }
+            return false;
+        }
 
         /*
          * Bouge l'ennemi
@@ -114,11 +119,15 @@ namespace Enemies
          */
         private void MoveEnemy(Vector3 direction)
         {
-            Vector3 nextPosition = transform.position + direction;
-            TilingGrid.RemoveElement(this.gameObject, transform.position); 
-            transform.position = nextPosition;
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
-            _cellRecorder.Add(cell);
+            if (!IsServer) return;
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
+        }
+
+        private static bool IsValidCell(Cell cell)
+        { 
+            bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
+            bool hasNoObstacle = ! cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
+            return isValidBlockType && hasNoObstacle; 
         }
         
     }

@@ -107,7 +107,6 @@ namespace Grid
             {
                 if (cell.Has(BlockType.Translate(type)))
                 {
-                    Debug.Log(cell.type + " has been added !");
                    cells.Add(cell); 
                 }
             }
@@ -134,7 +133,7 @@ namespace Grid
             
             foreach (Cell cell in _cells)
             {
-                if (cell.Has(BlockType.EnnemyWalkable))
+                if (cell.Has(BlockType.EnemyWalkable))
                 {
                     enemyWalkableCells.AddLast(cell);
                 }

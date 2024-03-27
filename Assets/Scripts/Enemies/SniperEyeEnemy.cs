@@ -1,4 +1,5 @@
 using Enemies;
+using Grid;
 
 namespace Ennemies
 {
@@ -13,7 +14,12 @@ namespace Ennemies
         {
            
         }
-        
+
+        public override bool PathfindingInvalidCell(Cell cell)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Corrupt()
         {
            

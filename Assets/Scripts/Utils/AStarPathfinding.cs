@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
+using UnityEngine;
 
 namespace Utils
 {
@@ -37,7 +38,6 @@ namespace Utils
                     if (tentativeDistanceOrigin < neighborDistanceOrigin)
                     {
                        bool wasAdded = cameFrom.TryAdd(neighbor, current);
-                       // TODO 
                        if (!wasAdded)
                        {
                            cameFrom[neighbor] = current;
@@ -52,7 +52,8 @@ namespace Utils
                 }
             }
             //TODO changer!
-            throw new Exception("Path not found");
+            openSet.Add(origin);
+            return openSet;
         }
 
         private static float GScoreNeighbor(Dictionary<Cell, float> gScore, Cell neighbor)

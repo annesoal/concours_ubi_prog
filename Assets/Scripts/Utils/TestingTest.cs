@@ -11,7 +11,7 @@ public class TestingTest : MonoBehaviour, ITopOfCell
         TilingGrid.grid.PlaceObjectAtPositionOnGrid( this.gameObject,gameObject.transform.position);
     }
 
-    public TypeTopOfCell GetType()
+    public new TypeTopOfCell GetType()
     {
         return TypeTopOfCell.Enemy;
     }

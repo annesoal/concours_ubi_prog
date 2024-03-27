@@ -1,15 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Enemies;
 using Grid;
-using Grid.Blocks;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using Object = UnityEngine.Object;
+using Type = Grid.Type;
 
 /**
  * Classe responsable de la logique d'exécution du jeu.
@@ -36,6 +32,40 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [Header("Obstacles")] 
     [SerializeField] private GameObject obstacle;
+    
+    public static GameObject highlighter;
+    [SerializeField] private GameObject _hightlighter;
+    private static List<Cell> DestinationCells;
+    public int PlayersHealth = 3;
+
+    private static void CheckDestinationCells()
+    {
+        
+        DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
+        foreach (var cell in DestinationCells)
+        {
+            Debug.Log(cell.position + " is being checked");
+            if (cell.ContainsEnemy())
+            {
+                Debug.Log(cell.position + " has enemy");
+                
+                List<Enemy> enemies = cell.GetEnemies();
+                foreach (var enemy in enemies)
+                {
+                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
+                    TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
+                    Destroy(enemy.ToGameObject()); 
+                }
+                
+                Instance.PlayersHealth--;
+            }
+        }
+    }
+    public static void ResetStaticData()
+    {
+        DestinationCells = null;
+    }
+
     public enum State
     {
         WaitingToStart = 0,
@@ -68,6 +98,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Awake()
     {
+        highlighter = _hightlighter;
         Instance = this;
         _currentTimer = new NetworkVariable<float>(tacticalPauseDuration);
 
@@ -166,7 +197,6 @@ public class TowerDefenseManager : NetworkBehaviour
         CountDownToStartTimer -= Time.deltaTime;
     }
     
-    private bool _isEnvironmentTurnNotCalled = true;
     private void PlayEnvironmentTurn()
     {
     
@@ -174,6 +204,11 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
+        CheckDestinationCells();
+        if (PlayersHealth < 1)
+        {
+            GoToSpecifiedState(State.EndOfGame);
+        }
         if (currentRoundNumber >= totalRounds)
         {
             GoToSpecifiedState(State.EndOfGame);
@@ -183,7 +218,6 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.TacticalPause);
         }
         
-        _isEnvironmentTurnNotCalled = true;
     }
     
      public int currentRoundNumber;
