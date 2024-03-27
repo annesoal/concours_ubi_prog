@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Grid;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -129,11 +130,21 @@ public class BuildingCarrouselUI : MonoBehaviour
 
     private void ShowDescription()
     {
-        selectedBuildingText.text = _selectedBuilding.Value.description;
+        if (HasResourceForBuilding())
+        {
+            selectedBuildingText.color = new Color(69, 69, 69);
+            selectedBuildingText.text = _selectedBuilding.Value.description;
+        
+        }
+        else
+        {
+            selectedBuildingText.color = Color.red;
+            selectedBuildingText.text = "Resources Missing For Building !";
+        }
         
         BasicShowHide.Show(selectedBuildingText.gameObject);
     }
-
+    
     private void HideDescription()
     {
         BasicShowHide.Hide(selectedBuildingText.gameObject);
@@ -215,9 +226,18 @@ public class BuildingCarrouselUI : MonoBehaviour
     private void InputManager_OnPlayerInteractPerformed(object sender, EventArgs e)
     {
         if (!gameObject.activeSelf) { return; }
-        
-        EmitOnBuildingSelected();
+
+        if (HasResourceForBuilding())
+        {
+            EmitOnBuildingSelected();
+        }
     }
+    
+    private bool HasResourceForBuilding()
+    {
+        return CentralizedInventory.Instance.HasResourcesForBuilding(_selectedBuilding.Value);
+    }
+
     
     private void EmitOnBuildingSelected()
     {
