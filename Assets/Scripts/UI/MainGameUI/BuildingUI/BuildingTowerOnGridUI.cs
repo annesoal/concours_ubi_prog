@@ -114,6 +114,9 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        CameraController.Instance.MoveCameraToPosition
+            (TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
+        
         if (_selectedCell.Value.HasNotBuildingOnTop())
         {
             BasicShowHide.Hide(errorText.gameObject);
@@ -134,8 +137,6 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         HidePreview();
 
         Vector3 previewPosition = TilingGrid.GridPositionToLocal(_selectedCell.Value.position);
-
-        CameraController.Instance.MoveCameraToPosition(previewPosition);
 
         _preview = Instantiate(_towerToBuild.visuals);
 
