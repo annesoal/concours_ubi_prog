@@ -16,6 +16,7 @@ public class BuildingMenuUI : MonoBehaviour
             if (IsBuildingInactive())
             {
                 InputManager.Instance.DisablePlayerInputMap();
+                InputManager.Instance.EnableUserInterfaceInputMap();
             
                 buildingCarrouselUI.Show();
             }
@@ -49,6 +50,8 @@ public class BuildingMenuUI : MonoBehaviour
     {
         if (e.newValue != TowerDefenseManager.State.TacticalPause)
         {
+            InputManager.Instance.DisableUserInterfaceInputMap();
+            
             // Aucune sélection de UI lors de la sortie de la pause tactique
             EventSystem.current.SetSelectedGameObject(null);
             

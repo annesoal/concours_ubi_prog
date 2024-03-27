@@ -136,9 +136,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
         BuildableObjectVisuals previewVisualsComponent = _preview.GetComponent<BuildableObjectVisuals>();
         
-        previewVisualsComponent.ShowPreview();
-
-        _preview.transform.position = previewPosition;
+        previewVisualsComponent.ShowPreview(previewPosition);
     }
 
     private void HidePreview()

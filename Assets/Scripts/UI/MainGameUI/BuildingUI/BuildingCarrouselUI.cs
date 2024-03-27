@@ -35,6 +35,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     private void Start()
     {
         InitializeBuildableObjectsList();
+        
+        InputManager.Instance.OnUserInterfaceSelected += InputManager_OnUserInterfaceSelected;
 
         _selectedBuilding = _buildableObjectsSO.First;
         
@@ -171,5 +173,13 @@ public class BuildingCarrouselUI : MonoBehaviour
         {
             _buildableObjectsSO.AddLast(buildableObjectSo);
         }
+    }
+    
+    private void InputManager_OnUserInterfaceSelected(object sender, EventArgs e)
+    {
+        OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs
+        {
+            SelectedBuildableObjectSO = _selectedBuilding.Value,
+        });
     }
 }
