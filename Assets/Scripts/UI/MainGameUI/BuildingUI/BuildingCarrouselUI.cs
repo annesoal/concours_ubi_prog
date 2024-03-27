@@ -40,8 +40,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         InitializeBuildableObjectsList();
         
-        InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
-        InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
+        InputManager.Instance.OnUserInterfaceMinimalRightPerformed += InputManager_OnUserInterfaceMinimalRightPerformed;
+        InputManager.Instance.OnUserInterfaceMinimalLeftPerformed += InputManager_OnUserInterfaceMinimalLeftPerformed;
         
         _selectedBuilding = _buildableObjectsSO.First;
         
@@ -195,7 +195,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         });
     }
 
-    private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
+    private void InputManager_OnUserInterfaceMinimalRightPerformed(object sender, EventArgs e)
     {
         if (!gameObject.activeSelf) { return; }
         
@@ -209,7 +209,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         UpdateUI();
     }
     
-    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    private void InputManager_OnUserInterfaceMinimalLeftPerformed(object sender, EventArgs e)
     {
         if (!gameObject.activeSelf) { return; }
 
