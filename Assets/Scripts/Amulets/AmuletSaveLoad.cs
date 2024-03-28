@@ -1,7 +1,12 @@
-namespace Unity.Multiplayer.Samples.Utilities.ClientAuthority.Amulets
+using System.Collections.Generic;
+
+namespace Amulets
 {
     public class AmuletSaveLoad
     {
-        
+        public List<AmuletSO> GetAmuletsForScene(Loader.Scene scene)
+        {
+            return new List<AmuletSO>();
+        }
     }
 }
