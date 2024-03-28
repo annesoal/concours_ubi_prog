@@ -99,9 +99,10 @@ namespace Enemies
 
         protected void Die()
         {
+            Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
             TilingGrid.RemoveElement(gameObject,transform.position);
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         
         public abstract void Move(int energy);
