@@ -8,6 +8,7 @@ namespace Amulets
 {
     public class AmuletSaveLoad
     {
+        private bool hasBeenLoaded;
         private const string JSONFile = "save.json";
         private List<LevelAmuletsPair> FinalSave;
 
@@ -39,6 +40,7 @@ namespace Amulets
                 var loadedJson = reader.ReadToEnd();
                 var sf = JsonUtility.FromJson<SaveFile>(loadedJson);
                 FinalSave = sf.listOfPairs.ToList();
+                hasBeenLoaded = true;
             }
             catch (FileNotFoundException)
             {
@@ -55,11 +57,15 @@ namespace Amulets
             writer.Write(jsonToSave);
         }
 
-        public void PreSaveSceneWithAmulets(Loader.Scene scene, AmuletSO[] amulets)
+        public void SaveSceneWithAmulets(Loader.Scene scene, AmuletSO[] amulets)
         {
+            if (!hasBeenLoaded) 
+                Load();
+            
             var levelAmuletsPair = new LevelAmuletsPair();
             levelAmuletsPair.level = (int)scene;
             levelAmuletsPair.amulets = new int[amulets.Length];
+            
             for (var i = 0; i < amulets.Length; i++)
             {
                 var amulet = amulets[i];
