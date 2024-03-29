@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Amulets
 {
-    public class AmuletSaveLoad
+    public class AmuletSaveLoad 
     {
-        private bool hasBeenLoaded;
+        private bool hasBeenLoaded = false;
         private const string JSONFile = "save.json";
-        private List<LevelAmuletsPair> FinalSave;
+        private List<LevelAmuletsPair> FinalSave = new();
 
         public List<AmuletSO> GetAmuletsForScene(Loader.Scene scene)
         {
@@ -34,18 +34,27 @@ namespace Amulets
 
         private void Load()
         {
-            try
+            if (File.Exists(JSONFile))
             {
+                Debug.Log("file exists ?");
                 var reader = new StreamReader(JSONFile);
                 var loadedJson = reader.ReadToEnd();
                 var sf = JsonUtility.FromJson<SaveFile>(loadedJson);
-                FinalSave = sf.listOfPairs.ToList();
-                hasBeenLoaded = true;
+                try
+                {
+
+                    FinalSave = sf.listOfPairs.ToList();
+                }
+                catch (NullReferenceException)
+                {
+                    FinalSave = new List<LevelAmuletsPair>();
+                }
             }
-            catch (FileNotFoundException)
+            else
             {
                 FinalSave = new List<LevelAmuletsPair>();
             }
+            hasBeenLoaded = true;
         }
 
         private void Save()
@@ -55,6 +64,7 @@ namespace Amulets
             var writer = new StreamWriter(JSONFile);
             var jsonToSave = JsonUtility.ToJson(sf);
             writer.Write(jsonToSave);
+            writer.Close();
         }
 
         public void SaveSceneWithAmulets(Loader.Scene scene, AmuletSO[] amulets)

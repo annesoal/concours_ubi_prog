@@ -3,23 +3,26 @@ using UnityEngine;
 
 namespace Amulets
 {
-    public class AmuletSelector : MonoBehaviour
+    
+    [CreateAssetMenu(menuName = "AmuletSelector")]
+    public class AmuletSelector : ScriptableObject
     {
-        public static int PlayerAmuletSelection = 0;
+        public static int PlayerAmuletSelection = 1;
         public AmuletSO AmuletToUse;
 
-        public static AmuletSelector Instance; 
+        public static AmuletSelector Instance;
+
         [SerializeField] private AmuletSO[] _amulets;
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         public AmuletSO[] amulets
         {
             get => _amulets;
             private set => _amulets = value;
-        }
-
-        private void Awake()
-        {
-            Instance = this; 
         }
         public AmuletSO SetAmulet()
         {

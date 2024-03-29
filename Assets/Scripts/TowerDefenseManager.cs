@@ -62,6 +62,9 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private Transform playerRobotPrefab;
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
+    [Header("Amulet")]
+    [SerializeField] public AmuletSelector selector; 
+
     private readonly NetworkVariable<State> _currentState = new();
 
     private NetworkVariable<float> _currentTimer;
@@ -73,7 +76,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private Action<ulong>[] _spawnPlayerMethods;
 
     private Action[] _statesMethods;
-    [SerializeField] private AmuletSelector amuletSelector;
+    
 
     private List<Vector2Int> positions = new();
     public float TacticalPauseTimer => _currentTimer.Value;
@@ -92,22 +95,22 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
         // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
-        AmuletSelector.Instance.SetAmulet();
+        selector.SetAmulet();
         SetAmuletFieldsToGameFields();
     }
 
     private void SetAmuletFieldsToGameFields()
     {
-        _playersHealth = AmuletSelector.Instance.AmuletToUse.playersHealth;
-        tacticalPauseDuration = AmuletSelector.Instance.AmuletToUse.tacticalPauseTime;
-        totalRounds = AmuletSelector.Instance.AmuletToUse.numberOfTurns;
-        EnergyAvailable = AmuletSelector.Instance.AmuletToUse.energy;
-        BaseTower.baseHealth = AmuletSelector.Instance.AmuletToUse.towerBaseHealth;
-        BaseTower.baseAttack = AmuletSelector.Instance.AmuletToUse.towerBaseAttack;
-        BaseTower.baseCost = AmuletSelector.Instance.AmuletToUse.towerBaseCost;
-        BaseTrap.baseCost = AmuletSelector.Instance.AmuletToUse.trapBaseCost;
-        Enemy.baseAttack = AmuletSelector.Instance.AmuletToUse.enemyBaseAttack;
-        Enemy.baseHealth =  AmuletSelector.Instance.AmuletToUse.enemyBaseHealth;   
+        _playersHealth = selector.AmuletToUse.playersHealth;
+        tacticalPauseDuration = selector.AmuletToUse.tacticalPauseTime;
+        totalRounds = selector.AmuletToUse.numberOfTurns;
+        EnergyAvailable = selector.AmuletToUse.energy;
+        BaseTower.baseHealth = selector.AmuletToUse.towerBaseHealth;
+        BaseTower.baseAttack = selector.AmuletToUse.towerBaseAttack;
+        BaseTower.baseCost = selector.AmuletToUse.towerBaseCost;
+        BaseTrap.baseCost = selector.AmuletToUse.trapBaseCost;
+        Enemy.baseAttack = selector.AmuletToUse.enemyBaseAttack;
+        Enemy.baseHealth =  selector.AmuletToUse.enemyBaseHealth;   
     }
     private void Start()
     {
@@ -133,7 +136,7 @@ public class TowerDefenseManager : NetworkBehaviour
                AmuletSaveLoad save = new AmuletSaveLoad();
                List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
                List<AmuletSO> unlockableAmulets =
-                   (List<AmuletSO>) unlockedAmulets.Where(
+                    unlockedAmulets.Where(
                        unlockedAmulet =>
                        {
                            return AmuletSelector.Instance.amulets.All(
@@ -141,7 +144,7 @@ public class TowerDefenseManager : NetworkBehaviour
                                {
                                    return allAmulet.ID != unlockedAmulet.ID;
                                });
-                       });
+                       }).ToList();
                
                if (unlockableAmulets.Count > 0)
                    unlockedAmulets.Add(unlockableAmulets[0]);
