@@ -6,6 +6,7 @@ using Grid;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Type = Grid.Type;
 
 /**
@@ -36,7 +37,6 @@ public class TowerDefenseManager : NetworkBehaviour
     [field: SerializeField] private int EnergyAvailable { get; set; }
     public int energyToUse;
 
-    [Header("Pause Tactique")] [SerializeField]
     private float tacticalPauseDuration;
 
     
@@ -44,8 +44,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private GameObject obstacle;
     [SerializeField] private GameObject _hightlighter;
     
-    [Header("Temp")]
-    public int PlayersHealth = 3;
+    private int _playersHealth;
 
     [field: Header("Chrono de depart")]
     [field: SerializeField]
@@ -90,14 +89,21 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
-        SetAmulet();
+        // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
+        AmuletSelector.Instance.SetAmulet();
+        SetAmuletFieldsToGameFields();
     }
 
-    private void SetAmulet()
+    private void SetAmuletFieldsToGameFields()
     {
-        amuletSelector.SetAmulet();
+        _playersHealth = AmuletSelector.Instance.AmuletToUse.playersHealth;
+        tacticalPauseDuration = AmuletSelector.Instance.AmuletToUse.tacticalPauseTime;
+        totalRounds = AmuletSelector.Instance.AmuletToUse.numberOfTurns;
+        EnergyAvailable = AmuletSelector.Instance.AmuletToUse.energy;
+        BaseTower.baseHealth = AmuletSelector.Instance.AmuletToUse.towerBaseHealth;
+        BaseTower.baseAttack = AmuletSelector.Instance.AmuletToUse.towerBaseAttack;
+        BaseTower.baseCost = AmuletSelector.Instance.AmuletToUse.towerBaseCost;
     }
-
     private void Start()
     {
         Instance.OnCurrentStateChanged += BeginTacticalPause;
@@ -184,7 +190,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CheckDestinationCells();
-        if (PlayersHealth < 1) GoToSpecifiedState(State.EndOfGame);
+        if (_playersHealth < 1) GoToSpecifiedState(State.EndOfGame);
         if (currentRoundNumber >= totalRounds)
             GoToSpecifiedState(State.EndOfGame);
         else
@@ -403,7 +409,7 @@ public class TowerDefenseManager : NetworkBehaviour
                     Destroy(enemy.ToGameObject());
                 }
 
-                Instance.PlayersHealth--;
+                Instance._playersHealth--;
             }
         }
     }
