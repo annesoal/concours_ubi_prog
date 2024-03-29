@@ -28,6 +28,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
+    private bool gameWon = false;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     [field: SerializeField]
@@ -112,9 +113,25 @@ public class TowerDefenseManager : NetworkBehaviour
         Instance.OnCurrentStateChanged += BeginTacticalPause;
 
         if (IsServer)
+        {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
+            Instance.OnCurrentStateChanged +=EndGame;
+        }
+        
         //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0;
+    }
+
+    private void EndGame(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == State.EndOfGame)
+        {
+           Loader.Load(Loader.Scene.MainMenuScene);
+           if (gameWon)
+           {
+               
+           }
+        }
     }
 
     private void Update()
@@ -193,16 +210,28 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CheckDestinationCells();
-        if (_playersHealth < 1) GoToSpecifiedState(State.EndOfGame);
-        if (currentRoundNumber >= totalRounds)
+        if (_playersHealth < 1)
+        {
+            gameWon = false;
             GoToSpecifiedState(State.EndOfGame);
+        }
+
+        if (currentRoundNumber >= totalRounds)
+        {
+            gameWon = true;
+            GoToSpecifiedState(State.EndOfGame);
+        }
         else
             GoToSpecifiedState(State.TacticalPause);
     }
 
     private void ProgressTacticalTimer()
     {
-        if (AllRoundsAreDone()) GoToSpecifiedState(State.EndOfGame);
+        if (AllRoundsAreDone())
+        {
+            gameWon = true;
+            GoToSpecifiedState(State.EndOfGame);
+        }
 
         _currentTimer.Value -= Time.deltaTime;
 
@@ -427,4 +456,5 @@ public class TowerDefenseManager : NetworkBehaviour
         public State newValue;
         public State previousValue;
     }
+    
 }
