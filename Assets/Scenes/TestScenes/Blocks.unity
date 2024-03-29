@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029127, g: 0.22572401, b: 0.3069303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15728,10 +15728,8 @@ MonoBehaviour:
   <totalRounds>k__BackingField: 20
   <EnergyAvailable>k__BackingField: 10
   energyToUse: 0
-  tacticalPauseDuration: 20
   obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
   _hightlighter: {fileID: 0}
-  PlayersHealth: 3
   <CountDownToStartTimer>k__BackingField: 3
   currentRoundNumber: 0
   playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
@@ -15740,6 +15738,7 @@ MonoBehaviour:
   playerRobotPrefab: {fileID: 2868363114536855551, guid: 5691060b1c68ecd84ad714b4e706c7b4,
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 1044088096}
+  selector: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
