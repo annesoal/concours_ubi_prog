@@ -311,6 +311,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ennemyType: 1
   stupefiedState: 0
-  ratioMovement: 4
+  ratioMovement: 1
   health: 1
   hasPath: 0
