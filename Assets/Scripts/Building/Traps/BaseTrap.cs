@@ -19,4 +19,6 @@ public abstract class BaseTrap : BuildableObject
     {
         return TypeTopOfCell.Building;
     }
+
+    public override int Cost { get; set; }
 }
