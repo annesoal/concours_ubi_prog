@@ -9,7 +9,6 @@ namespace Amulets
         private static int _id = 0; 
         public int ID = 0;
         [Header("Health related issues : ")]
-        public double enemiHealthMultiplier = 1.0;
         public int playersHealth = 3;
         public int enemyBaseHealth = 1;
         public int towerBaseHealth = 5;
