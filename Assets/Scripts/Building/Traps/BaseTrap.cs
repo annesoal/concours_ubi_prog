@@ -6,6 +6,7 @@ using UnityEngine;
 
 public abstract class BaseTrap : BuildableObject
 {
+    static public int baseCost;
     [SerializeField] private BuildableObjectVisuals trapVisuals;
     
     public override void Build(Vector2Int positionToBuild)
@@ -20,5 +21,6 @@ public abstract class BaseTrap : BuildableObject
         return TypeTopOfCell.Building;
     }
 
-    public override int Cost { get; set; }
+    private int _cost = baseCost;
+    public override int Cost { get => _cost; set => value=_cost; }
 }
