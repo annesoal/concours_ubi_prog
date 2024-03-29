@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Amulets;
 using Enemies;
 using Grid;
@@ -129,8 +130,27 @@ public class TowerDefenseManager : NetworkBehaviour
            Loader.Load(Loader.Scene.MainMenuScene);
            if (gameWon)
            {
+               AmuletSaveLoad save = new AmuletSaveLoad();
+               List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+               List<AmuletSO> unlockableAmulets =
+                   (List<AmuletSO>) unlockedAmulets.Where(
+                       unlockedAmulet =>
+                       {
+                           return AmuletSelector.Instance.amulets.All(
+                               allAmulet =>
+                               {
+                                   return allAmulet.ID != unlockedAmulet.ID;
+                               });
+                       });
                
+               if (unlockableAmulets.Count > 0)
+                   unlockedAmulets.Add(unlockableAmulets[0]);
+               
+               save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
            }
+           
+           Debug.LogError("devrait load une autre scene je pense");
+           Loader.Load(Loader.Scene.CharacterSelectScene);
         }
     }
 
