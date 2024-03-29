@@ -181,8 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dfde6fc00c436f974e9910286c895c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ennemyType: 0
-  remainingMove: 0
+  ennemyType: 3
   stupefiedState: 1
-  movementPerTurn: 2
+  ratioMovement: 1
   health: 0
+  hasPath: 0

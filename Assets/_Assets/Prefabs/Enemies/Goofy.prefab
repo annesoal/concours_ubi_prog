@@ -101,10 +101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d875ef4706d4c59ab8a45159ba14ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ennemyType: 0
-  remainingMove: 0
-  state: 1
-  movementPerTurn: 2
+  ennemyType: 4
+  stupefiedState: 0
+  ratioMovement: 1
+  health: 0
+  hasPath: 0
 --- !u!4 &3698810681126757281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1069855438421169268, guid: 54118bcc1d7276338bc17dd0145a99a8,
