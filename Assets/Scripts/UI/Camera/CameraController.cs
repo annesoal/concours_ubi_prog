@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
+        _followOffset = associatedCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
     }
 
     void Update()
@@ -54,42 +56,29 @@ public class CameraController : MonoBehaviour
 
     [Header("Zoom")]
     [SerializeField] private float zoomSpeed;
-    [SerializeField] private float maxFov = 80f;
-    [SerializeField] private float minFov = 10f;
-    [Header("Vertical View Offset")]
-    [SerializeField] private bool verticalViewIsChangingOnZoom = true;
-    [SerializeField] private float verticalViewFactor = 25f;
+    [SerializeField] private float maxFollowOffset = 50f;
+    [SerializeField] private float minFollowOffset = 10f;
+    
+    private Vector3 _followOffset;
     
     private void HandleCameraZoom()
     {
+        Vector3 zoomDirection = _followOffset.normalized;
+        
         float zoomInput = InputManager.Instance.GetCameraZoomInput();
 
-        float newFov = associatedCamera.m_Lens.FieldOfView - zoomInput * zoomSpeed * Time.deltaTime;
+        _followOffset -= zoomDirection * (zoomInput * zoomSpeed * Time.deltaTime);
 
-        newFov = Mathf.Clamp(newFov, minFov, maxFov);
-
-        associatedCamera.m_Lens.FieldOfView = newFov;
-
-        if (verticalViewIsChangingOnZoom && FovLimitIsReached(newFov))
+        if (_followOffset.magnitude < minFollowOffset)
         {
-            ChangeVerticalView(zoomInput);
+            _followOffset = zoomDirection * minFollowOffset;
         }
-    }
 
-    private bool FovLimitIsReached(float fov)
-    {
-        return Mathf.Approximately(fov, minFov) && Mathf.Approximately(fov, maxFov);
-    }
+        if (_followOffset.magnitude > maxFollowOffset)
+        {
+            _followOffset = zoomDirection * maxFollowOffset;
+        }
 
-    private void ChangeVerticalView(float zoomInput)
-    {
-        CinemachineTransposer associatedCameraTransposer = 
-            associatedCamera.GetCinemachineComponent<CinemachineTransposer>();
-
-        Vector3 newFollowOffset =
-            associatedCameraTransposer.m_FollowOffset - Vector3.up * (zoomInput * verticalViewFactor);
-
-        associatedCameraTransposer.m_FollowOffset = 
-            Vector3.Lerp(associatedCameraTransposer.m_FollowOffset, newFollowOffset, Time.deltaTime);
+        associatedCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = _followOffset;
     }
 }
