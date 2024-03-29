@@ -8,11 +8,22 @@ namespace Amulets
         public static int PlayerAmuletSelection = 0;
         public AmuletSO AmuletToUse;
 
-        [SerializeField] private AmuletSO[] Amulets;
+        public static AmuletSelector Instance; 
+        [SerializeField] private AmuletSO[] _amulets;
 
+        public AmuletSO[] amulets
+        {
+            get => _amulets;
+            private set => _amulets = value;
+        }
+
+        private void Awake()
+        {
+            Instance = this; 
+        }
         public AmuletSO SetAmulet()
         {
-            foreach (var amulet in Amulets)
+            foreach (var amulet in _amulets)
             {
                 if (amulet.ID == PlayerAmuletSelection)
                 {
