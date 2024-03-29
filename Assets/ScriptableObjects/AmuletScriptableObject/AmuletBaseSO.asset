@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
   m_Name: AmuletBaseSO
   m_EditorClassIdentifier: 
-  EnemiHealthMultiplier: 1
-  PlayersHealth: 3
-  TacticalPauseTime: 20
+  ID: 0
+  playersHealth: 3
+  enemyBaseHealth: 1
+  towerBaseHealth: 5
+  enemyBaseAttack: 1
+  towerBaseAttack: 1
+  tacticalPauseTime: 20
+  numberOfTurns: 20
+  energy: 10
+  resourcesSpawnRate: 0.2
+  towerBaseCost: 3
+  trapBaseCost: 1
+  description: To Be Changed/Overwritten
