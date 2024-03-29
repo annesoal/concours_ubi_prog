@@ -13,7 +13,7 @@ namespace Enemies
         {
             ennemyType = EnnemyType.Doggo;
             health = 1;
-            ratioMovement = 2; 
+            ratioMovement = 3; 
         } 
         
         
@@ -120,11 +120,13 @@ namespace Enemies
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
         }
 
-        private static bool IsValidCell(Cell cell)
+        private bool IsValidCell(Cell cell)
         { 
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoObstacle = ! cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
-            return isValidBlockType && hasNoObstacle; 
+            bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+            Debug.Log("DOGGO had no enemy " + hasNoEnemy);
+            return isValidBlockType && hasNoObstacle && hasNoEnemy&&  !PathfindingInvalidCell(cell); 
         }
     }
 }
