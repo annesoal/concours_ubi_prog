@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Enemies;
+using Ennemies;
 using Grid;
 using Grid.Interface;
+using Interfaces;
 using UnityEngine;
 using Utils;
 
@@ -14,48 +13,82 @@ using Utils;
  * Cette classe est destinée à être héritée par des tours plus spécifiques.
  * Elle contient tous les comportements communs aux tours.
  */
-public abstract class BaseTower : BuildableObject
+public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
 {
-    [Header("Tower specifics")]
-    [SerializeField] protected Transform shootingPoint;
+    private static List<BaseTower> _towersInGame = new();
+
+    public static int baseHealth;
+    public static int baseAttack;
+
+
+    private static bool _hasFinishedTowersTurn;
+    public static int baseCost;
+
+    [Header("Tower specifics")] [SerializeField]
+    protected Transform shootingPoint;
+
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
-    
-    [Header("Projectiles setting")]
-    [SerializeField] protected int numberOfProjectilesToShootInTurn;
+
+    [Header("Projectiles setting")] [SerializeField]
+    protected int numberOfProjectilesToShootInTurn;
+
     [SerializeField] protected EnemyDirection enemyDirection;
     [SerializeField] private float timeToFly;
+
     /// En radiant
     [SerializeField] private float firingAngle;
-    [SerializeField] private int TowerDamage = 1;
 
-    [SerializeField] private int timeBetweenShots = 2; 
+    [SerializeField] private int timeBetweenShots = 2;
 
-    [Header("BulletToFire")]
-    [SerializeField] protected GameObject _bullet;
-    
-    private static List<BaseTower> _towersInGame = new List<BaseTower>();
+    [Header("BulletToFire")] [SerializeField]
+    protected GameObject _bullet;
 
-    private ShootingUtility _shooter; 
+    private readonly int _attackDamage = baseAttack;
+    private readonly int _cost = baseCost;
     private bool _hasPlayed = true;
-    private int timeSinceLastShot = 0;
+
+    private ShootingUtility _shooter;
+    private int _timeSinceLastShot;
+
+    public override int Cost
+    {
+        get => _cost;
+        set => value = _cost;
+    }
 
     public void Start()
     {
         SetShooter();
     }
-    
+
+    public int AttackDamage
+    {
+        get => _attackDamage;
+        set => value = _attackDamage;
+    }
+
+    public int Health { get; set; } = baseHealth;
+
+    public void Damage(int damage)
+    {
+        Health -= damage;
+        if (Health < 1)
+        {
+        }
+    }
+
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
-        
+
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
-        
+
         RegisterTower(this);
     }
-    
+
     /// <returns>List of cells targeted by the tower.</returns>
     protected abstract List<Cell> TargetEnemies();
-    
+
     protected void RegisterTower(BaseTower toAdd)
     {
         _towersInGame.Add(toAdd);
@@ -66,29 +99,25 @@ public abstract class BaseTower : BuildableObject
         return TypeTopOfCell.Building;
     }
 
-    
-    private static bool _hasFinishedTowersTurn;
-    
     public static IEnumerator PlayTowersInGameTurn()
     {
         _hasFinishedTowersTurn = false;
-        foreach (BaseTower tower in _towersInGame)
-        {
+        foreach (var tower in _towersInGame)
             if (tower.CanPlay())
             {
                 tower._hasPlayed = false;
                 tower.PlayTurn();
                 yield return new WaitUntil(tower.HasPlayed);
             }
-        }
+
         _hasFinishedTowersTurn = true;
     }
 
     public bool CanPlay()
     {
-      return timeSinceLastShot++ >= timeBetweenShots; 
+        return _timeSinceLastShot++ >= timeBetweenShots;
     }
-    
+
     public static bool HasFinishedTowersTurn()
     {
         return _hasFinishedTowersTurn;
@@ -106,15 +135,13 @@ public abstract class BaseTower : BuildableObject
 
     public void PlayTurn()
     {
-        Debug.Log("Inside PlayTurn");
         StartCoroutine(PlayTurnCoroutine());
-        timeSinceLastShot = 0;
+        _timeSinceLastShot = 0;
     }
-    
+
     private IEnumerator PlayTurnCoroutine()
     {
-        Debug.Log("Tour basique joue son tour (coroutine)");
-        List<Cell> cellsWithEnemies = TargetEnemies();
+        var cellsWithEnemies = TargetEnemies();
 
         if (!HasEnemyInRadius(cellsWithEnemies))
         {
@@ -122,42 +149,42 @@ public abstract class BaseTower : BuildableObject
             yield break;
         }
 
-        for (int i = 0; i < cellsWithEnemies.Count; i++)
+        for (var i = 0; i < cellsWithEnemies.Count; i++)
         {
-            Cell cellToFireTo = cellsWithEnemies[i];
+            var cellToFireTo = cellsWithEnemies[i];
             StartCoroutine(FireOnCellWithEnemy(cellToFireTo));
-            yield return new WaitUntil(HasPlayed); 
+            yield return new WaitUntil(HasPlayed);
         }
     }
-    
+
     private static bool HasEnemyInRadius(List<Cell> cellsWithEnemies)
     {
-        return cellsWithEnemies.Count > 0; 
+        return cellsWithEnemies.Count > 0;
     }
 
     private IEnumerator FireOnCellWithEnemy(Cell cellWithEnemy)
     {
-        Vector3 enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy); 
+        var enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy);
         _shooter.FireBetween(shootingPoint.position, enemyPosition);
         yield return new WaitUntil(_shooter.HasFinished);
         DamageEnemy(cellWithEnemy);
         _hasPlayed = true;
     }
-    
+
     private bool HasPlayed()
     {
         return _hasPlayed;
     }
-    
-    private void DamageEnemy(Cell cellWithEnemy) 
+
+    private void DamageEnemy(Cell cellWithEnemy)
     {
-        Enemy enemy = cellWithEnemy.GetEnemy();
-        enemy.Damage(TowerDamage);
+        var enemy = cellWithEnemy.GetEnemy();
+        enemy.Damage(AttackDamage);
     }
-    
+
     private void SetShooter()
     {
-        _shooter = gameObject.AddComponent<Utils.ShootingUtility>();
+        _shooter = gameObject.AddComponent<ShootingUtility>();
         _shooter.TimeToFly = timeToFly;
         _shooter.Angle = firingAngle;
         _shooter.ObjectToFire = _bullet;
@@ -170,6 +197,6 @@ public abstract class BaseTower : BuildableObject
         YPositive,
         YNegative,
         XPositive,
-        XNegative,
+        XNegative
     }
 }
