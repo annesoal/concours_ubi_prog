@@ -14,7 +14,8 @@ namespace Grid
 
     public class Obstacle : MonoBehaviour, ITopOfCell
     {
-        public GameObject obstacle;
+        [SerializeField] private float topOfCell = 0.72f;
+       
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
         
         private void Start()
