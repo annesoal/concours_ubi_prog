@@ -162,6 +162,8 @@ namespace Grid
             AddObjectToCellAtPosition(toPlace, destination);
         }
         
+        
+        
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
