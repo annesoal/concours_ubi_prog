@@ -9,7 +9,7 @@ namespace Enemies
     public sealed class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        private Vector2Int testBug = new Vector2Int(13,12);
+
         public BasicEnemy()
         {
             ennemyType = EnnemyType.Basic;
@@ -38,6 +38,8 @@ namespace Enemies
                 {
                     if (!MoveSides())
                     {
+                        Debug.Log("ERROR derniere position BASIC: " +cell.position);
+                        Debug.Log("ERROR path position " + path[0].position);
                         throw new Exception("moveside did not work, case not implemented yet !");
                     }
                 }
@@ -60,15 +62,19 @@ namespace Enemies
         {
             if (_rand.NextDouble() < 0.5)
             {
+                Debug.Log("1- Gauche ");
                 if (!TryMoveOnNextCell(_gauche2d))
                 {
+                    Debug.Log("2- Droite ");
                     return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
+                Debug.Log("1- Droite ");
                 if (!TryMoveOnNextCell(_droite2d))
                 {
+                    Debug.Log("2- Gauche ");
                     return TryMoveOnNextCell(_gauche2d);
                 }
             }
@@ -76,8 +82,7 @@ namespace Enemies
             return false;
         }
 
-        // Besoin de direction 2d pour valider ce quil a sur la cell
-        //Retourne true si a pu effectuer le deplacement
+        // Essaie de bouger vers l'avant
         private bool TryMoveOnNextCell()
         {
             if (path == null || path.Count == 0)
@@ -85,21 +90,23 @@ namespace Enemies
 
             Cell nextCell = path[0];
             path.RemoveAt(0);
+            Debug.Log("BASIC PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
-
+            Debug.Log("BASIC Ne peut pas avancer");
             return false;
         }
 
+        //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
-            Cell nextCell = TilingGrid.grid.GetCell(new Vector2Int());
-            Debug.Log("cellPos + direction == " + nextPosition);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+            Debug.Log("BASIC SIDE cellPos + direction == " + nextPosition);
 
             if (IsValidCell(nextCell))
             {
@@ -113,7 +120,6 @@ namespace Enemies
 
         /*
          * Bouge l'ennemi
-         * Enregistre sa nouvelle position dans le recorder
          */
         private void MoveEnemy(Vector3 direction)
         {
@@ -129,18 +135,20 @@ namespace Enemies
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoObstacle = !cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
-            Debug.Log("BASIC Has NO enemy on top : " + hasNoEnemy);
+            Debug.Log("BASIC sees NO enemy on top : " + hasNoEnemy);
+
+            if (!isValidBlockType)
+            {
+                Debug.Log("BASIC MAUVAIS BLOCKTYPE : " + cell.type);
+            }
+            
+            
             if (!hasNoEnemy)
             {
-                
-                if (cell.position == testBug)
-                {
-                   // hasNoEnemy = true;
-                   Debug.Log("BASIC Has enemy on top : " + true);
-                   Debug.Log("next CELL POS " + cell.position);
-                   Debug.Log("BASIC CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
-                }
-
+                // hasNoEnemy = true;
+                Debug.Log("BASIC sees enemy on top : " + true);
+                Debug.Log("BASIC next CELL POS " + cell.position);
+                Debug.Log("BASIC CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
 
             return isValidBlockType && hasNoObstacle && hasNoEnemy && !PathfindingInvalidCell(cell);
