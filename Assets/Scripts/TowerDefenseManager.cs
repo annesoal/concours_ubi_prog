@@ -103,6 +103,9 @@ public class TowerDefenseManager : NetworkBehaviour
         BaseTower.baseHealth = AmuletSelector.Instance.AmuletToUse.towerBaseHealth;
         BaseTower.baseAttack = AmuletSelector.Instance.AmuletToUse.towerBaseAttack;
         BaseTower.baseCost = AmuletSelector.Instance.AmuletToUse.towerBaseCost;
+        BaseTrap.baseCost = AmuletSelector.Instance.AmuletToUse.trapBaseCost;
+        Enemy.baseAttack = AmuletSelector.Instance.AmuletToUse.enemyBaseAttack;
+        Enemy.baseHealth =  AmuletSelector.Instance.AmuletToUse.enemyBaseHealth;   
     }
     private void Start()
     {
