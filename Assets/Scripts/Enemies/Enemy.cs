@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Grid.Interface;
+using Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,14 +21,13 @@ namespace Enemies
         Doggo
     }
 
-    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell
+    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell, ICanDamage
     {
         [SerializeField] protected EnnemyType ennemyType;
 
         [SerializeField] protected bool stupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 1;
-        [SerializeField] protected int health;
         private List<Cell> _destinationsCell;
 
         protected Cell cell;
@@ -84,8 +84,8 @@ namespace Enemies
         
         public int Health
         {
-            get { return health; }
-            set { health = value; }
+            get { return _health; }
+            set { _health = value; }
         }
 
         public void Damage(int damage)
@@ -167,5 +167,10 @@ namespace Enemies
         {
             return GetClosestDestination();
         }
+        public static int baseHealth;
+        private int _health = baseHealth; 
+        public static int baseAttack;
+        private int _attackDamage = baseAttack; 
+        public int AttackDamage { get => _attackDamage; set => value = _attackDamage; }
     }
 }

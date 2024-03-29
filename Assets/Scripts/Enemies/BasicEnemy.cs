@@ -17,7 +17,6 @@ namespace Enemies
         public BasicEnemy()
         {
             ennemyType = EnnemyType.Basic;
-            health = 1;
         }
         
 
