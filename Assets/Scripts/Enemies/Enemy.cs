@@ -104,8 +104,14 @@ namespace Enemies
             TilingGrid.RemoveElement(gameObject,transform.position);
             Destroy(this.gameObject);
         }
-        
+
+        public static event EventHandler OnAnyEnemyMoved;
         public abstract void Move(int energy);
+
+        protected void EmitOnAnyEnemyMoved()
+        {
+            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
+        }
         
 
         public override void OnDestroy()
@@ -138,6 +144,7 @@ namespace Enemies
         public static void ResetSaticData()
         {
             enemiesInGame = null;
+            OnAnyEnemyMoved = null;
         }
         public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
         {
