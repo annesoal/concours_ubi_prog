@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SingleLobbyListUI : MonoBehaviour
@@ -17,6 +18,7 @@ public class SingleLobbyListUI : MonoBehaviour
     {
         joinLobbyButton.onClick.AddListener(() =>
         {
+            EventSystem.current.SetSelectedGameObject(null);
             GameLobbyManager.Instance.JoinLobbyById(_associated.Id);
         });
     }

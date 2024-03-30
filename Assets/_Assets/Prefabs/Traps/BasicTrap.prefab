@@ -117,6 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: b02ef03f745b9e60f8e8e734d46303be, type: 2}
   trapVisuals: {fileID: 3096759686336655984}
+  damage: 1
   crossRange: 1
 --- !u!1001 &8768715130615505864
 PrefabInstance:

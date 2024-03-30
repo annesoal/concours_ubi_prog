@@ -253,7 +253,10 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private void InputManager_OnUserInterfaceCancelPerformed(object sender, EventArgs e)
     {
-        CloseUI();
+        if (gameObject.activeSelf)
+        {
+            CloseUI();
+        }
     }
 
     public event EventHandler OnCloseUI;

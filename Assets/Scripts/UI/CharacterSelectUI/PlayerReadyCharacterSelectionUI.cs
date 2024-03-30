@@ -21,6 +21,7 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
     {
         readyButton.onClick.AddListener(() =>
         {
+            readyButton.enabled = false;
             GameMultiplayerManager.Instance.SetPlayerReadyCharacterSelect(true);
         });
     }
