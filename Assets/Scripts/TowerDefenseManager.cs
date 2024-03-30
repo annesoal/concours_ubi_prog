@@ -131,44 +131,53 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         if (e.newValue == State.EndOfGame)
         {
-           Loader.Load(Loader.Scene.MainMenuScene);
-           if (gameWon)
-           {
-               AmuletSaveLoad save = new AmuletSaveLoad();
-               List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
-               List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
-
-               foreach (var amulet in amuletSelector.amulets)
-               {
-                    foreach (var unlockedAmulet in unlockedAmulets)
-                    {
-                        {
-                           if (unlockedAmulet.ID != amulet.ID) 
-                               unlockableAmulets.Add(amulet);
-                        }
-                    }     
-               }
-
-               if (unlockableAmulets.Count == 0)
-               {
-                   foreach (var amulet in amuletSelector.amulets)
-                   {
-                      unlockableAmulets.Add(amulet); 
-                   } 
-               }
-               unlockedAmulets.Add(unlockableAmulets[0]);
-               
-               Debug.Log("unlocked amulet " + unlockedAmulets.Count);
-               Debug.Log("unlockable amulet " + unlockableAmulets.Count);
-               Debug.Log("total amulet " + amuletSelector.amulets.Length);
-               save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
-           }
-           
-           Debug.LogError("devrait load une autre scene je pense");
-           Loader.Load(Loader.Scene.CharacterSelectScene);
+           EndLevelClientRpc(gameWon);
         }
     }
 
+    private void SaveProgress()
+    {
+          AmuletSaveLoad save = new AmuletSaveLoad();
+          List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+          List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
+         
+        AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);
+         
+        if (unlockableAmulets.Count == 0)
+        {
+            foreach (var amulet in amuletSelector.amulets)
+            {
+               unlockableAmulets.Add(amulet); 
+            } 
+        }
+        if (unlockableAmulets.Count != 0)
+            unlockedAmulets.Add(unlockableAmulets[0]);
+        
+        save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
+    }
+    private void AddUnlockableAmulets(List<AmuletSO> unlockedAmulets, List<AmuletSO> unlockableAmulets)
+    {
+        foreach (var amulet in amuletSelector.amulets)
+        {
+            foreach (var unlockedAmulet in unlockedAmulets)
+            {
+                {
+                    if (unlockedAmulet.ID != amulet.ID) 
+                        unlockableAmulets.Add(amulet);
+                }
+            }     
+        }
+    }
+
+    [ClientRpc]
+    private void EndLevelClientRpc(bool won)
+    {
+        if (won)
+            SaveProgress();
+        
+        Debug.LogError("devrait load une autre scene je pense");
+        Loader.Load(Loader.Scene.CharacterSelectScene);
+    }
     private void Update()
     {
         if (IsServer) _statesMethods[(int)_currentState.Value]();
