@@ -137,7 +137,7 @@ namespace Enemies
 
         public static void ResetSaticData()
         {
-            enemiesInGame = null;
+            enemiesInGame = new List<GameObject>();
         }
         public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
         {
