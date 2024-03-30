@@ -120,6 +120,7 @@ namespace Enemies
                 return true;
             }
 
+            hasPath = false;
             return false;
         }
 

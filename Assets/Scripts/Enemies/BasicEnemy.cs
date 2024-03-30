@@ -36,7 +36,12 @@ namespace Enemies
 
                 if (!TryMoveOnNextCell())
                 {
-                    if (!MoveSides())
+                    if (MoveSides())
+                    {
+                        hasPath = false;
+                        
+                    }
+                    else
                     {
                         Debug.Log("ERROR derniere position BASIC: " +cell.position);
                         Debug.Log("ERROR path position " + path[0].position);
