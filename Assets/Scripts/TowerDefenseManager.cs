@@ -1,100 +1,88 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Amulets;
 using Enemies;
 using Grid;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Type = Grid.Type;
 
 /**
  * Classe responsable de la logique d'exécution du jeu.
- * 
+ *
  * Elle fait le pont avec le GameMultiplayerManager (classe administractice d'interactions en ligne).
  * Elle s'occupe de la gestion des tours et du transfert de scènes entre la scène de jeu et les autres.
  */
 public class TowerDefenseManager : NetworkBehaviour
 {
-    
-    private List<Vector2Int> positions = new List<Vector2Int>();
-    [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
-    [field: SerializeField] public int totalRounds { get; private set; }
-
-    // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
-    [field: SerializeField] private int EnergyAvailable { get;  set; }
-     public int energyToUse;
-
-    [Header("Pause Tactique")]
-    [SerializeField] private float tacticalPauseDuration;
-
-    private NetworkVariable<float> _currentTimer;
-    public float TacticalPauseTimer => _currentTimer.Value;
-
-    [Header("Obstacles")] 
-    [SerializeField] private GameObject obstacle;
-    
-    public static GameObject highlighter;
-    [SerializeField] private GameObject _hightlighter;
-    private static List<Cell> DestinationCells;
-    public int PlayersHealth = 3;
-
-    private static void CheckDestinationCells()
-    {
-        
-        DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
-        foreach (var cell in DestinationCells)
-        {
-            Debug.Log(cell.position + " is being checked");
-            if (cell.ContainsEnemy())
-            {
-                Debug.Log(cell.position + " has enemy");
-                
-                List<Enemy> enemies = cell.GetEnemies();
-                foreach (var enemy in enemies)
-                {
-                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
-                    TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
-                    Destroy(enemy.ToGameObject()); 
-                }
-                
-                Instance.PlayersHealth--;
-            }
-        }
-    }
-    public static void ResetStaticData()
-    {
-        DestinationCells = null;
-    }
-
     public enum State
     {
         WaitingToStart = 0,
         CountdownToStart,
         EnvironmentTurn,
         TacticalPause,
-        EndOfGame,
+        EndOfGame
     }
 
-    private Action[] _statesMethods;
-    private void InitializeStatesMethods()
-    {
-        _statesMethods = new Action[]
-        {
-            WaitForPlayerReadyToPlay,
-            ProgressCountDownToStartTimer,
-            PlayEnvironmentTurn,
-            ProgressTacticalTimer,
-            () => { },
-        };
-    }
+    public static GameObject highlighter;
+    private static List<Cell> DestinationCells;
+    private bool gameWon = false;
 
-    public static TowerDefenseManager Instance { get; private set; }
+    [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
+    [field: SerializeField]
+    public int totalRounds { get; private set; }
 
-    private NetworkVariable<State> _currentState = new NetworkVariable<State>(State.WaitingToStart);
+    // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
+    [field: SerializeField] private int EnergyAvailable { get; set; }
+    public int energyToUse;
+
+    private float tacticalPauseDuration;
+
     
+    [Header("Utility")]
+    [SerializeField] private GameObject obstacle;
+    [SerializeField] private GameObject _hightlighter;
+    
+    private int _playersHealth;
+
+    [field: Header("Chrono de depart")]
+    [field: SerializeField]
+    public float CountDownToStartTimer { get; private set; }
+
+    public int currentRoundNumber;
+
+    [Header("Player Spawn")] [SerializeField]
+    private Transform playerMonkeyPrefab;
+
+    [field: SerializeField] public Transform MonkeyBlockPlayerSpawn { get; private set; }
+
+    [SerializeField] private Transform playerRobotPrefab;
+    [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
+
+    [FormerlySerializedAs("selector")]
+    [Header("Amulet")]
+    [SerializeField] public AmuletSelector amuletSelector; 
+
+    private readonly NetworkVariable<State> _currentState = new();
+
+    private NetworkVariable<float> _currentTimer;
+    private Dictionary<ulong, bool> _playerReadyToPassDictionary;
+
     // clientId and isReady pair
     private Dictionary<ulong, bool> _playerReadyToPlayDictionary;
-    private Dictionary<ulong, bool> _playerReadyToPassDictionary;
+
+    private Action<ulong>[] _spawnPlayerMethods;
+
+    private Action[] _statesMethods;
+    
+
+    private List<Vector2Int> positions = new();
+    public float TacticalPauseTimer => _currentTimer.Value;
+
+    public static TowerDefenseManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -107,134 +95,191 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
-        
+        // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
+        amuletSelector.SetAmulet();
+        SetAmuletFieldsToGameFields();
     }
 
+    private void SetAmuletFieldsToGameFields()
+    {
+        _playersHealth = amuletSelector.AmuletToUse.playersHealth;
+        tacticalPauseDuration = amuletSelector.AmuletToUse.tacticalPauseTime;
+        totalRounds = amuletSelector.AmuletToUse.numberOfTurns;
+        EnergyAvailable = amuletSelector.AmuletToUse.energy;
+        BaseTower.baseHealth = amuletSelector.AmuletToUse.towerBaseHealth;
+        BaseTower.baseAttack = amuletSelector.AmuletToUse.towerBaseAttack;
+        BaseTower.baseCost = amuletSelector.AmuletToUse.towerBaseCost;
+        BaseTrap.baseCost = amuletSelector.AmuletToUse.trapBaseCost;
+        Enemy.baseAttack = amuletSelector.AmuletToUse.enemyBaseAttack;
+        Enemy.baseHealth =  amuletSelector.AmuletToUse.enemyBaseHealth;   
+    }
     private void Start()
     {
         Instance.OnCurrentStateChanged += BeginTacticalPause;
-            
+
         if (IsServer)
         {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
-            //OnCurrentStateChanged += DebugStateChange;
+            Instance.OnCurrentStateChanged +=EndGame;
         }
+        
+        //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0;
+    }
+
+    private void EndGame(object sender, OnCurrentStateChangedEventArgs e)
+    {
+        if (e.newValue == State.EndOfGame)
+        {
+           EndLevelClientRpc(gameWon);
+        }
+    }
+
+    private void SaveProgress()
+    {
+          AmuletSaveLoad save = new AmuletSaveLoad();
+          List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+          List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
+         
+        AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);
+         
+        if (unlockableAmulets.Count == 0)
+        {
+            foreach (var amulet in amuletSelector.amulets)
+            {
+               unlockableAmulets.Add(amulet); 
+            } 
+        }
+        if (unlockableAmulets.Count != 0)
+            unlockedAmulets.Add(unlockableAmulets[0]);
+        
+        save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
+    }
+    private void AddUnlockableAmulets(List<AmuletSO> unlockedAmulets, List<AmuletSO> unlockableAmulets)
+    {
+        foreach (var amulet in amuletSelector.amulets)
+        {
+            foreach (var unlockedAmulet in unlockedAmulets)
+            {
+                {
+                    if (unlockedAmulet.ID != amulet.ID) 
+                        unlockableAmulets.Add(amulet);
+                }
+            }     
+        }
+    }
+
+    [ClientRpc]
+    private void EndLevelClientRpc(bool won)
+    {
+        if (won)
+            SaveProgress();
+        
+        Debug.LogError("devrait load une autre scene je pense");
+        Loader.Load(Loader.Scene.CharacterSelectScene);
+    }
+    private void Update()
+    {
+        if (IsServer) _statesMethods[(int)_currentState.Value]();
+    }
+
+    private void InitializeStatesMethods()
+    {
+        _statesMethods = new Action[]
+        {
+            WaitForPlayerReadyToPlay,
+            ProgressCountDownToStartTimer,
+            PlayEnvironmentTurn,
+            ProgressTacticalTimer,
+            () => { }
+        };
     }
 
     private void DebugStateChange(object sender, OnCurrentStateChangedEventArgs e)
     {
         Debug.Log(e.newValue);
-        
+
         InputManager.Instance.DisablePlayerInputMap();
     }
 
     private void BeginTacticalPause(object sender, OnCurrentStateChangedEventArgs e)
     {
         InputManager.Instance.EnablePlayerInputMap();
-        
+
         if (e.newValue == State.TacticalPause)
         {
             IncreaseRoundNumber();
-        
+
             energyToUse = EnergyAvailable;
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
-            _playerReadyToPassDictionary = new();
-            
-            if (IsServer)
-            {
-                _currentTimer.Value = tacticalPauseDuration;
-            }
+            _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
+
+            if (IsServer) _currentTimer.Value = tacticalPauseDuration;
         }
     }
 
     public override void OnNetworkSpawn()
     {
         _currentState.OnValueChanged += TowerDefenseManager_CurrentState_OnValueChanged;
-        
-        if (IsServer)
-        {
-            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManager_OnLoadEventCompleted;
-        }
+
+        if (IsServer) NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += NetworkManager_OnLoadEventCompleted;
     }
 
-    private void Update()
-    {
-        if (IsServer)
-        {
-            _statesMethods[(int)_currentState.Value]();
-        }
-    }
-    
     private void WaitForPlayerReadyToPlay()
     {
-        if (PlayersAreReadyToPlay())
-        {
-            GoToSpecifiedState(State.CountdownToStart);
-        }
+        if (PlayersAreReadyToPlay()) GoToSpecifiedState(State.CountdownToStart);
     }
 
-    [field: Header("Chrono de depart")]
-    [field: SerializeField] public float CountDownToStartTimer { get; private set; }
-    
     private void ProgressCountDownToStartTimer()
     {
         ProgressCountDownToStartTimerClientRpc(Time.deltaTime);
-        
+
         CountDownToStartTimer -= Time.deltaTime;
 
-        if (CountDownToStartTimer <= 0f)
-        {
-            GoToSpecifiedState(State.EnvironmentTurn);
-        }
+        if (CountDownToStartTimer <= 0f) GoToSpecifiedState(State.EnvironmentTurn);
     }
-    
-    [ClientRpc()]
+
+    [ClientRpc]
     private void ProgressCountDownToStartTimerClientRpc(float deltaTime)
     {
-        if (IsServer) { return; }
+        if (IsServer) return;
 
         CountDownToStartTimer -= Time.deltaTime;
     }
-    
+
     private void PlayEnvironmentTurn()
     {
-    
     }
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CheckDestinationCells();
-        if (PlayersHealth < 1)
+        if (_playersHealth < 1)
         {
+            gameWon = false;
             GoToSpecifiedState(State.EndOfGame);
         }
+
         if (currentRoundNumber >= totalRounds)
         {
+            gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
         }
         else
-        {
             GoToSpecifiedState(State.TacticalPause);
-        }
-        
     }
-    
-     public int currentRoundNumber;
-     
+
     private void ProgressTacticalTimer()
     {
         if (AllRoundsAreDone())
         {
+            gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
         }
-        
+
         _currentTimer.Value -= Time.deltaTime;
-        
-        if (_currentTimer.Value <= 0f  || PlayersAreReadyToPass())
-        {
-            GoToSpecifiedState(State.EnvironmentTurn);
-        }
+
+        if (_currentTimer.Value <= 0f || PlayersAreReadyToPass()) GoToSpecifiedState(State.EnvironmentTurn);
     }
 
     private bool AllRoundsAreDone()
@@ -243,7 +288,7 @@ public class TowerDefenseManager : NetworkBehaviour
     }
 
     public event EventHandler OnRoundNumberIncreased;
-    
+
     private void IncreaseRoundNumber()
     {
         currentRoundNumber += 1;
@@ -252,20 +297,18 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool PlayersAreReadyToPlay()
     {
-        bool areReady = true;
-        
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
+        var areReady = true;
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
             if (ConnectedPlayerIsNotReady(clientId))
             {
                 areReady = false;
                 break;
             }
-        }
 
         return areReady;
     }
-    
+
     public void SetPlayerReadyToPlay()
     {
         SetPlayerReadyToPlayServerRpc();
@@ -276,27 +319,25 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         SetPlayerReadyToPlayClientRpc(serverRpcParams.Receive.SenderClientId);
     }
-    
+
     [ClientRpc]
     private void SetPlayerReadyToPlayClientRpc(ulong clientIdOfPlayerReady)
     {
-        if (! _playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayerReady))
-        {
+        if (!_playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayerReady))
             _playerReadyToPlayDictionary.Add(clientIdOfPlayerReady, true);
-        }
     }
 
     private bool ConnectedPlayerIsNotReady(ulong clientIdOfPlayer)
     {
-        return ! _playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayer) || 
-               ! _playerReadyToPlayDictionary[clientIdOfPlayer];
+        return !_playerReadyToPlayDictionary.ContainsKey(clientIdOfPlayer) ||
+               !_playerReadyToPlayDictionary[clientIdOfPlayer];
     }
-    
+
     private void GoToSpecifiedState(State specified)
     {
         _currentState.Value = specified;
     }
-    
+
     private void GoToNextState()
     {
         _currentState.Value += 1 % _statesMethods.Length;
@@ -307,19 +348,15 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         CarryOutSpawnPlayersProcedure();
     }
-    
+
     public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
-    public class OnCurrentStateChangedEventArgs : EventArgs
-    {
-        public State previousValue;
-        public State newValue;
-    }
+
     private void TowerDefenseManager_CurrentState_OnValueChanged(State previousValue, State newValue)
     {
         OnCurrentStateChanged?.Invoke(this, new OnCurrentStateChangedEventArgs
         {
             previousValue = previousValue,
-            newValue = newValue,
+            newValue = newValue
         });
     }
 
@@ -335,8 +372,6 @@ public class TowerDefenseManager : NetworkBehaviour
         }
     }
 
-    private Action<ulong>[] _spawnPlayerMethods;
-
     private void InitializeSpawnPlayerMethods()
     {
         _spawnPlayerMethods = new Action<ulong>[]
@@ -346,97 +381,122 @@ public class TowerDefenseManager : NetworkBehaviour
             DebugPlayerSpawnError
         };
     }
-    
+
     /**
      * Throws NoMatchingClientIdFoundException.
      */
     private void SpawnPlayers()
     {
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-            CharacterSelectUI.CharacterId characterSelection =
+            var characterSelection =
                 GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(clientId);
 
             _spawnPlayerMethods[(int)characterSelection](clientId);
         }
     }
 
-    [Header("Player Spawn")]
-    [SerializeField] private Transform playerMonkeyPrefab;
-    [field: SerializeField] public Transform MonkeyBlockPlayerSpawn { get; private set; }
-
     private void SpawnMonkey(ulong clientId)
     {
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN MONKEY SPAWN");
         SpawnPlayerPrefab(clientId, playerMonkeyPrefab);
     }
-    
-    [SerializeField] private Transform playerRobotPrefab;
-    [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
     private void SpawnRobot(ulong clientId)
     {
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN ROBOT SPAWN");
         SpawnPlayerPrefab(clientId, playerRobotPrefab);
     }
-    
+
     private void SpawnPlayerPrefab(ulong clientId, Transform playerPrefab)
     {
-        Transform playerInstance = Instantiate(playerPrefab);
+        var playerInstance = Instantiate(playerPrefab);
 
-        NetworkObject playerNetworkObject = playerInstance.GetComponent<NetworkObject>();
-        
+        var playerNetworkObject = playerInstance.GetComponent<NetworkObject>();
+
         playerNetworkObject.SpawnAsPlayerObject(clientId, true);
     }
-    
+
     private void DebugPlayerSpawnError(ulong clientId)
     {
         Debug.LogError("Player selection is `None` when in game, which is not a valid value !");
     }
-    
-    
+
+
     private bool PlayersAreReadyToPass()
     {
-        bool areReady = true;
-        
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
+        var areReady = true;
+
+        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
             if (ConnectedPlayerIsNotReadyToPass(clientId))
             {
                 areReady = false;
                 break;
             }
-        }
 
         return areReady;
     }
+
     public void SetPlayerReadyToPass(bool value)
+    {
+        SetPlayerReadyToPassServerRpc(value);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerReadyToPassServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+    {
+        SetPlayerReadyToPassClientRpc(value, serverRpcParams.Receive.SenderClientId);
+    }
+
+    [ClientRpc]
+    private void SetPlayerReadyToPassClientRpc(bool value, ulong clientIdOfPlayerReady)
+    {
+        try
         {
-            SetPlayerReadyToPassServerRpc(value);
+            _playerReadyToPassDictionary.Add(clientIdOfPlayerReady, value);
         }
-    
-        [ServerRpc(RequireOwnership = false)]
-        private void SetPlayerReadyToPassServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+        catch (ArgumentException)
         {
-            SetPlayerReadyToPassClientRpc(value, serverRpcParams.Receive.SenderClientId);
+            _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
         }
-        
-        [ClientRpc]
-        private void SetPlayerReadyToPassClientRpc(bool value, ulong clientIdOfPlayerReady)
+    }
+
+    private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
+    {
+        return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
+               !_playerReadyToPassDictionary[clientIdOfPlayer];
+    }
+
+    private static void CheckDestinationCells()
+    {
+        DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
+        foreach (var cell in DestinationCells)
         {
-            try
+            if (cell.ContainsEnemy())
             {
-                _playerReadyToPassDictionary.Add(clientIdOfPlayerReady, value);
-            }
-            catch (ArgumentException)
-            {
-                _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
+
+                var enemies = cell.GetEnemies();
+                foreach (var enemy in enemies)
+                {
+                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
+                    TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
+                    Destroy(enemy.ToGameObject());
+                }
+
+                Instance._playersHealth--;
             }
         }
+    }
+
+    public static void ResetStaticData()
+    {
+        DestinationCells = null;
+    }
+
+    public class OnCurrentStateChangedEventArgs : EventArgs
+    {
+        public State newValue;
+        public State previousValue;
+    }
     
-        private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
-        {
-            return ! _playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) || 
-                   ! _playerReadyToPassDictionary[clientIdOfPlayer];
-        }
 }

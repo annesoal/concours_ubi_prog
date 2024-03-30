@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
 {
+    public abstract int Cost { get; set; }
     [field: Header("Buildable Object")]
     [SerializeField] protected BuildableObjectSO buildableObjectSO;
     

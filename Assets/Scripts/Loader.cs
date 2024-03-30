@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -18,11 +19,11 @@ public static class Loader
         RaphCopieBlocks,
     }
 
-    private static Scene _targetScene;
+    public static Scene TargetScene { private set; get; }
 
     public static void Load(Scene targetScene)
     {
-        _targetScene = targetScene;
+        TargetScene = targetScene;
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 
@@ -33,7 +34,7 @@ public static class Loader
 
     public static void LoaderCallback()
     {
-        SceneManager.LoadScene(_targetScene.ToString());
+        SceneManager.LoadScene(TargetScene.ToString());
     }
 
     public static void ReturnToMainMenuClean()
@@ -44,4 +45,5 @@ public static class Loader
             
         Load(Scene.MainMenuScene);
     }
+
 }
