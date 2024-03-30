@@ -40,13 +40,7 @@ namespace Grid
             return this.gameObject;
         }
 
-
-        private void OnDestroy()
-        {
-            TilingGrid.RemoveElement(gameObject, transform.position);
-            Debug.Log("OBSTACLE enlever de la cell");
-        }
-
+        
         public int Health
         {
             get { return health; }
@@ -58,6 +52,7 @@ namespace Grid
             Health -= damage;
             if (Health < 1)
             {
+                TilingGrid.RemoveElement(gameObject, transform.position);
                 Destroy(this.gameObject);
             }
         }

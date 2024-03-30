@@ -20,6 +20,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -30,24 +31,29 @@ namespace Enemies
          */
         public override void Move(int energy)
         {
+            if (!IsServer) return;
+            Debug.Log("DOGGO DEBUT TOUR " + energy);
+            if (!IsTimeToMove(energy)) return;
+            if (IsAtEndDestination())
             {
-                if (!IsServer) return;
-                if (!IsTimeToMove(energy)) return;
-
-                if (!TryMoveOnNextCell())
+                Debug.Log("DOGGO IS AT DESTINATION");
+                return;
+            }
+            if (!TryMoveOnNextCell())
+            {
+                hasPath = false;
+                if (!MoveSides())
                 {
-                    if (!MoveSides())
-                    {
-                        Debug.Log("ERROR derniere position BASIC: " + cell.position);
-                        Debug.Log("ERROR path position " + path[0].position);
-                        throw new Exception("moveside did not work, case not implemented yet !");
-                    }
+                    transform.rotation = Quaternion.Euler(0f, 90f, 0f); 
+                    Debug.Log("DOGGO NE PEUT PAS BOUGER");
                 }
             }
+
+            Debug.Log("DOGGO FIN TOUR");
             EmitOnAnyEnemyMoved();
         }
 
-        
+
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
@@ -64,19 +70,15 @@ namespace Enemies
         {
             if (_rand.NextDouble() < 0.5)
             {
-                Debug.Log("1- Gauche ");
                 if (!TryMoveOnNextCell(_gauche2d))
                 {
-                    Debug.Log("2- Droite ");
                     return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
-                Debug.Log("1- Droite ");
                 if (!TryMoveOnNextCell(_droite2d))
                 {
-                    Debug.Log("2- Gauche ");
                     return TryMoveOnNextCell(_gauche2d);
                 }
             }
@@ -93,18 +95,16 @@ namespace Enemies
 
             Cell nextCell = path[0];
             path.RemoveAt(0);
-            Debug.Log("DOGGO PATH next cell position" + nextCell.position);
+            
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
-                Debug.Log("VALID RETURN TRUE");
                 return true;
             }
-
-            Debug.Log("VALID RETURN FAlSE");
             return false;
         }
+
 
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
@@ -117,12 +117,11 @@ namespace Enemies
                 cell = nextCell;
                 Debug.Log("DOGGO valid bouge side" + cell.position);
                 Debug.Log("test autre position = " + nextPosition);
-                
+
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
-
-            hasPath = false;
+            
             return false;
         }
 
@@ -141,13 +140,6 @@ namespace Enemies
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
-            Debug.Log("DOGGO sees NO enemy " + hasNoEnemy);
-
-            if (!isValidBlockType)
-            {
-                Debug.Log("DOGGO MAUVAIS BLOCKTYPE : " + cell.type);
-            }
-
 
             if (!hasNoEnemy)
             {

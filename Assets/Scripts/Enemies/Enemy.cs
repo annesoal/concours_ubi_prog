@@ -4,6 +4,7 @@ using Ennemies;
 using Grid;
 using Grid.Interface;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Type = Grid.Type;
@@ -33,7 +34,7 @@ namespace Enemies
         protected Cell cell;
         public bool hasPath = false;
         public List<Cell> path;
-        
+        protected int indexInList;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
 
@@ -43,9 +44,8 @@ namespace Enemies
 
         protected virtual void Initialize()
         {
-            
         }
-        
+
         public void Start()
         {
             Initialize();
@@ -74,6 +74,7 @@ namespace Enemies
                     destinationToReturn = currentCell;
                 }
             }
+
             return destinationToReturn;
         }
 
@@ -81,7 +82,7 @@ namespace Enemies
         {
             return ennemyType;
         }
-        
+
         public int Health
         {
             get { return health; }
@@ -101,7 +102,7 @@ namespace Enemies
         {
             Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
-            TilingGrid.RemoveElement(gameObject,transform.position);
+            TilingGrid.RemoveElement(this.gameObject, transform.position);
             Destroy(this.gameObject);
         }
 
@@ -112,11 +113,7 @@ namespace Enemies
         {
             OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
         }
-        
 
-        public override void OnDestroy()
-        {
-        }
 
         protected void AddInGame(GameObject enemy)
         {
@@ -125,11 +122,24 @@ namespace Enemies
         }
 
 
-        public static List<GameObject>  GetEnemiesInGame()
+        public static List<GameObject> GetEnemiesInGame()
         {
             return enemiesInGame;
         }
 
+
+        protected bool IsAtEndDestination()
+        {
+            if (path.Count > 0)
+            {
+                Cell nextCell = path[0];
+                Debug.Log("SOOOO " + !((nextCell.type & BlockType.EnemyWalkable) > 0));
+                return !((nextCell.type & BlockType.EnemyWalkable) > 0);
+            }
+
+            Debug.Log("ENEMY na plus de path");
+            return false;
+        }
 
         public new TypeTopOfCell GetType()
         {
@@ -146,6 +156,7 @@ namespace Enemies
             enemiesInGame = null;
             OnAnyEnemyMoved = null;
         }
+
         public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
         {
             List<Enemy> enemies = new List<Enemy>();
@@ -158,6 +169,7 @@ namespace Enemies
                         enemies.Add(enemy);
                 }
             }
+
             return enemies;
         }
 

@@ -164,8 +164,7 @@ namespace Grid
 
             AddObjectToCellAtPosition(toPlace, destination);
         }
-        
-        
+
         
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
         {

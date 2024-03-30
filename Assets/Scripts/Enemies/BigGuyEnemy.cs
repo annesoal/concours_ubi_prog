@@ -27,6 +27,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -40,6 +41,11 @@ namespace Enemies
             {
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
+                if (IsAtEndDestination())
+                {
+                    Debug.Log("BASIC IS AT DESTINATION");
+                    return;
+                }
 
                 if (StartMoveDecision())
                 {
@@ -47,9 +53,8 @@ namespace Enemies
                 }
                 else
                 {
-                    Debug.Log("ERROR derniere position BIGGUY: " + cell.position);
-                    Debug.Log("ERROR path position " + path[0].position);
-                    throw new Exception("moveside did not work, case not implemented yet !");
+                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                    Debug.Log("BASIC NE PEUT PAS BOUGER");
                 }
             }
             EmitOnAnyEnemyMoved();
@@ -102,7 +107,8 @@ namespace Enemies
         //radius a 1
         private bool ChoseToAttackAround(Cell nextCell)
         {
-            List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), 1);
+            List<Cell> cellsInRadius =
+                TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), 1);
             foreach (var cell in cellsInRadius)
             {
                 if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(cell.GetObstacle()))
@@ -110,7 +116,7 @@ namespace Enemies
                     hasPath = false;
                     return true;
                 }
-                    
+
                 // TODO pour tower
             }
 

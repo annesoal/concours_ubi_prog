@@ -20,6 +20,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -30,26 +31,30 @@ namespace Enemies
          */
         public override void Move(int energy)
         {
+            if (!IsServer) return;
+            Debug.Log("BASIC DEBUT TOUR " + energy);
+            if (!IsTimeToMove(energy)) return;
+            if (IsAtEndDestination())
             {
-                if (!IsServer) return;
-                if (!IsTimeToMove(energy)) return;
+                Debug.Log("BASIC IS AT DESTINATION");
+                return;
+            }
 
-                if (!TryMoveOnNextCell())
+            if (!TryMoveOnNextCell())
+            {
+                hasPath = false;
+                if (MoveSides())
                 {
-                    if (MoveSides())
-                    {
-                        hasPath = false;
-                        
-                    }
-                    else
-                    {
-                        Debug.Log("ERROR derniere position BASIC: " +cell.position);
-                        Debug.Log("ERROR path position " + path[0].position);
-                        throw new Exception("moveside did not work, case not implemented yet !");
-                    }
+                    hasPath = false;
+                }
+                else
+                {
+                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                    Debug.Log("BASIC NE PEUT PAS BOUGER");
                 }
             }
-            
+
+            Debug.Log("BASIC FIN TOUR " + energy);
             EmitOnAnyEnemyMoved();
         }
 
@@ -69,19 +74,15 @@ namespace Enemies
         {
             if (_rand.NextDouble() < 0.5)
             {
-                Debug.Log("1- Gauche ");
                 if (!TryMoveOnNextCell(_gauche2d))
                 {
-                    Debug.Log("2- Droite ");
                     return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
-                Debug.Log("1- Droite ");
                 if (!TryMoveOnNextCell(_droite2d))
                 {
-                    Debug.Log("2- Gauche ");
                     return TryMoveOnNextCell(_gauche2d);
                 }
             }
@@ -97,14 +98,13 @@ namespace Enemies
 
             Cell nextCell = path[0];
             path.RemoveAt(0);
-            Debug.Log("BASIC PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
-            Debug.Log("BASIC Ne peut pas avancer");
+
             return false;
         }
 
@@ -141,13 +141,7 @@ namespace Enemies
             PathfindingInvalidCell(cell);
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
-            Debug.Log("BASIC sees NO enemy on top : " + hasNoEnemy);
 
-            if (!isValidBlockType)
-            {
-                Debug.Log("BASIC MAUVAIS BLOCKTYPE : " + cell.type);
-            }
-            
             if (!hasNoEnemy)
             {
                 // hasNoEnemy = true;
@@ -156,6 +150,7 @@ namespace Enemies
                 Debug.Log("BASIC CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
 
+            Debug.Log("BASIC isVAlidCell" + (isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell)));
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
         }
     }
