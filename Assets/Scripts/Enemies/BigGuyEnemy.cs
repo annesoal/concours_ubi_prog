@@ -11,6 +11,7 @@ namespace Enemies
     public class BigGuyEnemy : Enemy, ICorrupt<Obstacle>
     {
         private Random _rand = new();
+        [SerializeField] private int enemyDomage = 1;
 
         public BigGuyEnemy()
         {
@@ -84,7 +85,7 @@ namespace Enemies
 
         public void Corrupt(Obstacle toCorrupt)
         {
-            toCorrupt.Damage(3);
+            toCorrupt.Damage(enemyDomage);
             Debug.Log("BIGGUY attaque obstacle");
         }
         
