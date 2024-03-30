@@ -140,7 +140,6 @@ namespace Enemies
         {
             PathfindingInvalidCell(cell);
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoObstacle = !cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
             Debug.Log("BASIC sees NO enemy on top : " + hasNoEnemy);
 
@@ -148,7 +147,6 @@ namespace Enemies
             {
                 Debug.Log("BASIC MAUVAIS BLOCKTYPE : " + cell.type);
             }
-            
             
             if (!hasNoEnemy)
             {
@@ -158,7 +156,7 @@ namespace Enemies
                 Debug.Log("BASIC CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
 
-            return isValidBlockType && hasNoObstacle && hasNoEnemy && !PathfindingInvalidCell(cell);
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
         }
     }
 }

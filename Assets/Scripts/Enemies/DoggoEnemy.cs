@@ -47,10 +47,11 @@ namespace Enemies
             EmitOnAnyEnemyMoved();
         }
 
+        
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
-                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
+                   cellToCheck.HasNonWalkableBuilding();
         }
 
         private bool IsTimeToMove(int energy)
@@ -139,7 +140,6 @@ namespace Enemies
         private bool IsValidCell(Cell cell)
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoObstacle = !cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
             Debug.Log("DOGGO sees NO enemy " + hasNoEnemy);
 
@@ -157,7 +157,7 @@ namespace Enemies
                 Debug.Log("DOGGO CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
 
-            return isValidBlockType && hasNoObstacle && hasNoEnemy && !PathfindingInvalidCell(cell);
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
         }
     }
 }
