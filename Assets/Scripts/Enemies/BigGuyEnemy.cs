@@ -62,7 +62,6 @@ namespace Enemies
             if (PathfindingInvalidCell(nextCell))
             {
                 Corrupt(nextCell);
-                Debug.Log("FINI CORRUPT");
             }
             else
             {
