@@ -64,14 +64,17 @@ namespace Grid
         // Donne la Cellule a la position donnee.
         public Cell GetCell(Vector2Int position)
         {
-            bool outOfBound = 
-                position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
-
-            if (outOfBound)
+            if (PositionIsOutOfBounds(position))
                 throw new ArgumentException("Aucune cellule à la position donnée.");
             
             return _cells[position.x,position.y];
         }
+
+        private bool PositionIsOutOfBounds(in Vector2Int position)
+        {
+            return position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
+        }
+        
         public Cell GetCell(int x, int y)
         {
             Vector2Int position = new Vector2Int(){
@@ -167,6 +170,32 @@ namespace Grid
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
             
             RemoveElement(toPlace, initialGridPosition);
+        }
+        
+        ///<summary>Search in X or Y direction for a certain type cell.</summary>
+        /// <param name="initialCell">Not included in the search</param>
+        /// <param name="searchType"></param>
+        /// <param name="searchDirection"></param>
+        /// <returns>The cell of type in direction found, or the initial cell if nothing was found.</returns>
+        public Cell GetCellOfTypeAtDirection(Cell initialCell, Type searchType, Vector2Int searchDirection)
+        {
+            Vector2Int nextCellPosition = (initialCell.position + searchDirection);
+
+            int iInit = searchDirection.x != 0 ? nextCellPosition.x : nextCellPosition.y;
+            
+            for (int i = iInit; i < Size; i++)
+            {
+                Cell currentSearch = _cells[nextCellPosition.x, nextCellPosition.y];
+
+                if (currentSearch.Has(BlockType.Translate(searchType)))
+                {
+                    return currentSearch;
+                }
+
+                nextCellPosition += searchDirection;
+            }
+
+            return initialCell;
         }
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
