@@ -51,7 +51,7 @@ namespace Enemies
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
-                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
+                   cellToCheck.HasNonWalkableBuilding();
         }
 
         private bool IsTimeToMove(int energy)

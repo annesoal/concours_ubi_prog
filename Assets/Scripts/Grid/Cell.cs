@@ -126,6 +126,33 @@ namespace Grid
             return false;
         }
 
+        /// <returns>True if there's a building on the cell, except when the building is a trap.</returns>
+        public bool HasNonWalkableBuilding()
+        {
+            foreach (ITopOfCell objectOnTop in ObjectsTopOfCell)
+            {
+                if (IsNonWalkableBuilding(objectOnTop))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsNonWalkableBuilding(ITopOfCell objectOnTop)
+        {
+            if (objectOnTop.GetType() == TypeTopOfCell.Building)
+            {
+                BuildableObject buildableObject = objectOnTop.ToGameObject().GetComponent<BuildableObject>();
+                
+                return ! buildableObject.IsWalkable();
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public bool HasObjectOfTypeOnTop(TypeTopOfCell type)
         {
