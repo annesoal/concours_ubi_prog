@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2281a077473ad443ad9a9a40d2d41e8, type: 3}
-  m_Name: Selector
+  m_Name: ListAmulet
   m_EditorClassIdentifier: 
   AmuletToUse: {fileID: 11400000, guid: a1968f6342417dfd5a1083bb6ca2ea5e, type: 2}
   _amulets:
