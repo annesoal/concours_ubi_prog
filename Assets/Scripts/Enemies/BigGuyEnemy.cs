@@ -62,8 +62,8 @@ namespace Enemies
             Cell nextCell = path[0];
             path.RemoveAt(0);
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-           // if (ChoseToAttackAround(nextCell))
-               // return true;
+            if (ChoseToAttackAround(nextCell))
+                return true;
 
             if (nextCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
@@ -101,7 +101,7 @@ namespace Enemies
         //radius a 1
         private bool ChoseToAttackAround(Cell nextCell)
         {
-            List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(nextCell, 1);
+            List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), 1);
             foreach (var cell in cellsInRadius)
             {
                 if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(cell.GetObstacle()))
