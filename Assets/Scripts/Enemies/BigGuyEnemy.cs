@@ -13,7 +13,9 @@ namespace Enemies
     {
         private Random _rand = new();
         [SerializeField] private int _enemyDomage = 1;
-        [SerializeField] private int _attackRate;
+
+        [SerializeField]
+        private int _attackRate; // TODO different attackRate pour obstacle et tower? notamment pour amulettes
 
         public BigGuyEnemy()
         {
@@ -29,7 +31,9 @@ namespace Enemies
 
 
         /**
-         * Deplace un ennemi d'un bloc
+         * Bouge aleatoirement selon les cells autour de l'ennemi.
+         * - Attaquer un obstacle ou une tower
+         * - Avancer (et eviter ?)
          */
         public override void Move(int energy)
         {
@@ -37,7 +41,7 @@ namespace Enemies
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
 
-                if (ChecksForDestruction())
+                if (StartMoveDecision())
                 {
                     Debug.Log("BIGGUY a fait quelque chose");
                 }
@@ -50,7 +54,7 @@ namespace Enemies
             }
         }
 
-        public bool ChecksForDestruction()
+        public bool StartMoveDecision()
         {
             if (path == null || path.Count == 0)
                 return true;
@@ -58,39 +62,56 @@ namespace Enemies
             Cell nextCell = path[0];
             path.RemoveAt(0);
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-            List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(nextCell, 1);
-            foreach (var cell in cellsInRadius)
-            {
-                if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
-                {
-                    if (IsAttacking(cell.GetObstacle()))
-                    {
-                        return true;
-                    }
-                }
-            }
+            if (ChoseToAttackAround(nextCell))
+                return true;
 
-            if (PathfindingInvalidCell(nextCell))
+            if (nextCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
-                Obstacle obstacle = nextCell.GetObstacle();
-                Corrupt(obstacle);
+                Corrupt(nextCell.GetObstacle());
             }
             else
             {
-                Debug.Log("BIGGUY Avance !");
                 cell = nextCell;
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
-                return true;
             }
 
+            /*
+            if (!TryMoveOnNextCell(nextCell))
+            {
+                if (!MoveSides())
+                {
+                    Debug.Log("ERROR derniere position BIGGUY: " + cell.position);
+                    Debug.Log("ERROR path position " + path[0].position);
+                    throw new Exception("moveside did not work, case not implemented yet !");
+                }
+            }
+            */
+
+
+            return true;
             // Regarde si peut detruire quelque chose autour de lui
             // Si oui, % de chance de le faire. Si le fait, return true
             //      Si directement en face, detruit? return true
             //      
             // Sinon, avance : si obstacle, bouge ?
-            return true;
         }
 
+        //Checks si obstacle et tower a detruitre autour de lui, choisit de detruire ou non.
+        //radius a 1
+        private bool ChoseToAttackAround(Cell nextCell)
+        {
+            List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(nextCell, 1);
+            foreach (var cell in cellsInRadius)
+            {
+                if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(cell.GetObstacle()))
+                    return true;
+                // TODO pour tower
+            }
+
+            return false;
+        }
+
+        // Choisit d'attaquer selon aleatoirement
         private bool IsAttacking(Obstacle toCorrupt)
         {
             if (_rand.NextDouble() > 1 - _attackRate)
@@ -120,24 +141,62 @@ namespace Enemies
             return energy % ratioMovement == 0;
         }
 
-
         // Essaie de bouger vers l'avant
-        private bool TryMoveOnNextCell()
+        private bool TryMoveOnNextCell(Cell nextCell)
         {
-            Cell nextCell = path[0];
-            path.RemoveAt(0);
-            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-            if (true) // TODO, va probablement juste avancer
+            if (path == null || path.Count == 0)
+                return true;
+
+            Debug.Log("BASIC PATH next cell position" + nextCell.position);
+            if (IsValidCell(nextCell))
             {
                 cell = nextCell;
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
 
-            Debug.Log("BIGGUY Ne peut pas avancer");
             return false;
         }
 
+        private bool MoveSides()
+        {
+            if (_rand.NextDouble() < 0.5)
+            {
+                Debug.Log("1- Gauche ");
+                if (!TryMoveOnNextCell(_gauche2d))
+                {
+                    Debug.Log("2- Droite ");
+                    return TryMoveOnNextCell(_droite2d);
+                }
+            }
+            else
+            {
+                Debug.Log("1- Droite ");
+                if (!TryMoveOnNextCell(_droite2d))
+                {
+                    Debug.Log("2- Gauche ");
+                    return TryMoveOnNextCell(_gauche2d);
+                }
+            }
+
+            return false;
+        }
+
+        private bool TryMoveOnNextCell(Vector2Int direction)
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+            Debug.Log("BASIC SIDE cellPos + direction == " + nextPosition);
+
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                return true;
+            }
+
+            return false;
+        }
 
         /*
          * Bouge l'ennemi
