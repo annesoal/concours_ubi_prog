@@ -4,6 +4,7 @@ using Ennemies;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace Enemies
@@ -11,7 +12,8 @@ namespace Enemies
     public class BigGuyEnemy : Enemy, ICorrupt<Obstacle>
     {
         private Random _rand = new();
-        [SerializeField] private int enemyDomage = 1;
+        [SerializeField] private int _enemyDomage = 1;
+        [SerializeField] private int _attackRate;
 
         public BigGuyEnemy()
         {
@@ -35,22 +37,20 @@ namespace Enemies
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
 
-                if (LooksForDestruction())
+                if (ChecksForDestruction())
                 {
                     Debug.Log("BIGGUY a fait quelque chose");
-                     
                 }
                 else
                 {
                     Debug.Log("ERROR derniere position BIGGUY: " + cell.position);
                     Debug.Log("ERROR path position " + path[0].position);
                     throw new Exception("moveside did not work, case not implemented yet !");
-
                 }
             }
         }
 
-        public bool LooksForDestruction()
+        public bool ChecksForDestruction()
         {
             if (path == null || path.Count == 0)
                 return true;
@@ -59,6 +59,16 @@ namespace Enemies
             path.RemoveAt(0);
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
             List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(nextCell, 1);
+            foreach (var cell in cellsInRadius)
+            {
+                if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+                {
+                    if (IsAttacking(cell.GetObstacle()))
+                    {
+                        return true;
+                    }
+                }
+            }
 
             if (PathfindingInvalidCell(nextCell))
             {
@@ -72,25 +82,34 @@ namespace Enemies
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
-            
-            
+
             // Regarde si peut detruire quelque chose autour de lui
             // Si oui, % de chance de le faire. Si le fait, return true
-            //       Si directement en face, detruit, return true (peut avancer au prochain tour, sauf si choisit de detruire a cote)
-            //      Sinon, pile ou face.
-            // Sinon, ou si choisit de pas detruire, Move
+            //      Si directement en face, detruit? return true
+            //      
+            // Sinon, avance : si obstacle, bouge ?
             return true;
         }
 
+        private bool IsAttacking(Obstacle toCorrupt)
+        {
+            if (_rand.NextDouble() > 1 - _attackRate)
+            {
+                Corrupt(toCorrupt);
+                return true;
+            }
+
+            return false;
+        }
 
         public void Corrupt(Obstacle toCorrupt)
         {
-            toCorrupt.Damage(enemyDomage);
+            toCorrupt.Damage(_enemyDomage);
             Debug.Log("BIGGUY attaque obstacle");
         }
-        
-        
 
+
+        // Peut detruire obstacle et tower, toutes les cells sont valides a ce point
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return false;
@@ -118,7 +137,6 @@ namespace Enemies
             Debug.Log("BIGGUY Ne peut pas avancer");
             return false;
         }
-
 
 
         /*
@@ -155,8 +173,5 @@ namespace Enemies
 
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
         }
-
-
-       
     }
 }
