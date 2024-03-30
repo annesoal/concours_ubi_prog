@@ -171,6 +171,8 @@ namespace Grid
             
             RemoveElement(toPlace, initialGridPosition);
         }
+
+        private delegate void ActionRef<T>(ref T item);
         
         ///<summary>Search in X or Y direction for a certain type cell.</summary>
         /// <param name="initialCell">Not included in the search</param>
@@ -180,10 +182,33 @@ namespace Grid
         public Cell GetCellOfTypeAtDirection(Cell initialCell, Type searchType, Vector2Int searchDirection)
         {
             Vector2Int nextCellPosition = (initialCell.position + searchDirection);
-
-            int iInit = searchDirection.x != 0 ? nextCellPosition.x : nextCellPosition.y;
             
-            for (int i = iInit; i < Size; i++)
+            // if not, it is Y.
+            bool isXDirection = searchDirection.x != 0;
+
+            int iInit = isXDirection ? nextCellPosition.x : nextCellPosition.y;
+            
+            ActionRef<int> forPostFunction;
+            if (isXDirection)
+            {
+                forPostFunction = searchDirection.x < 0 ? Decrement : Increment; 
+            }
+            else
+            {
+                forPostFunction = searchDirection.y < 0 ? Decrement : Increment; 
+            }
+
+            Predicate<int> forCompareFunction;
+            if (isXDirection)
+            {
+                forCompareFunction = searchDirection.x < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
+            }
+            else
+            {
+                forCompareFunction = searchDirection.y < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
+            }
+            
+            for (int i = iInit; forCompareFunction(i); forPostFunction(ref i))
             {
                 Cell currentSearch = _cells[nextCellPosition.x, nextCellPosition.y];
 
@@ -196,6 +221,27 @@ namespace Grid
             }
 
             return initialCell;
+        }
+
+        private const int MINIMUM_POSITION_OF_ARRAY = 0;
+        private bool IsGreaterThanMimimumPosArray(int i)
+        {
+            return i > MINIMUM_POSITION_OF_ARRAY;
+        }
+
+        private bool IsLowerThanSize(int i)
+        {
+            return i < Size;
+        }
+        
+        private void Increment(ref int i)
+        {
+            i++;
+        }
+
+        private void Decrement(ref int i)
+        {
+            i--;
         }
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
