@@ -15,7 +15,7 @@ namespace Enemies
         [SerializeField] private int _enemyDomage = 1;
 
         [SerializeField]
-        private int _attackRate; // TODO different attackRate pour obstacle et tower? notamment pour amulettes
+        private int _attackRate; 
 
         public BigGuyEnemy()
         {
@@ -27,7 +27,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectOnGridInitialize(this.gameObject, transform.position);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -165,7 +165,7 @@ namespace Enemies
             if (path == null || path.Count == 0)
                 return true;
 
-            Debug.Log("BASIC PATH next cell position" + nextCell.position);
+            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;

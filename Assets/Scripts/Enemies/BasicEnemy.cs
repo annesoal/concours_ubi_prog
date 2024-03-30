@@ -20,7 +20,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectOnGridInitialize(this.gameObject, transform.position);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -43,14 +43,10 @@ namespace Enemies
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
-                if (MoveSides())
-                {
-                    hasPath = false;
-                }
-                else
+                if (!MoveSides())
                 {
                     transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                    Debug.Log("BASIC NE PEUT PAS BOUGER");
+                    Debug.Log("Le GameObject ne peut pas bouger.");
                 }
             }
 

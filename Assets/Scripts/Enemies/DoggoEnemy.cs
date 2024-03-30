@@ -20,7 +20,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectOnGridInitialize(this.gameObject, transform.position);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
