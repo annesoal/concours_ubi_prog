@@ -165,13 +165,14 @@ namespace Grid
             AddObjectToCellAtPosition(toPlace, destination);
         }
 
+        // TODO Verifier que ca bien corriger les ennemis qui se voient pas
         public void PlaceObjectOnGridInitialize(GameObject toPlace, Vector3 worldPositionOfSpawn)
         {
             Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
-            AddObjectToCellAtPosition(toPlace, destination);
+            AddObjectToCellAtPositionInit(toPlace, destination);
         }
 
-        
+        //TODO 
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
@@ -258,6 +259,13 @@ namespace Grid
             UpdateCell(cell);
             
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
+        }
+        
+        private void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
+        {
+            Cell cell = GetCell(cellPosition);
+            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(cell);
         }
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
