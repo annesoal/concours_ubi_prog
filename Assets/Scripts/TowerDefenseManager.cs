@@ -62,8 +62,9 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private Transform playerRobotPrefab;
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
+    [FormerlySerializedAs("selector")]
     [Header("Amulet")]
-    [SerializeField] public AmuletSelector selector; 
+    [SerializeField] public AmuletSelector amuletSelector; 
 
     private readonly NetworkVariable<State> _currentState = new();
 
@@ -95,22 +96,22 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
         // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
-        selector.SetAmulet();
+        amuletSelector.SetAmulet();
         SetAmuletFieldsToGameFields();
     }
 
     private void SetAmuletFieldsToGameFields()
     {
-        _playersHealth = selector.AmuletToUse.playersHealth;
-        tacticalPauseDuration = selector.AmuletToUse.tacticalPauseTime;
-        totalRounds = selector.AmuletToUse.numberOfTurns;
-        EnergyAvailable = selector.AmuletToUse.energy;
-        BaseTower.baseHealth = selector.AmuletToUse.towerBaseHealth;
-        BaseTower.baseAttack = selector.AmuletToUse.towerBaseAttack;
-        BaseTower.baseCost = selector.AmuletToUse.towerBaseCost;
-        BaseTrap.baseCost = selector.AmuletToUse.trapBaseCost;
-        Enemy.baseAttack = selector.AmuletToUse.enemyBaseAttack;
-        Enemy.baseHealth =  selector.AmuletToUse.enemyBaseHealth;   
+        _playersHealth = amuletSelector.AmuletToUse.playersHealth;
+        tacticalPauseDuration = amuletSelector.AmuletToUse.tacticalPauseTime;
+        totalRounds = amuletSelector.AmuletToUse.numberOfTurns;
+        EnergyAvailable = amuletSelector.AmuletToUse.energy;
+        BaseTower.baseHealth = amuletSelector.AmuletToUse.towerBaseHealth;
+        BaseTower.baseAttack = amuletSelector.AmuletToUse.towerBaseAttack;
+        BaseTower.baseCost = amuletSelector.AmuletToUse.towerBaseCost;
+        BaseTrap.baseCost = amuletSelector.AmuletToUse.trapBaseCost;
+        Enemy.baseAttack = amuletSelector.AmuletToUse.enemyBaseAttack;
+        Enemy.baseHealth =  amuletSelector.AmuletToUse.enemyBaseHealth;   
     }
     private void Start()
     {
@@ -135,20 +136,31 @@ public class TowerDefenseManager : NetworkBehaviour
            {
                AmuletSaveLoad save = new AmuletSaveLoad();
                List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
-               List<AmuletSO> unlockableAmulets =
-                    unlockedAmulets.Where(
-                       unlockedAmulet =>
-                       {
-                           return AmuletSelector.Instance.amulets.All(
-                               allAmulet =>
-                               {
-                                   return allAmulet.ID != unlockedAmulet.ID;
-                               });
-                       }).ToList();
+               List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
+
+               foreach (var amulet in amuletSelector.amulets)
+               {
+                    foreach (var unlockedAmulet in unlockedAmulets)
+                    {
+                        {
+                           if (unlockedAmulet.ID != amulet.ID) 
+                               unlockableAmulets.Add(amulet);
+                        }
+                    }     
+               }
+
+               if (unlockableAmulets.Count == 0)
+               {
+                   foreach (var amulet in amuletSelector.amulets)
+                   {
+                      unlockableAmulets.Add(amulet); 
+                   } 
+               }
+               unlockedAmulets.Add(unlockableAmulets[0]);
                
-               if (unlockableAmulets.Count > 0)
-                   unlockedAmulets.Add(unlockableAmulets[0]);
-               
+               Debug.Log("unlocked amulet " + unlockedAmulets.Count);
+               Debug.Log("unlockable amulet " + unlockableAmulets.Count);
+               Debug.Log("total amulet " + amuletSelector.amulets.Length);
                save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
            }
            
@@ -451,10 +463,8 @@ public class TowerDefenseManager : NetworkBehaviour
         DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         foreach (var cell in DestinationCells)
         {
-            Debug.Log(cell.position + " is being checked");
             if (cell.ContainsEnemy())
             {
-                Debug.Log(cell.position + " has enemy");
 
                 var enemies = cell.GetEnemies();
                 foreach (var enemy in enemies)

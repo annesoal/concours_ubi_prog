@@ -39,6 +39,7 @@ namespace Amulets
                 Debug.Log("file exists ?");
                 var reader = new StreamReader(JSONFile);
                 var loadedJson = reader.ReadToEnd();
+                reader.Close(); 
                 var sf = JsonUtility.FromJson<SaveFile>(loadedJson);
                 try
                 {
@@ -61,8 +62,9 @@ namespace Amulets
         {
             var sf = new SaveFile();
             sf.listOfPairs = FinalSave.ToArray();
-            var writer = new StreamWriter(JSONFile);
-            var jsonToSave = JsonUtility.ToJson(sf);
+            var writer = new StreamWriter(JSONFile, false);
+            string jsonToSave;
+            jsonToSave = JsonUtility.ToJson(sf);
             writer.Write(jsonToSave);
             writer.Close();
         }
@@ -72,14 +74,17 @@ namespace Amulets
             if (!hasBeenLoaded) 
                 Load();
             
-            var levelAmuletsPair = new LevelAmuletsPair();
-            levelAmuletsPair.level = (int)scene;
-            levelAmuletsPair.amulets = new int[amulets.Length];
-            
+            var levelAmuletsPair = new LevelAmuletsPair
+            {
+                level = (int)scene,
+                amulets = new int[amulets.Length]
+            };
+            Debug.Log(levelAmuletsPair.level); 
             for (var i = 0; i < amulets.Length; i++)
             {
                 var amulet = amulets[i];
                 levelAmuletsPair.amulets[i] = amulet.ID;
+                Debug.Log(levelAmuletsPair.amulets[i]);
             }
 
             AddOrOverwriteSave(levelAmuletsPair);
@@ -94,7 +99,7 @@ namespace Amulets
                 if (savedPair.level == pair.level)
                 {
                     FinalSave[i] = pair;
-                    break;
+                    return;
                 }
             }
 
@@ -108,7 +113,7 @@ namespace Amulets
         }
 
         [Serializable]
-        private class LevelAmuletsPair
+        private struct LevelAmuletsPair
         {
             public int level;
             public int[] amulets;
