@@ -1,4 +1,5 @@
 using System;
+using Ennemies;
 using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,24 +7,25 @@ using UnityEngine;
 
 namespace Grid
 {
-    
-    public enum ObstacleType 
+    public enum ObstacleType
     {
         None = 0,
         Test
     }
-    
 
-    public class Obstacle : NetworkBehaviour, ITopOfCell
+
+    public class Obstacle : NetworkBehaviour, ITopOfCell, IDamageable
     {
         [SerializeField] private float topOfCell = 0.72f;
-       
+
+        [SerializeField] private int health = 1;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
-        
+
         private void Start()
         {
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
         }
+
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Obstacle;
@@ -33,13 +35,26 @@ namespace Grid
         {
             return this.gameObject;
         }
-        
-        //TODO tester
+
+
         private void OnDestroy()
         {
-            TilingGrid.RemoveElement(gameObject, TilingGrid.LocalToGridPosition(transform.position));
+            TilingGrid.RemoveElement(gameObject, transform.position);
+        }
+
+        public int Health
+        {
+            get { return health; }
+            set => health = value;
+        }
+
+        public void Damage(int damage)
+        {
+            Health -= damage;
+            if (Health < 1)
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
-    
-
 }

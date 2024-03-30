@@ -8,7 +8,7 @@ using Random = System.Random;
 
 namespace Enemies
 {
-    public class BigGuyEnemy : Enemy, ICorrupt<Cell>
+    public class BigGuyEnemy : Enemy, ICorrupt<Obstacle>
     {
         private Random _rand = new();
 
@@ -61,7 +61,8 @@ namespace Enemies
 
             if (PathfindingInvalidCell(nextCell))
             {
-                Corrupt(nextCell);
+                Obstacle obstacle = nextCell.GetObstacle();
+                Corrupt(obstacle);
             }
             else
             {
@@ -81,18 +82,17 @@ namespace Enemies
         }
 
 
-        public void Corrupt(Cell nextCell)
+        public void Corrupt(Obstacle toCorrupt)
         {
-            //TilingGrid.RemoveElement();
-            //remove de la cell
-            //destroy object
-            Debug.Log("BIGGUY Destroy object");
+            toCorrupt.Damage(3);
+            Debug.Log("BIGGUY attaque obstacle");
         }
+        
+        
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
-            return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
-                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
+            return false;
         }
 
         private bool IsTimeToMove(int energy)
@@ -135,7 +135,6 @@ namespace Enemies
         {
             PathfindingInvalidCell(cell);
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoObstacle = !cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
             Debug.Log("BIGGUY sees NO enemy on top : " + hasNoEnemy);
 
@@ -153,7 +152,7 @@ namespace Enemies
                 Debug.Log("BIGGUY CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
 
-            return isValidBlockType && hasNoObstacle && hasNoEnemy && !PathfindingInvalidCell(cell);
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
         }
 
 

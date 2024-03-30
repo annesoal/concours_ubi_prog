@@ -91,6 +91,23 @@ namespace Grid
             }
             return null;
         }
+
+        // Si obstacle sur cell, le retourne
+        public Obstacle GetObstacle()
+        {
+            if (_objectsTopOfCell == null)
+                return null;
+            foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Obstacle)
+                {
+                    return objectTopOfCell.ToGameObject().GetComponent<Obstacle>();   
+                }
+            }
+            return null;
+        }
+
+       // TODO public Building GetBuilding(){}
         
         public List<Enemy> GetEnemies()
         {
