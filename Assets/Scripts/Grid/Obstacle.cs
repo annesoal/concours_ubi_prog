@@ -3,7 +3,7 @@ using Ennemies;
 using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
-
+using Interfaces;
 
 namespace Grid
 {

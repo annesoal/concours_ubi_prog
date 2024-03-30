@@ -5,7 +5,6 @@ using Grid;
 using Grid.Interface;
 using Interfaces;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Type = Grid.Type;
@@ -22,7 +21,7 @@ namespace Enemies
         Doggo
     }
 
-    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell, ICanDamage
+    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell //, ICanDamage
     {
         [SerializeField] protected EnnemyType ennemyType;
 
@@ -127,12 +126,12 @@ namespace Enemies
         }
 
 
+        // Fonction temporaire, le temps quon aille une fin de game
         protected bool IsAtEndDestination()
         {
             if (path.Count > 0)
             {
                 Cell nextCell = path[0];
-                Debug.Log("SOOOO " + !((nextCell.type & BlockType.EnemyWalkable) > 0));
                 return !((nextCell.type & BlockType.EnemyWalkable) > 0);
             }
 

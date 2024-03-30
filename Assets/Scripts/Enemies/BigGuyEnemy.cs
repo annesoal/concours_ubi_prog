@@ -6,6 +6,7 @@ using Grid.Interface;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = System.Random;
+using Interfaces;
 
 namespace Enemies
 {
@@ -20,7 +21,7 @@ namespace Enemies
         public BigGuyEnemy()
         {
             ennemyType = EnnemyType.BigGuy;
-            health = 1;
+        
         }
 
 
@@ -109,9 +110,9 @@ namespace Enemies
         {
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), 1);
-            foreach (var cell in cellsInRadius)
+            foreach (var aCell in cellsInRadius)
             {
-                if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(cell.GetObstacle()))
+                if (aCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(aCell.GetObstacle()))
                 {
                     hasPath = false;
                     return true;

@@ -13,7 +13,6 @@ namespace Enemies
         public DoggoEnemy()
         {
             ennemyType = EnnemyType.Doggo;
-            health = 1;
         }
 
 
