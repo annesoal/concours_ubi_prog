@@ -130,7 +130,7 @@ public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
 
     public static void ResetStaticData()
     {
-        _towersInGame = null;
+        _towersInGame = new List<BaseTower>();
     }
 
     public void PlayTurn()
