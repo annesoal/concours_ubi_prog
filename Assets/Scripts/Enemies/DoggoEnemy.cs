@@ -44,6 +44,7 @@ namespace Enemies
                     }
                 }
             }
+            EmitOnAnyEnemyMoved();
         }
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)

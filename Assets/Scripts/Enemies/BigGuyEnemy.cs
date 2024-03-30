@@ -52,6 +52,7 @@ namespace Enemies
                     throw new Exception("moveside did not work, case not implemented yet !");
                 }
             }
+            EmitOnAnyEnemyMoved();
         }
 
         public bool StartMoveDecision()
