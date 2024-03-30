@@ -28,6 +28,8 @@ public class WaitForOtherPlayerReadyUI : MonoBehaviour
     private void Start()
     {
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentState;
+        
+        readyButton.Select();
     }
 
     private void TowerDefenseManager_OnCurrentState
