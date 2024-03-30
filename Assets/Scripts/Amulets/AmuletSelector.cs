@@ -7,7 +7,7 @@ namespace Amulets
     [CreateAssetMenu(menuName = "AmuletSelector")]
     public class AmuletSelector : ScriptableObject
     {
-        public static int PlayerAmuletSelection = 2;
+        public static int PlayerAmuletSelection = 0;
         public AmuletSO AmuletToUse;
 
         public static AmuletSelector Instance;
