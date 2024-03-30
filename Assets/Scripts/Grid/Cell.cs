@@ -64,8 +64,6 @@ namespace Grid
 
         public bool ContainsEnemy()
         { 
-            Debug.Log(this.position);
-            Debug.Log(_objectsTopOfCell == null  || _objectsTopOfCell.Count == 0);
             if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
                 return false; 
             
