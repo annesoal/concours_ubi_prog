@@ -18,8 +18,8 @@ MonoBehaviour:
   towerBaseHealth: 5
   enemyBaseAttack: 1
   towerBaseAttack: 1
-  tacticalPauseTime: 5
-  numberOfTurns: 3
+  tacticalPauseTime: 1
+  numberOfTurns: 1
   energy: 3
   resourcesSpawnRate: 0.2
   towerBaseCost: 3
