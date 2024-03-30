@@ -64,14 +64,17 @@ namespace Grid
         // Donne la Cellule a la position donnee.
         public Cell GetCell(Vector2Int position)
         {
-            bool outOfBound = 
-                position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
-
-            if (outOfBound)
+            if (PositionIsOutOfBounds(position))
                 throw new ArgumentException("Aucune cellule à la position donnée.");
             
             return _cells[position.x,position.y];
         }
+
+        private bool PositionIsOutOfBounds(in Vector2Int position)
+        {
+            return position.x < 0 || position.y < 0 || position.x >= Size || position.y >= Size;
+        }
+        
         public Cell GetCell(int x, int y)
         {
             Vector2Int position = new Vector2Int(){
@@ -167,6 +170,78 @@ namespace Grid
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
             
             RemoveElement(toPlace, initialGridPosition);
+        }
+
+        private delegate void ActionRef<T>(ref T item);
+        
+        ///<summary>Search in X or Y direction for a certain type cell.</summary>
+        /// <param name="initialCell">Not included in the search</param>
+        /// <param name="searchType"></param>
+        /// <param name="searchDirection"></param>
+        /// <returns>The cell of type in direction found, or the initial cell if nothing was found.</returns>
+        public Cell GetCellOfTypeAtDirection(Cell initialCell, Type searchType, Vector2Int searchDirection)
+        {
+            Vector2Int nextCellPosition = (initialCell.position + searchDirection);
+            
+            // if not, it is Y.
+            bool isXDirection = searchDirection.x != 0;
+
+            int iInit = isXDirection ? nextCellPosition.x : nextCellPosition.y;
+            
+            ActionRef<int> forPostFunction;
+            if (isXDirection)
+            {
+                forPostFunction = searchDirection.x < 0 ? Decrement : Increment; 
+            }
+            else
+            {
+                forPostFunction = searchDirection.y < 0 ? Decrement : Increment; 
+            }
+
+            Predicate<int> forCompareFunction;
+            if (isXDirection)
+            {
+                forCompareFunction = searchDirection.x < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
+            }
+            else
+            {
+                forCompareFunction = searchDirection.y < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
+            }
+            
+            for (int i = iInit; forCompareFunction(i); forPostFunction(ref i))
+            {
+                Cell currentSearch = _cells[nextCellPosition.x, nextCellPosition.y];
+
+                if (currentSearch.Has(BlockType.Translate(searchType)))
+                {
+                    return currentSearch;
+                }
+
+                nextCellPosition += searchDirection;
+            }
+
+            return initialCell;
+        }
+
+        private const int MINIMUM_POSITION_OF_ARRAY = 0;
+        private bool IsGreaterThanMimimumPosArray(int i)
+        {
+            return i > MINIMUM_POSITION_OF_ARRAY;
+        }
+
+        private bool IsLowerThanSize(int i)
+        {
+            return i < Size;
+        }
+        
+        private void Increment(ref int i)
+        {
+            i++;
+        }
+
+        private void Decrement(ref int i)
+        {
+            i--;
         }
         
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)

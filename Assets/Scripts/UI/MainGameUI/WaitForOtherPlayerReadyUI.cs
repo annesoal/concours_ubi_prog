@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,19 @@ public class WaitForOtherPlayerReadyUI : MonoBehaviour
     {
         readyButton.onClick.AddListener(() =>
         {
+            readyButton.enabled = false;
             TowerDefenseManager.Instance.SetPlayerReadyToPlay();
             
             areYouReadyText.gameObject.SetActive(false);
             waitForOtherPlayerText.gameObject.SetActive(true);
         });
-        
-        readyButton.Select();
     }
 
     private void Start()
     {
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentState;
+        
+        readyButton.Select();
     }
 
     private void TowerDefenseManager_OnCurrentState

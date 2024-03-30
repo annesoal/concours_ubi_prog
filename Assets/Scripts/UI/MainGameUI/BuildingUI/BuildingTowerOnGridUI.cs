@@ -7,12 +7,17 @@ using UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Type = Grid.Type;
 
 public class BuildingTowerOnGridUI : MonoBehaviour
 {
     [Header("Buttons")]
     [SerializeField] private Button closeUIButton;
     [SerializeField] private Button buildButton;
+    
+    [Header("Arrows")]
+    [SerializeField] private Button upArrowButton;
+    [SerializeField] private Button downArrowButton;
     [SerializeField] private Button rightArrow;
     [SerializeField] private Button leftArrow;
 
@@ -33,6 +38,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         rightArrow.onClick.AddListener(ChangeSelectedCellRight);
         leftArrow.onClick.AddListener(ChangeSelectedCellLeft);
+        upArrowButton.onClick.AddListener(ChangeSelectedCellUp);
+        downArrowButton.onClick.AddListener(ChangeSelectedCellDown);
     }
 
     private void Start()
@@ -40,8 +47,11 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         SynchronizeBuilding.Instance.OnBuildingBuilt += SynchronizeBuilding_OnBuildingBuilt;
 
         InputManager.Instance.OnUserInterfaceCancelPerformed += InputManager_OnUserInterfaceCancelPerformed;
+        
         InputManager.Instance.OnUserInterfaceLeftPerformed += InputManager_OnUserInterfaceLeftPerformed;
         InputManager.Instance.OnUserInterfaceRightPerformed += InputManager_OnUserInterfaceRightPerformed;
+        InputManager.Instance.OnUserInterfaceUpPerformed += InputManager_OnUserInterfaceUpPerformed;
+        InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
         
         _buildableCells = TilingGrid.grid.GetBuildableCells();
         
@@ -49,6 +59,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         BasicShowHide.Hide(gameObject);
     }
+
 
     public void Show(BuildableObjectSO buildableObjectSO)
     {
@@ -173,10 +184,39 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     
     private void InputManager_OnUserInterfaceRightPerformed(object sender, EventArgs e)
     {
-        if (gameObject.activeSelf)
+        if (CanChangeSelectedCell())
         {
             ChangeSelectedCellRight();
         }
+    }
+    
+    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
+    {
+        if (CanChangeSelectedCell())
+        {
+            ChangeSelectedCellLeft();
+        }
+    }
+    
+    private void InputManager_OnUserInterfaceUpPerformed(object sender, EventArgs e)
+    {
+        if (CanChangeSelectedCell())
+        {
+            ChangeSelectedCellUp();
+        }
+    }
+
+    private void InputManager_OnUserInterfaceDownPerformed(object sender, EventArgs e)
+    {
+        if (CanChangeSelectedCell())
+        {
+            ChangeSelectedCellDown();
+        }
+    }
+
+    private bool CanChangeSelectedCell()
+    {
+        return gameObject.activeSelf;
     }
     
     private void InputManager_OnUserInterfaceCancelPerformed(object sender, EventArgs e)
@@ -199,35 +239,31 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         OnCloseUI?.Invoke(this, EventArgs.Empty);
     }
     
-    private void InputManager_OnUserInterfaceLeftPerformed(object sender, EventArgs e)
-    {
-        if (gameObject.activeSelf)
-        {
-            ChangeSelectedCellLeft();
-        }
-    }
-    
     private void ChangeSelectedCellRight()
     {
-        _selectedCell = _selectedCell.Next;
-
-        if (_selectedCell == null)
-        {
-            _selectedCell = _buildableCells.First;
-        }
-        
-        UpdateSelectedCell(_selectedCell.Value.position);
+        ChangeSelectedCell(Vector2Int.right);
     }
     
     private void ChangeSelectedCellLeft()
     {
-        _selectedCell = _selectedCell.Previous;
+        ChangeSelectedCell(Vector2Int.left);
+    }
+    
+    private void ChangeSelectedCellUp()
+    {
+        ChangeSelectedCell(Vector2Int.up);
+    }
+    
+    private void ChangeSelectedCellDown()
+    {
+        ChangeSelectedCell(Vector2Int.down);
+    }
 
-        if (_selectedCell == null)
-        {
-            _selectedCell = _buildableCells.Last;
-        }
-        
+    private void ChangeSelectedCell(Vector2Int direction)
+    {
+        _selectedCell.Value =
+            TilingGrid.grid.GetCellOfTypeAtDirection(_selectedCell.Value, Type.Buildable, direction);
+
         UpdateSelectedCell(_selectedCell.Value.position);
     }
 

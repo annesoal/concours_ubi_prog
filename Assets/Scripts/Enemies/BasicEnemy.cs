@@ -33,24 +33,24 @@ namespace Enemies
          */
         public override void Move(int energy)
         {
-            {
-                if (!IsServer) return;
-                if (!IsTimeToMove(energy)) return;
+            if (!IsServer) { return; }
+            if (!IsTimeToMove(energy)) { return; }
                 
-                    if (!TryMoveOnNextCell())
-                    {
-                        if (!MoveSides())
-                        {
-                            throw new Exception("moveside did not work, case not implemented yet !");
-                        }
-                    }
+            if (!TryMoveOnNextCell())
+            {
+                if (!MoveSides())
+                {
+                    throw new Exception("moveside did not work, case not implemented yet !");
+                }
             }
+            
+            EmitOnAnyEnemyMoved();
         }
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
-                   cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Building);
+                   cellToCheck.HasNonWalkableBuilding();
         }
 
         private bool IsTimeToMove(int energy)
