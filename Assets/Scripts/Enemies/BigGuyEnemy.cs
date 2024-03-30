@@ -62,12 +62,13 @@ namespace Enemies
             Cell nextCell = path[0];
             path.RemoveAt(0);
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-            if (ChoseToAttackAround(nextCell))
-                return true;
+           // if (ChoseToAttackAround(nextCell))
+               // return true;
 
             if (nextCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
                 Corrupt(nextCell.GetObstacle());
+                hasPath = false;
             }
             else
             {
@@ -104,7 +105,11 @@ namespace Enemies
             foreach (var cell in cellsInRadius)
             {
                 if (cell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(cell.GetObstacle()))
+                {
+                    hasPath = false;
                     return true;
+                }
+                    
                 // TODO pour tower
             }
 
@@ -116,6 +121,9 @@ namespace Enemies
         {
             if (_rand.NextDouble() > 1 - _attackRate)
             {
+                Debug.Log("BIGGUY CHOSE VIOLENCE");
+                Debug.Log("BIGGUY ATTACK sa position: " + this.gameObject.transform.position);
+                Debug.Log("BIGGUY ATTACK obstacle position: " + toCorrupt.transform.position);
                 Corrupt(toCorrupt);
                 return true;
             }
@@ -125,8 +133,11 @@ namespace Enemies
 
         public void Corrupt(Obstacle toCorrupt)
         {
+            Debug.Log("BIGGUY a un obstacle dans les jambes");
+            Debug.Log("BIGGUY ATTACK sa position: " + this.gameObject.transform.position);
+            Debug.Log("BIGGUY ATTACK obstacle position: " + toCorrupt.transform.position);
             toCorrupt.Damage(_enemyDomage);
-            Debug.Log("BIGGUY attaque obstacle");
+            Debug.Log("BIGGUY a attaque obstacle");
         }
 
 

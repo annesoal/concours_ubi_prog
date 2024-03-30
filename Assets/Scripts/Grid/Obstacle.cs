@@ -44,6 +44,7 @@ namespace Grid
         private void OnDestroy()
         {
             TilingGrid.RemoveElement(gameObject, transform.position);
+            Debug.Log("OBSTACLE enlever de la cell");
         }
 
         public int Health
