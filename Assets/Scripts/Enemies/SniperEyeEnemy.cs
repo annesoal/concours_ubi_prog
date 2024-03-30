@@ -1,9 +1,10 @@
 using Enemies;
 using Grid;
+using Grid.Interface;
 
 namespace Ennemies
 {
-    public class SniperEyeEnemy : Enemy, ICorrupt
+    public class SniperEyeEnemy : Enemy, ICorrupt<Cell>
     {
         
         public SniperEyeEnemy()
@@ -20,7 +21,7 @@ namespace Ennemies
             throw new System.NotImplementedException();
         }
 
-        public void Corrupt()
+        public void Corrupt(Cell cell)
         {
            
         }

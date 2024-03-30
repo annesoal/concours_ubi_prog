@@ -1,3 +1,4 @@
+using System;
 using Grid.Interface;
 using UnityEngine;
 
@@ -30,6 +31,12 @@ namespace Grid
         public GameObject ToGameObject()
         {
             return this.gameObject;
+        }
+        
+        //TODO tester
+        private void OnDestroy()
+        {
+            TilingGrid.RemoveElement(gameObject, TilingGrid.LocalToGridPosition(transform.position));
         }
     }
     
