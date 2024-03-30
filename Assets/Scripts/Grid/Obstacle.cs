@@ -1,5 +1,6 @@
 using System;
 using Grid.Interface;
+using Unity.Netcode;
 using UnityEngine;
 
 
@@ -13,7 +14,7 @@ namespace Grid
     }
     
 
-    public class Obstacle : MonoBehaviour, ITopOfCell
+    public class Obstacle : NetworkBehaviour, ITopOfCell
     {
         [SerializeField] private float topOfCell = 0.72f;
        
