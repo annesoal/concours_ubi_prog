@@ -165,6 +165,12 @@ namespace Grid
             AddObjectToCellAtPosition(toPlace, destination);
         }
 
+        public void PlaceObjectOnGridInitialize(GameObject toPlace, Vector3 worldPositionOfSpawn)
+        {
+            Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
+            AddObjectToCellAtPosition(toPlace, destination);
+        }
+
         
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
         {

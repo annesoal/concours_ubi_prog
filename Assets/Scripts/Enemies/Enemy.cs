@@ -34,7 +34,6 @@ namespace Enemies
         protected Cell cell;
         public bool hasPath = false;
         public List<Cell> path;
-        protected int indexInList;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
 

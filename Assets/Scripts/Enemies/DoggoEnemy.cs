@@ -20,7 +20,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+            TilingGrid.grid.PlaceObjectOnGridInitialize(this.gameObject, transform.position);
         }
 
 
@@ -144,7 +144,7 @@ namespace Enemies
             if (!hasNoEnemy)
             {
                 // hasNoEnemy = true;
-                Debug.Log("DOGGO Has enemy on top : " + true);
+                Debug.Log("DOGGO sees enemy on top : " + true);
                 Debug.Log("DOGGO next CELL POS " + cell.position);
                 Debug.Log("DOGGO CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
             }
