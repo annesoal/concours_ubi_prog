@@ -64,12 +64,20 @@ namespace Grid
 
         public bool ContainsEnemy()
         { 
-            if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
-                return false; 
+            Debug.Log("AU MOINS SE REND ICI");
+            Debug.Log("OBJECT == NULL " + (_objectsTopOfCell == null));
+            if(_objectsTopOfCell != null)
+                Debug.Log("OBJECT count == 0  " + (_objectsTopOfCell.Count == 0));
             
+            
+            if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
+               return false; 
+            Debug.Log("ContainsENEMY pass false ");
             foreach (ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
+                Debug.Log("ContainsEnemy : "+ (objectTopOfCell.GetType() == TypeTopOfCell.Enemy));
                 Debug.Log(objectTopOfCell.GetType());
+                
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                     return true;
             }

@@ -19,8 +19,8 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
-        }
+            //TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+            }
 
 
         /**
@@ -31,7 +31,6 @@ namespace Enemies
         public override void Move(int energy)
         {
             if (!IsServer) return;
-            Debug.Log("BASIC DEBUT TOUR " + energy);
             if (!IsTimeToMove(energy)) return;
             if (IsAtEndDestination())
             {
@@ -48,8 +47,6 @@ namespace Enemies
                     Debug.Log("Le GameObject ne peut pas bouger.");
                 }
             }
-
-            Debug.Log("BASIC FIN TOUR " + energy);
             EmitOnAnyEnemyMoved();
         }
 
@@ -108,7 +105,6 @@ namespace Enemies
         {
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-            Debug.Log("BASIC SIDE cellPos + direction == " + nextPosition);
 
             if (IsValidCell(nextCell))
             {

@@ -19,7 +19,7 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+           // TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
 
 
@@ -31,7 +31,6 @@ namespace Enemies
         public override void Move(int energy)
         {
             if (!IsServer) return;
-            Debug.Log("DOGGO DEBUT TOUR " + energy);
             if (!IsTimeToMove(energy)) return;
             if (IsAtEndDestination())
             {
@@ -47,8 +46,6 @@ namespace Enemies
                     Debug.Log("DOGGO NE PEUT PAS BOUGER");
                 }
             }
-
-            Debug.Log("DOGGO FIN TOUR");
             EmitOnAnyEnemyMoved();
         }
 
@@ -94,7 +91,7 @@ namespace Enemies
 
             Cell nextCell = path[0];
             path.RemoveAt(0);
-            
+           
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
@@ -109,14 +106,10 @@ namespace Enemies
         {
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-            Debug.Log("DOGGO SIDE cellPos + direction == " + nextPosition);
-
+          
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                Debug.Log("DOGGO valid bouge side" + cell.position);
-                Debug.Log("test autre position = " + nextPosition);
-
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
                 return true;
             }
@@ -137,8 +130,10 @@ namespace Enemies
 
         private bool IsValidCell(Cell cell)
         {
+            Debug.Log("DOGGO cell pour containsEnemy position " + TilingGrid.GridPositionToLocal(cell.position));
+
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+            bool hasNoEnemy = !cell.ContainsEnemy();
 
             if (!hasNoEnemy)
             {
