@@ -29,12 +29,6 @@ namespace Enemies
             {
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
-                if (IsAtEndDestination())
-                {
-                    Debug.Log("FLY IS AT DESTINATION");
-                    return;
-                }
-
                 if (StartMoveDecision())
                 {
                     Debug.Log("FLY a fait quelque chose");

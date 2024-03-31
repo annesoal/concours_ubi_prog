@@ -40,19 +40,13 @@ namespace Enemies
             {
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
-                if (IsAtEndDestination())
-                {
-                    Debug.Log("BIGGUY IS AT DESTINATION");
-                    return;
-                }
-
                 if (!ChoseToAttack())
                 {
                     if (!TryMoveOnNextCell())
                     {
                         if (!MoveSides())
                         {
-                            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                           // transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                             Debug.Log("BIGGUY NE PEUT PAS BOUGER");
                         }
                     }

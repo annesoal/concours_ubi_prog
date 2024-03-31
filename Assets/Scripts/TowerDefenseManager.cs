@@ -253,7 +253,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        CheckDestinationCells();
+        CheckEnemiesAtDestinationCells();
         if (_playersHealth < 1)
         {
             gameWon = false;
@@ -466,8 +466,8 @@ public class TowerDefenseManager : NetworkBehaviour
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
-
-    private static void CheckDestinationCells()
+    
+    private static void CheckEnemiesAtDestinationCells()
     {
         DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         foreach (var cell in DestinationCells)

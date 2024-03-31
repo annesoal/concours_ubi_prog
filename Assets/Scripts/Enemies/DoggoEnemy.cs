@@ -32,11 +32,6 @@ namespace Enemies
         {
             if (!IsServer) return;
             if (!IsTimeToMove(energy)) return;
-            if (IsAtEndDestination())
-            {
-                Debug.Log("DOGGO IS AT DESTINATION");
-                return;
-            }
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;

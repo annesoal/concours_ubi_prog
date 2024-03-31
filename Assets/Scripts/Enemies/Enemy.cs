@@ -35,10 +35,10 @@ namespace Enemies
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
-
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
+        
 
         protected virtual void Initialize()
         {
@@ -76,10 +76,6 @@ namespace Enemies
             return destinationToReturn;
         }
 
-        public EnnemyType GetEnnemyType()
-        {
-            return ennemyType;
-        }
 
         public int Health
         {
@@ -126,24 +122,12 @@ namespace Enemies
         }
 
 
-        // Fonction temporaire, le temps quon aille une fin de game
-        protected bool IsAtEndDestination()
-        {
-            if (path.Count > 0)
-            {
-                Cell nextCell = path[0];
-                return !((nextCell.type & BlockType.EnemyWalkable) > 0);
-            }
-
-            Debug.Log("ENEMY na plus de path");
-            return false;
-        }
 
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Enemy;
         }
-
+        
         public GameObject ToGameObject()
         {
             return gameObject;
@@ -184,10 +168,16 @@ namespace Enemies
         {
             return GetClosestDestination();
         }
+
         public static int baseHealth;
-        private int _health = baseHealth; 
+        private int _health = baseHealth;
         public static int baseAttack;
-        private int _attackDamage = baseAttack; 
-        public int AttackDamage { get => _attackDamage; set => value = _attackDamage; }
+        private int _attackDamage = baseAttack;
+
+        public int AttackDamage
+        {
+            get => _attackDamage;
+            set => value = _attackDamage;
+        }
     }
 }

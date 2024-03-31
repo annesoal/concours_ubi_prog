@@ -14,8 +14,6 @@ namespace Enemies
         {
             ennemyType = EnnemyType.Basic;
         }
-
-
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
@@ -32,12 +30,6 @@ namespace Enemies
         {
             if (!IsServer) return;
             if (!IsTimeToMove(energy)) return;
-            if (IsAtEndDestination())
-            {
-                Debug.Log("BASIC IS AT DESTINATION");
-                return;
-            }
-
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
@@ -87,7 +79,6 @@ namespace Enemies
         {
             if (path == null || path.Count == 0)
                 return true;
-
             Cell nextCell = path[0];
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
