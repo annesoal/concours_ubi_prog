@@ -15,44 +15,57 @@ namespace Utils
             Dictionary<Cell, Cell> cameFrom = new(); // K : current, V : previous
             Dictionary<Cell, float> originDistance = new(); // distance depuis origin
             Dictionary<Cell, float> destinationDistance = new(); // distance depuis destination
-            
+
             // introduire origin dans les variables
             openSet.Add(origin);
             originDistance.Add(origin, 0.0f);
             destinationDistance.Add(origin, Cell.Distance(origin, destination));
-
+            Debug.Log("Encore origin" + origin.position);
+            Debug.Log("Encore destination" + destination.position);
             while (openSet.Count > 0)
             {
+               
                 Cell current = GetMinFScoreCell(openSet, destinationDistance);
                 if (current.Equals(destination))
                     return ReconstructPath(cameFrom, current);
 
                 openSet.Remove(current);
-                List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current,1);
+
+                List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current, 1);
+                Debug.Log("NEIGHBOR pos " + neighbors[0].position);
+                Debug.Log("CURENT"  + current.position) ;
                 foreach (var neighbor in neighbors)
                 {
                     if (cellValidator(neighbor)) continue;
-                    
+
                     float tentativeDistanceOrigin = originDistance[current] + Cell.Distance(current, neighbor);
                     float neighborDistanceOrigin = GScoreNeighbor(originDistance, neighbor);
                     if (tentativeDistanceOrigin < neighborDistanceOrigin)
                     {
-                       bool wasAdded = cameFrom.TryAdd(neighbor, current);
-                       if (!wasAdded)
-                       {
-                           cameFrom[neighbor] = current;
-                       }
-                       originDistance[neighbor] = tentativeDistanceOrigin;
-                       destinationDistance[neighbor] = tentativeDistanceOrigin + Cell.Distance(neighbor, destination);
-                       if (!openSet.Contains(neighbor))
-                       {
-                           openSet.Add(neighbor);
-                       }
+                        bool wasAdded = cameFrom.TryAdd(neighbor, current);
+                        if (!wasAdded)
+                        {
+                            cameFrom[neighbor] = current;
+                        }
+
+                        originDistance[neighbor] = tentativeDistanceOrigin;
+                        destinationDistance[neighbor] = tentativeDistanceOrigin + Cell.Distance(neighbor, destination);
+                        if (!openSet.Contains(neighbor))
+                        {
+                            openSet.Add(neighbor);
+                        }
                     }
                 }
             }
             //TODO changer!
+
+
             openSet.Add(origin);
+            Debug.Log("STAR 10");
+            Debug.Log("STAR 10" + openSet[0].position);
+            Debug.Log("STAR 11");
+            Debug.Log("STAR 11 count " + openSet.Count);
+            Debug.Log("STAR 11" + openSet[1].position);
             return openSet;
         }
 
@@ -74,7 +87,7 @@ namespace Utils
 
         private static Cell GetMinFScoreCell(List<Cell> cells, Dictionary<Cell, float> distancesDestination)
         {
-            int indexSmallest = 0; 
+            int indexSmallest = 0;
             float minDistanceDestination = distancesDestination[cells[0]];
             for (int i = 0; i < cells.Count; i++)
             {
@@ -86,6 +99,7 @@ namespace Utils
                     indexSmallest = i;
                 }
             }
+
             return cells[indexSmallest];
         }
 
@@ -98,6 +112,7 @@ namespace Utils
                 current = cameFrom[current];
                 path.Insert(0, current);
             }
+
             return path;
         }
     }

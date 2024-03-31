@@ -103,10 +103,7 @@ namespace Enemies
         public static event EventHandler OnAnyEnemyMoved;
         public abstract void Move(int energy);
 
-        protected void EmitOnAnyEnemyMoved()
-        {
-            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
-        }
+
 
 
         protected void AddInGame(GameObject enemy)
@@ -118,27 +115,20 @@ namespace Enemies
 
         public static List<GameObject> GetEnemiesInGame()
         {
+            foreach (var ennemy in enemiesInGame)
+            {
+                Debug.Log("LISTE ENNEMIS zzz");
+                Debug.Log(TilingGrid.LocalToGridPosition(ennemy.transform.position));
+            }
             return enemiesInGame;
         }
-
-
+        
 
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Enemy;
         }
         
-        public GameObject ToGameObject()
-        {
-            return gameObject;
-        }
-
-        public static void ResetSaticData()
-        {
-            enemiesInGame = new List<GameObject>();
-            OnAnyEnemyMoved = null;
-        }
-
         public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
         {
             List<Enemy> enemies = new List<Enemy>();
@@ -178,6 +168,22 @@ namespace Enemies
         {
             get => _attackDamage;
             set => value = _attackDamage;
+        }
+        
+        protected void EmitOnAnyEnemyMoved()
+        {
+            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
+        }
+        
+        public GameObject ToGameObject()
+        {
+            return gameObject;
+        }
+
+        public static void ResetSaticData()
+        {
+            enemiesInGame = new List<GameObject>();
+            OnAnyEnemyMoved = null;
         }
     }
 }

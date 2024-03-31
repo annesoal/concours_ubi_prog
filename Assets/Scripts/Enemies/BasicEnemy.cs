@@ -14,17 +14,24 @@ namespace Enemies
         {
             ennemyType = EnnemyType.Basic;
         }
+
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-           
-            }
-
+        }
 
 
         public override void Move(int energy)
         {
             if (!IsServer) return;
+            if (path != null && path.Count > 0)
+            {
+                Debug.Log("PLANTE ici ?");
+                Debug.Log("zzz POSITION" + path[0].position);
+            }
+           
+
+            Debug.Log("zzz is time to move" + IsTimeToMove(energy));
             if (!IsTimeToMove(energy)) return;
             if (!TryMoveOnNextCell())
             {
@@ -35,6 +42,7 @@ namespace Enemies
                     Debug.Log("Le GameObject ne peut pas bouger.");
                 }
             }
+
             EmitOnAnyEnemyMoved();
         }
 
@@ -53,8 +61,11 @@ namespace Enemies
         // Essaie de bouger vers l'avant
         private bool TryMoveOnNextCell()
         {
+            Debug.Log("zzz path null? " + (path == null));
+
             if (path == null || path.Count == 0)
                 return true;
+            Debug.Log("ICI PATH DANS TRY "+ path[0].position);
             Cell nextCell = path[0];
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
@@ -67,7 +78,7 @@ namespace Enemies
             return false;
         }
 
-        
+
         //Commence a aller vers la droite ou la gauche aleatoirement
         private bool MoveSides()
         {
@@ -116,22 +127,16 @@ namespace Enemies
             Debug.Log("BASIC PLACE APRES : " + transform.position);
         }
 
-        private bool IsValidCell(Cell cell)
+        private bool IsValidCell(Cell toCheck)
         {
-            PathfindingInvalidCell(cell);
-            bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = ! TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Enemy);
+            PathfindingInvalidCell(toCheck);
+            bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
+            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
 
-            if (!hasNoEnemy)
-            {
-                // hasNoEnemy = true;
-                Debug.Log("BASIC sees enemy on top : " + true);
-                Debug.Log("BASIC next CELL POS " + cell.position);
-                Debug.Log("BASIC CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
-            }
-
-            Debug.Log("BASIC isVAlidCell" + (isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell)));
-            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
+            Debug.Log("zzz valid cell block" + ((toCheck.type & BlockType.EnemyWalkable) > 0));
+          
+            Debug.Log("BASIC isVAlidCell" + (isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck)));
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
         }
     }
 }
