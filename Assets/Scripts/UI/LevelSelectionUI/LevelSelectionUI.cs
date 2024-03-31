@@ -22,7 +22,11 @@ public class LevelSelectionUI : MonoBehaviour
         {
             if (currentHorizontalLayout < maxHorizonalLayout)
             { 
-                SingleLevelSelectUI levelSelectUI = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
+                SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
+                
+                templateInstance.gameObject.SetActive(true);
+                
+                //TODO give levelSO to instance
             }
             else
             {
