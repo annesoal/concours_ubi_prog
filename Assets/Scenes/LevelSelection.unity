@@ -481,7 +481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &586682307
 RectTransform:
   m_ObjectHideFlags: 0
@@ -499,9 +499,9 @@ RectTransform:
   - {fileID: 1201376161}
   m_Father: {fileID: 1197950984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 275, y: 0}
   m_SizeDelta: {x: 550, y: 440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &586682308
@@ -560,6 +560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9238e5492d34c4fee9b1d36ed5446589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameText: {fileID: 439780655}
+  amuletLayout: {fileID: 1201376161}
 --- !u!1 &612461909
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,6 +779,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectableLevelsListSO: {fileID: 11400000, guid: fd2dc2988f4ff14f1b2811b829a40284,
     type: 2}
+  singleLevelTemplateUI: {fileID: 586682309}
+  maxHorizonalLayout: 3
+  levelVerticalLayout: {fileID: 621895164}
 --- !u!1 &1181344628
 GameObject:
   m_ObjectHideFlags: 0
