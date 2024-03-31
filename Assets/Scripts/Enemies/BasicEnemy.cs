@@ -17,15 +17,11 @@ namespace Enemies
         protected override void Initialize()
         {
             AddInGame(this.gameObject);
-            //TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+           
             }
 
 
-        /**
-         * Deplace un ennemi d'un block :
-         *      Vers l'avant si aucun obstacle
-         *      Gauche ou droite si un obstacle
-         */
+
         public override void Move(int energy)
         {
             if (!IsServer) return;
@@ -53,6 +49,25 @@ namespace Enemies
             return energy % ratioMovement == 0;
         }
 
+
+        // Essaie de bouger vers l'avant
+        private bool TryMoveOnNextCell()
+        {
+            if (path == null || path.Count == 0)
+                return true;
+            Cell nextCell = path[0];
+            path.RemoveAt(0);
+            if (IsValidCell(nextCell))
+            {
+                cell = nextCell;
+                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
+                return true;
+            }
+
+            return false;
+        }
+
+        
         //Commence a aller vers la droite ou la gauche aleatoirement
         private bool MoveSides()
         {
@@ -69,23 +84,6 @@ namespace Enemies
                 {
                     return TryMoveOnNextCell(_gauche2d);
                 }
-            }
-
-            return false;
-        }
-
-        // Essaie de bouger vers l'avant
-        private bool TryMoveOnNextCell()
-        {
-            if (path == null || path.Count == 0)
-                return true;
-            Cell nextCell = path[0];
-            path.RemoveAt(0);
-            if (IsValidCell(nextCell))
-            {
-                cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
-                return true;
             }
 
             return false;
