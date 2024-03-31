@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 
-public class Player : NetworkBehaviour
+public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
 
@@ -282,5 +282,15 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
+    }
+
+    public TypeTopOfCell GetType()
+    {
+        return TypeTopOfCell.Player;
+    }
+
+    public GameObject ToGameObject()
+    {
+        return this.gameObject;
     }
 }
