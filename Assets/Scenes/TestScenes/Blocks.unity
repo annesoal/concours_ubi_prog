@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18029127, g: 0.22572401, b: 0.3069303, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029143, g: 0.22572419, b: 0.30693057, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6683,8 +6683,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   closeUIButton: {fileID: 949549746}
   buildButton: {fileID: 612827608}
-  upArrowButton: {fileID: 0}
-  downArrowButton: {fileID: 0}
+  upArrowButton: {fileID: 1349391163}
+  downArrowButton: {fileID: 11259261}
   rightArrow: {fileID: 74788136}
   leftArrow: {fileID: 1180552331}
   errorText: {fileID: 2057613908}
@@ -9046,7 +9046,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054340107}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -17150,7 +17150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
