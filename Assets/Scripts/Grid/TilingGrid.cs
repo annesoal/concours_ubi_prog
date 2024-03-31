@@ -157,6 +157,12 @@ namespace Grid
             
             PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
+        
+        public bool HasTopOfCellOfType(Cell cell, TypeTopOfCell typeTopOfCell)
+        {
+            Cell cellUpdated = grid.GetCell(cell.position);
+            return cellUpdated.HasTopOfCellOfType(typeTopOfCell);
+        }
 
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
         {
