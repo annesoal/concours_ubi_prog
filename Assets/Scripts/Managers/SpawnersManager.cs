@@ -54,10 +54,10 @@ namespace Managers
         {
             foreach (Vector2Int positionOfSpawn in positionToObstacles)
             {
-                GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
                 Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-                if (isInvalidCell.Invoke(cell))
-                    continue; 
+                    if (isInvalidCell.Invoke(cell))
+                        continue; 
+                GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
                 instance.GetComponent<NetworkObject>().Spawn(true);
             }
