@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 using Type = Grid.Type;
@@ -20,6 +22,7 @@ namespace Utils
 
         [SerializeField] private int _endingRound = -1;
         [SerializeField] private int _period;
+        [SerializeField] private List<TypeTopOfCell> blockingElementsType;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
         [Header("How")] [SerializeField] private double _spawnRate;
@@ -30,7 +33,7 @@ namespace Utils
         private Vector2Int _position;
         private int _positionInList;
         private Random _rand = new();
-        private Func<bool> Predicate;
+        private Func<bool> _predicatePosition;
 
         private int timeToRepeate;
         public GameObject ObjectToSpawn => _objectToSpawn;
@@ -42,14 +45,24 @@ namespace Utils
             _position = new Vector2Int();
             _helper = new SpawnerGridHelper(_position, _BlockTypeToSpawnOn);
             timeToRepeate = _period;
-            Predicate = CreatePredicate();
+            _predicatePosition = CreatePositionPredicate();
         }
 
+        private bool IsInvalidCell(Cell cell)
+        {
+            foreach (var elementType in blockingElementsType)
+            {
+                if (cell.HasObjectOfTypeOnTop(elementType))
+                    return true;
+            }
+
+            return false;
+        }
         /// <summary>
         ///     Permet de creer un predicat pour la repetition si le _startingRound est different de -1.
         /// </summary>
         /// <returns></returns>
-        private Func<bool> CreatePredicate()
+        private Func<bool> CreatePositionPredicate()
         {
             if (_startingRound == -1) return () => true;
 
@@ -132,13 +145,13 @@ namespace Utils
             TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
         {
             if (changedEventArgs.newValue == _timeSlot)
-                if (Predicate.Invoke())
+                if (_predicatePosition.Invoke())
                     if (_isServer)
                     {
                         var positions = GeneratePositions();
                         if (SpawnersManager.Instance == null)
                             throw new Exception("SpawnersManager instance has not been set !");
-                        SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList);
+                        SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList, IsInvalidCell);
                     }
         }
     }

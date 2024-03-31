@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 
-public class Player : NetworkBehaviour
+public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
 
@@ -113,6 +113,11 @@ public class Player : NetworkBehaviour
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
         }
+        
+        if (IsServer)
+        {
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
+        }
     }
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
@@ -196,6 +201,7 @@ public class Player : NetworkBehaviour
 
     public IEnumerator Move()
     {
+        Vector2Int oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
         if (nextPosition == null) yield break;
@@ -204,6 +210,7 @@ public class Player : NetworkBehaviour
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
     }
 
     private bool IsReadyToPickUp()
@@ -282,5 +289,15 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
+    }
+
+    public TypeTopOfCell GetType()
+    {
+        return TypeTopOfCell.Player;
+    }
+
+    public GameObject ToGameObject()
+    {
+        return this.gameObject;
     }
 }

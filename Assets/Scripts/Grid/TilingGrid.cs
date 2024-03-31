@@ -151,13 +151,31 @@ namespace Grid
 
         }
         
+        
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
         {
             Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
             
-            PlaceObjectAtPositionOnGrid(toPlace, destination);
+            PlaceObjectAtPositionOnGrid(toPlace, destination, worldPositionOfSpawn.y);
         }
 
+        public static void UpdateMovePositionOnGrid(GameObject toUpdate, Vector2Int origin, Vector2Int destination)
+        {
+            Cell originCell = grid.GetCell(origin);
+            originCell.ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
+            grid.UpdateCell(originCell);
+            
+            Cell destinationCell = grid.GetCell(destination);
+            destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
+            grid.UpdateCell(originCell);
+        }
+        
+        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination, float yPos)
+        {
+            RemoveObjectFromCurrentCell(toPlace);
+
+            AddObjectToCellAtPosition(toPlace, destination, yPos);
+        }
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
         {
             RemoveObjectFromCurrentCell(toPlace);
@@ -171,6 +189,29 @@ namespace Grid
             
             RemoveElement(toPlace, initialGridPosition);
         }
+        
+        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition, float yPos = TopOfCell)
+        {
+            Cell cell = GetCell(cellPosition);
+            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(cell);
+            
+            toPlace.transform.position = GridPositionToLocal(cell.position, yPos);
+        }
+         public static void RemoveElement(GameObject element, Vector2Int position)
+         {
+             try
+             {
+                 var cell =grid.GetCell(position);
+                 cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
+                 grid.UpdateCell(cell);
+             }
+             catch (ArgumentException)
+             {
+             }
+             
+         }
+               
 
         private delegate void ActionRef<T>(ref T item);
         
@@ -244,14 +285,7 @@ namespace Grid
             i--;
         }
         
-        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
-        {
-            Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
-            UpdateCell(cell);
-            
-            toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
-        }
+
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
@@ -275,20 +309,7 @@ namespace Grid
             return cells;
         }
 
-        public static void RemoveElement(GameObject element, Vector2Int position)
-        {
-            try
-            {
-                var cell =grid.GetCell(position);
-                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
-                grid.UpdateCell(cell);
-            }
-            catch (ArgumentException)
-            {
-            }
-            
-        }
-        
+ 
         public static void RemoveElement(GameObject element, Vector3 position)
         {
             try
