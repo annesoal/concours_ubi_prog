@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using TMPro;
 using UI;
 using Unity.Mathematics;
@@ -87,6 +88,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         if (TryShowMissingResourceError()) { return; }
         
         if (TryShowAlreadyHasBuildingError()) { return; }
+
+        if (TryShowHasEnemyError()) { return; }
         
         BasicShowHide.Hide(errorText.gameObject);
         ShowPreviewOnSelectedCell();
@@ -98,10 +101,17 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
         
-        DestroyPreview();
-            
-        errorText.text = ALREADY_HAS_BUILDING_ERROR;
-        BasicShowHide.Show(errorText.gameObject);
+        ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
+
+        return true;
+    }
+
+    private const string HAS_ENEMY_ERROR = "Building Spot Has Enemy On It !";
+    private bool TryShowHasEnemyError()
+    {
+        if (!_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy)) { return false; }
+        
+        ShowErrorText(HAS_ENEMY_ERROR);
 
         return true;
     }
@@ -110,13 +120,18 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     private bool TryShowMissingResourceError()
     {
         if (CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO)) { return false; } 
+
+        ShowErrorText(MISSING_RESOURCE_ERROR);
         
+        return true;
+    }
+
+    private void ShowErrorText(string toShow)
+    {
         DestroyPreview();
             
-        errorText.text = MISSING_RESOURCE_ERROR;
+        errorText.text = toShow;
         BasicShowHide.Show(errorText.gameObject);
-
-        return true;
     }
     
     private void ShowPreviewOnSelectedCell()
@@ -157,7 +172,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
-               CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO);
+               CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO) &&
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -98,7 +99,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         _selectedCell.Value = TilingGrid.grid.GetCell(_selectedCell.Value.position);
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
-               CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild);
+               CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild) &&
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
     }
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
@@ -109,8 +111,6 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         }
     }
 
-    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
-    
     private void UpdateSelectedCell(Vector2Int cellToUpdate)
     {
         if (_selectedCell.Value.position == cellToUpdate)
@@ -129,20 +129,30 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         if (TryShowMissingResourceError()) { return; }
         
         if (TryShowAlreadyHasBuildingError()) { return; }
+
+        if (TryShowHasEnemyError()) { return; }
         
         BasicShowHide.Hide(errorText.gameObject);
             
         ShowPreview();
     }
 
+    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
     private bool TryShowAlreadyHasBuildingError()
     {
         if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
         
-        HidePreview();
-            
-        errorText.text = ALREADY_HAS_BUILDING_ERROR;
-        BasicShowHide.Show(errorText.gameObject);
+        ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
+
+        return true;
+    }
+    
+    private const string HAS_ENEMY_ERROR = "Building Spot Has Enemy On It !";
+    private bool TryShowHasEnemyError()
+    {
+        if (!_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy)) { return false; }
+        
+        ShowErrorText(HAS_ENEMY_ERROR);
 
         return true;
     }
@@ -152,12 +162,17 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     {
         if (CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild)) { return false; } 
         
-        HidePreview();
-            
-        errorText.text = MISSING_RESOURCE_ERROR;
-        BasicShowHide.Show(errorText.gameObject);
+        ShowErrorText(MISSING_RESOURCE_ERROR);
 
         return true;
+    }
+    
+    private void ShowErrorText(string toShow)
+    {
+        HidePreview();
+            
+        errorText.text = toShow;
+        BasicShowHide.Show(errorText.gameObject);
     }
 
     private void ShowPreview()
