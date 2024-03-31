@@ -133,7 +133,7 @@ namespace Enemies
             Debug.Log("DOGGO cell pour containsEnemy position " + TilingGrid.GridPositionToLocal(cell.position));
 
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = !cell.ContainsEnemy();
+            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Enemy);
 
             if (!hasNoEnemy)
             {

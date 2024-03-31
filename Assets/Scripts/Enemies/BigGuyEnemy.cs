@@ -10,18 +10,16 @@ using Interfaces;
 
 namespace Enemies
 {
-    public class BigGuyEnemy : Enemy, ICorrupt<Obstacle>
+    public class BigGuyEnemy : Enemy
     {
         private Random _rand = new();
         [SerializeField] private int _enemyDomage = 1;
 
-        [SerializeField]
-        private int _attackRate; 
+        [SerializeField] private int _attackRate;
 
         public BigGuyEnemy()
         {
             ennemyType = EnnemyType.BigGuy;
-        
         }
 
 
@@ -44,112 +42,72 @@ namespace Enemies
                 if (!IsTimeToMove(energy)) return;
                 if (IsAtEndDestination())
                 {
-                    Debug.Log("BASIC IS AT DESTINATION");
+                    Debug.Log("BIGGUY IS AT DESTINATION");
                     return;
                 }
 
-                if (StartMoveDecision())
+                if (!ChoseToAttack())
                 {
-                    Debug.Log("BIGGUY a fait quelque chose");
-                }
-                else
-                {
-                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                    Debug.Log("BASIC NE PEUT PAS BOUGER");
+                    if (!TryMoveOnNextCell())
+                    {
+                        if (!MoveSides())
+                        {
+                            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                            Debug.Log("BIGGUY NE PEUT PAS BOUGER");
+                        }
+                    }
                 }
             }
             EmitOnAnyEnemyMoved();
         }
 
-        public bool StartMoveDecision()
+        public bool ChoseToAttack()
         {
             if (path == null || path.Count == 0)
                 return true;
-
             Cell nextCell = path[0];
             path.RemoveAt(0);
+
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-            if (ChoseToAttackAround(nextCell))
-                return true;
 
-            if (nextCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
-            {
-                Corrupt(nextCell.GetObstacle());
-                hasPath = false;
-            }
-            else
-            {
-                cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
-            }
-
-            /*
-            if (!TryMoveOnNextCell(nextCell))
-            {
-                if (!MoveSides())
-                {
-                    Debug.Log("ERROR derniere position BIGGUY: " + cell.position);
-                    Debug.Log("ERROR path position " + path[0].position);
-                    throw new Exception("moveside did not work, case not implemented yet !");
-                }
-            }
-            */
-
-
-            return true;
-            // Regarde si peut detruire quelque chose autour de lui
-            // Si oui, % de chance de le faire. Si le fait, return true
-            //      Si directement en face, detruit? return true
-            //      
-            // Sinon, avance : si obstacle, bouge ?
-        }
-
-        //Checks si obstacle et tower a detruitre autour de lui, choisit de detruire ou non.
-        //radius a 1
-        private bool ChoseToAttackAround(Cell nextCell)
-        {
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), 1);
+            if (ChoseAttackObstacle(cellsInRadius)) return true;
+
+            // TODO pour tower
+            return false;
+        }
+
+        private bool ChoseAttackObstacle(List<Cell> cellsInRadius)
+        {
             foreach (var aCell in cellsInRadius)
             {
-                if (aCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) && IsAttacking(aCell.GetObstacle()))
+                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Obstacle) &&
+                    IsAttacking(aCell.GetObstacle()))
                 {
                     hasPath = false;
                     return true;
                 }
-
-                // TODO pour tower
             }
 
             return false;
         }
+
 
         // Choisit d'attaquer selon aleatoirement
         private bool IsAttacking(Obstacle toCorrupt)
         {
             if (_rand.NextDouble() > 1 - _attackRate)
             {
-                Debug.Log("BIGGUY CHOSE VIOLENCE");
-                Debug.Log("BIGGUY ATTACK sa position: " + this.gameObject.transform.position);
-                Debug.Log("BIGGUY ATTACK obstacle position: " + toCorrupt.transform.position);
-                Corrupt(toCorrupt);
+                toCorrupt.Damage(_enemyDomage);
                 return true;
             }
 
             return false;
         }
 
-        public void Corrupt(Obstacle toCorrupt)
-        {
-            Debug.Log("BIGGUY a un obstacle dans les jambes");
-            Debug.Log("BIGGUY ATTACK sa position: " + this.gameObject.transform.position);
-            Debug.Log("BIGGUY ATTACK obstacle position: " + toCorrupt.transform.position);
-            toCorrupt.Damage(_enemyDomage);
-            Debug.Log("BIGGUY a attaque obstacle");
-        }
 
-
-        // Peut detruire obstacle et tower, toutes les cells sont valides a ce point
+        // Peut detruire obstacle et tower, tous les cells avec obstacles `solides` sont valides 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return false;
@@ -161,11 +119,12 @@ namespace Enemies
         }
 
         // Essaie de bouger vers l'avant
-        private bool TryMoveOnNextCell(Cell nextCell)
+        private bool TryMoveOnNextCell()
         {
             if (path == null || path.Count == 0)
                 return true;
 
+            Cell nextCell = path[0];
             Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
@@ -181,19 +140,15 @@ namespace Enemies
         {
             if (_rand.NextDouble() < 0.5)
             {
-                Debug.Log("1- Gauche ");
                 if (!TryMoveOnNextCell(_gauche2d))
                 {
-                    Debug.Log("2- Droite ");
                     return TryMoveOnNextCell(_droite2d);
                 }
             }
             else
             {
-                Debug.Log("1- Droite ");
                 if (!TryMoveOnNextCell(_droite2d))
                 {
-                    Debug.Log("2- Gauche ");
                     return TryMoveOnNextCell(_gauche2d);
                 }
             }
@@ -230,26 +185,10 @@ namespace Enemies
 
         private bool IsValidCell(Cell cell)
         {
-            PathfindingInvalidCell(cell);
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = !cell.HasTopOfCellOfType(TypeTopOfCell.Enemy);
-            Debug.Log("BIGGUY sees NO enemy on top : " + hasNoEnemy);
-
-            if (!isValidBlockType)
-            {
-                Debug.Log("BIGGUY MAUVAIS BLOCKTYPE : " + cell.type);
-            }
-
-
-            if (!hasNoEnemy)
-            {
-                // hasNoEnemy = true;
-                Debug.Log("BIGGUY sees enemy on top : " + true);
-                Debug.Log("BIGGUY next CELL POS " + cell.position);
-                Debug.Log("BIGGUY CELL POS: " + TilingGrid.LocalToGridPosition(transform.position));
-            }
-
-            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(cell);
+            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Enemy);
+            bool hasNoObstacle = !TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Obstacle);
+            return isValidBlockType && hasNoEnemy && hasNoObstacle ;
         }
     }
 }
