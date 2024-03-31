@@ -16,7 +16,6 @@ public static class Loader
         CharacterSelectScene,
         // TEST SCENES
         Blocks,
-        RaphCopieBlocks,
     }
 
     public static Scene TargetScene { private set; get; }
