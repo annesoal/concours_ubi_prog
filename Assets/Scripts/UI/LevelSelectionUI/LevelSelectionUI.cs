@@ -22,8 +22,8 @@ public class LevelSelectionUI : MonoBehaviour
         {
             if (currentHorizontalLayout >= maxHorizonalLayout)
             { 
-                // Instantiate new vertical layout group
                 currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
+                
                 currentHorizontalLayout = 0;
             }
             
