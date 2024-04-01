@@ -26,6 +26,7 @@ namespace Utils
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
         [Header("How")] [SerializeField] private double _spawnRate;
+        [SerializeField] private CellsToCheck _cellsToCheck;
 
         [SerializeField] private List<Type> _BlockTypeToSpawnOn;
         private GridHelper _helper;
@@ -109,7 +110,8 @@ namespace Utils
                 {
                     _position.y = j;
                     _helper.SetHelperPosition(_position);
-                    if (_helper.IsValidCell(_position) && RandomBool()) listOfPosition.Add(_position);
+                    if (_helper.IsValidCell(_position) && RandomBool()) 
+                        listOfPosition.Add(_position);
                     j++;
                 } while (j < TilingGrid.Size);
 
@@ -117,6 +119,26 @@ namespace Utils
             } while (i < TilingGrid.Size);
 
             return listOfPosition;
+        }
+
+        private List<Vector2Int> GeneratePositionBonusMalus()
+        {
+            
+            List<Vector2Int> listOfPositions = new();
+
+            Random randomGenerator = new Random();
+            int index = Math.Min((int)new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count, 
+                TilingGrid._monkeyReachableCells.Count);
+            
+            var monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
+            index = Math.Min((int)new Random().NextDouble() * TilingGrid._robotReachableCells.Count, 
+                            TilingGrid._robotReachableCells.Count);
+                        
+            var robotReachableCell = TilingGrid._robotReachableCells[index];
+
+            listOfPositions.Add(monkeyReachableCell.position);
+            listOfPositions.Add(robotReachableCell.position);
+            return listOfPositions;
         }
 
         private bool RandomBool()
@@ -148,11 +170,28 @@ namespace Utils
                 if (_predicatePosition.Invoke())
                     if (_isServer)
                     {
-                        var positions = GeneratePositions();
+                        List<Vector2Int> positions;
+                        switch (_cellsToCheck)
+                        {
+                            case CellsToCheck.EveryCells:
+                                positions = GeneratePositions();
+                                break;
+                            case CellsToCheck.PlayerIslandCells:
+                                positions = GeneratePositionBonusMalus();
+                                break;
+                            default:
+                                throw new NotImplementedException();
+                        }
                         if (SpawnersManager.Instance == null)
                             throw new Exception("SpawnersManager instance has not been set !");
                         SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList, IsInvalidCell);
                     }
+        }
+
+        public enum CellsToCheck
+        {
+             PlayerIslandCells,
+             EveryCells,
         }
     }
 }
