@@ -13,27 +13,49 @@ public class LevelSelectionUI : MonoBehaviour
     [SerializeField] private int maxHorizonalLayout;
     [SerializeField] private Transform levelVerticalLayout;
 
+    private LinkedList<SingleLevelSelectUI> _levelsSelectUI;
+    private LinkedListNode<SingleLevelSelectUI> _selectedLevel;
+    
     private void Awake()
     {
-        int currentHorizontalLayout = 0;
+        int horizontalLayoutCount = 0;
         Transform currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
         
         foreach (LevelSelectSO levelSO in selectableLevelsListSO.levels)
         {
-            if (currentHorizontalLayout >= maxHorizonalLayout)
+            AddVerticalLayoutWhenFull(ref currentVerticalLayout, ref horizontalLayoutCount);
+            
+            InstantiateSingleLevelSelectTemplate(levelSO, currentVerticalLayout);
+            
+            horizontalLayoutCount++;
+        }
+
+        _selectedLevel = _levelsSelectUI.First;
+    }
+
+    private void Start()
+    {
+        // TODO CONNECT TO INPUT
+    }
+
+    private void AddVerticalLayoutWhenFull(ref Transform currentVerticalLayout, ref int horizontalLayoutCount)
+    {
+            if (horizontalLayoutCount >= maxHorizonalLayout)
             { 
                 currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
                 
-                currentHorizontalLayout = 0;
+                horizontalLayoutCount = 0;
             }
-            
-            SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
+    }
+
+    private void InstantiateSingleLevelSelectTemplate(LevelSelectSO levelSO, Transform currentVerticalLayout)
+    {
+        SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
                 
-            templateInstance.gameObject.SetActive(true);
+        templateInstance.gameObject.SetActive(true);
                 
-            templateInstance.Show(levelSO);
+        templateInstance.Show(levelSO);
             
-            currentHorizontalLayout++;
-        }
+        _levelsSelectUI.AddLast(templateInstance);
     }
 }

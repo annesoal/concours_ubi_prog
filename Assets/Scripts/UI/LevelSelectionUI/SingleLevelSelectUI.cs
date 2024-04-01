@@ -5,19 +5,14 @@ using Amulets;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SingleLevelSelectUI : MonoBehaviour
+public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Transform amuletLayout;
     [SerializeField] private SingleAmuletTemplateUI amuletTemplateUI;
-    
-    private Button _button;
-    private void Awake()
-    {
-        _button = GetComponent<Button>();
-    }
 
     private LevelSelectSO _associatedLevelSO;
     public void Show(LevelSelectSO levelSO)
@@ -43,5 +38,15 @@ public class SingleLevelSelectUI : MonoBehaviour
             
             templateInstance.Show(toShow);
         }
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        // TODO SHOW UI SELECTED
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        // TODO HIDE UI SELECTED
     }
 }
