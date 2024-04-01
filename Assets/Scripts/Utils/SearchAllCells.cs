@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Grid;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Utils
 {
     public class SearchAllCells
     {
-
         private List<Cell> visitedCells = new();
         private Func<Cell, bool> InvalidCellPredicate; 
         
@@ -18,14 +16,15 @@ namespace Utils
             List<Cell> addedCells = new();
             addedCells.Add(startingCell);
 
-            bool hasReachableCells = true;
-
             AddNeighbors(addedCells, startingCell); 
             while (addedCells.Count > 0)
             {
-                AddNeighbors(addedCells, addedCells[0]);
+                Cell[] currentAddedCells = addedCells.ToArray();
+                foreach (var cell in currentAddedCells)
+                {
+                    AddNeighbors(addedCells, cell);
+                }
             }
-            DebugCells(visitedCells);
             return visitedCells;
         }
 
@@ -46,16 +45,13 @@ namespace Utils
                         listCells.Remove(cell);
                     }
                 }
-                
+                else
+                {
+                    Debug.Log(cell.position + " not valid");
+                }
             }
         }
 
-        private static void DebugCells(List<Cell> cells)
-        {
-            foreach (var cell in cells)
-            {
-                Debug.Log(cell.position);
-            }
-        }
+ 
     }
 }
