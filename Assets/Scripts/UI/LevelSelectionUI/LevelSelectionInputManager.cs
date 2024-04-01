@@ -21,6 +21,8 @@ public class LevelSelectionInputManager : MonoBehaviour
         _playerInputActions.UI.Down.performed += PlayerInputUI_OnDownPerformed;
         _playerInputActions.UI.Right.performed += PlayerInputUI_OnRightPerformed;
         _playerInputActions.UI.Left.performed += PlayerInputUI_OnLeftPerformed;
+
+        _playerInputActions.UI.Select.performed += PlayerInputUI_OnSelectPerformed;
     }
 
     public event EventHandler OnUpUI;
@@ -45,5 +47,11 @@ public class LevelSelectionInputManager : MonoBehaviour
     private void PlayerInputUI_OnLeftPerformed(InputAction.CallbackContext obj)
     {
         OnLeftUI?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnSelectUI;
+    private void PlayerInputUI_OnSelectPerformed(InputAction.CallbackContext obj)
+    {
+        OnSelectUI?.Invoke(this, EventArgs.Empty);
     }
 }

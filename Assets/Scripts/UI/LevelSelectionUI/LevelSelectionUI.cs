@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using Debug = System.Diagnostics.Debug;
 
 public class LevelSelectionUI : MonoBehaviour
 {
@@ -31,6 +33,7 @@ public class LevelSelectionUI : MonoBehaviour
         }
 
         _selectedLevel = _levelsSelectUI.First;
+        EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
     }
 
     private void Start()
@@ -39,6 +42,8 @@ public class LevelSelectionUI : MonoBehaviour
         LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
         LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
         LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
+        
+        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
     }
 
     private void AddVerticalLayoutWhenFull(ref Transform currentVerticalLayout, ref int horizontalLayoutCount)
@@ -66,7 +71,7 @@ public class LevelSelectionUI : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            _selectedLevel = _selectedLevel.Next ?? _levelsSelectUI.First;
+            UpdateSelectedLevel(_selectedLevel.Next ?? _levelsSelectUI.First);
         }
     }
     
@@ -74,7 +79,7 @@ public class LevelSelectionUI : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            _selectedLevel = _selectedLevel.Previous ?? _levelsSelectUI.Last;
+            UpdateSelectedLevel(_selectedLevel.Previous ?? _levelsSelectUI.Last);
         }
     }
     
@@ -91,7 +96,7 @@ public class LevelSelectionUI : MonoBehaviour
             if (newSelectedLevel == null) { return; }
         }
 
-        _selectedLevel = newSelectedLevel;
+        UpdateSelectedLevel(newSelectedLevel);
     }
     
     private void InputManager_OnDownUI(object sender, EventArgs e)
@@ -107,6 +112,19 @@ public class LevelSelectionUI : MonoBehaviour
             if (newSelectedLevel == null) { return; }
         }
 
+        UpdateSelectedLevel(newSelectedLevel);
+    }
+
+    private void UpdateSelectedLevel(LinkedListNode<SingleLevelSelectUI> newSelectedLevel)
+    {
+        Debug.Assert(_selectedLevel != null, nameof(_selectedLevel) + " != null");
+        
         _selectedLevel = newSelectedLevel;
+        EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
+    }
+    
+    private void InputManager_OnSelectUI(object sender, EventArgs e)
+    {
+        // TODO show level focus ui for this level !
     }
 }
