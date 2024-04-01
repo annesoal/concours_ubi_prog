@@ -342,7 +342,6 @@ namespace Grid
                         cells.Add(cell);
                 }
             }
-            DebugCells(cells);
             return cells;
         }
 
