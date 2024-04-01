@@ -1,6 +1,7 @@
 using System;
 using Grid.Interface;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Synchrone
@@ -14,7 +15,15 @@ namespace Synchrone
         {
             Multiplier = _multiplier;
         }
-        
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (IsServer)
+            {
+                TowerDefenseManager.Instance.AddBonus(this.gameObject);
+            }
+        }
+
         public TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Bonus;
@@ -23,6 +32,11 @@ namespace Synchrone
         public GameObject ToGameObject()
         {
             return this.gameObject;
+        }
+
+        public void OnDestroy()
+        {
+            TowerDefenseManager.Instance.RemoveBonus(this.gameObject);
         }
     }
 }

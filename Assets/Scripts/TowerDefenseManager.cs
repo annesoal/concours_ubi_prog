@@ -29,6 +29,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
+    private List<GameObject> bonuses = new List<GameObject>();
     private bool gameWon = false;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
@@ -257,6 +258,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
+        CleanBonuses();
         CheckDestinationCells();
         if (_playersHealth < 1)
         {
@@ -502,5 +504,22 @@ public class TowerDefenseManager : NetworkBehaviour
         public State newValue;
         public State previousValue;
     }
-    
+
+    public void AddBonus(GameObject bonus)
+    {
+       this.bonuses.Add(bonus);  
+    }
+
+    public void RemoveBonus(GameObject bonus)
+    {
+        this.bonuses.Remove(bonus);
+    }
+
+    private void CleanBonuses()
+    {
+        foreach (var bonus in bonuses)
+        {
+            Destroy(bonus);
+        }
+    }
 }
