@@ -6,13 +6,13 @@ using Random = System.Random;
 
 namespace Enemies
 {
-    public sealed class BasicEnemy : Enemy
+    public class BasicEnemy : Enemy
     {
         private Random _rand = new();
 
         public BasicEnemy()
         {
-            ennemyType = EnnemyType.Basic;
+            ennemyType = EnnemyType.PetiteMerde;
         }
 
         protected override void Initialize()
@@ -61,11 +61,8 @@ namespace Enemies
         // Essaie de bouger vers l'avant
         private bool TryMoveOnNextCell()
         {
-            Debug.Log("zzz path null? " + (path == null));
-
             if (path == null || path.Count == 0)
                 return true;
-            Debug.Log("ICI PATH DANS TRY "+ path[0].position);
             Cell nextCell = path[0];
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
@@ -122,9 +119,7 @@ namespace Enemies
         private void MoveEnemy(Vector3 direction)
         {
             if (!IsServer) return;
-            Debug.Log("BASIC PLACE AVANT : " + transform.position);
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
-            Debug.Log("BASIC PLACE APRES : " + transform.position);
         }
 
         private bool IsValidCell(Cell toCheck)
@@ -132,10 +127,7 @@ namespace Enemies
             PathfindingInvalidCell(toCheck);
             bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-
-            Debug.Log("zzz valid cell block" + ((toCheck.type & BlockType.EnemyWalkable) > 0));
-          
-            Debug.Log("BASIC isVAlidCell" + (isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck)));
+            
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
         }
     }

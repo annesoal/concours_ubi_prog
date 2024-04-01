@@ -14,7 +14,7 @@ namespace Enemies
     public enum EnnemyType
     {
         None = 0,
-        Basic,
+        PetiteMerde,
         BigGuy,
         Flying,
         Goofy,
@@ -55,6 +55,11 @@ namespace Enemies
             _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         }
 
+        protected bool IsAtDestination(Cell nextCell)
+        {
+            return (nextCell.type & BlockType.EnemyDestination) > 0;
+        }
+        
         private Cell GetClosestDestination()
         {
             if (_destinationsCell == null || _destinationsCell.Count == 0)
@@ -112,6 +117,11 @@ namespace Enemies
             enemiesInGame.Add(enemy);
         }
 
+
+        public void RemoveInGame()
+        {
+            enemiesInGame.Remove(this.gameObject);
+        }
 
         public static List<GameObject> GetEnemiesInGame()
         {

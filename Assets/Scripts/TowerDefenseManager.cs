@@ -478,7 +478,7 @@ public class TowerDefenseManager : NetworkBehaviour
                 var enemies = cell.GetEnemies();
                 foreach (var enemy in enemies)
                 {
-                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
+                    enemy.RemoveInGame();
                     TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
                     Destroy(enemy.ToGameObject());
                 }
