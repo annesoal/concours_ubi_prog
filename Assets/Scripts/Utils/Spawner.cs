@@ -121,21 +121,32 @@ namespace Utils
             return listOfPosition;
         }
 
-        private List<Vector2Int> GeneratePositionBonusMalus()
+        private List<Vector2Int> GeneratePositionBonus()
         {
-            
             List<Vector2Int> listOfPositions = new();
 
             Random randomGenerator = new Random();
-            int index = Math.Min((int) (new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count) , 
-                TilingGrid._monkeyReachableCells.Count);
+            Cell cell;
+            Cell robotReachableCell;
+            Cell monkeyReachableCell;
+            int index;
+            do
+            {
+                index = Math.Min((int)(new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count),
+                    TilingGrid._monkeyReachableCells.Count);
+                monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
+                cell = TilingGrid.grid.GetCell(monkeyReachableCell.position);
+            } while (IsInvalidCell(cell));
             
-            var monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
-            index = Math.Min((int) (new Random().NextDouble() * TilingGrid._robotReachableCells.Count), 
+            do 
+            {
+                index = Math.Min((int) (new Random().NextDouble() * TilingGrid._robotReachableCells.Count), 
                             TilingGrid._robotReachableCells.Count);
                         
-            var robotReachableCell = TilingGrid._robotReachableCells[index];
-
+                robotReachableCell = TilingGrid._robotReachableCells[index];
+                cell = TilingGrid.grid.GetCell(robotReachableCell.position);
+            } while (IsInvalidCell(cell));
+            
             listOfPositions.Add(monkeyReachableCell.position);
             listOfPositions.Add(robotReachableCell.position);
             return listOfPositions;
@@ -177,7 +188,7 @@ namespace Utils
                                 positions = GeneratePositions();
                                 break;
                             case CellsToCheck.PlayerIslandCells:
-                                positions = GeneratePositionBonusMalus();
+                                positions = GeneratePositionBonus();
                                 break;
                             default:
                                 throw new NotImplementedException();
