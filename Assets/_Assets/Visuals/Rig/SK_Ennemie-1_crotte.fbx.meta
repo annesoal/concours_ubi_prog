@@ -3,7 +3,17 @@ guid: 2d654a852dfdc28408936bfa5e5b7a8d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rampShader1
+    second: {fileID: 2100000, guid: f2e9006a68eddc12788d39e4106caaeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface1
+    second: {fileID: 2100000, guid: 0c0d695660d28ccbdaeda4c17869c3f5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

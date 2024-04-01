@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonShader
+  m_Name: Bouche_shader
   m_Shader: {fileID: -6465566751694194690, guid: 78b79f2cedffeca41802593614889656,
     type: 3}
   m_Parent: {fileID: 0}
@@ -48,9 +48,9 @@ Material:
     - _QueueOffset: 0
     - _Shades: 0.4
     m_Colors:
-    - _Color: {r: 0.17254895, g: 0.8588235, b: 0.7415372, a: 0}
+    - _Color: {r: 0, g: 0.06557059, b: 1, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &1630138536063016983
+--- !u!114 &4232478126816663054
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
