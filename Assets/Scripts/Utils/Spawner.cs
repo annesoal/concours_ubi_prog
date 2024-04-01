@@ -127,11 +127,11 @@ namespace Utils
             List<Vector2Int> listOfPositions = new();
 
             Random randomGenerator = new Random();
-            int index = Math.Min((int)new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count, 
+            int index = Math.Min((int) (new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count) , 
                 TilingGrid._monkeyReachableCells.Count);
             
             var monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
-            index = Math.Min((int)new Random().NextDouble() * TilingGrid._robotReachableCells.Count, 
+            index = Math.Min((int) (new Random().NextDouble() * TilingGrid._robotReachableCells.Count), 
                             TilingGrid._robotReachableCells.Count);
                         
             var robotReachableCell = TilingGrid._robotReachableCells[index];
