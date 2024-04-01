@@ -35,7 +35,10 @@ public class LevelSelectionUI : MonoBehaviour
 
     private void Start()
     {
-        // TODO CONNECT TO INPUT
+        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
+        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
+        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
+        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
     }
 
     private void AddVerticalLayoutWhenFull(ref Transform currentVerticalLayout, ref int horizontalLayoutCount)
@@ -57,5 +60,53 @@ public class LevelSelectionUI : MonoBehaviour
         templateInstance.Show(levelSO);
             
         _levelsSelectUI.AddLast(templateInstance);
+    }
+    
+    private void InputManager_OnLeftUI(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            _selectedLevel = _selectedLevel.Next ?? _levelsSelectUI.First;
+        }
+    }
+    
+    private void InputManager_OnRightUI(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            _selectedLevel = _selectedLevel.Previous ?? _levelsSelectUI.Last;
+        }
+    }
+    
+    private void InputManager_OnUpUI(object sender, EventArgs e)
+    {
+        if (gameObject.activeSelf) { return; }
+        
+        LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
+        
+        for (int i = 0; i < maxHorizonalLayout; i++)
+        {
+            newSelectedLevel = _selectedLevel.Previous;
+
+            if (newSelectedLevel == null) { return; }
+        }
+
+        _selectedLevel = newSelectedLevel;
+    }
+    
+    private void InputManager_OnDownUI(object sender, EventArgs e)
+    {
+        if (! gameObject.activeSelf) { return; }
+
+        LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
+        
+        for (int i = 0; i < maxHorizonalLayout; i++)
+        {
+            newSelectedLevel = _selectedLevel.Next;
+
+            if (newSelectedLevel == null) { return; }
+        }
+
+        _selectedLevel = newSelectedLevel;
     }
 }
