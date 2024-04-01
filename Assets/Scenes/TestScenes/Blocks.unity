@@ -9066,7 +9066,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054340107}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -16059,7 +16059,8 @@ MonoBehaviour:
   <EnergyAvailable>k__BackingField: 10
   energyToUse: 0
   obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
-  _hightlighter: {fileID: 0}
+  _hightlighter: {fileID: 7650414445784578766, guid: 9cf38b3f9b697740f98e99e9ab6485ec,
+    type: 3}
   <CountDownToStartTimer>k__BackingField: 3
   currentRoundNumber: 0
   playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
@@ -17170,7 +17171,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
