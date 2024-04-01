@@ -14,6 +14,8 @@ namespace Grid.Interface
         Player,
         Obstacle,
         Resource,
-        Building
+        Building,
+        Bonus,
+        Malus
     }
 }
