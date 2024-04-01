@@ -102,21 +102,27 @@ public class Player : NetworkBehaviour, ITopOfCell
             InputManager.Player = this;
         }
 
+        Vector3 position; 
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
+            position = transform.position;
+            SetReachableCells(true,position); 
         }
         else
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
+            
+            position = transform.position;
+            SetReachableCells(false, position); 
         }
         
         if (IsServer)
         {
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, position);
         }
     }
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
@@ -299,5 +305,16 @@ public class Player : NetworkBehaviour, ITopOfCell
     public GameObject ToGameObject()
     {
         return this.gameObject;
+    }
+    private void SetReachableCells(bool isMonkey, Vector3 position)
+    {
+        if (isMonkey)
+        {   
+            TilingGrid.FindReachableCellsMonkey(position);
+        }
+        else
+        {
+            TilingGrid.FindReachableCellsRobot(position);
+        }
     }
 }
