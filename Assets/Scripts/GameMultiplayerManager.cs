@@ -425,8 +425,20 @@ public class GameMultiplayerManager : NetworkBehaviour
             TypeTopOfCell type = element.GetType();
             if (type == TypeTopOfCell.Resource)
             {
-                PickUpResource(element);
+                //PickUpResource(element);
+                PickUpElement(element, CentralizedInventory.Instance.AddResource);
                 elementsPickedUp.Add(element);
+            }
+
+            if (type == TypeTopOfCell.Bonus)
+            {
+                 PickUpElement(element, CentralizedInventory.Instance.AddBonus);
+            }
+
+            if (type == TypeTopOfCell.Malus)
+            {
+                
+                PickUpElement(element, CentralizedInventory.Instance.AddMalus);
             }
         }
         
@@ -437,6 +449,13 @@ public class GameMultiplayerManager : NetworkBehaviour
         }
     }
 
+    private static void PickUpElement(ITopOfCell element, Action<ITopOfCell> pickUpFunction)
+    {
+        pickUpFunction(element);
+        var gameobject = element.ToGameObject();
+        Destroy(gameobject);
+    }
+    
     private static void PickUpResource(ITopOfCell element)
     {
         CentralizedInventory.Instance.AddResource(element);
