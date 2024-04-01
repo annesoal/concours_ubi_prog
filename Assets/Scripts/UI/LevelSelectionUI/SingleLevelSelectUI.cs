@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Amulets;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class SingleLevelSelectUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Transform amuletLayout;
+    [SerializeField] private SingleAmuletTemplateUI amuletTemplateUI;
     
     private Button _button;
     private void Awake()
@@ -25,6 +27,8 @@ public class SingleLevelSelectUI : MonoBehaviour
         nameText.text = _associatedLevelSO.levelName;
         
         ShowAmulets();
+        
+        BasicShowHide.Show(gameObject);
     }
 
     private void ShowAmulets()
@@ -35,7 +39,9 @@ public class SingleLevelSelectUI : MonoBehaviour
 
         foreach (AmuletSO toShow in amuletsToShow)
         {
-            // TODO instantiate amulet template with toShow
+            SingleAmuletTemplateUI templateInstance = Instantiate(amuletTemplateUI, amuletLayout);
+            
+            templateInstance.Show(toShow);
         }
     }
 }
