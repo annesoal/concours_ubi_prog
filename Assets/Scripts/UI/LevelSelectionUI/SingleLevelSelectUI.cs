@@ -14,6 +14,8 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
     [SerializeField] private Transform amuletLayout;
     [SerializeField] private SingleAmuletTemplateUI amuletTemplateUI;
 
+    [SerializeField] private GameObject selectedOutline;
+
     private LevelSelectSO _associatedLevelSO;
     public void Show(LevelSelectSO levelSO)
     {
@@ -42,11 +44,11 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
 
     public void OnSelect(BaseEventData eventData)
     {
-        // TODO SHOW UI SELECTED
+        selectedOutline.SetActive(true);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        // TODO HIDE UI SELECTED
+        selectedOutline.SetActive(false);
     }
 }

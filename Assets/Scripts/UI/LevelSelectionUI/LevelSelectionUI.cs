@@ -14,20 +14,24 @@ public class LevelSelectionUI : MonoBehaviour
     [Header("Layouts")]
     [SerializeField] private int maxHorizonalLayout;
     [SerializeField] private Transform levelVerticalLayout;
+    [SerializeField] private Transform levelHorizontalLayout;
 
     private LinkedList<SingleLevelSelectUI> _levelsSelectUI;
     private LinkedListNode<SingleLevelSelectUI> _selectedLevel;
     
     private void Awake()
     {
+        _levelsSelectUI = new LinkedList<SingleLevelSelectUI>();
+        
         int horizontalLayoutCount = 0;
-        Transform currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
+        Transform currentHorizontalLayout = Instantiate(levelHorizontalLayout, levelVerticalLayout);
+        currentHorizontalLayout.gameObject.SetActive(true);
         
         foreach (LevelSelectSO levelSO in selectableLevelsListSO.levels)
         {
-            AddVerticalLayoutWhenFull(ref currentVerticalLayout, ref horizontalLayoutCount);
+            AddHorizontalLayoutWhenFull(ref currentHorizontalLayout, ref horizontalLayoutCount);
             
-            InstantiateSingleLevelSelectTemplate(levelSO, currentVerticalLayout);
+            InstantiateSingleLevelSelectTemplate(levelSO, currentHorizontalLayout);
             
             horizontalLayoutCount++;
         }
@@ -46,19 +50,21 @@ public class LevelSelectionUI : MonoBehaviour
         LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
     }
 
-    private void AddVerticalLayoutWhenFull(ref Transform currentVerticalLayout, ref int horizontalLayoutCount)
+    private void AddHorizontalLayoutWhenFull(ref Transform currentHorizontalLayout, ref int horizontalLayoutCount)
     {
             if (horizontalLayoutCount >= maxHorizonalLayout)
             { 
-                currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
+                currentHorizontalLayout = Instantiate(levelHorizontalLayout, levelVerticalLayout);
+                
+                currentHorizontalLayout.gameObject.SetActive(true);
                 
                 horizontalLayoutCount = 0;
             }
     }
 
-    private void InstantiateSingleLevelSelectTemplate(LevelSelectSO levelSO, Transform currentVerticalLayout)
+    private void InstantiateSingleLevelSelectTemplate(LevelSelectSO levelSO, Transform currentHorizontalLayout)
     {
-        SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
+        SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentHorizontalLayout);
                 
         templateInstance.gameObject.SetActive(true);
                 
