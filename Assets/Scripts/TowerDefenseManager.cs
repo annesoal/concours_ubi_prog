@@ -214,7 +214,11 @@ public class TowerDefenseManager : NetworkBehaviour
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
 
-            if (IsServer) _currentTimer.Value = tacticalPauseDuration;
+            if (IsServer)
+            {
+                _currentTimer.Value = tacticalPauseDuration;
+                CentralizedInventory.Instance.CashBonus();
+            }
         }
     }
 
@@ -356,7 +360,7 @@ public class TowerDefenseManager : NetworkBehaviour
         OnCurrentStateChanged?.Invoke(this, new OnCurrentStateChangedEventArgs
         {
             previousValue = previousValue,
-            newValue = newValue
+            newValue = newValue,
         });
     }
 
