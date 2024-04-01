@@ -482,7 +482,7 @@ public class TowerDefenseManager : NetworkBehaviour
                     TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
                     Destroy(enemy.ToGameObject());
                 }
-
+                
                 Instance._playersHealth--;
             }
         }

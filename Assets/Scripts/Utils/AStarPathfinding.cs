@@ -26,14 +26,15 @@ namespace Utils
             {
                
                 Cell current = GetMinFScoreCell(openSet, destinationDistance);
+                Debug.Log("CURENT 1"  + current.position) ;
                 if (current.Equals(destination))
                     return ReconstructPath(cameFrom, current);
 
                 openSet.Remove(current);
 
                 List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current, 1);
-                Debug.Log("NEIGHBOR pos " + neighbors[0].position);
-                Debug.Log("CURENT"  + current.position) ;
+                Debug.Log("NEIGHBOR pos " + neighbors[0].position); 
+                Debug.Log("CURENT 2"  + current.position) ;
                 foreach (var neighbor in neighbors)
                 {
                     if (cellValidator(neighbor)) continue;
@@ -92,6 +93,7 @@ namespace Utils
             for (int i = 0; i < cells.Count; i++)
             {
                 Cell currentCell = cells[i];
+                Debug.Log("current boucle " + i  + currentCell.position);
                 float currentDistanceDestionation = distancesDestination[currentCell];
                 if (currentDistanceDestionation < minDistanceDestination)
                 {

@@ -22,7 +22,6 @@ namespace Managers
         public static void MoveEnemies(int totalEnergy)
         {
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
-            Debug.Log("Ennemi en JEU MOVE : " + enemies.Count);
             for (int i = enemies.Count - 1; i >= 0; i--)
             {
                 var enemy = enemies[i].GetComponent<Enemy>();
