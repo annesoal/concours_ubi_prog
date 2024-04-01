@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Amulets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,5 +15,27 @@ public class SingleLevelSelectUI : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
+    }
+
+    private LevelSelectSO _associatedLevelSO;
+    public void Show(LevelSelectSO levelSO)
+    {
+        _associatedLevelSO = levelSO;
+
+        nameText.text = _associatedLevelSO.levelName;
+        
+        ShowAmulets();
+    }
+
+    private void ShowAmulets()
+    {
+        AmuletSaveLoad loader = new AmuletSaveLoad();
+        
+        List<AmuletSO> amuletsToShow = loader.GetAmuletsForScene(_associatedLevelSO.levelScene);
+
+        foreach (AmuletSO toShow in amuletsToShow)
+        {
+            // TODO instantiate amulet template with toShow
+        }
     }
 }

@@ -20,18 +20,18 @@ public class LevelSelectionUI : MonoBehaviour
         
         foreach (LevelSelectSO levelSO in selectableLevelsListSO.levels)
         {
-            if (currentHorizontalLayout < maxHorizonalLayout)
+            if (currentHorizontalLayout >= maxHorizonalLayout)
             { 
-                SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
-                
-                templateInstance.gameObject.SetActive(true);
-                
-                //TODO give levelSO to instance
-            }
-            else
-            {
                 // Instantiate new vertical layout group
+                currentVerticalLayout = Instantiate(levelVerticalLayout, transform);
+                currentHorizontalLayout = 0;
             }
+            
+            SingleLevelSelectUI templateInstance = Instantiate(singleLevelTemplateUI, currentVerticalLayout);
+                
+            templateInstance.gameObject.SetActive(true);
+                
+            templateInstance.Show(levelSO);
             
             currentHorizontalLayout++;
         }
