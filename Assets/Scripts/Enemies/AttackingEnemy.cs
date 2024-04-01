@@ -13,8 +13,8 @@ namespace Enemies
     public class AttackingEnemy : Enemy
     {
         private Random _rand = new();
-        [SerializeField] private int _enemyDomage = 1;
-        [SerializeField] private int _attackRate;
+        [SerializeField] private int enemyDomage = 1;
+        [SerializeField] private int attackRate;
         [SerializeField] private int radiusAttack = 1;
 
 
