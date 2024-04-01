@@ -14,14 +14,14 @@ namespace Enemies
     public enum EnnemyType
     {
         None = 0,
-        Basic,
+        PetiteMerde,
         BigGuy,
         Flying,
         Goofy,
         Doggo
     }
 
-    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell, ICanDamage
+    public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell //, ICanDamage
     {
         [SerializeField] protected EnnemyType ennemyType;
 
@@ -33,19 +33,17 @@ namespace Enemies
         protected Cell cell;
         public bool hasPath = false;
         public List<Cell> path;
-        
         public static List<GameObject> enemiesInGame = new List<GameObject>();
-
 
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
+        
 
         protected virtual void Initialize()
         {
-            
         }
-        
+
         public void Start()
         {
             Initialize();
@@ -57,6 +55,11 @@ namespace Enemies
             _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         }
 
+        protected bool IsAtDestination(Cell nextCell)
+        {
+            return (nextCell.type & BlockType.EnemyDestination) > 0;
+        }
+        
         private Cell GetClosestDestination()
         {
             if (_destinationsCell == null || _destinationsCell.Count == 0)
@@ -74,14 +77,11 @@ namespace Enemies
                     destinationToReturn = currentCell;
                 }
             }
+
             return destinationToReturn;
         }
 
-        public EnnemyType GetEnnemyType()
-        {
-            return ennemyType;
-        }
-        
+
         public int Health
         {
             get { return _health; }
@@ -101,22 +101,15 @@ namespace Enemies
         {
             Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
-            TilingGrid.RemoveElement(gameObject,transform.position);
+            TilingGrid.RemoveElement(this.gameObject, transform.position);
             Destroy(this.gameObject);
         }
 
         public static event EventHandler OnAnyEnemyMoved;
         public abstract void Move(int energy);
 
-        protected void EmitOnAnyEnemyMoved()
-        {
-            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
-        }
-        
 
-        public override void OnDestroy()
-        {
-        }
+
 
         protected void AddInGame(GameObject enemy)
         {
@@ -125,27 +118,27 @@ namespace Enemies
         }
 
 
-        public static List<GameObject>  GetEnemiesInGame()
+        public void RemoveInGame()
         {
-            return enemiesInGame;
+            enemiesInGame.Remove(this.gameObject);
         }
 
+        public static List<GameObject> GetEnemiesInGame()
+        {
+            foreach (var ennemy in enemiesInGame)
+            {
+                Debug.Log("LISTE ENNEMIS zzz");
+                Debug.Log(TilingGrid.LocalToGridPosition(ennemy.transform.position));
+            }
+            return enemiesInGame;
+        }
+        
 
         public new TypeTopOfCell GetType()
         {
             return TypeTopOfCell.Enemy;
         }
-
-        public GameObject ToGameObject()
-        {
-            return gameObject;
-        }
-
-        public static void ResetSaticData()
-        {
-            enemiesInGame = new List<GameObject>();
-            OnAnyEnemyMoved = null;
-        }
+        
         public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
         {
             List<Enemy> enemies = new List<Enemy>();
@@ -158,6 +151,7 @@ namespace Enemies
                         enemies.Add(enemy);
                 }
             }
+
             return enemies;
         }
 
@@ -174,10 +168,32 @@ namespace Enemies
         {
             return GetClosestDestination();
         }
+
         public static int baseHealth;
-        private int _health = baseHealth; 
+        private int _health = baseHealth;
         public static int baseAttack;
-        private int _attackDamage = baseAttack; 
-        public int AttackDamage { get => _attackDamage; set => value = _attackDamage; }
+        private int _attackDamage = baseAttack;
+
+        public int AttackDamage
+        {
+            get => _attackDamage;
+            set => value = _attackDamage;
+        }
+        
+        protected void EmitOnAnyEnemyMoved()
+        {
+            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
+        }
+        
+        public GameObject ToGameObject()
+        {
+            return gameObject;
+        }
+
+        public static void ResetSaticData()
+        {
+            enemiesInGame = new List<GameObject>();
+            OnAnyEnemyMoved = null;
+        }
     }
 }

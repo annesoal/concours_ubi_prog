@@ -29,7 +29,6 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
-    private List<GameObject> bonuses = new List<GameObject>();
     private bool gameWon = false;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
@@ -215,11 +214,7 @@ public class TowerDefenseManager : NetworkBehaviour
             Player.LocalInstance.ResetPlayer(EnergyAvailable);
             _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
 
-            if (IsServer)
-            {
-                _currentTimer.Value = tacticalPauseDuration;
-                CentralizedInventory.Instance.CashBonus();
-            }
+            if (IsServer) _currentTimer.Value = tacticalPauseDuration;
         }
     }
 
@@ -258,8 +253,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        CleanBonuses();
-        CheckDestinationCells();
+        CheckEnemiesAtDestinationCells();
         if (_playersHealth < 1)
         {
             gameWon = false;
@@ -362,7 +356,7 @@ public class TowerDefenseManager : NetworkBehaviour
         OnCurrentStateChanged?.Invoke(this, new OnCurrentStateChangedEventArgs
         {
             previousValue = previousValue,
-            newValue = newValue,
+            newValue = newValue
         });
     }
 
@@ -472,8 +466,8 @@ public class TowerDefenseManager : NetworkBehaviour
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
-
-    private static void CheckDestinationCells()
+    
+    private static void CheckEnemiesAtDestinationCells()
     {
         DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         foreach (var cell in DestinationCells)
@@ -484,11 +478,11 @@ public class TowerDefenseManager : NetworkBehaviour
                 var enemies = cell.GetEnemies();
                 foreach (var enemy in enemies)
                 {
-                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
+                    enemy.RemoveInGame();
                     TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
                     Destroy(enemy.ToGameObject());
                 }
-
+                
                 Instance._playersHealth--;
             }
         }
@@ -504,22 +498,5 @@ public class TowerDefenseManager : NetworkBehaviour
         public State newValue;
         public State previousValue;
     }
-
-    public void AddBonus(GameObject bonus)
-    {
-       this.bonuses.Add(bonus);  
-    }
-
-    public void RemoveBonus(GameObject bonus)
-    {
-        this.bonuses.Remove(bonus);
-    }
-
-    private void CleanBonuses()
-    {
-        foreach (var bonus in bonuses)
-        {
-            Destroy(bonus);
-        }
-    }
+    
 }

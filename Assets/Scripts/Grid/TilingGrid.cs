@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Grid.Blocks;
 using Grid.Interface;
 using TMPro;
 using Unity.Collections;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Utils;
 
 namespace Grid
 {
@@ -18,9 +15,7 @@ namespace Grid
         [SerializeField] private GameObject _player;
         
         public const float TopOfCell = 0.51f;
-
-        public static List<Cell> _monkeyReachableCells = new List<Cell>(); 
-        public static List<Cell> _robotReachableCells = new List<Cell>(); 
+        
         // A changer au besoin
         static public TilingGrid grid { get; private set; }
         
@@ -28,35 +23,7 @@ namespace Grid
         private readonly Cell [,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
-
-        public static void ResetReachableCells()
-        {
-            _monkeyReachableCells = new List<Cell>();
-            _robotReachableCells = new List<Cell>();
-        }
-
-        public static void FindReachableCellsMonkey(Vector3 position)
-        {
-            _monkeyReachableCells = FindReachableCells(position);
-        }
-        public static void FindReachableCellsRobot(Vector3 position)
-        {
-                
-            _robotReachableCells = FindReachableCells(position);
-        }
-
-        private static List<Cell> FindReachableCells(Vector3 position)
-        {
-            SearchAllCells searcher = new();
-            Vector2Int gridPosition = LocalToGridPosition(position);
-            return searcher.FindAllCells(grid.GetCell(gridPosition), InvalidSearchCell);
-        }
-
-        private static bool InvalidSearchCell(Cell cell)
-        {
-            return cell.IsNone();
-        }
-        
+       
         private void Awake()
         {
             grid = this;
@@ -184,67 +151,40 @@ namespace Grid
 
         }
         
-        
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
         {
             Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
             
-            PlaceObjectAtPositionOnGrid(toPlace, destination, worldPositionOfSpawn.y);
-        }
-
-        public static void UpdateMovePositionOnGrid(GameObject toUpdate, Vector2Int origin, Vector2Int destination)
-        {
-            Cell originCell = grid.GetCell(origin);
-            originCell.ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
-            
-            Cell destinationCell = grid.GetCell(destination);
-            destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
+            PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
         
-        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination, float yPos)
+        public bool HasTopOfCellOfType(Cell cell, TypeTopOfCell typeTopOfCell)
         {
-            RemoveObjectFromCurrentCell(toPlace);
-
-            AddObjectToCellAtPosition(toPlace, destination, yPos);
+            Cell cellUpdated = grid.GetCell(cell.position);
+            return cellUpdated.HasTopOfCellOfType(typeTopOfCell);
         }
+
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
         {
             RemoveObjectFromCurrentCell(toPlace);
 
             AddObjectToCellAtPosition(toPlace, destination);
         }
-        
+
+        // TODO Verifier que ca bien corriger les ennemis qui se voient pas
+        public void PlaceObjectOnGridInitialize(GameObject toPlace, Vector3 worldPositionOfSpawn)
+        {
+            Vector2Int destination = LocalToGridPosition(worldPositionOfSpawn);
+            AddObjectToCellAtPositionInit(toPlace, destination);
+        }
+
+        //TODO 
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
             
             RemoveElement(toPlace, initialGridPosition);
         }
-        
-        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition, float yPos = TopOfCell)
-        {
-            Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
-            UpdateCell(cell);
-            
-            toPlace.transform.position = GridPositionToLocal(cell.position, yPos);
-        }
-         public static void RemoveElement(GameObject element, Vector2Int position)
-         {
-             try
-             {
-                 var cell =grid.GetCell(position);
-                 cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
-                 grid.UpdateCell(cell);
-             }
-             catch (ArgumentException)
-             {
-             }
-             
-         }
-               
 
         private delegate void ActionRef<T>(ref T item);
         
@@ -318,7 +258,21 @@ namespace Grid
             i--;
         }
         
-
+        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
+        {
+            Cell cell = GetCell(cellPosition);
+            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(cell);
+            
+            toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
+        }
+        
+        private void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
+        {
+            Cell cell = GetCell(cellPosition);
+            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(cell);
+        }
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
@@ -327,7 +281,7 @@ namespace Grid
         public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
         {
            List<Cell> cells = new List<Cell>();     
-           
+
            int minX = Math.Max(origin.x - radius, 0);  
            int maxX = Math.Min(origin.x + radius, Size - 1);  
            int minY = Math.Max(origin.y - radius, 0);  
@@ -336,16 +290,26 @@ namespace Grid
             {
                 for (int j = minY; j <= maxY; j++)
                 {
-                    Cell cell = GetCell(i, j);
-                    
-                    if (!cell.IsNone())
-                        cells.Add(cell);
+                    cells.Add(GetCell(i, j));
                 }
             }
             return cells;
         }
 
- 
+        public static void RemoveElement(GameObject element, Vector2Int position)
+        {
+            try
+            {
+                var cell =grid.GetCell(position);
+                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
+                grid.UpdateCell(cell);
+            }
+            catch (ArgumentException)
+            {
+            }
+            
+        }
+        
         public static void RemoveElement(GameObject element, Vector3 position)
         {
             try
@@ -373,21 +337,5 @@ namespace Grid
                 }
             }
         }
-        private void DebugCells(List<Cell> cells)
-        {
-            StartCoroutine(DebugCoroutine(cells));
-        }
-
-        private IEnumerator DebugCoroutine(List<Cell> cells)
-        {
-            yield return new WaitForSeconds(4.0f);
-            foreach (var cell in cells)
-            {
-                Instantiate(TowerDefenseManager.highlighter, TilingGrid.CellPositionToLocal(cell),
-                    quaternion.identity);
-                yield return new WaitForSeconds(1.0f);
-            }
-        }
     }
-    
 }

@@ -1,25 +1,34 @@
+using System;
+using Ennemies;
 using Grid.Interface;
+using Unity.Netcode;
 using UnityEngine;
-
+using Interfaces;
 
 namespace Grid
 {
-    
-    public enum ObstacleType 
+    public enum ObstacleType
     {
         None = 0,
         Test
     }
-    
 
-    public class Obstacle : MonoBehaviour, ITopOfCell
+
+    public class Obstacle : NetworkBehaviour, ITopOfCell, IDamageable
     {
-        public GameObject obstacle;
+        [SerializeField] private float topOfCell = 0.72f;
+
+        [SerializeField] private int health = 1;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
-        
+
         private void Start()
         {
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
         }
         public new TypeTopOfCell GetType()
         {
@@ -30,7 +39,22 @@ namespace Grid
         {
             return this.gameObject;
         }
-    }
-    
 
+        
+        public int Health
+        {
+            get { return health; }
+            set => health = value;
+        }
+
+        public void Damage(int damage)
+        {
+            Health -= damage;
+            if (Health < 1)
+            {
+                TilingGrid.RemoveElement(gameObject, transform.position);
+                Destroy(this.gameObject);
+            }
+        }
+    }
 }
