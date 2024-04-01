@@ -7,14 +7,14 @@ namespace Utils
 {
     public class SearchAllCells
     {
-        private List<Cell> visitedCells = new();
+        private Dictionary<Cell, bool> visitedCells = new();
         private Func<Cell, bool> InvalidCellPredicate; 
         
         public List<Cell> FindAllCells(Cell startingCell, Func<Cell, bool> invalidCellPredicate)
         {
             InvalidCellPredicate = invalidCellPredicate;
             List<Cell> addedCells = new();
-            addedCells.Add(startingCell);
+            visitedCells.Add(startingCell, false);
 
             AddNeighbors(addedCells, startingCell); 
             while (addedCells.Count > 0)
@@ -25,24 +25,35 @@ namespace Utils
                     AddNeighbors(addedCells, cell);
                 }
             }
-            return visitedCells;
+
+            List<Cell> cells = new List<Cell>();
+            foreach (var cellToAdd in visitedCells)
+            {
+                cells.Add(cellToAdd.Key);
+            }
+
+            return cells;
         }
 
         private void AddNeighbors(List<Cell> listCells, Cell origin)
         {
+            visitedCells[origin] = true;
             List<Cell> cellsInRadius = TilingGrid.grid.GetCellsInRadius(origin, 1);
             foreach (var cell in cellsInRadius)
             {
                 if (!InvalidCellPredicate.Invoke(cell))
                 {
-                    if (!visitedCells.Contains(cell))
+                    if (!visitedCells.ContainsKey(cell))
                     {
-                        visitedCells.Add(cell); 
+                        visitedCells.Add(cell, false); 
                         listCells.Add(cell);
                     }
                     else
                     {
-                        listCells.Remove(cell);
+                        if (visitedCells[cell])
+                        {
+                            listCells.Remove(cell);
+                        }
                     }
                 }
                 else
