@@ -13,9 +13,10 @@ namespace Enemies
     public class AttackingEnemy : Enemy
     {
         private Random _rand = new();
-        protected int enemyDomage;
-        protected int attackRate;
-        protected int radiusAttack;
+        [SerializeField] private int _enemyDomage = 1;
+        [SerializeField] private int _attackRate;
+        [SerializeField] private int radiusAttack = 1;
+
 
         protected override void Initialize()
         {
