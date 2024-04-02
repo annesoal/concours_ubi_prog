@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Amulets;
@@ -11,11 +12,37 @@ public class SingleAmuletTemplateUI : MonoBehaviour
     [SerializeField] private Button amuletSelectButton;
     [SerializeField] private TextMeshProUGUI amuletNameText;
 
+    private AmuletSO _associatedAmuletSo;
+
+    private void Awake()
+    {
+        amuletSelectButton.onClick.AddListener(OnSelectButtonClicked);
+    }
+
     public void Show(AmuletSO amuletSo)
     {
         amuletSelectButton.GetComponent<Image>().sprite = amuletSo.amuletIcon;
         amuletNameText.text = amuletSo.amuletName;
         
         BasicShowHide.Show(gameObject);
+    }
+
+    public static event EventHandler<OnAnySingleAmuletChoseEventArgs> OnAnySingleAmuletChose;
+    public class OnAnySingleAmuletChoseEventArgs : EventArgs
+    {
+        public AmuletSO AmuletSo;
+    }
+    
+    private void OnSelectButtonClicked()
+    {
+        OnAnySingleAmuletChose?.Invoke(this, new OnAnySingleAmuletChoseEventArgs
+        {
+            AmuletSo = _associatedAmuletSo,
+        });
+    }
+
+    public static void ResetStaticData()
+    {
+        OnAnySingleAmuletChose = null;
     }
 }

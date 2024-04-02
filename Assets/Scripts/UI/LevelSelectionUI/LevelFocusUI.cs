@@ -26,6 +26,11 @@ public class LevelFocusUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
     }
 
+    private void Start()
+    {
+        SingleAmuletTemplateUI.OnAnySingleAmuletChose += SingleAmuletTemplateUI_OnAnySingleAmuletChose;
+    }
+
     public void Show(LevelSelectSO toShow)
     {
         _selectedLevelSO = toShow;
@@ -57,6 +62,20 @@ public class LevelFocusUI : MonoBehaviour
         BasicShowHide.Hide(gameObject);
 
         levelSelectionUI.Show();
+    }
+    
+    private void SingleAmuletTemplateUI_OnAnySingleAmuletChose
+        (object sender, SingleAmuletTemplateUI.OnAnySingleAmuletChoseEventArgs e)
+    {
+        if (_selectedAmulet == e.AmuletSo)
+        {
+            // Selected twice
+            _selectedAmulet = null;
+        }
+        else
+        {
+            _selectedAmulet = e.AmuletSo;
+        }
     }
 
 }
