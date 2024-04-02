@@ -8,12 +8,13 @@ using UnityEngine.UI;
 
 public class SingleAmuletTemplateUI : MonoBehaviour
 {
-    [SerializeField] private Image amuletIcon;
+    [SerializeField] private Button amuletSelectButton;
     [SerializeField] private TextMeshProUGUI amuletNameText;
 
     public void Show(AmuletSO amuletSo)
     {
-        // TODO SET ICON AND NAME BASED ON AMULET
+        amuletSelectButton.GetComponent<Image>().sprite = amuletSo.amuletIcon;
+        amuletNameText.text = amuletSo.amuletName;
         
         BasicShowHide.Show(gameObject);
     }
