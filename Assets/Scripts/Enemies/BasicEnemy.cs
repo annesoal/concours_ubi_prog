@@ -106,10 +106,13 @@ namespace Enemies
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
+                animator.SetBool("IsMoving", true);
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                animator.SetBool("IsMoving", false);
                 return true;
             }
-
+            
+            
             return false;
         }
 

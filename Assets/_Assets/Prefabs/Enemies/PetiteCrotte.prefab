@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemie-1_crotte
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 2d654a852dfdc28408936bfa5e5b7a8d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4b69b32a1dd7f7c30a2d1c4a738c6146, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -194,6 +199,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5792114273698328112}
+    - targetCorrespondingSourceObject: {fileID: 955291028793845129, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9088250973023021853}
   m_SourcePrefab: {fileID: 100100000, guid: 54118bcc1d7276338bc17dd0145a99a8, type: 3}
 --- !u!4 &4140640588218056401 stripped
 Transform:
@@ -274,3 +283,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9088250973023021853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4246755180253531948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc51c6975d149c9a5c1494f28875bce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

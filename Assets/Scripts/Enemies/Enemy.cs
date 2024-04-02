@@ -38,14 +38,15 @@ namespace Enemies
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-        
 
+        protected Animator animator;
         protected virtual void Initialize()
         {
         }
 
         public void Start()
         {
+            animator = GetComponent<Animator>();
             Initialize();
             SetDestinations();
         }
