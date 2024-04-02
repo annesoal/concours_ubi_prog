@@ -166,16 +166,16 @@ public class Player : NetworkBehaviour, ITopOfCell
             translation.x = 1;
         }
 
-        if (value.x < -MinPressure)
+        else if (value.x < -MinPressure)
         {
             translation.x = -1;
         }
 
-        if (value.y > MinPressure)
+        else if (value.y > MinPressure)
         {
             translation.y = +1;
         }
-        if (value.y < -MinPressure)
+        else if (value.y < -MinPressure)
         {
             translation.y = -1;
         }
