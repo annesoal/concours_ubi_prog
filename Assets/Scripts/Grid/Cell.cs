@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Enemies;
 using Grid.Blocks;
 using Grid.Interface;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -201,7 +202,17 @@ namespace Grid
 
             return true;
         }
-    
+
+
+        public bool Equals(Cell other)
+        {
+            return type == other.type && position.Equals(other.position);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(type, position);
+        }
     }
     public static class BlockType
     {
