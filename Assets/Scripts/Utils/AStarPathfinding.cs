@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Utils
@@ -27,9 +28,11 @@ namespace Utils
             {
                 
                 Cell current = GetMinFScoreCell(openSet, destinationDistance);
-               
+
                 if (current.Equals(destination))
+                {
                     return ReconstructPath(cameFrom, current);
+                }
 
                 openSet.Remove(current);
 
@@ -37,8 +40,11 @@ namespace Utils
               
                 foreach (var neighbor in neighbors)
                 {
-                    if (cellValidator(neighbor)) continue;
-
+                    if (cellValidator(neighbor))
+                    {
+                        continue;
+                    }
+                    
                     float tentativeDistanceOrigin = originDistance[current] + Cell.Distance(current, neighbor);
                     float neighborDistanceOrigin = GScoreNeighbor(originDistance, neighbor);
                     if (tentativeDistanceOrigin < neighborDistanceOrigin)
@@ -59,15 +65,7 @@ namespace Utils
                 }
             }
             //TODO changer!
-
-
-            openSet.Add(origin);
-          //  Debug.Log("STAR 10");
-          //  Debug.Log("STAR 10" + openSet[0].position);
-          //  Debug.Log("STAR 11");
-           // Debug.Log("STAR 11 count " + openSet.Count);
-           // Debug.Log("STAR 11" + openSet[1].position);
-            return openSet;
+            throw new Exception("Path not found " + origin.position + ", " + destination.position );
         }
 
         private static float GScoreNeighbor(Dictionary<Cell, float> gScore, Cell neighbor)
@@ -88,25 +86,12 @@ namespace Utils
 
         private static Cell GetMinFScoreCell(List<Cell> cells, Dictionary<Cell, float> distancesDestination)
         {
-            //Boucle debug pour afficher valeurs dictionnaires
-            foreach (var kvp in distancesDestination)
-            {
-                Debug.Log($"Clé : {kvp.Key}, Valeur : {kvp.Value}");
-            }
-
             int indexSmallest = 0;
             float minDistanceDestination = distancesDestination[cells[0]];
-            Debug.Log("STAR distancesDestination[cells[0]] : " + distancesDestination[cells[0]]);
-            Debug.Log("STAR minDistanceDestination : " + minDistanceDestination);
-            Debug.Log("STAR CELL count : " + cells.Count);
             for (int i = 0; i < cells.Count; i++)
             {
                 Cell currentCell = cells[i];
-                Debug.Log("STAR currentCell boucle i : " + i + currentCell.position);
                 float currentDistanceDestionation = distancesDestination[currentCell];
-                
-                Debug.Log("STAR currentDistanceDestionation : " + currentDistanceDestionation);
-                
                 if (currentDistanceDestionation < minDistanceDestination)
                 {
                     minDistanceDestination = currentDistanceDestionation;
