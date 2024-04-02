@@ -261,6 +261,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CheckEnemiesAtDestinationCells();
+        CleanBonuses();
         if (_playersHealth < 1)
         {
             gameWon = false;
