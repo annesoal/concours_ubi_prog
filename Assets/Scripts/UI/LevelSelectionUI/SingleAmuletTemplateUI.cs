@@ -24,6 +24,8 @@ public class SingleAmuletTemplateUI : MonoBehaviour
         _associatedAmuletSo = amuletSo;
         
         amuletSelectButton.GetComponent<Image>().sprite = amuletSo.amuletIcon;
+        amuletSelectButton.GetComponent<AmuletSelectionButton>().SetAssociatedAmuletSO(amuletSo);
+        
         amuletNameText.text = amuletSo.amuletName;
         
         BasicShowHide.Show(gameObject);

@@ -15,5 +15,6 @@ public class ResetStaticDataManager : MonoBehaviour
         BaseTower.ResetStaticData();
         TowerDefenseManager.ResetStaticData();
         SingleAmuletTemplateUI.ResetStaticData();
+        AmuletSelectionButton.ResetStaticData();
     }
 }
