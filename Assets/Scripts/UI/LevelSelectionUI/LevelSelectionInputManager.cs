@@ -28,30 +28,47 @@ public class LevelSelectionInputManager : MonoBehaviour
     public event EventHandler OnUpUI;
     private void PlayerInputUI_OnUpPerformed(InputAction.CallbackContext obj)
     {
-        OnUpUI?.Invoke(this, EventArgs.Empty);
+        if (gameObject.activeSelf)
+        {
+            OnUpUI?.Invoke(this, EventArgs.Empty);
+        }
     }
     
     public event EventHandler OnDownUI;
     private void PlayerInputUI_OnDownPerformed(InputAction.CallbackContext obj)
     {
-        OnDownUI?.Invoke(this, EventArgs.Empty);
+        if (gameObject.activeSelf)
+        {
+            OnDownUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public event EventHandler OnRightUI;
+
     private void PlayerInputUI_OnRightPerformed(InputAction.CallbackContext obj)
     {
-        OnRightUI?.Invoke(this, EventArgs.Empty);
+        if (gameObject.activeSelf)
+        {
+            OnRightUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public event EventHandler OnLeftUI;
+
     private void PlayerInputUI_OnLeftPerformed(InputAction.CallbackContext obj)
     {
-        OnLeftUI?.Invoke(this, EventArgs.Empty);
+        if (gameObject.activeSelf)
+        {
+            OnLeftUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public event EventHandler OnSelectUI;
     private void PlayerInputUI_OnSelectPerformed(InputAction.CallbackContext obj)
     {
-        OnSelectUI?.Invoke(this, EventArgs.Empty);
+        if (gameObject.activeSelf)
+        {
+            OnSelectUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
