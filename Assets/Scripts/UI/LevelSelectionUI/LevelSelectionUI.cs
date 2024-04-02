@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = System.Diagnostics.Debug;
@@ -48,6 +49,13 @@ public class LevelSelectionUI : MonoBehaviour
         LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
         
         LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
+    }
+    
+    public void Show()
+    {
+        BasicShowHide.Show(gameObject);
+        
+        EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
     }
 
     private void AddHorizontalLayoutWhenFull(ref Transform currentHorizontalLayout, ref int horizontalLayoutCount)
@@ -128,9 +136,14 @@ public class LevelSelectionUI : MonoBehaviour
         _selectedLevel = newSelectedLevel;
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
     }
+
+    [Header("Level Focus UI")]
+    [SerializeField] private LevelFocusUI levelFocusUI;
     
     private void InputManager_OnSelectUI(object sender, EventArgs e)
     {
-        // TODO show level focus ui for this level !
+        BasicShowHide.Hide(gameObject);
+        
+        levelFocusUI.Show(_selectedLevel.Value.AssociatedLevelSO);
     }
 }

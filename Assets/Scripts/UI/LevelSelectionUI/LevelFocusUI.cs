@@ -15,6 +15,7 @@ public class LevelFocusUI : MonoBehaviour
     [SerializeField] private Button cancelButton;
 
     private LevelSelectSO _selectedLevelSO;
+    private AmuletSO _selectedAmulet;
     
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class LevelFocusUI : MonoBehaviour
     public void Show(LevelSelectSO toShow)
     {
         _selectedLevelSO = toShow;
+        _selectedAmulet = null;
         
         levelDisplay.Show(toShow);
         
@@ -36,17 +38,21 @@ public class LevelFocusUI : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(null);
         
-        // TODO SET SELECTED AMULET
+        if (_selectedAmulet != null)
+        {
+            AmuletSelector.PlayerAmuletSelection = _selectedAmulet.ID;
+        }
         
         Loader.LoadNetwork(_selectedLevelSO.levelScene);
     }
-    
+
+    [Header("Level Selection UI")]
+    [SerializeField] private LevelSelectionUI levelSelectionUI;
     private void OnCancelButtonClicked()
     {
         BasicShowHide.Hide(gameObject);
-        
-        // TODO SHOW LevelSelectionUI again
-        // event ?
+
+        levelSelectionUI.Show();
     }
 
 }

@@ -16,12 +16,13 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
 
     [SerializeField] private GameObject selectedOutline;
 
-    private LevelSelectSO _associatedLevelSO;
+    public LevelSelectSO AssociatedLevelSO { get; private set; }
+
     public void Show(LevelSelectSO levelSO)
     {
-        _associatedLevelSO = levelSO;
+        AssociatedLevelSO = levelSO;
 
-        nameText.text = _associatedLevelSO.levelName;
+        nameText.text = AssociatedLevelSO.levelName;
         
         ShowAmulets();
         
@@ -32,7 +33,7 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
     {
         AmuletSaveLoad loader = new AmuletSaveLoad();
         
-        List<AmuletSO> amuletsToShow = loader.GetAmuletsForScene(_associatedLevelSO.levelScene);
+        List<AmuletSO> amuletsToShow = loader.GetAmuletsForScene(AssociatedLevelSO.levelScene);
 
         foreach (AmuletSO toShow in amuletsToShow)
         {

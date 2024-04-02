@@ -250,6 +250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ed510544c832132493b1a044aba5e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelDisplay: {fileID: 286665338}
+  readyButton: {fileID: 283830275}
+  cancelButton: {fileID: 2006862714}
+  levelSelectionUI: {fileID: 732470070}
 --- !u!1 &283830273
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,6 +1967,7 @@ MonoBehaviour:
   maxHorizonalLayout: 3
   levelVerticalLayout: {fileID: 621895164}
   levelHorizontalLayout: {fileID: 1197950984}
+  levelFocusUI: {fileID: 97608295}
 --- !u!1 &780287415
 GameObject:
   m_ObjectHideFlags: 0
