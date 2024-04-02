@@ -40,6 +40,14 @@ public class LevelFocusUI : MonoBehaviour
         
         BasicShowHide.Show(gameObject);
         
+        StartCoroutine(EnableNavEventsTimer());
+    }
+
+    private const float TIMER_ACTIVATE_NAV_EVENT = 0.08f;
+    private IEnumerator EnableNavEventsTimer()
+    {
+        yield return new WaitForSeconds(TIMER_ACTIVATE_NAV_EVENT);
+        EventSystem.current.sendNavigationEvents = true;
         readyButton.Select();
     }
 

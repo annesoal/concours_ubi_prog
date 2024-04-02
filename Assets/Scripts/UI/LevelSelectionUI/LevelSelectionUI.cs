@@ -49,10 +49,14 @@ public class LevelSelectionUI : MonoBehaviour
         LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
         
         LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
+
+        EventSystem.current.sendNavigationEvents = false;
     }
     
     public void Show()
     {
+        EventSystem.current.sendNavigationEvents = false;
+        
         BasicShowHide.Show(gameObject);
         
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
