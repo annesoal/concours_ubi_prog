@@ -4,6 +4,7 @@ using Enemies;
 using Grid;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace Managers
@@ -31,7 +32,9 @@ namespace Managers
 
         private static void SetEnemyPath(Enemy enemy)
         {
+         
             if (enemy.hasPath) return;
+            
             Cell origin = enemy.GetCurrentPosition();
             Cell destination = enemy.GetDestination();
             Func<Cell, bool> invalidCellPredicate = enemy.PathfindingInvalidCell;
@@ -53,6 +56,6 @@ namespace Managers
             {
                 enemy.GetComponent<Enemy>().hasPath = false;
             }
-        }
+           }
     }
 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Grid;
+using Grid.Interface;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 using Random = System.Random;
 using Type = Grid.Type;
@@ -20,9 +22,11 @@ namespace Utils
 
         [SerializeField] private int _endingRound = -1;
         [SerializeField] private int _period;
+        [SerializeField] private List<TypeTopOfCell> blockingElementsType;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
         [Header("How")] [SerializeField] private double _spawnRate;
+        [SerializeField] private CellsToCheck _cellsToCheck;
 
         [SerializeField] private List<Type> _BlockTypeToSpawnOn;
         private GridHelper _helper;
@@ -30,7 +34,7 @@ namespace Utils
         private Vector2Int _position;
         private int _positionInList;
         private Random _rand = new();
-        private Func<bool> Predicate;
+        private Func<bool> _predicatePosition;
 
         private int timeToRepeate;
         public GameObject ObjectToSpawn => _objectToSpawn;
@@ -42,14 +46,24 @@ namespace Utils
             _position = new Vector2Int();
             _helper = new SpawnerGridHelper(_position, _BlockTypeToSpawnOn);
             timeToRepeate = _period;
-            Predicate = CreatePredicate();
+            _predicatePosition = CreatePositionPredicate();
         }
 
+        private bool IsInvalidCell(Cell cell)
+        {
+            foreach (var elementType in blockingElementsType)
+            {
+                if (cell.HasObjectOfTypeOnTop(elementType))
+                    return true;
+            }
+
+            return false;
+        }
         /// <summary>
         ///     Permet de creer un predicat pour la repetition si le _startingRound est different de -1.
         /// </summary>
         /// <returns></returns>
-        private Func<bool> CreatePredicate()
+        private Func<bool> CreatePositionPredicate()
         {
             if (_startingRound == -1) return () => true;
 
@@ -96,7 +110,8 @@ namespace Utils
                 {
                     _position.y = j;
                     _helper.SetHelperPosition(_position);
-                    if (_helper.IsValidCell(_position) && RandomBool()) listOfPosition.Add(_position);
+                    if (_helper.IsValidCell(_position) && RandomBool()) 
+                        listOfPosition.Add(_position);
                     j++;
                 } while (j < TilingGrid.Size);
 
@@ -104,6 +119,37 @@ namespace Utils
             } while (i < TilingGrid.Size);
 
             return listOfPosition;
+        }
+
+        private List<Vector2Int> GeneratePositionBonus()
+        {
+            List<Vector2Int> listOfPositions = new();
+
+            Random randomGenerator = new Random();
+            Cell cell;
+            Cell robotReachableCell;
+            Cell monkeyReachableCell;
+            int index;
+            do
+            {
+                index = Math.Min((int)(new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count),
+                    TilingGrid._monkeyReachableCells.Count);
+                monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
+                cell = TilingGrid.grid.GetCell(monkeyReachableCell.position);
+            } while (IsInvalidCell(cell));
+            
+            do 
+            {
+                index = Math.Min((int) (new Random().NextDouble() * TilingGrid._robotReachableCells.Count), 
+                            TilingGrid._robotReachableCells.Count);
+                        
+                robotReachableCell = TilingGrid._robotReachableCells[index];
+                cell = TilingGrid.grid.GetCell(robotReachableCell.position);
+            } while (IsInvalidCell(cell));
+            
+            listOfPositions.Add(monkeyReachableCell.position);
+            listOfPositions.Add(robotReachableCell.position);
+            return listOfPositions;
         }
 
         private bool RandomBool()
@@ -132,14 +178,31 @@ namespace Utils
             TowerDefenseManager.OnCurrentStateChangedEventArgs changedEventArgs)
         {
             if (changedEventArgs.newValue == _timeSlot)
-                if (Predicate.Invoke())
+                if (_predicatePosition.Invoke())
                     if (_isServer)
                     {
-                        var positions = GeneratePositions();
+                        List<Vector2Int> positions;
+                        switch (_cellsToCheck)
+                        {
+                            case CellsToCheck.EveryCells:
+                                positions = GeneratePositions();
+                                break;
+                            case CellsToCheck.PlayerIslandCells:
+                                positions = GeneratePositionBonus();
+                                break;
+                            default:
+                                throw new NotImplementedException();
+                        }
                         if (SpawnersManager.Instance == null)
                             throw new Exception("SpawnersManager instance has not been set !");
-                        SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList);
+                        SpawnersManager.Instance.PlaceObjects(positions.ToArray(), _positionInList, IsInvalidCell);
                     }
+        }
+
+        public enum CellsToCheck
+        {
+             PlayerIslandCells,
+             EveryCells,
         }
     }
 }

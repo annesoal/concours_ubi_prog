@@ -1,23 +1,20 @@
-using Enemies;
+using System;
 using Grid;
+using Grid.Interface;
+using UnityEngine;
+using Random = System.Random;
 
-namespace Ennemies
+namespace Enemies
 {
-    public class DoggoEnemy : Enemy
+    public class DoggoEnemy : BasicEnemy
     {
         
         public DoggoEnemy()
         {
             ennemyType = EnnemyType.Doggo;
         }
-        public override void Move(int energy)
-        {
-         
-        }
 
-        public override bool PathfindingInvalidCell(Cell cell)
-        {
-            throw new System.NotImplementedException();
-        }
+       
+
     }
 }

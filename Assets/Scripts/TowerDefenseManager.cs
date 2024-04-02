@@ -29,6 +29,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
+    private List<GameObject> bonuses = new List<GameObject>();
     private bool gameWon = false;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
@@ -41,11 +42,10 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private float tacticalPauseDuration;
 
-    
-    [Header("Utility")]
-    [SerializeField] private GameObject obstacle;
+
+    [Header("Utility")] [SerializeField] private GameObject obstacle;
     [SerializeField] private GameObject _hightlighter;
-    
+
     private int _playersHealth;
 
     [field: Header("Chrono de depart")]
@@ -62,9 +62,8 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private Transform playerRobotPrefab;
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
-    [FormerlySerializedAs("selector")]
-    [Header("Amulet")]
-    [SerializeField] public AmuletSelector amuletSelector; 
+    [FormerlySerializedAs("selector")] [Header("Amulet")] [SerializeField]
+    public AmuletSelector amuletSelector;
 
     private readonly NetworkVariable<State> _currentState = new();
 
@@ -77,7 +76,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private Action<ulong>[] _spawnPlayerMethods;
 
     private Action[] _statesMethods;
-    
+
 
     private List<Vector2Int> positions = new();
     public float TacticalPauseTimer => _currentTimer.Value;
@@ -111,8 +110,9 @@ public class TowerDefenseManager : NetworkBehaviour
         BaseTower.baseCost = amuletSelector.AmuletToUse.towerBaseCost;
         BaseTrap.baseCost = amuletSelector.AmuletToUse.trapBaseCost;
         Enemy.baseAttack = amuletSelector.AmuletToUse.enemyBaseAttack;
-        Enemy.baseHealth =  amuletSelector.AmuletToUse.enemyBaseHealth;   
+        Enemy.baseHealth = amuletSelector.AmuletToUse.enemyBaseHealth;
     }
+
     private void Start()
     {
         Instance.OnCurrentStateChanged += BeginTacticalPause;
@@ -120,9 +120,9 @@ public class TowerDefenseManager : NetworkBehaviour
         if (IsServer)
         {
             EnvironmentTurnManager.Instance.OnEnvironmentTurnEnded += EnvironmentManager_OnEnvironmentTurnEnded;
-            Instance.OnCurrentStateChanged +=EndGame;
+            Instance.OnCurrentStateChanged += EndGame;
         }
-        
+
         //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0;
     }
@@ -131,30 +131,32 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         if (e.newValue == State.EndOfGame)
         {
-           EndLevelClientRpc(gameWon);
+            EndLevelClientRpc(gameWon);
         }
     }
 
     private void SaveProgress()
     {
-          AmuletSaveLoad save = new AmuletSaveLoad();
-          List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
-          List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
-         
+        AmuletSaveLoad save = new AmuletSaveLoad();
+        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+        List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
+
         AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);
-         
+
         if (unlockableAmulets.Count == 0)
         {
             foreach (var amulet in amuletSelector.amulets)
             {
-               unlockableAmulets.Add(amulet); 
-            } 
+                unlockableAmulets.Add(amulet);
+            }
         }
+
         if (unlockableAmulets.Count != 0)
             unlockedAmulets.Add(unlockableAmulets[0]);
-        
+
         save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
     }
+
     private void AddUnlockableAmulets(List<AmuletSO> unlockedAmulets, List<AmuletSO> unlockableAmulets)
     {
         foreach (var amulet in amuletSelector.amulets)
@@ -162,10 +164,10 @@ public class TowerDefenseManager : NetworkBehaviour
             foreach (var unlockedAmulet in unlockedAmulets)
             {
                 {
-                    if (unlockedAmulet.ID != amulet.ID) 
+                    if (unlockedAmulet.ID != amulet.ID)
                         unlockableAmulets.Add(amulet);
                 }
-            }     
+            }
         }
     }
 
@@ -174,10 +176,11 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         if (won)
             SaveProgress();
-        
+
         Debug.LogError("devrait load une autre scene je pense");
         Loader.Load(Loader.Scene.CharacterSelectScene);
     }
+
     private void Update()
     {
         if (IsServer) _statesMethods[(int)_currentState.Value]();
@@ -253,7 +256,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        CheckDestinationCells();
+        CheckEnemiesAtDestinationCells();
         if (_playersHealth < 1)
         {
             gameWon = false;
@@ -467,18 +470,17 @@ public class TowerDefenseManager : NetworkBehaviour
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
 
-    private static void CheckDestinationCells()
+    private static void CheckEnemiesAtDestinationCells()
     {
         DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         foreach (var cell in DestinationCells)
         {
             if (cell.ContainsEnemy())
             {
-
                 var enemies = cell.GetEnemies();
                 foreach (var enemy in enemies)
                 {
-                    Enemy.enemiesInGame.Remove(enemy.ToGameObject());
+                    enemy.RemoveInGame();
                     TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
                     Destroy(enemy.ToGameObject());
                 }
@@ -498,5 +500,22 @@ public class TowerDefenseManager : NetworkBehaviour
         public State newValue;
         public State previousValue;
     }
-    
+
+    public void AddBonus(GameObject bonus)
+    {
+        this.bonuses.Add(bonus);
+    }
+
+    public void RemoveBonus(GameObject bonus)
+    {
+        this.bonuses.Remove(bonus);
+    }
+
+    private void CleanBonuses()
+    {
+        foreach (var bonus in bonuses)
+        {
+            Destroy(bonus);
+        }
+    }
 }

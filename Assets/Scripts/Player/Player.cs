@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 
-public class Player : NetworkBehaviour
+public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
 
@@ -102,16 +102,27 @@ public class Player : NetworkBehaviour
             InputManager.Player = this;
         }
 
+        Vector3 position; 
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
+            position = transform.position;
+            SetReachableCells(true,position); 
         }
         else
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
+            
+            position = transform.position;
+            SetReachableCells(false, position); 
+        }
+        
+        if (IsServer)
+        {
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, position);
         }
     }
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
@@ -196,6 +207,7 @@ public class Player : NetworkBehaviour
 
     public IEnumerator Move()
     {
+        Vector2Int oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
         if (nextPosition == null) yield break;
@@ -204,6 +216,7 @@ public class Player : NetworkBehaviour
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
     }
 
     private bool IsReadyToPickUp()
@@ -282,5 +295,26 @@ public class Player : NetworkBehaviour
     public void PrepareToMove()
     {
         _selector.GetNextPositionToGo();
+    }
+
+    public TypeTopOfCell GetType()
+    {
+        return TypeTopOfCell.Player;
+    }
+
+    public GameObject ToGameObject()
+    {
+        return this.gameObject;
+    }
+    private void SetReachableCells(bool isMonkey, Vector3 position)
+    {
+        if (isMonkey)
+        {   
+            TilingGrid.FindReachableCellsMonkey(position);
+        }
+        else
+        {
+            TilingGrid.FindReachableCellsRobot(position);
+        }
     }
 }

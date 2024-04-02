@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
@@ -49,10 +50,13 @@ namespace Managers
             } 
         }
         
-        public void PlaceObjects(Vector2Int[] positionToObstacles, int indexInGameObjectList)
+        public void PlaceObjects(Vector2Int[] positionToObstacles, int indexInGameObjectList, Func<Cell, bool> isInvalidCell)
         {
             foreach (Vector2Int positionOfSpawn in positionToObstacles)
             {
+                Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
+                    if (isInvalidCell.Invoke(cell))
+                        continue; 
                 GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
                 instance.GetComponent<NetworkObject>().Spawn(true);

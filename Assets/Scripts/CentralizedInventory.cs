@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
+using Synchrone;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class CentralizedInventory : NetworkBehaviour
     [SerializeField] private List<BuildingMaterialSO> allBuildingMaterialSO;
 
     public event EventHandler<OnNumberResourceChangedEventArgs> OnNumberResourceChanged;
+
+    private int _collectedBonus = 0;
+    private int _ressourceAddedThisTurn = 0;
     public class OnNumberResourceChangedEventArgs
     {
         public int NewValue;
@@ -40,10 +44,56 @@ public class CentralizedInventory : NetworkBehaviour
         NetworkVariable<int> resourceNetworkVariable = GetNetworkVariableOfResource(resourceOfElement.BuildingMaterialSO);
 
         resourceNetworkVariable.Value++;
+        _ressourceAddedThisTurn++;
         
         EmitResourceChangedEventClientRpc(
             resourceNetworkVariable.Value, 
             allBuildingMaterialSO.IndexOf(resourceOfElement.BuildingMaterialSO));
+    }
+    
+    public void AddBonus(ITopOfCell element)
+    {
+        
+        if (element.GetType() != TypeTopOfCell.Bonus) { throw new ITopOfCellNotAResourceException(); }
+        _collectedBonus++;
+    }
+
+    public void CashBonus()
+    {
+
+        if (_collectedBonus == 2)
+        {
+            var resourceNetworkVariable = NumberOfGreyResources;
+            resourceNetworkVariable.Value += (int)(Bonus.Multiplier * _ressourceAddedThisTurn);
+            Debug.LogError(_ressourceAddedThisTurn);
+            Debug.LogError((int)(Bonus.Multiplier * _ressourceAddedThisTurn));
+            Debug.LogError(resourceNetworkVariable.Value);
+            EmitResourceChangedEventClientRpc(
+                        resourceNetworkVariable.Value, 0);
+        }
+        ResetBonus();     
+    }
+
+    private void ResetBonus()
+    {
+        _ressourceAddedThisTurn = 0;
+        _collectedBonus = 0; 
+    }
+    
+    public void AddMalus(ITopOfCell element)
+    {
+        if (element.GetType() != TypeTopOfCell.Malus) { throw new ITopOfCellNotAResourceException(); }
+        
+        Malus malus = element.ToGameObject().GetComponent<Malus>();
+        
+        NetworkVariable<int> resourceNetworkVariable = GetNetworkVariableOfResource(malus.BuildingMaterialSO);
+
+        resourceNetworkVariable.Value = Math.Max(0, resourceNetworkVariable.Value - malus.value);
+        
+        EmitResourceChangedEventClientRpc(
+            resourceNetworkVariable.Value, 
+            allBuildingMaterialSO.IndexOf(malus.BuildingMaterialSO));
+
     }
 
     public void DecreaseResourceForBuilding(BuildableObjectSO builtObjectSO)
@@ -140,4 +190,7 @@ public class CentralizedInventory : NetworkBehaviour
     {
         correspondingUI.ClearAllMaterialsCostUI();
     }
+
+    
+
 }

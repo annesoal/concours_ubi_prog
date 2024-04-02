@@ -1,7 +1,7 @@
 namespace Ennemies
 {
-    public interface ICorrupt
+    public interface ICorrupt<T>
     {
-        public  void Corrupt();
+        public void Corrupt(T cell);
     }
 }
