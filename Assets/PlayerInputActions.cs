@@ -623,18 +623,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MinimalLeft"",
+                    ""name"": ""Right"",
                     ""type"": ""Button"",
-                    ""id"": ""9a797f6b-3335-47f3-876c-2b932f652bcd"",
+                    ""id"": ""2df3eb4a-670d-44ab-b0d9-dc7614077426"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Right"",
+                    ""name"": ""MinimalLeft"",
                     ""type"": ""Button"",
-                    ""id"": ""2df3eb4a-670d-44ab-b0d9-dc7614077426"",
+                    ""id"": ""9a797f6b-3335-47f3-876c-2b932f652bcd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -664,8 +664,41 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""29cf0f93-53c0-49ac-9218-f4ab5d833a34"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc419bde-f9c1-4dfb-a4fa-d5460b00e967"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""d9d3cbf3-38c5-44da-8ee0-a4a6494ebf3f"",
                     ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9393656-0be7-45a1-a44b-61d8ad45ab7a"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -697,6 +730,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""8a787940-cc3a-4786-b209-ec11bf695237"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e34f2025-8062-49ba-94d4-c45da336d7be"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""2c8d632c-cb62-47da-bbe9-9f64c2f48ec2"",
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
@@ -710,6 +765,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""3c1b52b0-9848-4fc8-b20b-714832ec5bfe"",
                     ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f86715c4-1f87-400e-a4d9-7bb06f17c0ff"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68e77eb2-8fc8-45d6-85c3-dde2ccc006cb"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -741,6 +818,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""d2869e76-8a3f-4878-8c3d-988e75496b0b"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d20ef031-1ea9-47ad-b1fb-887a5884635c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""8547990e-8c9e-478b-a517-02c1835c786e"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
@@ -763,12 +862,23 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""110a36dd-f051-4847-91a3-0d6d7b1df4e6"",
-                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""id"": ""9fd79742-a31c-4bb8-8382-de7372e0fcd0"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MinimalLeft"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e06fed54-7c1b-4b25-b0b8-5c0b3861545a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -780,6 +890,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MinimalRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3c35f2af-4636-4ec6-ab83-57b000701647"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""110a36dd-f051-4847-91a3-0d6d7b1df4e6"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57706731-33ea-4066-89cf-b4b5f4a9f4ae"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -830,8 +973,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_Down = m_UI.FindAction("Down", throwIfNotFound: true);
         m_UI_Up = m_UI.FindAction("Up", throwIfNotFound: true);
         m_UI_Left = m_UI.FindAction("Left", throwIfNotFound: true);
-        m_UI_MinimalLeft = m_UI.FindAction("MinimalLeft", throwIfNotFound: true);
         m_UI_Right = m_UI.FindAction("Right", throwIfNotFound: true);
+        m_UI_MinimalLeft = m_UI.FindAction("MinimalLeft", throwIfNotFound: true);
         m_UI_MinimalRight = m_UI.FindAction("MinimalRight", throwIfNotFound: true);
     }
 
@@ -1039,8 +1182,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Down;
     private readonly InputAction m_UI_Up;
     private readonly InputAction m_UI_Left;
-    private readonly InputAction m_UI_MinimalLeft;
     private readonly InputAction m_UI_Right;
+    private readonly InputAction m_UI_MinimalLeft;
     private readonly InputAction m_UI_MinimalRight;
     public struct UIActions
     {
@@ -1051,8 +1194,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_UI_Down;
         public InputAction @Up => m_Wrapper.m_UI_Up;
         public InputAction @Left => m_Wrapper.m_UI_Left;
-        public InputAction @MinimalLeft => m_Wrapper.m_UI_MinimalLeft;
         public InputAction @Right => m_Wrapper.m_UI_Right;
+        public InputAction @MinimalLeft => m_Wrapper.m_UI_MinimalLeft;
         public InputAction @MinimalRight => m_Wrapper.m_UI_MinimalRight;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
@@ -1078,12 +1221,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
-            @MinimalLeft.started += instance.OnMinimalLeft;
-            @MinimalLeft.performed += instance.OnMinimalLeft;
-            @MinimalLeft.canceled += instance.OnMinimalLeft;
             @Right.started += instance.OnRight;
             @Right.performed += instance.OnRight;
             @Right.canceled += instance.OnRight;
+            @MinimalLeft.started += instance.OnMinimalLeft;
+            @MinimalLeft.performed += instance.OnMinimalLeft;
+            @MinimalLeft.canceled += instance.OnMinimalLeft;
             @MinimalRight.started += instance.OnMinimalRight;
             @MinimalRight.performed += instance.OnMinimalRight;
             @MinimalRight.canceled += instance.OnMinimalRight;
@@ -1106,12 +1249,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
-            @MinimalLeft.started -= instance.OnMinimalLeft;
-            @MinimalLeft.performed -= instance.OnMinimalLeft;
-            @MinimalLeft.canceled -= instance.OnMinimalLeft;
             @Right.started -= instance.OnRight;
             @Right.performed -= instance.OnRight;
             @Right.canceled -= instance.OnRight;
+            @MinimalLeft.started -= instance.OnMinimalLeft;
+            @MinimalLeft.performed -= instance.OnMinimalLeft;
+            @MinimalLeft.canceled -= instance.OnMinimalLeft;
             @MinimalRight.started -= instance.OnMinimalRight;
             @MinimalRight.performed -= instance.OnMinimalRight;
             @MinimalRight.canceled -= instance.OnMinimalRight;
@@ -1171,8 +1314,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnUp(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
-        void OnMinimalLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnMinimalLeft(InputAction.CallbackContext context);
         void OnMinimalRight(InputAction.CallbackContext context);
     }
 }
