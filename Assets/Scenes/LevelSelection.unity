@@ -1658,7 +1658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c17874dd83f8ddbbf39ec0e8def301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amuletSelectButton: {fileID: 0}
+  amuletSelectButton: {fileID: 1286088750}
   amuletNameText: {fileID: 504094511}
 --- !u!1 &621895163
 GameObject:
@@ -2667,6 +2667,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1168713401}
+  - component: {fileID: 1168713402}
   m_Layer: 0
   m_Name: AmuletInfoUI
   m_TagString: Untagged
@@ -2696,6 +2697,18 @@ RectTransform:
   m_AnchoredPosition: {x: 419.00006, y: -508}
   m_SizeDelta: {x: 710, y: 440}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1168713402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168713400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13315e5a727483d07a061dbd2d1a6c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1181344628
 GameObject:
   m_ObjectHideFlags: 0
