@@ -774,8 +774,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "J'\xE9cris une longue description d'amulettes afin de voir le r\xE9sultat
-    sur le UI h\xE9h\xE9."
+  m_text: Select An Amulet To See Its Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -784,8 +783,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278512639
+  m_fontColor: {r: 1, g: 0.92, b: 0.016, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1338,6 +1337,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 556843362}
+  - component: {fileID: 556843366}
   - component: {fileID: 556843365}
   - component: {fileID: 556843364}
   - component: {fileID: 556843363}
@@ -1449,6 +1449,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 556843361}
   m_CullTransparentMesh: 1
+--- !u!114 &556843366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556843361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1683eba010935e8b4a013178e3b974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &586682306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,6 +2721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13315e5a727483d07a061dbd2d1a6c29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  descriptionText: {fileID: 429830576}
 --- !u!1 &1181344628
 GameObject:
   m_ObjectHideFlags: 0
