@@ -331,6 +331,7 @@ namespace Grid
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
+            Debug.LogError(origin.position);
             return GetCellsInRadius(origin.position, radius);
         }
 
@@ -346,7 +347,9 @@ namespace Grid
             {
                 for (int j = minY; j <= maxY; j++)
                 {
-                    cells.Add(GetCell(i, j));
+                    Cell cell = GetCell(i, j);
+                    if (!cell.IsNone())
+                        cells.Add(cell);
                 }
             }
 
