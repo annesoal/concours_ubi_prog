@@ -34,6 +34,8 @@ public class LevelFocusUI : MonoBehaviour
         levelDisplay.Show(toShow);
         
         BasicShowHide.Show(gameObject);
+        
+        readyButton.Select();
     }
 
     private void OnReadyButtonClicked()
