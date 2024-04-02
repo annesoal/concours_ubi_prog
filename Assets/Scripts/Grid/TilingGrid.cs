@@ -331,7 +331,6 @@ namespace Grid
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
-            Debug.LogError(origin.position);
             return GetCellsInRadius(origin.position, radius);
         }
 
