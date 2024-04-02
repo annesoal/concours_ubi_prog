@@ -22,6 +22,8 @@ public class LevelFocusUI : MonoBehaviour
         readyButton.onClick.AddListener(OnReadyButtonClicked);
         
         cancelButton.onClick.AddListener(OnCancelButtonClicked);
+        
+        BasicShowHide.Hide(gameObject);
     }
 
     public void Show(LevelSelectSO toShow)
