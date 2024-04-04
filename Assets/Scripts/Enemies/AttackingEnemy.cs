@@ -34,6 +34,11 @@ namespace Enemies
             {
                 if (!IsServer) return;
                 if (!IsTimeToMove(energy)) return;
+                if (isStupefiedState)
+                {
+                    isStupefiedState = false;
+                    return;
+                }
                 if (!ChoseToAttack())
                 {
                     if (!TryMoveOnNextCell())
@@ -175,7 +180,7 @@ namespace Enemies
             Debug.Log("BIGGUY PLACE APRES : " + transform.position);
         }
 
-        private bool IsValidCell(Cell cell)
+        protected override bool IsValidCell(Cell cell)
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Enemy);

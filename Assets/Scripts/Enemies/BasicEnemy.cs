@@ -26,7 +26,11 @@ namespace Enemies
             if (!IsServer) return;
 
             if (!IsTimeToMove(energy)) return;
-            
+            if (isStupefiedState)
+            {
+                isStupefiedState = false;
+                return;
+            }
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
@@ -119,12 +123,11 @@ namespace Enemies
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
         }
 
-        private bool IsValidCell(Cell toCheck)
+        protected override bool IsValidCell(Cell toCheck)
         {
             PathfindingInvalidCell(toCheck);
             bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-            
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
         }
     }

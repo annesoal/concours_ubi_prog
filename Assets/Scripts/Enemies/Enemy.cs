@@ -25,7 +25,7 @@ namespace Enemies
     {
         [SerializeField] protected EnnemyType ennemyType;
 
-        [SerializeField] protected bool stupefiedState = false; // Piege
+        [FormerlySerializedAs("stupefiedState")] [SerializeField] protected bool isStupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 1;
         private List<Cell> _destinationsCell;
@@ -59,7 +59,8 @@ namespace Enemies
         {
             return (nextCell.type & BlockType.EnemyDestination) > 0;
         }
-        
+
+        protected abstract bool IsValidCell(Cell toCheck);
         
         private Cell GetClosestDestination()
         {
