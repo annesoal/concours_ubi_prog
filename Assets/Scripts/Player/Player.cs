@@ -79,12 +79,14 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             IncrementEnergy();
             RemovePreviousHighlighter();
+            _selector.RemoveFromRecorder();
             _timer.Start();
         }
         else if (hasMoved == MoveType.New)
         {
             DecrementEnergy();
             AddHighlighter(savedSelectorPosition);
+            _selector.AddToRecorder();
             _timer.Start();
         } else if (hasMoved != MoveType.Invalid)
         {
