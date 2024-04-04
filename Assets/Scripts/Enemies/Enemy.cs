@@ -38,7 +38,7 @@ namespace Enemies
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-        
+        protected Vector2Int _reculer2d = new Vector2Int(0, 1);
 
         protected virtual void Initialize()
         {

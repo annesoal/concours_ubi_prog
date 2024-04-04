@@ -40,8 +40,12 @@ namespace Enemies
                     {
                         if (!MoveSides())
                         {
-                            // transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                            Debug.Log("BIGGUY NE PEUT PAS BOUGER");
+                            if (!TryMoveOnNextCell(_reculer2d))
+                            {
+                                transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                                Debug.Log("BIGGUY NE PEUT PAS BOUGER");
+                            }
+                          
                         }
                     }
                 }

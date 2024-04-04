@@ -24,14 +24,7 @@ namespace Enemies
         public override void Move(int energy)
         {
             if (!IsServer) return;
-            if (path != null && path.Count > 0)
-            {
-                Debug.Log("PLANTE ici ?");
-                Debug.Log("zzz POSITION" + path[0].position);
-            }
-           
 
-            Debug.Log("zzz is time to move" + IsTimeToMove(energy));
             if (!IsTimeToMove(energy)) return;
             if (!TryMoveOnNextCell())
             {
