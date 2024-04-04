@@ -132,6 +132,19 @@ public class LevelSelectionUI : MonoBehaviour
 
         UpdateSelectedLevel(newSelectedLevel);
     }
+    
+    [Header("Level Focus UI")]
+    [SerializeField] private LevelFocusUI levelFocusUI;
+    
+    private void InputManager_OnSelectUI(object sender, EventArgs e)
+    {
+        if (CanHandleInput())
+        {
+            BasicShowHide.Hide(gameObject);
+        
+            levelFocusUI.Show(_selectedLevel.Value.AssociatedLevelSO);
+        }
+    }
 
     private bool CanHandleInput()
     {
@@ -144,15 +157,5 @@ public class LevelSelectionUI : MonoBehaviour
         
         _selectedLevel = newSelectedLevel;
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
-    }
-
-    [Header("Level Focus UI")]
-    [SerializeField] private LevelFocusUI levelFocusUI;
-    
-    private void InputManager_OnSelectUI(object sender, EventArgs e)
-    {
-        BasicShowHide.Hide(gameObject);
-        
-        levelFocusUI.Show(_selectedLevel.Value.AssociatedLevelSO);
     }
 }
