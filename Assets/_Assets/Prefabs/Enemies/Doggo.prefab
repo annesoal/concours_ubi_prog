@@ -198,5 +198,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ennemyType: 5
   isStupefiedState: 0
-  ratioMovement: 1
+  ratioMovement: 2
   hasPath: 0
