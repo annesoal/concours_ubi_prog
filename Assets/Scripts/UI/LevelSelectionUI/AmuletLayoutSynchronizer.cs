@@ -46,6 +46,6 @@ public class AmuletLayoutSynchronizer : NetworkBehaviour
     [ClientRpc]
     private void SaveServerSideAmuletsForLevelClientRpc(Loader.Scene levelScene, int[] amuletsIdsForScene)
     {
-        _amuletsIdsForScene.Add(levelScene, amuletsIdsForScene);
+        _amuletsIdsForScene.TryAdd(levelScene, amuletsIdsForScene);
     }
 }
