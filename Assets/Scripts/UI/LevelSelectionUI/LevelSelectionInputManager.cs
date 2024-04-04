@@ -29,29 +29,20 @@ public class LevelSelectionInputManager : MonoBehaviour
     public event EventHandler OnUpUI;
     private void PlayerInputUI_OnUpPerformed(InputAction.CallbackContext obj)
     {
-        if (gameObject.activeSelf && NetworkManager.Singleton.IsServer)
-        {
-            OnUpUI?.Invoke(this, EventArgs.Empty);
-        }
+        OnUpUI?.Invoke(this, EventArgs.Empty);
     }
     
     public event EventHandler OnDownUI;
     private void PlayerInputUI_OnDownPerformed(InputAction.CallbackContext obj)
     {
-        if (gameObject.activeSelf && NetworkManager.Singleton.IsServer)
-        {
-            OnDownUI?.Invoke(this, EventArgs.Empty);
-        }
+        OnDownUI?.Invoke(this, EventArgs.Empty);
     }
 
     public event EventHandler OnRightUI;
 
     private void PlayerInputUI_OnRightPerformed(InputAction.CallbackContext obj)
     {
-        if (gameObject.activeSelf && NetworkManager.Singleton.IsServer)
-        {
-            OnRightUI?.Invoke(this, EventArgs.Empty);
-        }
+        OnRightUI?.Invoke(this, EventArgs.Empty);
     }
 
     public event EventHandler OnLeftUI;
@@ -67,10 +58,7 @@ public class LevelSelectionInputManager : MonoBehaviour
     public event EventHandler OnSelectUI;
     private void PlayerInputUI_OnSelectPerformed(InputAction.CallbackContext obj)
     {
-        if (gameObject.activeSelf && NetworkManager.Singleton.IsServer)
-        {
-            OnSelectUI?.Invoke(this, EventArgs.Empty);
-        }
+        OnSelectUI?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy()

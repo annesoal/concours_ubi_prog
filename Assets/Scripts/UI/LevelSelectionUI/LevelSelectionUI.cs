@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = System.Diagnostics.Debug;
@@ -87,7 +88,7 @@ public class LevelSelectionUI : MonoBehaviour
     
     private void InputManager_OnLeftUI(object sender, EventArgs e)
     {
-        if (gameObject.activeSelf)
+        if (CanHandleInput())
         {
             UpdateSelectedLevel(_selectedLevel.Next ?? _levelsSelectUI.First);
         }
@@ -95,7 +96,7 @@ public class LevelSelectionUI : MonoBehaviour
     
     private void InputManager_OnRightUI(object sender, EventArgs e)
     {
-        if (gameObject.activeSelf)
+        if (CanHandleInput())
         {
             UpdateSelectedLevel(_selectedLevel.Previous ?? _levelsSelectUI.Last);
         }
@@ -103,7 +104,7 @@ public class LevelSelectionUI : MonoBehaviour
     
     private void InputManager_OnUpUI(object sender, EventArgs e)
     {
-        if (gameObject.activeSelf) { return; }
+        if (! CanHandleInput()) { return; }
         
         LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
         
@@ -116,10 +117,9 @@ public class LevelSelectionUI : MonoBehaviour
 
         UpdateSelectedLevel(newSelectedLevel);
     }
-    
     private void InputManager_OnDownUI(object sender, EventArgs e)
     {
-        if (! gameObject.activeSelf) { return; }
+        if (! CanHandleInput()) { return; }
 
         LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
         
@@ -131,6 +131,11 @@ public class LevelSelectionUI : MonoBehaviour
         }
 
         UpdateSelectedLevel(newSelectedLevel);
+    }
+
+    private bool CanHandleInput()
+    {
+        return gameObject.activeSelf && NetworkManager.Singleton.IsServer;
     }
 
     private void UpdateSelectedLevel(LinkedListNode<SingleLevelSelectUI> newSelectedLevel)
