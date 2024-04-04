@@ -26,19 +26,23 @@ public class PlayerTileSelector : MonoBehaviour
     /// Permet de deplacer le Selector... 
     /// </summary>
     /// <param name="direction"></param>
+    private int debug = 0; 
     public MoveType MoveSelector( Vector2Int direction)
     {
+        debug++;
         MoveType hasMoved = MoveType.Invalid;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
         {
             _helper.SetHelperPosition(direction);
-            if (!_recorder.IsEmpty())
+            if (_recorder.Size() > 1)
             {
                 Vector2Int cellAtDirection = _helper.GetHelperPosition();
-                Debug.LogError("_helper is at position" + cellAtDirection.position);
-                Debug.LogError("recorder first Cell position" + _recoder.HeadFirst().position);
-                hasMoved = cellAtDirection == _recorder.HeadFirst().position 
+                hasMoved = cellAtDirection == _recorder.HeadSecond().position 
                     ? MoveType.ConsumeLast : MoveType.New ;
+            }
+            else
+            {
+                hasMoved = MoveType.New;
             }
         }
 
@@ -47,6 +51,15 @@ public class PlayerTileSelector : MonoBehaviour
         return hasMoved;
     }
 
+    public void AddToRecorder()
+    {
+        Cell cell = TilingGrid.grid.GetCell(_helper.GetHelperPosition());
+        _recorder.Add(cell);
+    }
+    public void RemoveFromRecorder()
+    {
+        _recorder.RemoveFirst();
+    }
 
 
     /// <summary>
@@ -133,9 +146,5 @@ public class PlayerTileSelector : MonoBehaviour
         _renderer.material = _baseMaterial; 
     }
 
-    private bool IsLastElementPreviousMove()
-    {
-        return _recorder.HeadFirst().position == GetCurrentPosition();
-    }
 
 }
