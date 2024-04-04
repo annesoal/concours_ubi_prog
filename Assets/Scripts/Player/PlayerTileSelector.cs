@@ -14,7 +14,8 @@ public class PlayerTileSelector : MonoBehaviour
     private MeshRenderer _renderer;
     [SerializeField] private Material _baseMaterial; 
     [SerializeField] private Material _confirmedMaterial; 
-    private GridHelper _helper;
+    private PlayerSelectorGridHelper _helper;
+
     private Recorder<Cell> _recorder;
     public bool isSelecting = false;
 
@@ -27,38 +28,41 @@ public class PlayerTileSelector : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     private int debug = 0; 
-    public MoveType MoveSelector( Vector2Int direction)
+    public MoveType GetTypeOfMovement( Vector2Int direction)
     {
         debug++;
-        MoveType hasMoved = MoveType.Invalid;
+        MoveType moveType = MoveType.Invalid;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
         {
-            _helper.SetHelperPosition(direction);
             if (_recorder.Size() > 1)
             {
-                Vector2Int cellAtDirection = _helper.GetHelperPosition();
-                hasMoved = cellAtDirection == _recorder.HeadSecond().position 
+                Vector2Int cellAtDirection = _helper.PositionAtDirection(direction);
+                moveType = cellAtDirection == _recorder.HeadSecond().position 
                     ? MoveType.ConsumeLast : MoveType.New ;
             }
             else
             {
-                hasMoved = MoveType.New;
+                moveType = MoveType.New;
             }
         }
-
-        var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
-        transform.position = nextPosition;
-        return hasMoved;
+        return moveType;
     }
 
-    public void AddToRecorder()
+    public void MoveSelector()
     {
-        Cell cell = TilingGrid.grid.GetCell(_helper.GetHelperPosition());
-        _recorder.Add(cell);
+        var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
+        transform.position = nextPosition;
+    }
+    public void AddToRecorder(Vector2Int direction)
+    {
+        _helper.SetHelperPosition(direction);
+        _recorder.Add(_helper.Cell);
     }
     public void RemoveFromRecorder()
     {
         _recorder.RemoveFirst();
+        _helper.SetHelperPosition(_recorder.HeadFirst());
+
     }
 
 

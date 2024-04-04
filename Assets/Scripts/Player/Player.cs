@@ -66,28 +66,33 @@ public class Player : NetworkBehaviour, ITopOfCell
         if (!IsOwner) return true;
         if (!CooldownHasPassed()) return true;
     
-        return !HasEnergy();
+        return false;
     }
 
     private void HandleInput(Vector2 direction)
     {
         Vector2Int input = TranslateToVector2Int(direction);
         var savedSelectorPosition = SaveSelectorPosition();
-        MoveType hasMoved = _selector.MoveSelector(input);
+        MoveType hasMoved = _selector.GetTypeOfMovement(input);
 
         if (hasMoved == MoveType.ConsumeLast)
         {
             IncrementEnergy();
             RemovePreviousHighlighter();
             _selector.RemoveFromRecorder();
+            _selector.MoveSelector();
             _timer.Start();
         }
         else if (hasMoved == MoveType.New)
         {
-            DecrementEnergy();
-            AddHighlighter(savedSelectorPosition);
-            _selector.AddToRecorder();
-            _timer.Start();
+            if (HasEnergy())
+            {
+                DecrementEnergy();
+                AddHighlighter(savedSelectorPosition);
+                _selector.AddToRecorder(input);
+                _selector.MoveSelector();
+                _timer.Start();
+            }
         } else if (hasMoved != MoveType.Invalid)
         {
             throw new Exception("Invalide input " + direction);
