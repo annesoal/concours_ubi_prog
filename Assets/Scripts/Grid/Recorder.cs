@@ -46,5 +46,10 @@ namespace Grid
             while (!IsEmpty()) 
                 RemoveLast();
         }
+
+        public T HeadSecond()
+        {
+            return _elements.First.Next.Value;
+        }
     }
 }
