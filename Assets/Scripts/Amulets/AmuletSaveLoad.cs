@@ -9,7 +9,7 @@ namespace Amulets
     public class AmuletSaveLoad 
     {
         private bool hasBeenLoaded = false;
-        private const string JSONFile = "save.json";
+        private const string SAVE_FILE_PATH = "/save.json";
         private List<LevelAmuletsPair> FinalSave = new();
 
         public List<AmuletSO> GetAmuletsForScene(Loader.Scene scene)
@@ -44,16 +44,14 @@ namespace Amulets
 
         private void Load()
         {
-            if (File.Exists(JSONFile))
+            if (File.Exists(Application.dataPath + SAVE_FILE_PATH))
             {
-                Debug.Log("file exists ?");
-                var reader = new StreamReader(JSONFile);
-                var loadedJson = reader.ReadToEnd();
-                reader.Close(); 
-                var sf = JsonUtility.FromJson<SaveFile>(loadedJson);
+                string savedJson = File.ReadAllText(Application.dataPath + SAVE_FILE_PATH);
+
+                SaveFile sf = JsonUtility.FromJson<SaveFile>(savedJson);
+                
                 try
                 {
-
                     FinalSave = sf.listOfPairs.ToList();
                 }
                 catch (NullReferenceException)
@@ -70,13 +68,12 @@ namespace Amulets
 
         private void Save()
         {
-            var sf = new SaveFile();
+            SaveFile sf = new SaveFile();
             sf.listOfPairs = FinalSave.ToArray();
-            var writer = new StreamWriter(JSONFile, false);
-            string jsonToSave;
-            jsonToSave = JsonUtility.ToJson(sf);
-            writer.Write(jsonToSave);
-            writer.Close();
+
+            string jsonToSave = JsonUtility.ToJson(sf);
+            
+            File.WriteAllText(Application.dataPath + SAVE_FILE_PATH, jsonToSave);
         }
 
         public void SaveSceneWithAmulets(Loader.Scene scene, AmuletSO[] amulets)
