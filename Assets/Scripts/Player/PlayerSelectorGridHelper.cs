@@ -41,7 +41,6 @@ namespace Grid
         {
             var next = currentCell.position + direction;
             currentCell = TilingGrid.grid.GetCell(next);
-            _recorder.Add(currentCell);
         }
         public static List<ITopOfCell> GetElementsOnTopOfCell(Vector2Int position)
         {
