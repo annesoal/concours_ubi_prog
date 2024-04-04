@@ -43,7 +43,7 @@ namespace Enemies
                             if (!TryMoveOnNextCell(_reculer2d))
                             {
                                 transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                                Debug.Log("BIGGUY NE PEUT PAS BOUGER");
+                                Debug.Log("ENEMY NE PEUT PAS BOUGER");
                             }
                           
                         }

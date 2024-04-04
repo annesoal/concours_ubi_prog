@@ -26,13 +26,17 @@ namespace Enemies
             if (!IsServer) return;
 
             if (!IsTimeToMove(energy)) return;
+            
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                    Debug.Log("Le GameObject ne peut pas bouger.");
+                    if (!TryMoveOnNextCell(_reculer2d))
+                    {
+                        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                        Debug.Log("ENEMY NE PEUT PAS BOUGER");
+                    }
                 }
             }
 

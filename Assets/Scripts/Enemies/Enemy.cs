@@ -60,6 +60,7 @@ namespace Enemies
             return (nextCell.type & BlockType.EnemyDestination) > 0;
         }
         
+        
         private Cell GetClosestDestination()
         {
             if (_destinationsCell == null || _destinationsCell.Count == 0)
