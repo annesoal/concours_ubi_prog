@@ -20,11 +20,34 @@ public class LevelSelectionUI : MonoBehaviour
 
     private LinkedList<SingleLevelSelectUI> _levelsSelectUI;
     private LinkedListNode<SingleLevelSelectUI> _selectedLevel;
-    
+
     private void Awake()
     {
         _levelsSelectUI = new LinkedList<SingleLevelSelectUI>();
         
+    }
+
+    private void Start()
+    {
+        ShowInitialUI();
+
+        foreach (SingleLevelSelectUI levelSelectUI in _levelsSelectUI)
+        {
+            levelSelectUI.UpdateAmuletsToShowClientSide();
+        }
+        
+        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
+        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
+        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
+        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
+        
+        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
+
+        EventSystem.current.sendNavigationEvents = false;
+    }
+
+    private void ShowInitialUI()
+    {
         int horizontalLayoutCount = 0;
         Transform currentHorizontalLayout = Instantiate(levelHorizontalLayout, levelVerticalLayout);
         currentHorizontalLayout.gameObject.SetActive(true);
@@ -40,18 +63,6 @@ public class LevelSelectionUI : MonoBehaviour
 
         _selectedLevel = _levelsSelectUI.First;
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
-    }
-
-    private void Start()
-    {
-        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
-        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
-        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
-        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
-        
-        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
-
-        EventSystem.current.sendNavigationEvents = false;
     }
     
     public void Show()

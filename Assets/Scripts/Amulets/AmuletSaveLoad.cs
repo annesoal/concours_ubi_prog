@@ -20,8 +20,18 @@ namespace Amulets
                     return AmuletsIDToAmulets(savedScene.amulets);
             return new List<AmuletSO>();
         }
+        
+        public int[] GetAmuletsIdsForScene(Loader.Scene scene)
+        {
+            Load();
+            foreach (var savedScene in FinalSave)
+                if (savedScene.level == (int)scene)
+                    return savedScene.amulets;
 
-        private List<AmuletSO> AmuletsIDToAmulets(int[] AmuletIDs)
+            return new int[] {};
+        }
+
+        public List<AmuletSO> AmuletsIDToAmulets(int[] AmuletIDs)
         {
             var listOfAmulets = new List<AmuletSO>();
             foreach (var ID in AmuletIDs)
