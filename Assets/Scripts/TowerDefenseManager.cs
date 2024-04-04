@@ -138,7 +138,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void SaveProgress()
     {
         AmuletSaveLoad save = new AmuletSaveLoad();
-        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene, amuletSelector.amulets);
         List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
 
         AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);

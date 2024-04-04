@@ -782,6 +782,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2158b8f106cc17341b218e4887276a71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AmuletSelector>k__BackingField: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b,
+    type: 2}
 --- !u!1 &429830574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,6 +2999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286088749}
+  - component: {fileID: 1286088753}
   - component: {fileID: 1286088752}
   - component: {fileID: 1286088751}
   - component: {fileID: 1286088750}
@@ -3108,6 +3111,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286088748}
   m_CullTransparentMesh: 1
+--- !u!114 &1286088753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286088748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1683eba010935e8b4a013178e3b974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1339241011
 GameObject:
   m_ObjectHideFlags: 0
@@ -3483,8 +3498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c17874dd83f8ddbbf39ec0e8def301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amuletSelectButton: {fileID: 0}
-  amuletNameText: {fileID: 0}
+  amuletSelectButton: {fileID: 556843363}
+  amuletNameText: {fileID: 997321581}
 --- !u!1 &1876444744
 GameObject:
   m_ObjectHideFlags: 0

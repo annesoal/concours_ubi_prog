@@ -9,6 +9,8 @@ public class AmuletLayoutSynchronizer : NetworkBehaviour
 {
     public static AmuletLayoutSynchronizer Instance { get; private set; }
 
+    [field: SerializeField] public AmuletSelector AmuletSelector { get; private set; }
+
     private Dictionary<Loader.Scene, int[]> _amuletsIdsForScene;
     
     private void Awake()
