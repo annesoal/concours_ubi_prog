@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
@@ -107,7 +108,7 @@ namespace Enemies
         }
 
         public static event EventHandler OnAnyEnemyMoved;
-        public abstract void Move(int energy);
+        public abstract IEnumerator Move(int energy);
 
 
 
