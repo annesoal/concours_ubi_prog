@@ -38,15 +38,16 @@ public class EnvironmentTurnManager : MonoBehaviour
         while (HasEnergyLeft(totalEnergy))
         {   
             MovePlayers();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitUntil(ReadyToMoveNPCs);
             
             
             StartCoroutine(BaseTower.PlayTowersInGameTurn());
             // Play Trap turn
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
-            IAManager.Instance.MoveEnemies(totalEnergy);
-            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(IAManager.Instance.MoveEnemies(totalEnergy));
+            yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
             totalEnergy--;
+            ResetPlayerReadyCount();
         }
 
         IAManager.ResetEnemies();
@@ -68,5 +69,22 @@ public class EnvironmentTurnManager : MonoBehaviour
     private void PreparePlayers()
     {
        GameMultiplayerManager.Instance.PreparePlayersClientRpc(); 
+    }
+
+    private int playersFinishedMoving = 0;
+
+    public void IncrementPlayerFinishedMoving()
+    {
+        playersFinishedMoving++;
+    }
+
+    private bool ReadyToMoveNPCs()
+    {
+        return playersFinishedMoving >= 2;
+    }
+
+    private void ResetPlayerReadyCount()
+    {
+        playersFinishedMoving = 0; 
     }
 }
