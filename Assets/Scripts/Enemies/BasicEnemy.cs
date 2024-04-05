@@ -63,7 +63,7 @@ namespace Enemies
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
+                StartCoroutine(MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
 
