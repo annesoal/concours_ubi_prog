@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
@@ -29,11 +30,11 @@ namespace Enemies
          * - Attaquer un obstacle ou une tower
          * - Avancer (et eviter ?)
          */
-        public override void Move(int energy)
+        public override IEnumerator Move(int energy)
         {
             {
-                if (!IsServer) return;
-                if (!IsTimeToMove(energy)) return;
+                if (!IsServer) yield break;
+                if (!IsTimeToMove(energy)) yield break;
                 if (!ChoseToAttack())
                 {
                     if (!TryMoveOnNextCell())
@@ -47,6 +48,7 @@ namespace Enemies
                 }
             }
             EmitOnAnyEnemyMoved();
+            throw new Exception("Not implemented yet !");
         }
 
         public bool ChoseToAttack()
