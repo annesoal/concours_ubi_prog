@@ -8964,6 +8964,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnersManagers
       objectReference: {fileID: 0}
+    - target: {fileID: 355318480244300026, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.size

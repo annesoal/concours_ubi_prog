@@ -58,7 +58,7 @@ namespace Managers
                     if (isInvalidCell.Invoke(cell))
                         continue; 
                 GameObject instance = Instantiate(_gameObjectsToSpawn[indexInGameObjectList]);
-                TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+                TilingGrid.grid.PlaceObjectAtPositionOnGridOffline(instance, positionOfSpawn);
                 instance.GetComponent<NetworkObject>().Spawn(true);
             }
         }

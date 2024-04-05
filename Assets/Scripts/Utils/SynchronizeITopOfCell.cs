@@ -23,9 +23,27 @@ public class SynchronizeITopOfCell : NetworkBehaviour
     
     public void SynchronizeAddingElement(GameObject toAdd, Cell toSync)
     {
+        SynchronizeAddingElementServerRpc(toAdd, toSync.position);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SynchronizeAddingElementServerRpc(NetworkObjectReference toAddRef, Vector2Int cellPositionToSync)
+    {
+        SynchronizeAddingElementClientRpc(toAddRef, cellPositionToSync);
+    }
+    
+    [ClientRpc]
+    private void SynchronizeAddingElementClientRpc(NetworkObjectReference toAddRef, Vector2Int cellPositionToSync)
+    {
+        toAddRef.TryGet(out NetworkObject toSyncNetworkObject);
+
+        GameObject toAdd = toSyncNetworkObject.gameObject;
+
+        Cell toSync = TilingGrid.grid.GetCell(cellPositionToSync);
+        
         toSync.AddGameObject(toAdd.GetComponent<ITopOfCell>());
         
-        // TODO lancer event côté client rpc pour update cell dans grid.
+        
         OnElementSynchronized?.Invoke(this, new OnElementSynchronizedEventArgs
         {
             ToUpdate = toSync,

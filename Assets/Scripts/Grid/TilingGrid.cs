@@ -189,11 +189,37 @@ namespace Grid
             return enemyWalkableCells;
         }
         
+        /// <summary>
+        /// Place object implementing ITopOfCell on the cell corresponding to destination position.
+        /// The placement is synchronized on the network, thus the GameObject to place needs to be spawn
+        /// before using this function.
+        /// </summary>
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
         {
             RemoveObjectFromCurrentCell(toPlace);
 
             AddObjectToCellAtPosition(toPlace, destination);
+        }
+        
+        /// <summary>
+        /// Place object implementing ITopOfCell on the cell corresponding to destination position.
+        /// The placement is not synchronized on the network. In other words, the changes are only applied locally.
+        /// </summary>
+        public void PlaceObjectAtPositionOnGridOffline(GameObject toPlace, Vector2Int destination)
+        {
+            // RemoveObjectFromCurrentCellOffline
+            Cell sender = GetCell(LocalToGridPosition(toPlace.transform.position));
+            sender.ObjectsTopOfCell.Remove(toPlace.GetComponent<ITopOfCell>());
+            UpdateCell(sender);
+
+            // AddObjectToCellAtPositionOffline
+            Cell recipient = GetCell(destination);
+            
+            recipient.ObjectsTopOfCell.Add(toPlace.GetComponent<ITopOfCell>());
+
+            toPlace.transform.position = GridPositionToLocal(recipient.position);
+                
+            UpdateCell(recipient);
         }
 
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
@@ -331,7 +357,7 @@ namespace Grid
         private void AddElementToTopOfCellList(GameObject toAdd, Vector2Int position)
         {
             Cell toSync = GetCell(position);
-            
+
             SynchronizeITopOfCell.Instance.SynchronizeAddingElement(toAdd, toSync);
         }
 
