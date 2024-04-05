@@ -1,4 +1,5 @@
 using System;
+using Grid;
 using Grid.Interface;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -11,8 +12,11 @@ namespace Synchrone
         [field: SerializeField] private float _multiplier;
         public static float Multiplier;
 
+        private TypeTopOfCell _currentType;
+
         public void Awake()
         {
+            _currentType = TypeTopOfCell.Bonus;
             Multiplier = _multiplier;
         }
         public override void OnNetworkSpawn()
@@ -26,7 +30,7 @@ namespace Synchrone
 
         public TypeTopOfCell GetType()
         {
-            return TypeTopOfCell.Bonus;
+            return _currentType;
         }
 
         public GameObject ToGameObject()
@@ -36,6 +40,14 @@ namespace Synchrone
 
         public void OnDestroy()
         {
+            Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
+            
+            Cell toUpdate = TilingGrid.grid.GetCell(gridPosition);
+
+            toUpdate.ObjectsTopOfCell.Remove(this);
+            
+            TilingGrid.grid.UpdateCell(toUpdate);
+            
             TowerDefenseManager.Instance.RemoveBonus(this.gameObject);
         }
     }
