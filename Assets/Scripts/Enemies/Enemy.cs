@@ -36,6 +36,7 @@ namespace Enemies
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
+        protected bool hasFinishedToMove = false;
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
@@ -111,7 +112,10 @@ namespace Enemies
         public static event EventHandler OnAnyEnemyMoved;
         public abstract IEnumerator Move(int energy);
 
-
+        public bool hasFinishedMoving()
+        {
+            return hasFinishedToMove;
+        }
 
 
         protected void AddInGame(GameObject enemy)
