@@ -225,7 +225,7 @@ namespace Grid
         }
         
         
-        private void RemoveObjectFromCurrentCell(GameObject toPlace)
+        public void RemoveObjectFromCurrentCell(GameObject toPlace)
         {
             Vector2Int initialGridPosition = LocalToGridPosition(toPlace.transform.position);
 
@@ -304,7 +304,7 @@ namespace Grid
             i--;
         }
 
-        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
+        public void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
             Cell cell = GetCell(cellPosition);
             cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
