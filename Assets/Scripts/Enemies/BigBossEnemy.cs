@@ -5,5 +5,13 @@ namespace Enemies
     public class BigBossEnemy : NetworkBehaviour
     {
         
+
+        public void SpawnMalusOnGridPlayer(){
+            
+            
+
+        }
+
+
     }
 }

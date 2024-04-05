@@ -18,7 +18,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
 
-    private const float MinPressure = 0.3f; 
+    private const float MinPressure = 0.3f;
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
     [SerializeField] private float cooldown = 0.1f;
@@ -43,7 +43,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private int _totalEnergy;
     private int _currentEnergy;
-    
+
     public Player()
     {
         _timer = new(cooldown);
@@ -65,7 +65,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         if (!IsOwner) return true;
         if (!CooldownHasPassed()) return true;
-    
+
         return false;
     }
 
@@ -93,7 +93,8 @@ public class Player : NetworkBehaviour, ITopOfCell
                 _selector.MoveSelector();
                 _timer.Start();
             }
-        } else if (hasMoved != MoveType.Invalid)
+        }
+        else if (hasMoved != MoveType.Invalid)
         {
             throw new Exception("Invalide input " + direction);
         }
@@ -113,10 +114,12 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         if (!_highlighters.IsEmpty())
         {
-                GameObject nextHighLighter = _highlighters.RemoveFirst();
-                Destroy(nextHighLighter);
+            GameObject nextHighLighter = _highlighters.RemoveFirst();
+            Destroy(nextHighLighter);
         }
     }
+
+
 
     public override void OnNetworkSpawn()
     {
@@ -126,7 +129,7 @@ public class Player : NetworkBehaviour, ITopOfCell
             InputManager.Player = this;
         }
 
-        Vector3 position; 
+        Vector3 position;
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
@@ -134,16 +137,16 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
             position = transform.position;
-            SetReachableCells(true,position); 
+            SetReachableCells(true, position);
         }
         else
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
-            
+
             position = transform.position;
-            SetReachableCells(false, position); 
+            SetReachableCells(false, position);
         }
-        
+
         if (IsServer)
         {
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, position);
@@ -152,7 +155,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
         bool hasComponent = spawnPoint.TryGetComponent(out BlockPlayerSpawn blockPlayerSpawn);
-        
+
         if (hasComponent)
         {
             blockPlayerSpawn.SetPlayerOnBlock(transform);
@@ -175,7 +178,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         return _timer.HasTimePassed();
     }
-    
+
     /// <summary>
     ///  Traduite la valeur d'input en Vector2Int
     /// </summary>
@@ -212,8 +215,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         _canMove = false;
         _selector.Confirm();
-        if (!_selector.isSelecting) 
-            _selector.Initialize(transform.position); 
+        if (!_selector.isSelecting)
+            _selector.Initialize(transform.position);
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
@@ -221,31 +224,33 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         if (_selector.isSelecting)
             return;
-        
+
         _selector.Select();
         _selector.isSelecting = true;
-        _selector.Initialize(transform.position); 
+        _selector.Initialize(transform.position);
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        _canMove = true; 
+        _canMove = true;
     }
 
     public IEnumerator Move()
     {
         Vector2Int oldPosition = _selector.GetCurrentPosition();
-        _selector.Disable(); 
+        _selector.Disable();
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
         if (nextPosition == null) yield break;
 
         RemoveNextHighlighter();
-        StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
+        StartCoroutine(MoveToNextPosition((Vector2Int)nextPosition));
+        EventTempo?.Invoke(this,(Vector2Int)nextPosition);
+        // TODO cote server 
         yield return new WaitUntil(IsReadyToPickUp);
-        PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
+        PickUpItems((Vector2Int)nextPosition);
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int)nextPosition);
     }
 
     private bool IsReadyToPickUp()
     {
-        return  _hasFinishedToMove;
+        return _hasFinishedToMove;
     }
 
     private static void PickUpItems(Vector2Int position)
@@ -269,7 +274,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     }
     private bool HasEnergy()
     {
-        return _currentEnergy > 0; 
+        return _currentEnergy > 0;
     }
 
     private void ResetEnergy()
@@ -279,9 +284,9 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private void DecrementEnergy()
     {
-       _currentEnergy--; 
+        _currentEnergy--;
     }
-    
+
     private void IncrementEnergy()
     {
         _currentEnergy++;
@@ -293,7 +298,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         CleanHighlighters();
         _selector.ResetSelf();
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        _canMove = false; 
+        _canMove = false;
     }
 
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
@@ -305,7 +310,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         while (i < 10)
         {
             float f = ((float)i) / 10;
-            transform.position = Vector3.Lerp( transform.position, cellLocalPosition, f);
+            transform.position = Vector3.Lerp(transform.position, cellLocalPosition, f);
             yield return new WaitForSeconds(0.05f);
             i++;
         }
@@ -338,7 +343,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     private void SetReachableCells(bool isMonkey, Vector3 position)
     {
         if (isMonkey)
-        {   
+        {
             TilingGrid.FindReachableCellsMonkey(position);
         }
         else
@@ -352,7 +357,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
 public enum MoveType
 {
-    New, 
+    New,
     ConsumeLast,
-    Invalid, 
+    Invalid,
 }
