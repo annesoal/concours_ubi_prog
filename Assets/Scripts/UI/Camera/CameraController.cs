@@ -17,15 +17,6 @@ public class CameraController : MonoBehaviour
         _followOffset = associatedCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
     }
 
-    void Update()
-    {
-        HandleCameraMovement();
-
-        HandleCameraRotation();
-        
-        HandleCameraZoom();
-    }
-
     public void MoveCameraToPosition(Vector3 destination)
     {
         transform.position = destination;
