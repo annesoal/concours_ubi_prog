@@ -24,6 +24,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
+    [SerializeField] private float _timeToMove = 0.5f;
 
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
@@ -210,14 +211,20 @@ public class Player : NetworkBehaviour, ITopOfCell
         Vector2Int oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
-        if (nextPosition == null) yield break;
+        if (nextPosition == null)
+        { 
+            IsReadyServerRpc();
+            yield break;
+        }
 
         RemoveNextHighlighter();
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int)nextPosition);
+        IsReadyServerRpc();
     }
+
 
     private bool IsReadyToPickUp()
     {
@@ -271,14 +278,15 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
         transform.LookAt(cellLocalPosition);
+        Vector3 origin = transform.position;
         _hasFinishedToMove = false;
-        int i = 0;
-        while (i < 10)
+        float currentTime = 0.0f;
+        while (currentTime < _timeToMove)
         {
-            float f = ((float)i) / 10;
-            transform.position = Vector3.Lerp( transform.position, cellLocalPosition, f);
-            yield return new WaitForSeconds(0.05f);
-            i++;
+            float f = currentTime / _timeToMove;
+            transform.position = Vector3.Lerp( origin, cellLocalPosition, f);
+            currentTime += Time.deltaTime;
+            yield return null;
         }
 
         _hasFinishedToMove = true;
@@ -316,5 +324,11 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             TilingGrid.FindReachableCellsRobot(position);
         }
+    }
+
+    [ServerRpc]
+    private void IsReadyServerRpc()
+    {
+        EnvironmentTurnManager.Instance.IncrementPlayerFinishedMoving();
     }
 }
