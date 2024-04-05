@@ -6,6 +6,7 @@ using Grid.Interface;
 using TMPro;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -185,10 +186,12 @@ namespace Grid
 
             return enemyWalkableCells;
         }
-
-        public void UpdateCell(Cell cell)
+        
+        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
         {
-            _cells[cell.position.x, cell.position.y] = cell;
+            RemoveObjectFromCurrentCell(toPlace);
+
+            AddObjectToCellAtPosition(toPlace, destination);
         }
 
         public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector3 worldPositionOfSpawn)
@@ -203,13 +206,6 @@ namespace Grid
             Cell cellUpdated = grid.GetCell(cell.position);
             return cellUpdated.HasTopOfCellOfType(typeTopOfCell);
         }
-
-        public void PlaceObjectAtPositionOnGrid(GameObject toPlace, Vector2Int destination)
-        {
-            RemoveObjectFromCurrentCell(toPlace);
-
-            AddObjectToCellAtPosition(toPlace, destination);
-        }
         
         
         private void RemoveObjectFromCurrentCell(GameObject toPlace)
@@ -218,7 +214,11 @@ namespace Grid
 
             RemoveElement(toPlace, initialGridPosition);
         }
-
+        
+        private void UpdateCell(Cell cell)
+        {
+            _cells[cell.position.x, cell.position.y] = cell;
+        }
        
         ///<summary>Search in X or Y direction for a certain type cell.</summary>
         /// <param name="initialCell">Not included in the search</param>

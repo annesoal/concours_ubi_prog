@@ -40,13 +40,7 @@ namespace Synchrone
 
         public void OnDestroy()
         {
-            Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
-            
-            Cell toUpdate = TilingGrid.grid.GetCell(gridPosition);
-
-            toUpdate.ObjectsTopOfCell.Remove(this);
-            
-            TilingGrid.grid.UpdateCell(toUpdate);
+            TilingGrid.RemoveElement(gameObject, transform.position);
             
             TowerDefenseManager.Instance.RemoveBonus(this.gameObject);
         }
