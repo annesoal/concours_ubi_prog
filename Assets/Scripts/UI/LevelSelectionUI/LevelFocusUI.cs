@@ -78,6 +78,8 @@ public class LevelFocusUI : MonoBehaviour
     [SerializeField] private LevelSelectionUI levelSelectionUI;
     private void OnCancelButtonClicked()
     {
+        _selectedAmulet = null;
+        
         BasicShowHide.Hide(gameObject);
 
         levelSelectionUI.Show();
