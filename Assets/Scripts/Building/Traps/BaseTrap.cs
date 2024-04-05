@@ -46,12 +46,17 @@ public abstract class BaseTrap : BuildableObject
             }
         }
         
-        trapCell.ObjectsTopOfCell.Remove(this);
         Destroy(gameObject);
     }
 
     private void OnDestroy()
     {
+        Cell trapCell = TilingGrid.grid.GetCell(TilingGrid.LocalToGridPosition(transform.position));
+        
+        trapCell.ObjectsTopOfCell.Remove(this);
+        
+        TilingGrid.grid.UpdateCell(trapCell);
+        
         Enemy.OnAnyEnemyMoved -= Enemy_OnAnyEnemyMoved;
     }
 }
