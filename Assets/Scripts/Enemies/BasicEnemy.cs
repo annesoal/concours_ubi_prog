@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 using Random = System.Random;
 
 namespace Enemies
@@ -21,9 +23,9 @@ namespace Enemies
         }
 
 
-        public override void Move(int energy)
+        public override IEnumerator Move(int energy)
         {
-            if (!IsServer) return;
+            if (!IsServer) yield break;
             if (path != null && path.Count > 0)
             {
                 Debug.Log("PLANTE ici ?");
@@ -32,7 +34,7 @@ namespace Enemies
            
 
             Debug.Log("zzz is time to move" + IsTimeToMove(energy));
-            if (!IsTimeToMove(energy)) return;
+            if (!IsTimeToMove(energy)) yield break;
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
@@ -43,6 +45,7 @@ namespace Enemies
                 }
             }
 
+            yield return new WaitUntil(hasFinishedMoving);
             EmitOnAnyEnemyMoved();
         }
 
@@ -107,7 +110,9 @@ namespace Enemies
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
                 
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
                
                 return true;
             }
@@ -119,12 +124,31 @@ namespace Enemies
         /*
          * Bouge l'ennemi
          */
-        private void MoveEnemy(Vector3 direction)
+        private float _timeToMove = 1.0f;
+        private bool _hasFinishedToMove = false; 
+        private IEnumerator MoveEnemy(Vector3 direction)
         {
-            if (!IsServer) return;
+            if (!IsServer) yield break;
+            _hasFinishedToMove = false;
             animator.SetBool("IsMoving", true);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            float currentTime = 0.0f;
+            Vector3 origin = transform.position;
+            while (_timeToMove > currentTime)
+            {
+                transform.position = Vector3.Lerp(
+                    origin, direction, currentTime/_timeToMove);
+                currentTime += Time.deltaTime;
+                yield return null;
+            } 
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
             animator.SetBool("IsMoving", false);
+            _hasFinishedToMove = true;
+        }
+
+        private bool hasFinishedMoving()
+        {
+            return _hasFinishedToMove;
         }
 
         private bool IsValidCell(Cell toCheck)
