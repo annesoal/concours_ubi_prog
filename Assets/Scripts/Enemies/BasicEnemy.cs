@@ -15,11 +15,6 @@ namespace Enemies
             ennemyType = EnnemyType.PetiteMerde;
         }
 
-        protected override void Initialize()
-        {
-            AddInGame(this.gameObject);
-        }
-
 
         public override void Move(int energy)
         {
