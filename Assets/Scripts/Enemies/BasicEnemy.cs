@@ -24,22 +24,16 @@ namespace Enemies
         public override void Move(int energy)
         {
             if (!IsServer) return;
-            if (path != null && path.Count > 0)
-            {
-                Debug.Log("PLANTE ici ?");
-                Debug.Log("zzz POSITION" + path[0].position);
-            }
-           
 
-            Debug.Log("zzz is time to move" + IsTimeToMove(energy));
+        
             if (!IsTimeToMove(energy)) return;
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
                 if (!MoveSides())
                 {
+                    //TODO 
                     transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                    Debug.Log("Le GameObject ne peut pas bouger.");
                 }
             }
 
@@ -107,7 +101,18 @@ namespace Enemies
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
                 
+                if(direction==_gauche2d) 
+                    animator.SetBool("IsTurnLeft", true);
+                if(direction==_droite2d)
+                    animator.SetBool("IsTurnRight", true);
+              
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+
+                if(direction==_gauche2d) 
+                    animator.SetBool("IsTurnLeft", false);
+                if(direction==_droite2d)
+                    animator.SetBool("IsTurnRight", false);
+                 
                
                 return true;
             }
