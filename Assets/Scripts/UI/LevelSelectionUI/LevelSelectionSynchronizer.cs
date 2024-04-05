@@ -50,4 +50,13 @@ public class LevelSelectionSynchronizer : NetworkBehaviour
     {
         _amuletsIdsForScene.TryAdd(levelScene, amuletsIdsForScene);
     }
+
+    [ClientRpc]
+    public void CopyInputClientRpc(LevelSelectionInputManager.Input toSync)
+    {
+        if (!IsServer)
+        {
+            LevelSelectionInputManager.Instance.SyncServerInput(toSync);
+        }
+    }
 }

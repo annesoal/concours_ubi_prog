@@ -24,41 +24,63 @@ public class LevelSelectionInputManager : MonoBehaviour
         _playerInputActions.UI.Left.performed += PlayerInputUI_OnLeftPerformed;
 
         _playerInputActions.UI.Select.performed += PlayerInputUI_OnSelectPerformed;
+
+        InitializeSyncerServerInputMethods();
     }
 
-    public event EventHandler OnUpUI;
-    private void PlayerInputUI_OnUpPerformed(InputAction.CallbackContext obj)
+    public event EventHandler<FromServerEventArgs> OnUpUI;
+    public class FromServerEventArgs : EventArgs
     {
-        OnUpUI?.Invoke(this, EventArgs.Empty);
+        public bool SyncrhonizedCall;
     }
     
-    public event EventHandler OnDownUI;
+    private void PlayerInputUI_OnUpPerformed(InputAction.CallbackContext obj)
+    {
+        OnUpUI?.Invoke(this, new FromServerEventArgs
+        {
+            SyncrhonizedCall = false
+        });
+    }
+    
+    public event EventHandler<FromServerEventArgs> OnDownUI;
     private void PlayerInputUI_OnDownPerformed(InputAction.CallbackContext obj)
     {
-        OnDownUI?.Invoke(this, EventArgs.Empty);
+        OnDownUI?.Invoke(this, new FromServerEventArgs
+        {
+            SyncrhonizedCall = false,
+        });
     }
 
-    public event EventHandler OnRightUI;
+    public event EventHandler<FromServerEventArgs> OnRightUI;
 
     private void PlayerInputUI_OnRightPerformed(InputAction.CallbackContext obj)
     {
-        OnRightUI?.Invoke(this, EventArgs.Empty);
+        OnRightUI?.Invoke(this, new FromServerEventArgs
+        {
+            SyncrhonizedCall = false,
+        });
     }
 
-    public event EventHandler OnLeftUI;
+    public event EventHandler<FromServerEventArgs> OnLeftUI;
 
     private void PlayerInputUI_OnLeftPerformed(InputAction.CallbackContext obj)
     {
         if (gameObject.activeSelf && NetworkManager.Singleton.IsServer)
         {
-            OnLeftUI?.Invoke(this, EventArgs.Empty);
+            OnLeftUI?.Invoke(this, new FromServerEventArgs
+            {
+                SyncrhonizedCall = false,
+            });
         }
     }
 
-    public event EventHandler OnSelectUI;
+    public event EventHandler<FromServerEventArgs> OnSelectUI;
     private void PlayerInputUI_OnSelectPerformed(InputAction.CallbackContext obj)
     {
-        OnSelectUI?.Invoke(this, EventArgs.Empty);
+        OnSelectUI?.Invoke(this, new FromServerEventArgs
+        {
+            SyncrhonizedCall = false,
+        });
     }
 
     private void OnDestroy()
@@ -69,5 +91,33 @@ public class LevelSelectionInputManager : MonoBehaviour
         _playerInputActions.UI.Left.performed -= PlayerInputUI_OnLeftPerformed;
 
         _playerInputActions.UI.Select.performed -= PlayerInputUI_OnSelectPerformed;
+    }
+
+    private List<Action> _syncServerInputMethods;
+    
+    private void InitializeSyncerServerInputMethods()
+    {
+        _syncServerInputMethods = new List<Action>
+        {
+            () => { OnUpUI?.Invoke(this, new FromServerEventArgs { SyncrhonizedCall = true, }); },
+            () => { OnDownUI?.Invoke(this, new FromServerEventArgs { SyncrhonizedCall = true, }); },
+            () => { OnRightUI?.Invoke(this, new FromServerEventArgs { SyncrhonizedCall = true}); },
+            () => { OnLeftUI?.Invoke(this, new FromServerEventArgs { SyncrhonizedCall = true}); },
+            () => { OnSelectUI?.Invoke(this, new FromServerEventArgs { SyncrhonizedCall = true}); },
+        };
+    }
+    
+    public void SyncServerInput(Input toSync)
+    {
+        _syncServerInputMethods[(int)toSync]();
+    }
+
+    public enum Input
+    {
+        Up = 0,
+        Down,
+        Right,
+        Left,
+        Select,
     }
 }
