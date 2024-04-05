@@ -67,6 +67,8 @@ namespace Grid
 
         void Start()
         {
+            SynchronizeITopOfCell.Instance.OnElementSynchronized += SynchronizeITopOfCell_OnAddingElementSynchronized;
+            
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
 
             foreach (var block in blocks)
@@ -328,24 +330,9 @@ namespace Grid
 
         private void AddElementToTopOfCellList(GameObject toAdd, Vector2Int position)
         {
-            Cell cell = GetCell(position);
+            Cell toSync = GetCell(position);
             
-            cell.AddGameObject(toAdd.GetComponent<ITopOfCell>());
-            
-            UpdateCell(cell);
-        }
-
-        public static void RemoveElement(GameObject element, Vector2Int position)
-        {
-            try
-            {
-                var cell = grid.GetCell(position);
-                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
-                grid.UpdateCell(cell);
-            }
-            catch (ArgumentException)
-            {
-            }
+            SynchronizeITopOfCell.Instance.SynchronizeAddingElement(toAdd, toSync);
         }
 
         public static void RemoveElement(GameObject element, Vector3 position)
@@ -358,6 +345,25 @@ namespace Grid
             catch (ArgumentException)
             {
             }
+        }
+        
+        public static void RemoveElement(GameObject element, Vector2Int position)
+        {
+            try
+            {
+                Cell toSync = grid.GetCell(position);
+                SynchronizeITopOfCell.Instance.SynchronizeRemovingElement(element, toSync);
+            }
+            catch (ArgumentException)
+            {
+            }
+        }
+
+        
+        private void SynchronizeITopOfCell_OnAddingElementSynchronized
+            (object sender, SynchronizeITopOfCell.OnElementSynchronizedEventArgs e)
+        {
+            UpdateCell(e.ToUpdate);
         }
 
         private delegate void ActionRef<T>(ref T item);
