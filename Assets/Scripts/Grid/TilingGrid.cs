@@ -293,10 +293,10 @@ namespace Grid
 
         private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
+            AddElementToTopOfCellList(toPlace, cellPosition);
+            
             Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
-            UpdateCell(cell);
-
+            
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
         }
         
@@ -324,6 +324,15 @@ namespace Grid
             }
 
             return cells;
+        }
+
+        private void AddElementToTopOfCellList(GameObject toAdd, Vector2Int position)
+        {
+            Cell cell = GetCell(position);
+            
+            cell.AddGameObject(toAdd.GetComponent<ITopOfCell>());
+            
+            UpdateCell(cell);
         }
 
         public static void RemoveElement(GameObject element, Vector2Int position)
