@@ -45,6 +45,7 @@ public class LevelFocusUI : MonoBehaviour
         _selectedAmulet = null;
         
         levelDisplay.Show(toShow);
+        levelDisplay.UpdateAmuletsToShowClientSide();
         
         BasicShowHide.Show(gameObject);
         
