@@ -240,7 +240,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, (Vector2Int)nextPosition);
+        // TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int) nextPosition);
     }
 
     private bool IsReadyToPickUp()

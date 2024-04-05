@@ -197,19 +197,6 @@ namespace Grid
 
             PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
-
-        public static void UpdateMovePositionOnGrid(GameObject toUpdate, Vector2Int origin, Vector2Int destination)
-        {
-            Cell originCell = grid.GetCell(origin);
-            originCell.ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
-            
-            Cell destinationCell = grid.GetCell(destination);
-            destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
-        }
-        
-  
         
         public bool HasTopOfCellOfType(Cell cell, TypeTopOfCell typeTopOfCell)
         {
@@ -313,22 +300,6 @@ namespace Grid
             toPlace.transform.position = GridPositionToLocal(cell.position, TopOfCell);
         }
         
-        private void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition, float yPos = TopOfCell)
-        {
-            Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
-            UpdateCell(cell);
-            
-            toPlace.transform.position = GridPositionToLocal(cell.position, yPos);
-        }
-
-        private void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
-        {
-            Cell cell = GetCell(cellPosition);
-            cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
-            UpdateCell(cell);
-        }
-
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
             return GetCellsInRadius(origin.position, radius);
