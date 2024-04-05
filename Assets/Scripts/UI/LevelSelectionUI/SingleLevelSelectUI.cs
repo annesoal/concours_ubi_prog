@@ -52,8 +52,6 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
     {
         if (! NetworkManager.Singleton.IsServer) { return; }
         
-        BasicShowHide.Show(amuletLayout.gameObject);
-            
         AmuletSaveLoad loader = new AmuletSaveLoad();
         
         List<AmuletSO> amuletsToShow =

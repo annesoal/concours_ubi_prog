@@ -28,6 +28,8 @@ public class SingleAmuletTemplateUI : MonoBehaviour
         
         amuletNameText.text = amuletSo.amuletName;
         
+        BasicShowHide.Show(amuletNameText.gameObject);
+        BasicShowHide.Show(amuletSelectButton.gameObject);
         BasicShowHide.Show(gameObject);
     }
 
