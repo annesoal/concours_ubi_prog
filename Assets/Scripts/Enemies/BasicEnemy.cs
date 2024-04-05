@@ -106,9 +106,9 @@ namespace Enemies
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
-                animator.SetBool("IsMoving", true);
+                
                 MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
-                animator.SetBool("IsMoving", false);
+               
                 return true;
             }
             
@@ -122,7 +122,9 @@ namespace Enemies
         private void MoveEnemy(Vector3 direction)
         {
             if (!IsServer) return;
+            animator.SetBool("IsMoving", true);
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
+            animator.SetBool("IsMoving", false);
         }
 
         private bool IsValidCell(Cell toCheck)
