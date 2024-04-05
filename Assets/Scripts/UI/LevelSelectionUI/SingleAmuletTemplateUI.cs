@@ -11,12 +11,23 @@ public class SingleAmuletTemplateUI : MonoBehaviour
 {
     [SerializeField] private Button amuletSelectButton;
     [SerializeField] private TextMeshProUGUI amuletNameText;
+    
+    [Header("Colors")]
+    [SerializeField] private Color originalColor;
+    [SerializeField] private Color chosenColor;
 
     private AmuletSO _associatedAmuletSo;
+
+    private bool _chosen = false;
 
     private void Awake()
     {
         amuletSelectButton.onClick.AddListener(OnSelectButtonClicked);
+    }
+
+    private void Start()
+    {
+        SingleAmuletTemplateUI.OnAnySingleAmuletChose += SingleAmuletTemplateUI_OnAnySingleAmuletChose;
     }
 
     public void Show(AmuletSO amuletSo)
@@ -41,10 +52,39 @@ public class SingleAmuletTemplateUI : MonoBehaviour
     
     private void OnSelectButtonClicked()
     {
+        if (_chosen)
+        {
+            // revert back to original
+            SetIconColor(originalColor);
+            _chosen = false;
+        }
+        else
+        {
+            SetIconColor(chosenColor);
+            _chosen = true;
+        }
+        
         OnAnySingleAmuletChose?.Invoke(this, new OnAnySingleAmuletChoseEventArgs
         {
             AmuletSo = _associatedAmuletSo,
         });
+    }
+    
+    private void SingleAmuletTemplateUI_OnAnySingleAmuletChose(object sender, OnAnySingleAmuletChoseEventArgs e)
+    {
+        if (e.AmuletSo != _associatedAmuletSo)
+        {
+            SetIconColor(originalColor);
+
+            _chosen = false;
+        }
+    }
+
+    private void SetIconColor(Color toSet)
+    {
+        ColorBlock colorBlock = amuletSelectButton.colors;
+        colorBlock.normalColor = toSet;
+        amuletSelectButton.colors = colorBlock;
     }
 
     public static void ResetStaticData()
