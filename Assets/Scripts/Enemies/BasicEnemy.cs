@@ -11,6 +11,7 @@ namespace Enemies
     public class BasicEnemy : Enemy
     {
         private Random _rand = new();
+        protected float timeToMove = 1.0f;
 
         public BasicEnemy()
         {
@@ -25,8 +26,17 @@ namespace Enemies
 
         public override IEnumerator Move(int energy)
         {
-            if (!IsServer) yield break;
-            if (!IsTimeToMove(energy)) yield break;
+            if (!IsServer)
+            {
+                yield break;
+            }
+            if (!IsTimeToMove(energy))
+            {
+                hasFinishedToMove = true;
+                yield break;
+            }
+
+            hasFinishedToMove = false;
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
@@ -38,6 +48,7 @@ namespace Enemies
             }
 
             yield return new WaitUntil(hasFinishedMoving);
+            hasFinishedToMove = true;
             EmitOnAnyEnemyMoved();
         }
 
@@ -116,32 +127,26 @@ namespace Enemies
         /*
          * Bouge l'ennemi
          */
-        private float _timeToMove = 1.0f;
-        private bool _hasFinishedToMove = false; 
         private IEnumerator MoveEnemy(Vector3 direction)
         {
             if (!IsServer) yield break;
-            _hasFinishedToMove = false;
+            hasFinishedToMove = false;
             animator.SetBool("IsMoving", true);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
-            while (_timeToMove > currentTime)
+            while (timeToMove > currentTime)
             {
                 transform.position = Vector3.Lerp(
-                    origin, direction, currentTime/_timeToMove);
+                    origin, direction, currentTime/timeToMove);
                 currentTime += Time.deltaTime;
                 yield return null;
             } 
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
             animator.SetBool("IsMoving", false);
-            _hasFinishedToMove = true;
+            hasFinishedToMove = true;
         }
 
-        private bool hasFinishedMoving()
-        {
-            return _hasFinishedToMove;
-        }
 
         private bool IsValidCell(Cell toCheck)
         {
