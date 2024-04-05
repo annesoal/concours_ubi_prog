@@ -27,12 +27,12 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
         if (NetworkManager.Singleton.IsServer) { return; }
 
         int[] amuletsIdsShownByServer =
-            AmuletLayoutSynchronizer.Instance.GetAmuletsIdsShownByServer(AssociatedLevelSO.levelScene);
+            LevelSelectionSynchronizer.Instance.GetAmuletsIdsShownByServer(AssociatedLevelSO.levelScene);
 
         AmuletSaveLoad converter = new AmuletSaveLoad();
 
         List<AmuletSO> amuletsShownByServer =
-            converter.AmuletsIDToAmulets(amuletsIdsShownByServer, AmuletLayoutSynchronizer.Instance.AmuletSelector.amulets);
+            converter.AmuletsIDToAmulets(amuletsIdsShownByServer, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
 
         ShowAmuletsClientSide(amuletsShownByServer);
     }
@@ -68,9 +68,9 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
         AmuletSaveLoad loader = new AmuletSaveLoad();
         
         List<AmuletSO> amuletsToShow =
-            loader.GetAmuletsForScene(AssociatedLevelSO.levelScene, AmuletLayoutSynchronizer.Instance.AmuletSelector.amulets);
+            loader.GetAmuletsForScene(AssociatedLevelSO.levelScene, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
 
-        AmuletLayoutSynchronizer.Instance.SaveServerSideAmuletsForLevel(AssociatedLevelSO.levelScene);
+        LevelSelectionSynchronizer.Instance.SaveServerSideAmuletsForLevel(AssociatedLevelSO.levelScene);
 
         foreach (AmuletSO toShow in amuletsToShow)
         {

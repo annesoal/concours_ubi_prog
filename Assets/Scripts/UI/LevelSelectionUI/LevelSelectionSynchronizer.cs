@@ -5,9 +5,9 @@ using Amulets;
 using Unity.Netcode;
 using UnityEngine;
 
-public class AmuletLayoutSynchronizer : NetworkBehaviour
+public class LevelSelectionSynchronizer : NetworkBehaviour
 {
-    public static AmuletLayoutSynchronizer Instance { get; private set; }
+    public static LevelSelectionSynchronizer Instance { get; private set; }
 
     [field: SerializeField] public AmuletSelector AmuletSelector { get; private set; }
 
