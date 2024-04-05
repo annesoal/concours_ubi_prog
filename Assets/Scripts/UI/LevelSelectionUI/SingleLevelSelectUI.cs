@@ -39,6 +39,8 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
 
     public void Show(LevelSelectSO levelSO)
     {
+        EmptyAmuletsDisplay();
+        
         AssociatedLevelSO = levelSO;
 
         nameText.text = AssociatedLevelSO.levelName;
@@ -46,6 +48,17 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
         ShowAmuletsServerSide();
         
         BasicShowHide.Show(gameObject);
+    }
+
+    private void EmptyAmuletsDisplay()
+    {
+        foreach (Transform child in amuletLayout)
+        {
+            if (child.gameObject != amuletTemplateUI.gameObject)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     private void ShowAmuletsServerSide()
