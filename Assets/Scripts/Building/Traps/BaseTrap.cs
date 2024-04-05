@@ -46,6 +46,7 @@ public abstract class BaseTrap : BuildableObject
             }
         }
         
+        trapCell.ObjectsTopOfCell.Remove(this);
         Destroy(gameObject);
     }
 
