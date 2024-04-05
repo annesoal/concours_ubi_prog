@@ -4,6 +4,7 @@ using System.Linq;
 using Amulets;
 using Enemies;
 using Grid;
+using Managers;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private static List<Cell> DestinationCells;
     private List<GameObject> bonuses = new List<GameObject>();
     private bool gameWon = false;
+    private IAManager _iaManager;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     [field: SerializeField]
@@ -88,7 +90,7 @@ public class TowerDefenseManager : NetworkBehaviour
         highlighter = _hightlighter;
         Instance = this;
         _currentTimer = new NetworkVariable<float>(tacticalPauseDuration);
-
+        _iaManager = gameObject.AddComponent<IAManager>();
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
         InitializeStatesMethods();
