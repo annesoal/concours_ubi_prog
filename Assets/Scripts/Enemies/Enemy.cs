@@ -43,8 +43,9 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
 
         [SerializeField] protected Animator animator;
-        protected virtual void Initialize()
+        protected void Initialize()
         {
+            AddInGame(this.gameObject);
         }
 
         public void Start()

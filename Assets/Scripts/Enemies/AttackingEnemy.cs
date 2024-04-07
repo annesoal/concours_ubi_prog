@@ -18,13 +18,7 @@ namespace Enemies
         [SerializeField] private int attackRate;
         [SerializeField] private int radiusAttack = 1;
 
-
-        protected override void Initialize()
-        {
-            AddInGame(this.gameObject);
-        }
-
-
+        
         /**
          * Bouge aleatoirement selon les cells autour de l'ennemi.
          * - Attaquer un obstacle ou une tower
