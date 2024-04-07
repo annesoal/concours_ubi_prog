@@ -104,7 +104,7 @@ namespace Enemies
         {
             Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
-            //animator.SetTrigger("Die");
+            animator.SetBool("Die", true);
             TilingGrid.RemoveElement(this.gameObject, transform.position);
             Destroy(this.gameObject);
         }
