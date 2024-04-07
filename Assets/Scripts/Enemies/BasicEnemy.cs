@@ -49,8 +49,9 @@ namespace Enemies
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
-            return cellToCheck.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
-                   cellToCheck.HasNonWalkableBuilding();
+            Cell updatedCell = TilingGrid.grid.GetCell(cellToCheck.position);
+            return updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle) ||
+                   updatedCell.HasNonWalkableBuilding();
         }
 
         private bool IsTimeToMove(int energy)
@@ -126,9 +127,10 @@ namespace Enemies
         protected override bool IsValidCell(Cell toCheck)
         {
             PathfindingInvalidCell(toCheck);
-            bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
+            Cell updatedCell = TilingGrid.grid.GetCell(toCheck.position);
+            bool isValidBlockType = (updatedCell.type & BlockType.EnemyWalkable) > 0;
+            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(updatedCell, TypeTopOfCell.Enemy);
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(updatedCell);
         }
     }
 }
