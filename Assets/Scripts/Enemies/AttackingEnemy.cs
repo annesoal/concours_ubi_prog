@@ -34,6 +34,7 @@ namespace Enemies
                     hasFinishedToMove = true;
                     yield break;
                 }
+                
                 hasFinishedToMove = false;
                 if (!ChoseToAttack())
                 {
@@ -91,10 +92,31 @@ namespace Enemies
             if (_rand.NextDouble() > 1 - attackRate)
             {
                 toAttack.Damage(enemyDomage);
+                StartCoroutine(AttackAnimation(toAttack));
+                
                 return true;
             }
 
             return false;
+        }
+
+        private IEnumerator AttackAnimation(BaseTower toAttack)
+        {
+            if (!IsServer) yield break;
+            hasFinishedMoveAnimation = false;
+            animator.SetBool("Attack", true);
+            float currentTime = 0.0f;
+
+            //TODO time to attack? et regarder avec anim tour
+            while (timeToMove > currentTime)
+            {
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            
+            animator.SetBool("Attack", false);
+            hasFinishedMoveAnimation = true;
+            
         }
 
 
