@@ -241,7 +241,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
         RemoveNextHighlighter();
         StartCoroutine(MoveToNextPosition((Vector2Int)nextPosition));
-        EventTempo?.Invoke(this,(Vector2Int)nextPosition);
+        
         // TODO cote server 
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int)nextPosition);

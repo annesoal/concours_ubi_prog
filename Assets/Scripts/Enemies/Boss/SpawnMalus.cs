@@ -1,54 +1,80 @@
+using System.Collections.Generic;
+using Grid;
+using Unity.Netcode;
 using UnityEngine;
 
 
 public class SpawnMalus : NetworkBehaviour
 {
 
-    private IDictionary<Vector2Int, int> positionsPlayer;
+    private Dictionary<Vector2Int, int> positionsPlayer;
+    public static List<Cell> _monkeyReachableCells = new List<Cell>();
+    public static List<Cell> _robotReachableCells = new List<Cell>();
 
-    public event EventHandler EventTempo;
-
-    void Awake()
-    {
-        EventTempo += RegisterCellForMalus;
-    }
-
-
+    
+    
+    
+    
     void RegisterCellForMalus(object sender, Vector2Int positionCellPlayer)
     {
         if (positionsPlayer is null)
         {
-            positionsPlayer = new IDictionary<Vector2Int, int>
+            positionsPlayer = new Dictionary<Vector2Int, int>();
         }
 
-        if (keyValueDictionary.ContainsKey(positionCellPlayer))
+        if (positionsPlayer.ContainsKey(positionCellPlayer))
         {
-            keyValueDictionary[positionCellPlayer]++;
+            positionsPlayer[positionCellPlayer]++;
         }
         else
         {
-
-            keyValueDictionary.Add(positionCellPlayer, 1);
+            positionsPlayer.Add(positionCellPlayer, 1);
         }
 
     }
 
-    public Vector2Int GetMostUsedCell()
+
+
+    public void SpawnMalusOnGridPlayers(Vector2Int positionToSpawn, bool isMonkey)
     {
-
-        Vector2Int maxKey = Vector2Int.zero;
-        int maxValue = int.MinValue;
-
-        foreach (var kvp in keyValueDictionary)
+        
+    }
+ 
+    
+    public Vector2Int GetMostUsedCell(bool isMonkey)
+    {
+        Vector2Int mostUsedCell = Vector2Int.zero;
+        int maxOccurence = 0;
+        if (isMonkey)
         {
-            if (kvp.Value > maxValue)
+           
+            _monkeyReachableCells = TilingGrid.GetMonkeyReachableCells();
+           
+            foreach (var keyValue in positionsPlayer)
             {
-                maxKey = kvp.Key;
-                maxValue = kvp.Value;
+                if (keyValue.Value > maxOccurence)
+                {
+                    mostUsedCell = keyValue.Key;
+                }
             }
+
+            return mostUsedCell;
+
+        }
+        
+        _monkeyReachableCells = TilingGrid.GetRobotReachableCells();
+ 
+        foreach (var keyValue in positionsPlayer)
+        {
+            if (keyValue.Value > maxOccurence)
+            {
+                mostUsedCell = keyValue.Key;
+            }
+                
         }
 
-        return maxKey;
+        return mostUsedCell;
+       
     }
 }
 

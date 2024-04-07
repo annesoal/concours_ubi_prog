@@ -30,6 +30,16 @@ namespace Grid
 
         [SerializeField] private GameObject _ground;
 
+        public static List<Cell> GetMonkeyReachableCells()
+        {
+            return _monkeyReachableCells;
+        }
+        
+        public static List<Cell> GetRobotReachableCells()
+        {
+            return _robotReachableCells;
+        }
+        
         public static void ResetReachableCells()
         {
             _monkeyReachableCells = new List<Cell>();
