@@ -326,13 +326,13 @@ AnimatorController:
   m_Name: AC_PetiteCrotte
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Spawn
+  - m_Name: Move
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Move
+  - m_Name: Spawn
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -631,7 +631,7 @@ AnimatorStateMachine:
     m_Position: {x: 290, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3010618332173254826}
-    m_Position: {x: 30, y: 350, z: 0}
+    m_Position: {x: -20, y: 240, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1268901542308154367}
     m_Position: {x: 610, y: 350, z: 0}
@@ -643,7 +643,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 140, z: 0}
+  m_EntryPosition: {x: 0, y: 350, z: 0}
   m_ExitPosition: {x: 610, y: 150, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -3421576031408093529}
