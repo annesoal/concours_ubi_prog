@@ -73,8 +73,8 @@ namespace Enemies
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Obstacle) &&
-                    IsAttacking(aCell.GetObstacle()))
+                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
+                    IsAttacking(aCell.GetTower()))
                 {
                     hasPath = false;
                     return true;
@@ -86,11 +86,11 @@ namespace Enemies
 
 
         // Choisit d'attaquer selon aleatoirement
-        private bool IsAttacking(Obstacle toCorrupt)
+        private bool IsAttacking(BaseTower toAttack)
         {
             if (_rand.NextDouble() > 1 - attackRate)
             {
-                toCorrupt.Damage(enemyDomage);
+                toAttack.Damage(enemyDomage);
                 return true;
             }
 
@@ -168,7 +168,7 @@ namespace Enemies
         {
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
-            animator.SetBool("IsMoving", true);
+            animator.SetBool("Move", true);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
@@ -180,7 +180,7 @@ namespace Enemies
                 yield return null;
             } 
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("Move", false);
             hasFinishedMoveAnimation = true;
         }
         
@@ -189,6 +189,26 @@ namespace Enemies
             return hasFinishedMoveAnimation;
         }
 
+        
+        protected override bool TryStepBackward()
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
+
+                return true;
+            }
+            // TODO REVENIR SUR PLACE SI PEUT PAS RECULER ??
+            return false;
+        }
+        
+        
         private bool IsValidCell(Cell cell)
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;

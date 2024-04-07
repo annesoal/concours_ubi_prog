@@ -10,10 +10,6 @@ namespace Ennemies
         {
             ennemyType = EnnemyType.Goofy;
         }
-
-        public override bool PathfindingInvalidCell(Cell cell)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 }
