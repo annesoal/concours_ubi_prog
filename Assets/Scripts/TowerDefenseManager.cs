@@ -262,6 +262,8 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         CheckEnemiesAtDestinationCells();
         CleanBonuses();
+        TilingGrid.grid.SyncAllTopOfCells();
+        
         if (_playersHealth < 1)
         {
             gameWon = false;
