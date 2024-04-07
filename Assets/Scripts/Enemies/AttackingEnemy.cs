@@ -17,7 +17,7 @@ namespace Enemies
         [SerializeField] private int enemyDomage = 1;
         [SerializeField] private int attackRate;
         [SerializeField] private int radiusAttack = 1;
-
+        protected float timeToMove = 1.0f;
         
         /**
          * Bouge aleatoirement selon les cells autour de l'ennemi.
@@ -28,21 +28,29 @@ namespace Enemies
         {
             {
                 if (!IsServer) yield break;
-                if (!IsTimeToMove(energy)) yield break;
+                
+                if (!IsTimeToMove(energy))
+                {
+                    hasFinishedToMove = true;
+                    yield break;
+                }
+                hasFinishedToMove = false;
                 if (!ChoseToAttack())
                 {
                     if (!TryMoveOnNextCell())
                     {
                         if (!MoveSides())
                         {
-                            // transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                            Debug.Log("BIGGUY NE PEUT PAS BOUGER");
+                            //TODO
+                            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                            
                         }
                     }
                 }
             }
+            yield return new WaitUntil(hasFinishedMovingAnimation);
+            hasFinishedToMove = true;
             EmitOnAnyEnemyMoved();
-            throw new Exception("Not implemented yet !");
         }
 
         public bool ChoseToAttack()
@@ -52,8 +60,7 @@ namespace Enemies
             Cell nextCell = path[0];
             path.RemoveAt(0);
 
-            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-
+            
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
             if (ChoseAttackObstacle(cellsInRadius)) return true;
@@ -109,11 +116,10 @@ namespace Enemies
                 return true;
 
             Cell nextCell = path[0];
-            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
+                StartCoroutine(MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
 
@@ -144,7 +150,6 @@ namespace Enemies
         {
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-            Debug.Log("BASIC SIDE cellPos + direction == " + nextPosition);
 
             if (IsValidCell(nextCell))
             {
@@ -159,12 +164,29 @@ namespace Enemies
         /*
          * Bouge l'ennemi
          */
-        private void MoveEnemy(Vector3 direction)
+        private IEnumerator MoveEnemy(Vector3 direction)
         {
-            if (!IsServer) return;
-            Debug.Log("BIGGUY PLACE AVANT : " + transform.position);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
-            Debug.Log("BIGGUY PLACE APRES : " + transform.position);
+            if (!IsServer) yield break;
+            hasFinishedMoveAnimation = false;
+            animator.SetBool("IsMoving", true);
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            float currentTime = 0.0f;
+            Vector3 origin = transform.position;
+            while (timeToMove > currentTime)
+            {
+                transform.position = Vector3.Lerp(
+                    origin, direction, currentTime/timeToMove);
+                currentTime += Time.deltaTime;
+                yield return null;
+            } 
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
+            animator.SetBool("IsMoving", false);
+            hasFinishedMoveAnimation = true;
+        }
+        
+        private bool hasFinishedMovingAnimation()
+        {
+            return hasFinishedMoveAnimation;
         }
 
         private bool IsValidCell(Cell cell)
