@@ -8,14 +8,11 @@ public class SpawnMalus : NetworkBehaviour
 {
     private static float _overTheTiles = 0.5f;
     private Dictionary<Vector2Int, int> positionsPlayer;
-    public static List<Cell> _monkeyReachableCells = new List<Cell>();
-    public static List<Cell> _robotReachableCells = new List<Cell>();
+    public static List<Cell> _reachableCells = new List<Cell>();
 
     [SerializeField] private GameObject malus;
-    
-    
-    
-    
+
+
     void RegisterCellForMalus(object sender, Vector2Int positionCellPlayer)
     {
         if (positionsPlayer is null)
@@ -31,90 +28,88 @@ public class SpawnMalus : NetworkBehaviour
         {
             positionsPlayer.Add(positionCellPlayer, 1);
         }
-
     }
-
 
 
     public void SpawnMalusOnGridPlayers()
     {
-
         Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
         Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
 
-        if (mostUsedCellMonkey == Vector2Int.zero)
-        {
-            Debug.LogError("Aucun malus spawn pour monkey");
-            return;
-        }
-        PlaceMalus(mostUsedCellMonkey);
-
-
-        if (mostUsedCellRobot == Vector2Int.zero)
-        {
-            Debug.LogError("Aucun malus spawn pour robot");
-            return;
-        }
-
-        PlaceMalus(mostUsedCellRobot);
-
-
+        SpawnMalusOnCell(mostUsedCellMonkey);
+        SpawnMalusOnCell(mostUsedCellRobot);
+        
+        
     }
 
-    
-    
-    public Vector2Int GetMostUsedCell(bool isMonkey)
+    private void SpawnMalusOnCell(Vector2Int mostUsedCell)
+    {
+        if (mostUsedCell == Vector2Int.zero)
+        {
+            Debug.LogError("Aucun malus spawn pour monkey");
+        }
+        else
+        {
+            PlaceMalus(mostUsedCell);
+        }
+    }
+
+
+    private bool IsPlayerCell(Vector2Int position, List<Cell> players)
+    {
+        foreach (var cellPlayer in players)
+        {
+            if (position == cellPlayer.position)
+                return true;
+        }
+
+        return false;
+    }
+
+    private Vector2Int GetMostUsedCell(bool isMonkey)
     {
         Vector2Int mostUsedCell = Vector2Int.zero;
         int maxOccurence = 0;
         if (isMonkey)
         {
-           
-            _monkeyReachableCells = TilingGrid.GetMonkeyReachableCells();
-           
-            foreach (var keyValue in positionsPlayer)
-            {
-                if (keyValue.Value > maxOccurence)
-                {
-                    mostUsedCell = keyValue.Key;
-                }
-            }
-
-            return mostUsedCell;
-
+            _reachableCells = TilingGrid.GetMonkeyReachableCells();
         }
-        
-        _monkeyReachableCells = TilingGrid.GetRobotReachableCells();
- 
+        else
+        {
+            _reachableCells = TilingGrid.GetRobotReachableCells();
+        }
+
         foreach (var keyValue in positionsPlayer)
         {
-            if (keyValue.Value > maxOccurence)
+            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, _reachableCells))
             {
                 mostUsedCell = keyValue.Key;
             }
-                
         }
 
         return mostUsedCell;
-       
     }
-    
-    //PlaceObjects de spawnermanager
+
+    //voir PlaceObjects de spawnermanager
     private void PlaceMalus(Vector2Int positionOfSpawn)
     {
         Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-        //event ?
-        GameObject instance = Instantiate(malus);
-        TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
-        instance.GetComponent<NetworkObject>().Spawn(true);
-        
-        
+        if (isValidCell(cell.position))
+        {
+            //event ? si pas valide ?
+            GameObject instance = Instantiate(malus);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+            instance.GetComponent<NetworkObject>().Spawn(true);
+        }
+      
     }
 
     private bool isValidCell(Vector2Int cellToCheck)
     {
-        return true; //TODO
+        //TODO pas de ressource
+        // pas de bonus
+        //pas de player
+        // pas rien
+        return true; 
     }
 }
-
-
