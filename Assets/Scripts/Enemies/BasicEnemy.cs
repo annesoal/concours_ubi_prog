@@ -47,7 +47,7 @@ namespace Enemies
                 }
             }
 
-            yield return new WaitUntil(hasFinishedMoving);
+            yield return new WaitUntil(hasFinishedMovingAnimation);
             hasFinishedToMove = true;
             EmitOnAnyEnemyMoved();
         }
@@ -130,7 +130,7 @@ namespace Enemies
         private IEnumerator MoveEnemy(Vector3 direction)
         {
             if (!IsServer) yield break;
-            hasFinishedToMove = false;
+            hasFinishedMoveAnimation = false;
             animator.SetBool("IsMoving", true);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
@@ -144,9 +144,13 @@ namespace Enemies
             } 
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
             animator.SetBool("IsMoving", false);
-            hasFinishedToMove = true;
+            hasFinishedMoveAnimation = true;
         }
 
+        private bool hasFinishedMovingAnimation()
+        {
+            return hasFinishedMoveAnimation;
+        }
 
         private bool IsValidCell(Cell toCheck)
         {

@@ -37,6 +37,7 @@ namespace Enemies
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
         protected bool hasFinishedToMove = false;
+        protected bool hasFinishedMoveAnimation = false; 
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
