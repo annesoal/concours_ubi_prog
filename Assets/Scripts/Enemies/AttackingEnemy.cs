@@ -18,6 +18,7 @@ namespace Enemies
         [SerializeField] private int attackRate;
         [SerializeField] private int radiusAttack = 1;
         protected float timeToMove = 1.0f;
+        protected float timeToAttack = 0.5f;
         
         /**
          * Bouge aleatoirement selon les cells autour de l'ennemi.
@@ -58,25 +59,26 @@ namespace Enemies
         {
             if (path == null || path.Count == 0)
                 return true;
+            
+            //TODO mettre dans TryToMove
             Cell nextCell = path[0];
             path.RemoveAt(0);
 
             
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
-            if (ChoseAttackObstacle(cellsInRadius)) return true;
-
-            // TODO pour tower
-            return false;
+            return (ChoseAttack(cellsInRadius));
+         
         }
 
-        private bool ChoseAttackObstacle(List<Cell> cellsInRadius)
+        private bool ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
                 if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
-                    IsAttacking(aCell.GetTower()))
+                    canAttack())
                 {
+                    Attack(aCell.GetTower());
                     hasPath = false;
                     return true;
                 }
@@ -84,23 +86,20 @@ namespace Enemies
 
             return false;
         }
-
-
-        // Choisit d'attaquer selon aleatoirement
-        private bool IsAttacking(BaseTower toAttack)
+        
+        // Choisit d'attaquer aleatoirement
+        private bool canAttack()
         {
-            if (_rand.NextDouble() > 1 - attackRate)
-            {
-                toAttack.Damage(enemyDomage);
-                StartCoroutine(AttackAnimation(toAttack));
-                
-                return true;
-            }
-
-            return false;
+            return (_rand.NextDouble() > 1 - attackRate);
+        }
+        
+        private void Attack(BaseTower toAttack)
+        {
+            toAttack.Damage(enemyDomage);
+            StartCoroutine(AttackAnimation());
         }
 
-        private IEnumerator AttackAnimation(BaseTower toAttack)
+        private IEnumerator AttackAnimation()
         {
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
