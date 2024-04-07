@@ -38,10 +38,11 @@ namespace Enemies
 
         protected bool hasFinishedToMove = false;
         protected bool hasFinishedMoveAnimation = false; 
+        
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-
+        
         [SerializeField] protected Animator animator;
         protected void Initialize()
         {
@@ -59,10 +60,8 @@ namespace Enemies
             _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         }
 
-        protected bool IsAtDestination(Cell nextCell)
-        {
-            return (nextCell.type & BlockType.EnemyDestination) > 0;
-        }
+
+        protected abstract bool TryStepBackward();
         
         private Cell GetClosestDestination()
         {
@@ -109,6 +108,8 @@ namespace Enemies
             TilingGrid.RemoveElement(this.gameObject, transform.position);
             Destroy(this.gameObject);
         }
+
+
 
         public static event EventHandler OnAnyEnemyMoved;
         public abstract IEnumerator Move(int energy);
