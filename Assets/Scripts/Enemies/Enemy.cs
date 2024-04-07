@@ -109,8 +109,6 @@ namespace Enemies
             Destroy(this.gameObject);
         }
 
-
-
         public static event EventHandler OnAnyEnemyMoved;
         public abstract IEnumerator Move(int energy);
 

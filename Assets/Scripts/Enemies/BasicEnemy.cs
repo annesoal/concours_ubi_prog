@@ -4,6 +4,7 @@ using Grid;
 using Grid.Interface;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
+using Utils;
 using Random = System.Random;
 
 namespace Enemies
@@ -70,10 +71,10 @@ namespace Enemies
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                StartCoroutine(MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position)));
+                StartCoroutine(MoveEnemy(
+                    TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
-
             return false;
         }
 
@@ -125,57 +126,31 @@ namespace Enemies
             bool isLeft = direction == _gauche2d;
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + 1);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-
+            
             // tout de suite changer l'orientation ??
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
 
                 StartCoroutine(
-                    MoveEnemy(
-                        TilingGrid.GridPositionToLocal(nextPosition)));
-                
+                    RotateThenMove(
+                        TilingGrid.GridPositionToLocal(nextCell.position), isLeft));
                 return true;
             }
-
             return false;
         }
 
-        private IEnumerator TurnEnemy(Vector2Int direction)
+        private IEnumerator RotateThenMove(Vector3 direction, bool left)
         {
-            if (!IsServer) yield break;
-            float currentTime = 0.0f;
-            Vector3 origin = transform.position;
-            var turnPosition = SetTurnDegreePosition(direction, origin);
-
-
-            while (timeToMove > currentTime)
-            {
-                transform.position = Vector3.Lerp(
-                    origin, turnPosition, currentTime / timeToMove);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-
-            animator.SetBool("TurnLeft", true);
+            RotationAnimation rotationAnimation = new RotationAnimation();
+            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, left));
+            yield return new WaitUntil(rotationAnimation.HasMoved);
+            StartCoroutine(MoveEnemy(direction));
+            yield return new WaitUntil(hasFinishedMovingAnimation);
+            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, !left));
+            yield return new WaitUntil(rotationAnimation.HasMoved);
         }
 
-
-        private Vector3 SetTurnDegreePosition(Vector2Int direction, Vector3 origin)
-        {
-            Vector3 turnPosition = origin;
-
-            if (direction == _gauche2d)
-            {
-                turnPosition.y = 90;
-            }
-            else
-            {
-                turnPosition.y = -90;
-            }
-
-            return turnPosition;
-        }
 
         /*
          * Bouge l'ennemi
