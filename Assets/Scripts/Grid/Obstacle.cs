@@ -23,12 +23,15 @@ namespace Grid
 
         private void Start()
         {
-            Initialize();
         }
 
-        private void Initialize()
+        public void Initialize()
         {
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+            if (!IsServer) return;
+            Vector2Int vector2Int = TilingGrid.LocalToGridPosition(this.transform.position);
+            Debug.LogWarning("at position " + vector2Int);
+            TilingGrid.grid.AddObjectToCellAtPositionInit(this.gameObject, vector2Int);
+            Debug.LogWarning(TilingGrid.grid.GetCell(vector2Int).ObjectsTopOfCell.Count);
         }
         public new TypeTopOfCell GetType()
         {
