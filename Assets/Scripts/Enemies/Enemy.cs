@@ -131,11 +131,7 @@ namespace Enemies
 
         public static List<GameObject> GetEnemiesInGame()
         {
-            foreach (var ennemy in enemiesInGame)
-            {
-                Debug.Log("LISTE ENNEMIS zzz");
-                Debug.Log(TilingGrid.LocalToGridPosition(ennemy.transform.position));
-            }
+
             return enemiesInGame;
         }
         
