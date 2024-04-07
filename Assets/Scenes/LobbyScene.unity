@@ -321,6 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 75747925}
+  - component: {fileID: 75747929}
   - component: {fileID: 75747928}
   - component: {fileID: 75747927}
   - component: {fileID: 75747926}
@@ -370,7 +371,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -382,7 +383,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 21300000, guid: 3bcd65931655d2a35ae86e7b8110e986, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -408,15 +409,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2435314, g: 0.2435314, b: 0.2435314, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 99f68c33e0688474b92405f0fb6c2994, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -433,6 +434,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75747924}
   m_CullTransparentMesh: 1
+--- !u!114 &75747929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75747924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45ae77ccf3c5273f182ed7367ae29925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToSwitch: {fileID: 1049840957}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &80837993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &741574772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2071,8 +2087,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: CLOSE
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff78bc5c69c497f89ab64abbfe8257da, type: 2}
+  m_sharedMaterial: {fileID: 2727089797718359240, guid: ff78bc5c69c497f89ab64abbfe8257da,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2102,7 +2119,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2985,7 +3002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1266783768
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3267,8 +3284,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Could not find a lobby to join !
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff78bc5c69c497f89ab64abbfe8257da, type: 2}
+  m_sharedMaterial: {fileID: 2727089797718359240, guid: ff78bc5c69c497f89ab64abbfe8257da,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3298,7 +3316,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3654,8 +3672,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: CREATING LOBBY...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ff78bc5c69c497f89ab64abbfe8257da, type: 2}
+  m_sharedMaterial: {fileID: 2727089797718359240, guid: ff78bc5c69c497f89ab64abbfe8257da,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3685,7 +3704,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
