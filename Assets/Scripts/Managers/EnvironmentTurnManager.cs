@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Managers;
+using Unity.Netcode;
 using UnityEngine;
 
 public class EnvironmentTurnManager : MonoBehaviour
@@ -18,7 +19,10 @@ public class EnvironmentTurnManager : MonoBehaviour
 
     public void Start()
     {
-       TowerDefenseManager.Instance.OnCurrentStateChanged += ListenForEnvironmentTurn; 
+        if (NetworkManager.Singleton.IsServer)
+        {
+            TowerDefenseManager.Instance.OnCurrentStateChanged += ListenForEnvironmentTurn; 
+        }
     }
 
     private void ListenForEnvironmentTurn(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
