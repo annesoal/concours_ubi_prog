@@ -16883,8 +16883,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1826487037}
-  - component: {fileID: 1826487039}
   - component: {fileID: 1826487038}
+  - component: {fileID: 1826487039}
   m_Layer: 0
   m_Name: SynchronizeTopOfCellsList
   m_TagString: Untagged
