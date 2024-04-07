@@ -12,13 +12,13 @@ namespace Enemies
     {
         private Random _rand = new();
         protected float timeToMove = 1.0f;
-
+        
         public BasicEnemy()
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-
-
+        
+        
         public override IEnumerator Move(int energy)
         {
             if (!IsServer)
@@ -114,6 +114,7 @@ namespace Enemies
                 return true;
             }
 
+            // TODO REVENIR SUR PLACE SI PEUT PAS RECULER ??
             return false;
         }
 
@@ -133,8 +134,7 @@ namespace Enemies
                 StartCoroutine(
                     MoveEnemy(
                         TilingGrid.GridPositionToLocal(nextPosition)));
-
-
+                
                 return true;
             }
 
@@ -184,7 +184,7 @@ namespace Enemies
         {
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
-            animator.SetBool("IsMoving", true);
+            animator.SetBool("Move", true);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
@@ -197,7 +197,7 @@ namespace Enemies
             }
 
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("Move", false);
             hasFinishedMoveAnimation = true;
         }
 

@@ -168,7 +168,7 @@ namespace Enemies
         {
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
-            animator.SetBool("IsMoving", true);
+            animator.SetBool("Move", true);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
@@ -180,7 +180,7 @@ namespace Enemies
                 yield return null;
             } 
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
-            animator.SetBool("IsMoving", false);
+            animator.SetBool("Move", false);
             hasFinishedMoveAnimation = true;
         }
         
@@ -204,7 +204,7 @@ namespace Enemies
 
                 return true;
             }
-
+            // TODO REVENIR SUR PLACE SI PEUT PAS RECULER ??
             return false;
         }
         
