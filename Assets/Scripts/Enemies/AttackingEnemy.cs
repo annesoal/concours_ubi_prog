@@ -189,6 +189,26 @@ namespace Enemies
             return hasFinishedMoveAnimation;
         }
 
+        
+        protected override bool TryStepBackward()
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
+
+                return true;
+            }
+
+            return false;
+        }
+        
+        
         private bool IsValidCell(Cell cell)
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;

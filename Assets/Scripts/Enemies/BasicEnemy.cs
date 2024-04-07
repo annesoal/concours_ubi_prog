@@ -99,13 +99,32 @@ namespace Enemies
             return false;
         }
 
+        protected override bool TryStepBackward()
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
+
+                return true;
+            }
+
+            return false;
+        }
+
+
         //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
             bool isLeft = direction == _gauche2d;
-            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + 1);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-            
+
             // tout de suite changer l'orientation ??
             if (IsValidCell(nextCell))
             {
@@ -128,8 +147,8 @@ namespace Enemies
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
             var turnPosition = SetTurnDegreePosition(direction, origin);
-            
-            
+
+
             while (timeToMove > currentTime)
             {
                 transform.position = Vector3.Lerp(
@@ -140,8 +159,8 @@ namespace Enemies
 
             animator.SetBool("TurnLeft", true);
         }
-        
-        
+
+
         private Vector3 SetTurnDegreePosition(Vector2Int direction, Vector3 origin)
         {
             Vector3 turnPosition = origin;
