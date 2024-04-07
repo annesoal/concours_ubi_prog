@@ -5,7 +5,7 @@ namespace Enemies
 {
     public class BigBossEnemy : NetworkBehaviour
     {
-        private SpawnMalus spawnerMalus = new SpawnMalus();
+        [SerializeField]private SpawnMalus spawnerMalus = new SpawnMalus();
         [SerializeField] private int ratioMovement = 8;
         
         public void SpawnMalus(int energy)

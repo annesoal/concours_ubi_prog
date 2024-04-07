@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 489280247
+  GlobalObjectIdHash: 590323203
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -100,6 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9adb83383f49f0931fc3aab7e37df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerMalus: {fileID: -6431796730874565461, guid: af4b5d2eee59592fcb97c5eddd22c92e,
+    type: 3}
+  ratioMovement: 8
 --- !u!114 &-7006683443239023634
 MonoBehaviour:
   m_ObjectHideFlags: 0

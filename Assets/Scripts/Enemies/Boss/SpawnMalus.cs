@@ -6,11 +6,12 @@ using UnityEngine;
 
 public class SpawnMalus : NetworkBehaviour
 {
-
+    private static float _overTheTiles = 0.5f;
     private Dictionary<Vector2Int, int> positionsPlayer;
     public static List<Cell> _monkeyReachableCells = new List<Cell>();
     public static List<Cell> _robotReachableCells = new List<Cell>();
 
+    [SerializeField] private GameObject malus;
     
     
     
@@ -35,11 +36,32 @@ public class SpawnMalus : NetworkBehaviour
 
 
 
-    public void SpawnMalusOnGridPlayers(Vector2Int positionToSpawn, bool isMonkey)
+    public void SpawnMalusOnGridPlayers()
     {
-        
+
+        Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
+        Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
+
+        if (mostUsedCellMonkey == Vector2Int.zero)
+        {
+            Debug.LogError("Aucun malus spawn pour monkey");
+            return;
+        }
+        PlaceMalus(mostUsedCellMonkey);
+
+
+        if (mostUsedCellRobot == Vector2Int.zero)
+        {
+            Debug.LogError("Aucun malus spawn pour robot");
+            return;
+        }
+
+        PlaceMalus(mostUsedCellRobot);
+
+
     }
- 
+
+    
     
     public Vector2Int GetMostUsedCell(bool isMonkey)
     {
@@ -75,6 +97,23 @@ public class SpawnMalus : NetworkBehaviour
 
         return mostUsedCell;
        
+    }
+    
+    //PlaceObjects de spawnermanager
+    private void PlaceMalus(Vector2Int positionOfSpawn)
+    {
+        Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
+        //event ?
+        GameObject instance = Instantiate(malus);
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+        instance.GetComponent<NetworkObject>().Spawn(true);
+        
+        
+    }
+
+    private bool isValidCell(Vector2Int cellToCheck)
+    {
+        return true; //TODO
     }
 }
 
