@@ -690,7 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToSwitch: {fileID: 697764914}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.08235294, g: 0.08235294, b: 0.22745098, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &272261961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2606,7 +2606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToSwitch: {fileID: 1128334802}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.08235294, g: 0.08235294, b: 0.22745098, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &1189596388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2743,7 +2743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToSwitch: {fileID: 1808729240}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.08235294, g: 0.08235294, b: 0.22745098, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &1218482803
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,7 +3856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToSwitch: {fileID: 1944758457}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.08235294, g: 0.08235294, b: 0.22745098, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &1762575731
 GameObject:
   m_ObjectHideFlags: 0
@@ -5116,7 +5116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textToSwitch: {fileID: 2045699246}
   baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.08235294, g: 0.08235294, b: 0.22745098, a: 1}
+  selectedColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}
 --- !u!1 &2084849817
 GameObject:
   m_ObjectHideFlags: 0
