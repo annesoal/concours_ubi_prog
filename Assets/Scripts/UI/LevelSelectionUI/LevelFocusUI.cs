@@ -142,12 +142,12 @@ public class LevelFocusUI : MonoBehaviour
     {
         if (!gameObject.activeSelf) { return; }
 
-        if (! eventArgs.SyncrhonizedCall)
+        if (! eventArgs.SyncrhonizedCall && NetworkManager.Singleton.IsServer)
         {
             LevelSelectionSynchronizer.Instance.CopyInputClientRpc(inputDirection);
         }
         
-        if (eventArgs.SyncrhonizedCall)
+        if (eventArgs.SyncrhonizedCall && ! NetworkManager.Singleton.IsServer)
         {
             Selectable currentSelectedObject = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
 
