@@ -74,7 +74,14 @@ public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
         Health -= damage;
         if (Health < 1)
         {
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        TilingGrid.RemoveElement(gameObject, transform.position);
+        Destroy(this.gameObject);
     }
 
     public override void Build(Vector2Int positionToBuild)

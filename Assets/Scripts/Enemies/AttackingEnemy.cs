@@ -73,8 +73,8 @@ namespace Enemies
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Obstacle) &&
-                    IsAttacking(aCell.GetObstacle()))
+                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
+                    IsAttacking(aCell.GetTower()))
                 {
                     hasPath = false;
                     return true;
@@ -86,11 +86,11 @@ namespace Enemies
 
 
         // Choisit d'attaquer selon aleatoirement
-        private bool IsAttacking(Obstacle toCorrupt)
+        private bool IsAttacking(BaseTower toAttack)
         {
             if (_rand.NextDouble() > 1 - attackRate)
             {
-                toCorrupt.Damage(enemyDomage);
+                toAttack.Damage(enemyDomage);
                 return true;
             }
 

@@ -112,6 +112,21 @@ namespace Grid
             }
             return null;
         }
+        
+        
+        public BaseTower GetTower()
+        {
+            if (_objectsTopOfCell == null)
+                return null;
+            foreach(ITopOfCell objectTopOfCell in _objectsTopOfCell)
+            {
+                if (objectTopOfCell.GetType() == TypeTopOfCell.Building)
+                {
+                    return objectTopOfCell.ToGameObject().GetComponent<BaseTower>();   
+                }
+            }
+            return null;
+        }
 
        // TODO public Building GetBuilding(){}
         
