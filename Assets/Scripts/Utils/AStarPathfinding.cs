@@ -88,24 +88,13 @@ namespace Utils
 
         private static Cell GetMinFScoreCell(List<Cell> cells, Dictionary<Cell, float> distancesDestination)
         {
-            //Boucle debug pour afficher valeurs dictionnaires
-            foreach (var kvp in distancesDestination)
-            {
-                Debug.Log($"Clé : {kvp.Key}, Valeur : {kvp.Value}");
-            }
-
             int indexSmallest = 0;
             float minDistanceDestination = distancesDestination[cells[0]];
-            Debug.Log("STAR distancesDestination[cells[0]] : " + distancesDestination[cells[0]]);
-            Debug.Log("STAR minDistanceDestination : " + minDistanceDestination);
-            Debug.Log("STAR CELL count : " + cells.Count);
             for (int i = 0; i < cells.Count; i++)
             {
                 Cell currentCell = cells[i];
-                Debug.Log("STAR currentCell boucle i : " + i + currentCell.position);
                 float currentDistanceDestionation = distancesDestination[currentCell];
                 
-                Debug.Log("STAR currentDistanceDestionation : " + currentDistanceDestionation);
                 
                 if (currentDistanceDestionation < minDistanceDestination)
                 {
