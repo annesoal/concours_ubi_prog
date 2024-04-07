@@ -379,6 +379,20 @@ namespace Grid
             {
             }
         }
+        
+        /// <summary>
+        /// Synchronize all the list of top of cells of each cells.
+        /// </summary>
+        public void SyncAllTopOfCells()
+        {
+            foreach (Cell cell in _cells)
+            {
+                if (cell.ObjectsTopOfCell.Count != 0)
+                {
+                    SynchronizeTopOfCellList.Instance.SyncIndividualTopOfCell(cell);
+                }
+            }
+        }
 
         private delegate void ActionRef<T>(ref T item);
         //--------------------------------------------------------------------------------------------------------------
