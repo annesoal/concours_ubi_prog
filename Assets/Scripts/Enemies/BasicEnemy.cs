@@ -103,6 +103,7 @@ namespace Enemies
         //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
+            bool left = direction == _gauche2d ? true : false ;
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
 
@@ -119,6 +120,21 @@ namespace Enemies
             
             
             return false;
+        }
+
+        private IEnumerator MoveSide(Vector3 nextPosition, bool left)
+        {
+            if (left)
+            {
+                animator.SetBool("IsTurnLeft", true);        
+                
+            }
+            else
+            {
+                animator.SetBool("IsTurnRight", true);        
+            }
+            
+            yield return StartCoroutine(MoveEnemy(nextPosition));
         }
 
         /*
