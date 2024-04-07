@@ -18,8 +18,6 @@ namespace Enemies
             ennemyType = EnnemyType.PetiteMerde;
         }
 
- 
-
 
         public override IEnumerator Move(int energy)
         {
@@ -27,6 +25,7 @@ namespace Enemies
             {
                 yield break;
             }
+
             if (!IsTimeToMove(energy))
             {
                 hasFinishedToMove = true;
@@ -103,22 +102,60 @@ namespace Enemies
         //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
+            bool isLeft = direction == _gauche2d;
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-
+            
+            // tout de suite changer l'orientation ??
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
-                
+
                 StartCoroutine(
                     MoveEnemy(
                         TilingGrid.GridPositionToLocal(nextPosition)));
 
+
                 return true;
             }
-            
-            
+
             return false;
+        }
+
+        private IEnumerator TurnEnemy(Vector2Int direction)
+        {
+            if (!IsServer) yield break;
+            float currentTime = 0.0f;
+            Vector3 origin = transform.position;
+            var turnPosition = SetTurnDegreePosition(direction, origin);
+            
+            
+            while (timeToMove > currentTime)
+            {
+                transform.position = Vector3.Lerp(
+                    origin, turnPosition, currentTime / timeToMove);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            animator.SetBool("TurnLeft", true);
+        }
+        
+        
+        private Vector3 SetTurnDegreePosition(Vector2Int direction, Vector3 origin)
+        {
+            Vector3 turnPosition = origin;
+
+            if (direction == _gauche2d)
+            {
+                turnPosition.y = 90;
+            }
+            else
+            {
+                turnPosition.y = -90;
+            }
+
+            return turnPosition;
         }
 
         /*
@@ -135,10 +172,11 @@ namespace Enemies
             while (timeToMove > currentTime)
             {
                 transform.position = Vector3.Lerp(
-                    origin, direction, currentTime/timeToMove);
+                    origin, direction, currentTime / timeToMove);
                 currentTime += Time.deltaTime;
                 yield return null;
-            } 
+            }
+
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
             animator.SetBool("IsMoving", false);
             hasFinishedMoveAnimation = true;
@@ -154,7 +192,7 @@ namespace Enemies
             PathfindingInvalidCell(toCheck);
             bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-            
+
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
         }
     }
