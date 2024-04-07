@@ -393,6 +393,27 @@ namespace Grid
                 }
             }
         }
+        
+        /// <summary>
+        /// Clears all the list of top of cells of each cells.
+        /// Is applied only on the client side.
+        /// </summary>
+        public void ClearAllClientTopOfCells()
+        {
+            SynchronizeTopOfCellList.Instance.ClearAllClientTopOfCellsClientRpc();
+        }
+
+        /// <summary>
+        /// Note : Should only be call by the SynchronizeTopOfCellList.
+        /// It is the function who actually does the clearing.
+        /// </summary>
+        public void ClearAllTopOfCellsSync()
+        {
+            foreach (Cell toClear in _cells)
+            {
+                toClear.ObjectsTopOfCell.Clear();
+            }
+        }
 
         private delegate void ActionRef<T>(ref T item);
         //--------------------------------------------------------------------------------------------------------------

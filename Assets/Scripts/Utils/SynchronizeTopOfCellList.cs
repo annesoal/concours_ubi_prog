@@ -44,4 +44,12 @@ public class SynchronizeTopOfCellList : NetworkBehaviour
         
         TilingGrid.grid.UpdateCell(toUpdate);
     }
+
+    [ClientRpc]
+    public void ClearAllClientTopOfCellsClientRpc()
+    {
+        if (IsServer) { return; }
+        
+        TilingGrid.grid.ClearAllTopOfCellsSync();
+    }
 }
