@@ -238,4 +238,4 @@ MonoBehaviour:
   animator: {fileID: 2233567895258347816}
   enemyDomage: 1
   attackRate: 1
-  radiusAttack: 1
+  radiusAttack: 2
