@@ -16927,7 +16927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentStateBorder: {fileID: 1832044523}
   roundsLeftText: {fileID: 2137229063}
-  timerGameObject: {fileID: 0}
+  timerGameObject: {fileID: 503047390}
   timerText: {fileID: 1252953984}
 --- !u!1 &1814571275
 GameObject:
