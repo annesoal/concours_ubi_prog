@@ -12,7 +12,7 @@ public class GameVersionText : MonoBehaviour
     {
         _textComponent = GetComponent<TextMeshProUGUI>();
 
-        _textComponent.text = "SMILE VERSION : " + Application.version;
+        _textComponent.text = "TNT VERSION : " + Application.version;
     }
     
 }
