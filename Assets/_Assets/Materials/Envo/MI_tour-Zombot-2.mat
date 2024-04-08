@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MI_Cloud-03 1
+  m_Name: MI_tour-Zombot-2
   m_Shader: {fileID: -6465566751694194690, guid: bb90fa07bca13f74db5c2eb6b4183dc5,
     type: 3}
   m_Parent: {fileID: 0}
@@ -46,13 +46,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Max_Brightness: 1
-    - _Min_Brightness: 0.3
+    - _Max_Brightness: 1.01
+    - _Min_Brightness: 0.18
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Shades: 0.4
     m_Colors:
-    - _Tint: {r: 0.5849056, g: 0.3860798, b: 0.06345675, a: 0}
+    - _Tint: {r: 0.5137255, g: 0.34117648, b: 0.69803923, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &619387713763337147
 MonoBehaviour:
