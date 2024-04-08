@@ -131,7 +131,6 @@ namespace Enemies
             enemiesInGame.Remove(this.gameObject);
             animator.SetBool("Die", true);
             TilingGrid.RemoveElement(this.gameObject, transform.position);
-            Destroy(this.gameObject);
         }
 
         public static event EventHandler OnAnyEnemyMoved;
