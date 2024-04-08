@@ -1304,6 +1304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyButton: {fileID: 1053912884}
+  errorTextGameObject: {fileID: 1361894959}
   errorText: {fileID: 2050693792}
 --- !u!1 &762142110
 GameObject:
@@ -2419,10 +2420,10 @@ RectTransform:
   - {fileID: 1175499195}
   m_Father: {fileID: 555824890}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 656.7753, y: -45.352276}
-  m_SizeDelta: {x: -1896.1824, y: -916.9755}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -540, y: -45}
+  m_SizeDelta: {x: 501.81763, y: 163.02448}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1361894961
 MonoBehaviour:
