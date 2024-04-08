@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bloom
+  m_Name: Bloom-weak
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -127,8 +127,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.9245283, g: 0.16135636, b: 0.16135636, a: 1}
-    - _Color: {r: 0.9245283, g: 0.16135633, b: 0.16135633, a: 1}
+    - _BaseColor: {r: 0.09009548, g: 0.30883566, b: 0.553, a: 1}
+    - _Color: {r: 0.09009545, g: 0.30883563, b: 0.553, a: 1}
     - _EmissionColor: {r: 0.49056602, g: 0.48362404, b: 0.48362404, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
