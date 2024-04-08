@@ -14,7 +14,8 @@ public class PlayerTileSelector : MonoBehaviour
     private MeshRenderer _renderer;
     [SerializeField] private Material _baseMaterial; 
     [SerializeField] private Material _confirmedMaterial; 
-    private GridHelper _helper;
+    private PlayerSelectorGridHelper _helper;
+
     private Recorder<Cell> _recorder;
     public bool isSelecting = false;
 
@@ -26,20 +27,43 @@ public class PlayerTileSelector : MonoBehaviour
     /// Permet de deplacer le Selector... 
     /// </summary>
     /// <param name="direction"></param>
-    public bool MoveSelector( Vector2Int direction)
+    private int debug = 0; 
+    public Player.MoveType GetTypeOfMovement( Vector2Int direction)
     {
-        bool hasMoved = false;
+        debug++;
+        Player.MoveType moveType = Player.MoveType.Invalid;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
         {
-            _helper.SetHelperPosition(direction);
-            hasMoved = true;
+            if (_recorder.Size() > 1)
+            {
+                Vector2Int cellAtDirection = _helper.PositionAtDirection(direction);
+                moveType = cellAtDirection == _recorder.HeadSecond().position 
+                    ? Player.MoveType.ConsumeLast : Player.MoveType.New ;
+            }
+            else
+            {
+                moveType = Player.MoveType.New;
+            }
         }
-
-        var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
-        transform.position = nextPosition;
-        return hasMoved;
+        return moveType;
     }
 
+    public void MoveSelector()
+    {
+        var nextPosition = TilingGrid.GridPositionToLocal(_helper.GetHelperPosition());
+        transform.position = nextPosition;
+    }
+    public void AddToRecorder(Vector2Int direction)
+    {
+        _helper.SetHelperPosition(direction);
+        _recorder.Add(_helper.Cell);
+    }
+    public void RemoveFromRecorder()
+    {
+        _recorder.RemoveFirst();
+        _helper.SetHelperPosition(_recorder.HeadFirst());
+
+    }
 
 
     /// <summary>
@@ -125,5 +149,6 @@ public class PlayerTileSelector : MonoBehaviour
     {
         _renderer.material = _baseMaterial; 
     }
+
 
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Amulets;
 using TMPro;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,23 +19,69 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
 
     public LevelSelectSO AssociatedLevelSO { get; private set; }
 
+    /// <summary>
+    /// Dans le but d'avoir une représentation UI cohérente des amulettes entre le client et le serveur.
+    /// </summary>
+    public void UpdateAmuletsToShowClientSide()
+    {
+        if (NetworkManager.Singleton.IsServer) { return; }
+
+        int[] amuletsIdsShownByServer =
+            LevelSelectionSynchronizer.Instance.GetAmuletsIdsShownByServer(AssociatedLevelSO.levelScene);
+
+        AmuletSaveLoad converter = new AmuletSaveLoad();
+
+        List<AmuletSO> amuletsShownByServer =
+            converter.AmuletsIDToAmulets(amuletsIdsShownByServer, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
+
+        ShowAmuletsClientSide(amuletsShownByServer);
+    }
+
     public void Show(LevelSelectSO levelSO)
     {
+        EmptyAmuletsDisplay();
+        
         AssociatedLevelSO = levelSO;
 
         nameText.text = AssociatedLevelSO.levelName;
-        
-        ShowAmulets();
+
+        ShowAmuletsServerSide();
         
         BasicShowHide.Show(gameObject);
     }
 
-    private void ShowAmulets()
+    private void EmptyAmuletsDisplay()
     {
+        foreach (Transform child in amuletLayout)
+        {
+            if (child.gameObject != amuletTemplateUI.gameObject)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+    }
+
+    private void ShowAmuletsServerSide()
+    {
+        if (! NetworkManager.Singleton.IsServer) { return; }
+        
         AmuletSaveLoad loader = new AmuletSaveLoad();
         
-        List<AmuletSO> amuletsToShow = loader.GetAmuletsForScene(AssociatedLevelSO.levelScene);
+        List<AmuletSO> amuletsToShow =
+            loader.GetAmuletsForScene(AssociatedLevelSO.levelScene, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
 
+        LevelSelectionSynchronizer.Instance.SaveServerSideAmuletsForLevel(AssociatedLevelSO.levelScene);
+
+        foreach (AmuletSO toShow in amuletsToShow)
+        {
+            SingleAmuletTemplateUI templateInstance = Instantiate(amuletTemplateUI, amuletLayout);
+            
+            templateInstance.Show(toShow);
+        }
+    }
+    
+    private void ShowAmuletsClientSide(List<AmuletSO> amuletsToShow)
+    {
         foreach (AmuletSO toShow in amuletsToShow)
         {
             SingleAmuletTemplateUI templateInstance = Instantiate(amuletTemplateUI, amuletLayout);

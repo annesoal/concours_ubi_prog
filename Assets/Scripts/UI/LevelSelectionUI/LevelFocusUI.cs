@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Amulets;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,6 +30,13 @@ public class LevelFocusUI : MonoBehaviour
     private void Start()
     {
         SingleAmuletTemplateUI.OnAnySingleAmuletChose += SingleAmuletTemplateUI_OnAnySingleAmuletChose;
+        
+        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
+        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
+        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
+        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
+        
+        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
     }
 
     public void Show(LevelSelectSO toShow)
@@ -37,6 +45,7 @@ public class LevelFocusUI : MonoBehaviour
         _selectedAmulet = null;
         
         levelDisplay.Show(toShow);
+        levelDisplay.UpdateAmuletsToShowClientSide();
         
         BasicShowHide.Show(gameObject);
         
@@ -53,6 +62,8 @@ public class LevelFocusUI : MonoBehaviour
 
     private void OnReadyButtonClicked()
     {
+        if (! NetworkManager.Singleton.IsServer) { return; }
+        
         EventSystem.current.SetSelectedGameObject(null);
         
         if (_selectedAmulet != null)
@@ -67,6 +78,8 @@ public class LevelFocusUI : MonoBehaviour
     [SerializeField] private LevelSelectionUI levelSelectionUI;
     private void OnCancelButtonClicked()
     {
+        _selectedAmulet = null;
+        
         BasicShowHide.Hide(gameObject);
 
         levelSelectionUI.Show();
@@ -86,4 +99,85 @@ public class LevelFocusUI : MonoBehaviour
         }
     }
 
+    private void InputManager_OnLeftUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        ChangeSelectedElementUI(LevelSelectionInputManager.Input.Left, e);
+    }
+    
+    private void InputManager_OnRightUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        ChangeSelectedElementUI(LevelSelectionInputManager.Input.Right, e);
+    }
+    
+    private void InputManager_OnUpUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        ChangeSelectedElementUI(LevelSelectionInputManager.Input.Up, e);
+    }
+    
+    private void InputManager_OnDownUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        ChangeSelectedElementUI(LevelSelectionInputManager.Input.Down, e);
+    }
+    
+    private void InputManager_OnSelectUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        if (!gameObject.activeSelf) { return; }
+
+        if (!e.SyncrhonizedCall)
+        {
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Select);
+        }
+
+        if (e.SyncrhonizedCall)
+        {
+            if (EventSystem.current.currentSelectedGameObject.TryGetComponent(out Button toClick))
+            {
+                toClick.onClick.Invoke();
+            }
+        }
+    }
+    
+    private void ChangeSelectedElementUI(LevelSelectionInputManager.Input inputDirection,
+        LevelSelectionInputManager.FromServerEventArgs eventArgs)
+    {
+        if (!gameObject.activeSelf) { return; }
+
+        if (! eventArgs.SyncrhonizedCall && NetworkManager.Singleton.IsServer)
+        {
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(inputDirection);
+        }
+        
+        if (eventArgs.SyncrhonizedCall && ! NetworkManager.Singleton.IsServer)
+        {
+            Selectable currentSelectedObject = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
+
+            GameObject toSelect = null;
+
+            if (inputDirection == LevelSelectionInputManager.Input.Left)
+            {
+                toSelect = currentSelectedObject.FindSelectable(Vector3.left).gameObject;
+            }
+
+            if (inputDirection == LevelSelectionInputManager.Input.Right)
+            {
+                toSelect = currentSelectedObject.FindSelectable(Vector3.right).gameObject;
+            }
+            
+            if (inputDirection == LevelSelectionInputManager.Input.Up)
+            {
+                toSelect = currentSelectedObject.FindSelectable(Vector3.up).gameObject;
+            }
+            
+            if (inputDirection == LevelSelectionInputManager.Input.Down)
+            {
+                toSelect = currentSelectedObject.FindSelectable(Vector3.down).gameObject;
+            }
+
+            if (toSelect != null)
+            {
+                EventSystem.current.SetSelectedGameObject(toSelect);
+            }
+        }
+    }
+    
 }

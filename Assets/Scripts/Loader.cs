@@ -9,13 +9,13 @@ public static class Loader
 {
     public enum Scene
     {
-        MainMenuScene,
+        MainMenuScene = 0,
         LobbyScene,
         GameScene,
         LoadingScene,
         CharacterSelectScene,
         // TEST SCENES
-        Blocks,
+        Blocks = 5,
         LevelSelection,
     }
 

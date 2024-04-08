@@ -65,9 +65,6 @@ public class CentralizedInventory : NetworkBehaviour
         {
             var resourceNetworkVariable = NumberOfGreyResources;
             resourceNetworkVariable.Value += (int)(Bonus.Multiplier * _ressourceAddedThisTurn);
-            Debug.LogError(_ressourceAddedThisTurn);
-            Debug.LogError((int)(Bonus.Multiplier * _ressourceAddedThisTurn));
-            Debug.LogError(resourceNetworkVariable.Value);
             EmitResourceChangedEventClientRpc(
                         resourceNetworkVariable.Value, 0);
         }

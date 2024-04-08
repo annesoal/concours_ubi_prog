@@ -32,6 +32,10 @@ namespace Grid
             return cell.type != BlockType.None;
         }
 
+        public Vector2Int PositionAtDirection(Vector2Int direction)
+        {
+            return currentCell.position + direction;
+        }
         public override Vector2Int GetHelperPosition()
         {
             return currentCell.position;
@@ -41,7 +45,11 @@ namespace Grid
         {
             var next = currentCell.position + direction;
             currentCell = TilingGrid.grid.GetCell(next);
-            _recorder.Add(currentCell);
+        }
+        public void SetHelperPosition(Cell cell)
+        {
+            var next = cell;
+            currentCell = TilingGrid.grid.GetCell(cell.position);
         }
         public static List<ITopOfCell> GetElementsOnTopOfCell(Vector2Int position)
         {

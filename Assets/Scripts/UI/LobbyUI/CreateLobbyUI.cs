@@ -49,6 +49,6 @@ public class CreateLobbyUI : MonoBehaviour
 
     private void SetFirstButtonSelect()
     {
-        lobbyNameInputField.Select();
+        createPublicLobbyButton.Select();
     }
 }

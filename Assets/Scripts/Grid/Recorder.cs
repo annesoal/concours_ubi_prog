@@ -19,6 +19,18 @@ namespace Grid
             return element;
         }
         
+        public T HeadFirst()
+        {
+            return _elements.First.Value;
+        }
+
+        public T RemoveFirst()
+        {
+            T element = _elements.First.Value; 
+            _elements.RemoveFirst();
+            return element;
+        }
+        
         public bool IsEmpty()
         {
             return _elements.Count < 1;
@@ -33,6 +45,11 @@ namespace Grid
         {
             while (!IsEmpty()) 
                 RemoveLast();
+        }
+
+        public T HeadSecond()
+        {
+            return _elements.First.Next.Value;
         }
     }
 }

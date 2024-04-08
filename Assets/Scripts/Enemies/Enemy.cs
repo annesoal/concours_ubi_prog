@@ -26,7 +26,7 @@ namespace Enemies
     {
         [SerializeField] protected EnnemyType ennemyType;
 
-        [SerializeField] protected bool stupefiedState = false; // Piege
+        [FormerlySerializedAs("stupefiedState")] [SerializeField] protected bool isStupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 1;
         private List<Cell> _destinationsCell;

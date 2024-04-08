@@ -248,8 +248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ennemyType: 2
-  stupefiedState: 0
-  ratioMovement: 1
+  isStupefiedState: 0
+  ratioMovement: 2
   hasPath: 0
   animator: {fileID: 5814351646530095030}
   enemyDomage: 1

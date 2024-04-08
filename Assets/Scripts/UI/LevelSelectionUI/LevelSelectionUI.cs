@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Debug = System.Diagnostics.Debug;
@@ -19,11 +20,34 @@ public class LevelSelectionUI : MonoBehaviour
 
     private LinkedList<SingleLevelSelectUI> _levelsSelectUI;
     private LinkedListNode<SingleLevelSelectUI> _selectedLevel;
-    
+
     private void Awake()
     {
         _levelsSelectUI = new LinkedList<SingleLevelSelectUI>();
         
+    }
+
+    private void Start()
+    {
+        ShowInitialUI();
+
+        foreach (SingleLevelSelectUI levelSelectUI in _levelsSelectUI)
+        {
+            levelSelectUI.UpdateAmuletsToShowClientSide();
+        }
+        
+        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
+        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
+        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
+        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
+        
+        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
+
+        EventSystem.current.sendNavigationEvents = false;
+    }
+
+    private void ShowInitialUI()
+    {
         int horizontalLayoutCount = 0;
         Transform currentHorizontalLayout = Instantiate(levelHorizontalLayout, levelVerticalLayout);
         currentHorizontalLayout.gameObject.SetActive(true);
@@ -39,18 +63,6 @@ public class LevelSelectionUI : MonoBehaviour
 
         _selectedLevel = _levelsSelectUI.First;
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
-    }
-
-    private void Start()
-    {
-        LevelSelectionInputManager.Instance.OnLeftUI += InputManager_OnLeftUI;
-        LevelSelectionInputManager.Instance.OnRightUI += InputManager_OnRightUI;
-        LevelSelectionInputManager.Instance.OnUpUI += InputManager_OnUpUI;
-        LevelSelectionInputManager.Instance.OnDownUI += InputManager_OnDownUI;
-        
-        LevelSelectionInputManager.Instance.OnSelectUI += InputManager_OnSelectUI;
-
-        EventSystem.current.sendNavigationEvents = false;
     }
     
     public void Show()
@@ -85,25 +97,38 @@ public class LevelSelectionUI : MonoBehaviour
         _levelsSelectUI.AddLast(templateInstance);
     }
     
-    private void InputManager_OnLeftUI(object sender, EventArgs e)
+    private void InputManager_OnLeftUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
     {
-        if (gameObject.activeSelf)
+        if (! CanHandleInput(e.SyncrhonizedCall)) { return; }
+
+        if (e.SyncrhonizedCall)
         {
-            UpdateSelectedLevel(_selectedLevel.Next ?? _levelsSelectUI.First);
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Left);
         }
+
+        UpdateSelectedLevel(_selectedLevel.Next ?? _levelsSelectUI.First);
     }
     
-    private void InputManager_OnRightUI(object sender, EventArgs e)
+    private void InputManager_OnRightUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
     {
-        if (gameObject.activeSelf)
+        if (! CanHandleInput(e.SyncrhonizedCall)) { return; }
+        
+        if (! e.SyncrhonizedCall)
         {
-            UpdateSelectedLevel(_selectedLevel.Previous ?? _levelsSelectUI.Last);
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Right);
         }
+            
+        UpdateSelectedLevel(_selectedLevel.Previous ?? _levelsSelectUI.Last);
     }
     
-    private void InputManager_OnUpUI(object sender, EventArgs e)
+    private void InputManager_OnUpUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
     {
-        if (gameObject.activeSelf) { return; }
+        if (! CanHandleInput(e.SyncrhonizedCall)) { return; }
+
+        if (! e.SyncrhonizedCall)
+        {
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Up);
+        }
         
         LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
         
@@ -116,11 +141,15 @@ public class LevelSelectionUI : MonoBehaviour
 
         UpdateSelectedLevel(newSelectedLevel);
     }
-    
-    private void InputManager_OnDownUI(object sender, EventArgs e)
+    private void InputManager_OnDownUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
     {
-        if (! gameObject.activeSelf) { return; }
+        if (! CanHandleInput(e.SyncrhonizedCall)) { return; }
 
+        if (! e.SyncrhonizedCall)
+        {
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Down);
+        }
+        
         LinkedListNode<SingleLevelSelectUI> newSelectedLevel = null;
         
         for (int i = 0; i < maxHorizonalLayout; i++)
@@ -132,6 +161,28 @@ public class LevelSelectionUI : MonoBehaviour
 
         UpdateSelectedLevel(newSelectedLevel);
     }
+    
+    [Header("Level Focus UI")]
+    [SerializeField] private LevelFocusUI levelFocusUI;
+
+    private void InputManager_OnSelectUI(object sender, LevelSelectionInputManager.FromServerEventArgs e)
+    {
+        if (! CanHandleInput(e.SyncrhonizedCall)) { return; }
+
+        if (! e.SyncrhonizedCall)
+        {
+            LevelSelectionSynchronizer.Instance.CopyInputClientRpc(LevelSelectionInputManager.Input.Select);
+        }
+        
+        BasicShowHide.Hide(gameObject);
+        
+        levelFocusUI.Show(_selectedLevel.Value.AssociatedLevelSO);
+    }
+
+    private bool CanHandleInput(bool synchronizedCall)
+    {
+        return gameObject.activeSelf && (NetworkManager.Singleton.IsServer || synchronizedCall);
+    }
 
     private void UpdateSelectedLevel(LinkedListNode<SingleLevelSelectUI> newSelectedLevel)
     {
@@ -139,15 +190,5 @@ public class LevelSelectionUI : MonoBehaviour
         
         _selectedLevel = newSelectedLevel;
         EventSystem.current.SetSelectedGameObject(_selectedLevel.Value.gameObject);
-    }
-
-    [Header("Level Focus UI")]
-    [SerializeField] private LevelFocusUI levelFocusUI;
-    
-    private void InputManager_OnSelectUI(object sender, EventArgs e)
-    {
-        BasicShowHide.Hide(gameObject);
-        
-        levelFocusUI.Show(_selectedLevel.Value.AssociatedLevelSO);
     }
 }

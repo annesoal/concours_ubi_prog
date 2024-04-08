@@ -68,24 +68,40 @@ public class Player : NetworkBehaviour, ITopOfCell
         if (!IsOwner) return true;
         if (!CooldownHasPassed()) return true;
     
-        return !HasEnergy();
+        return false;
     }
 
     private void HandleInput(Vector2 direction)
     {
         Vector2Int input = TranslateToVector2Int(direction);
         var savedSelectorPosition = SaveSelectorPosition();
-        bool hasMoved = _selector.MoveSelector(input);
+        MoveType hasMoved = _selector.GetTypeOfMovement(input);
 
-        if (hasMoved)
+        if (hasMoved == MoveType.ConsumeLast)
         {
-            DecrementEnergy(input);
-            AddHighlighter(savedSelectorPosition);
+            IncrementEnergy();
+            RemovePreviousHighlighter();
+            _selector.RemoveFromRecorder();
+            _selector.MoveSelector();
             _timer.Start();
+        }
+        else if (hasMoved == MoveType.New)
+        {
+            if (HasEnergy())
+            {
+                DecrementEnergy();
+                AddHighlighter(savedSelectorPosition);
+                _selector.AddToRecorder(input);
+                _selector.MoveSelector();
+                _timer.Start();
+            }
+        } else if (hasMoved != MoveType.Invalid)
+        {
+            throw new Exception("Invalide input " + direction);
         }
     }
 
-    public Vector3 SaveSelectorPosition()
+    private Vector3 SaveSelectorPosition()
     {
         return _selector.transform.position;
     }
@@ -94,6 +110,14 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         GameObject newHighlighter = Instantiate(_highlighter, position, quaternion.identity);
         _highlighters.Add(newHighlighter);
+    }
+    private void RemovePreviousHighlighter()
+    {
+        if (!_highlighters.IsEmpty())
+        {
+                GameObject nextHighLighter = _highlighters.RemoveFirst();
+                Destroy(nextHighLighter);
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -261,9 +285,14 @@ public class Player : NetworkBehaviour, ITopOfCell
         _currentEnergy = _totalEnergy;
     }
 
-    private void DecrementEnergy(Vector2Int input)
+    private void DecrementEnergy()
     {
        _currentEnergy--; 
+    }
+    
+    private void IncrementEnergy()
+    {
+        _currentEnergy++;
     }
 
     public void OnCancel()
@@ -327,9 +356,17 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
     }
 
+	public enum MoveType
+	{
+		New, 
+		ConsumeLast,
+		Invalid, 
+	}
+
     [ServerRpc]
     private void IsReadyServerRpc()
     {
         EnvironmentTurnManager.Instance.IncrementPlayerFinishedMoving();
     }
+
 }

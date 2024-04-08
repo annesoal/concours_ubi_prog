@@ -11,6 +11,8 @@ using UnityEngine.UI;
 public class PlayerReadyCharacterSelectionUI : MonoBehaviour
 {
     [SerializeField] private Button readyButton;
+    
+    [SerializeField] private GameObject errorTextGameObject;
     [SerializeField] private TextMeshProUGUI errorText;
 
     public const string SAME_CHARACTER_SELECTION_ERROR = "Can't have same character selection for both player !";
@@ -43,7 +45,7 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
     private void ShowErrorMessage(string errorMessage)
     {
         errorText.text = errorMessage;
-        BasicShowHide.Show(errorText.gameObject);
+        BasicShowHide.Show(errorTextGameObject);
     }
 
     private void GameMultiplayerManager_OnPlayerDataNetworkListChanged(object sender, EventArgs e)
@@ -69,7 +71,7 @@ public class PlayerReadyCharacterSelectionUI : MonoBehaviour
 
         if (isEnabled)
         {
-            BasicShowHide.Hide(errorText.gameObject);
+            BasicShowHide.Hide(errorTextGameObject);
         }
         else
         {

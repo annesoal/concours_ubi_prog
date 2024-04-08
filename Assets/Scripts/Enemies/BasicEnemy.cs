@@ -191,7 +191,6 @@ namespace Enemies
             PathfindingInvalidCell(toCheck);
             bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-
             return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
         }
     }

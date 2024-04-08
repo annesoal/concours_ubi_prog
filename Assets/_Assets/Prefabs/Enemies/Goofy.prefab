@@ -258,7 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ennemyType: 4
   stupefiedState: 0
-  ratioMovement: 1
+  ratioMovement: 2
   hasPath: 0
   animator: {fileID: 5245278289411809849}
 --- !u!4 &3698810681126757281 stripped

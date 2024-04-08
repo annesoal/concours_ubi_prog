@@ -58,16 +58,9 @@ public class SynchronizeBuilding : NetworkBehaviour
     private void SpawnBuildableObjectClientRpc(NetworkObjectReference buildableObjectNetworkObject, Vector2Int positionToBuild)
     {
         buildableObjectNetworkObject.TryGet(out NetworkObject buildableObjectNetwork);
+        
         buildableObjectNetwork.GetComponent<IBuildable>().Build(positionToBuild);
 
-        Cell withNewObjectOnTop = TilingGrid.grid.GetCell(positionToBuild);
-        
-        withNewObjectOnTop.AddGameObject(
-            buildableObjectNetwork.GetComponent<ITopOfCell>()
-        );
-
-        TilingGrid.grid.UpdateCell(withNewObjectOnTop);
-        
         OnBuildingBuilt?.Invoke(this, new OnBuildingBuiltEventArgs
         {
             BuildingPosition = positionToBuild,

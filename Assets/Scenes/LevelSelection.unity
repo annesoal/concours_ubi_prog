@@ -717,6 +717,73 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &428989564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 428989565}
+  - component: {fileID: 428989566}
+  - component: {fileID: 428989567}
+  m_Layer: 0
+  m_Name: LevelSelectionSynchronizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &428989565
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428989564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &428989566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428989564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2045569332
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &428989567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428989564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2158b8f106cc17341b218e4887276a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <AmuletSelector>k__BackingField: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b,
+    type: 2}
 --- !u!1 &429830574
 GameObject:
   m_ObjectHideFlags: 0
@@ -1672,6 +1739,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amuletSelectButton: {fileID: 1286088750}
   amuletNameText: {fileID: 504094511}
+  originalColor: {r: 1, g: 1, b: 1, a: 1}
+  chosenColor: {r: 0.14509805, g: 0.54509807, b: 0.8745098, a: 1}
 --- !u!1 &621895163
 GameObject:
   m_ObjectHideFlags: 0
@@ -2932,6 +3001,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286088749}
+  - component: {fileID: 1286088753}
   - component: {fileID: 1286088752}
   - component: {fileID: 1286088751}
   - component: {fileID: 1286088750}
@@ -3043,6 +3113,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1286088748}
   m_CullTransparentMesh: 1
+--- !u!114 &1286088753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286088748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1683eba010935e8b4a013178e3b974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1339241011
 GameObject:
   m_ObjectHideFlags: 0
@@ -3418,8 +3500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c17874dd83f8ddbbf39ec0e8def301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amuletSelectButton: {fileID: 0}
-  amuletNameText: {fileID: 0}
+  amuletSelectButton: {fileID: 556843363}
+  amuletNameText: {fileID: 997321581}
+  originalColor: {r: 1, g: 1, b: 1, a: 1}
+  chosenColor: {r: 0.145098, g: 0.54382294, b: 0.8745098, a: 1}
 --- !u!1 &1876444744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3928,3 +4012,4 @@ SceneRoots:
   - {fileID: 2006821893}
   - {fileID: 1339241013}
   - {fileID: 1502552717}
+  - {fileID: 428989565}

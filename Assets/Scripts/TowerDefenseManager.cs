@@ -140,7 +140,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void SaveProgress()
     {
         AmuletSaveLoad save = new AmuletSaveLoad();
-        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene);
+        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene, amuletSelector.amulets);
         List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
 
         AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);
@@ -263,6 +263,9 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CheckEnemiesAtDestinationCells();
+        CleanBonuses();
+        TilingGrid.grid.SyncAllTopOfCells();
+        
         if (_playersHealth < 1)
         {
             gameWon = false;

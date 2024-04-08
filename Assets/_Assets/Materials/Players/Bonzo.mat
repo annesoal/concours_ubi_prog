@@ -42,8 +42,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Max_Brightness: 1
-    - _Min_Brightness: 0.3
+    - _Max_Brightness: 1.06
+    - _Min_Brightness: 0.18
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Shades: 0.4

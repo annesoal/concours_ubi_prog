@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
   m_Name: AmuletBaseSO
   m_EditorClassIdentifier: 
+  amuletName: amulette de base
+  amuletIcon: {fileID: 0}
+  description: To Be Changed/Overwritten
   ID: 0
   playersHealth: 3
   enemyBaseHealth: 1
@@ -24,4 +27,3 @@ MonoBehaviour:
   resourcesSpawnRate: 0.2
   towerBaseCost: 3
   trapBaseCost: 1
-  description: To Be Changed/Overwritten

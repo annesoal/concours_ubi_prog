@@ -44,9 +44,11 @@ public abstract class BaseTrap : BuildableObject
             {
                 toDamage.Damage(damage);
             }
-        }
+            
+            TilingGrid.RemoveElement(gameObject, transform.position);
         
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }
     }
 
     private void OnDestroy()
