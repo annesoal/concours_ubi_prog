@@ -1,12 +1,15 @@
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Enemies
+namespace Enemies.Boss
 {
     public class BigBossEnemy : NetworkBehaviour
     {
         [SerializeField]private SpawnMalus spawnerMalus ;
         [SerializeField] private int ratioMovement = 8;
+        
+        
+        
         
         public void SpawnMalus(int energy)
         {

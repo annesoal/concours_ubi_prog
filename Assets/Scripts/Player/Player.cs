@@ -304,6 +304,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
+        SpawnMalus.RegisterCellForMalus(toPosition);
         transform.LookAt(cellLocalPosition);
         _hasFinishedToMove = false;
         int i = 0;

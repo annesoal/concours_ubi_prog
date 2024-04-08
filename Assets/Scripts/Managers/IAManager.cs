@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Enemies;
+using Enemies.Boss;
 using Grid;
 using Unity.Mathematics;
 using UnityEngine;
@@ -19,7 +20,12 @@ namespace Managers
         {
             Instance = this;
         }
-    
+
+        public static void StartBossTurn(int totalEnergy)
+        {
+            // TODO boss.SpawnMalus
+        }
+        
         public static void MoveEnemies(int totalEnergy)
         {
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
