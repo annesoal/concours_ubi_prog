@@ -10,6 +10,7 @@ namespace Grid.Blocks
         {
             blockType = BlockType.SpawnBlock;
         }
+        
         /**
          * Place le joueur sur le bloc.
          */

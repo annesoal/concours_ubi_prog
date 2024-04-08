@@ -219,6 +219,7 @@ namespace Grid
         public const int BasicBlock =         0b0000_0000_0100_0000; 
         public const int EnemyWalkable =     0b0000_0000_1000_0000; 
         public const int EnemyDestination =  0b0000_0001_0000_0000; 
+        public const int BossSpawnBlock = 0b0000_0010_0000_0000;
         
         public static int Translate(Type type)
         {

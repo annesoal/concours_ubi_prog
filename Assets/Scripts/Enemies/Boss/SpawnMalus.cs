@@ -12,7 +12,6 @@ public class SpawnMalus : NetworkBehaviour
     public static List<Cell> _reachableCells = new List<Cell>();
     private List<TypeTopOfCell> blockingElementsType; //TODO fonctionne ?
     
-    [SerializeField] private GameObject malus;
 
 
     //compte le nombre de deplacementa des joueurs par position de Cell
@@ -34,26 +33,26 @@ public class SpawnMalus : NetworkBehaviour
     }
 
 
-    public void SpawnMalusOnGridPlayers()
+    public void SpawnMalusOnGridPlayers(GameObject malus)
     {
         Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
         Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
 
-        SpawnMalusOnCell(mostUsedCellMonkey);
-        SpawnMalusOnCell(mostUsedCellRobot);
+        SpawnMalusOnCell(mostUsedCellMonkey, malus);
+        SpawnMalusOnCell(mostUsedCellRobot, malus);
         
         
     }
 
-    private void SpawnMalusOnCell(Vector2Int mostUsedCell)
+    private void SpawnMalusOnCell(Vector2Int mostUsedCell, GameObject malus)
     {
         if (mostUsedCell == Vector2Int.zero)
         {
-            Debug.LogError("Aucun malus spawn pour monkey");
+            Debug.LogError("Aucun malus spawn ");
         }
         else
         {
-            PlaceMalus(mostUsedCell);
+            PlaceMalus(mostUsedCell, malus);
         }
     }
 
@@ -94,7 +93,7 @@ public class SpawnMalus : NetworkBehaviour
     }
 
     //voir PlaceObjects de spawnermanager
-    private void PlaceMalus(Vector2Int positionOfSpawn)
+    private void PlaceMalus(Vector2Int positionOfSpawn, GameObject malus)
     {
         Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
         if (isValidCell(cell))

@@ -21,11 +21,11 @@ namespace Managers
             Instance = this;
         }
 
-        public static void StartBossTurn(int totalEnergy)
+        public void StartBossTurn(int totalEnergy)
         {
-            // TODO boss.SpawnMalus
+           
+
         }
-        
         public static void MoveEnemies(int totalEnergy)
         {
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
