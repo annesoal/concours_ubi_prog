@@ -8,6 +8,7 @@ using Grid.Interface;
 using Unity.Mathematics;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,7 +26,9 @@ public class Player : NetworkBehaviour, ITopOfCell
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
     [SerializeField] private float _timeToMove = 0.5f;
-    [SerializeField] private Animator animator; 
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject _characterSM;
+    private NetworkAnimator _networkAnimator; 
 
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
@@ -45,7 +48,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private int _totalEnergy;
     private int _currentEnergy;
-    
+
     public Player()
     {
         _timer = new(cooldown);
@@ -126,6 +129,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             LocalInstance = this;
             InputManager.Player = this;
+            StartCoroutine(SpawnAnimation());
         }
 
         Vector3 position; 
@@ -150,6 +154,20 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, position);
         }
+
+    }
+
+    private IEnumerator SpawnAnimation()
+    {
+        animator.SetBool("Spawn", true);
+        float timeToSpawn = 1f;
+        float currentTime = 0.0f;
+        while (currentTime < timeToSpawn)
+        {
+            yield return null;
+            currentTime += Time.deltaTime;
+        }
+        animator.SetBool("Spawn", false);
     }
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
@@ -307,6 +325,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
+        animator.SetBool("Move", true); 
         transform.LookAt(cellLocalPosition);
         Vector3 origin = transform.position;
         _hasFinishedToMove = false;
@@ -314,11 +333,12 @@ public class Player : NetworkBehaviour, ITopOfCell
         while (currentTime < _timeToMove)
         {
             float f = currentTime / _timeToMove;
-            transform.position = Vector3.Lerp( origin, cellLocalPosition, f);
+            transform.position = Vector3.Lerp(origin, cellLocalPosition, f);
             currentTime += Time.deltaTime;
             yield return null;
         }
-
+        this.transform.position = cellLocalPosition;
+        animator.SetBool("Move", false); 
         _hasFinishedToMove = true;
     }
 
