@@ -84,7 +84,10 @@ public class SingleResourceTemplateUI : MonoBehaviour
     
     private void TowerDefenseManager_OnCurrentStateChanged(object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
     {
-        BasicShowHide.Hide(costText.gameObject);
+        if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
+        {
+            BasicShowHide.Hide(costText.gameObject);
+        }
     }
 
 }

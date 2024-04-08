@@ -7,7 +7,6 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
-using Debug = System.Diagnostics.Debug;
 
 public class BuildingCarrouselUI : MonoBehaviour
 {
@@ -38,6 +37,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     private void Start()
     {
         InitializeBuildableObjectsList();
+        
+        CentralizedInventory.Instance.OnNumberResourceChanged += CentralizedInventory_OnNumberResourceChanged;
         
         InputManager.Instance.OnUserInterfaceMinimalRightPerformed += InputManager_OnUserInterfaceMinimalRightPerformed;
         InputManager.Instance.OnUserInterfaceMinimalLeftPerformed += InputManager_OnUserInterfaceMinimalLeftPerformed;
@@ -248,4 +249,11 @@ public class BuildingCarrouselUI : MonoBehaviour
         });
     }
 
+    private void CentralizedInventory_OnNumberResourceChanged(object sender, CentralizedInventory.OnNumberResourceChangedEventArgs e)
+    {
+        if (gameObject.activeSelf)
+        {
+            UpdateUI();
+        }
+    }
 }
