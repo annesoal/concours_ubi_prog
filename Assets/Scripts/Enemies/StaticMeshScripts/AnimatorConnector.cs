@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Enemies;
 using UnityEngine;
 
-public class SM_PetiteMerde : MonoBehaviour
+public class AnimatorConnector : MonoBehaviour
 {
     public void Destroy()
     {
