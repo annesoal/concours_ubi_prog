@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class GameStateUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI currentStateText;
+    [SerializeField] private GameObject currentStateBorder;
     [SerializeField] private TextMeshProUGUI roundsLeftText;
+    
+    [Header("Timer")]
+    [SerializeField] private GameObject timerGameObject;
     [SerializeField] private TextMeshProUGUI timerText;
     
     private bool _canUpdateTimerText = false;
@@ -25,7 +28,7 @@ public class GameStateUI : MonoBehaviour
     {
         if (_canUpdateTimerText)
         {
-            timerText.text = "Time left : " + Mathf.FloorToInt(TowerDefenseManager.Instance.TacticalPauseTimer);
+            timerText.text = "" + Mathf.FloorToInt(TowerDefenseManager.Instance.TacticalPauseTimer);
         }
     }
 
@@ -54,21 +57,21 @@ public class GameStateUI : MonoBehaviour
 
     private void DisplayEnvironmentTurnStateUI()
     {
-        currentStateText.text = "ENVIRONMENT TURN";
+        BasicShowHide.Show(currentStateBorder);
         
         BasicShowHide.Show(gameObject);
         
         _canUpdateTimerText = false;
-        BasicShowHide.Hide(timerText.gameObject);
+        //BasicShowHide.Hide(timerGameObject);
     }
     
     private void DisplayTacticalPauseStateUI()
     {
-        currentStateText.text = "TACTICAL PAUSE";
+        BasicShowHide.Hide(currentStateBorder);
         
         BasicShowHide.Show(gameObject);
         
         _canUpdateTimerText = true;
-        BasicShowHide.Show(timerText.gameObject);
+        //BasicShowHide.Show(timerGameObject);
     }
 }
