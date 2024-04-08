@@ -63,14 +63,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemi-5_Goofy
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: d972542813a05d7428a0cca038348936,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 51d37ed90bb236f4fb0681bf0acf1b90, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d972542813a05d7428a0cca038348936,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4075943817395757698}
   m_SourcePrefab: {fileID: 100100000, guid: d972542813a05d7428a0cca038348936, type: 3}
+--- !u!1 &1540517668677231353 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d972542813a05d7428a0cca038348936,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846596216896692136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4075943817395757698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540517668677231353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 5245278289411809849}
 --- !u!4 &2173782887043201091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d972542813a05d7428a0cca038348936,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846596216896692136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5245278289411809849 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d972542813a05d7428a0cca038348936,
     type: 3}
   m_PrefabInstance: {fileID: 1846596216896692136}
   m_PrefabAsset: {fileID: 0}
@@ -90,7 +125,7 @@ PrefabInstance:
     - target: {fileID: 2652567110894939592, guid: 54118bcc1d7276338bc17dd0145a99a8,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 581118945
+      value: 3529307704
       objectReference: {fileID: 0}
     - target: {fileID: 2787633167480664852, guid: 54118bcc1d7276338bc17dd0145a99a8,
         type: 3}
@@ -106,6 +141,21 @@ PrefabInstance:
         type: 3}
       propertyPath: SyncScaleZ
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
         type: 3}
@@ -194,6 +244,7 @@ MonoBehaviour:
   stupefiedState: 0
   ratioMovement: 2
   hasPath: 0
+  animator: {fileID: 5245278289411809849}
 --- !u!4 &3698810681126757281 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1069855438421169268, guid: 54118bcc1d7276338bc17dd0145a99a8,

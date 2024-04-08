@@ -16,7 +16,5 @@ namespace Enemies
         {
             ennemyType = EnnemyType.BigGuy;
         }
-        
-        
     }
 }

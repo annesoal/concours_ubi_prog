@@ -63,14 +63,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemi-3_BigGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: cd3577d645fb96e47b06111296763735,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 027be153e9d54d69496b2a143f793aa4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cd3577d645fb96e47b06111296763735,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2171191446815604955}
   m_SourcePrefab: {fileID: 100100000, guid: cd3577d645fb96e47b06111296763735, type: 3}
 --- !u!4 &455029385949322700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
+    type: 3}
+  m_PrefabInstance: {fileID: 133471562012752423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &944426046687528822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cd3577d645fb96e47b06111296763735,
+    type: 3}
+  m_PrefabInstance: {fileID: 133471562012752423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2171191446815604955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944426046687528822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 5814351646530095030}
+--- !u!95 &5814351646530095030 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: cd3577d645fb96e47b06111296763735,
     type: 3}
   m_PrefabInstance: {fileID: 133471562012752423}
   m_PrefabAsset: {fileID: 0}
@@ -200,6 +235,7 @@ MonoBehaviour:
   isStupefiedState: 0
   ratioMovement: 2
   hasPath: 0
+  animator: {fileID: 5814351646530095030}
   enemyDomage: 1
-  attackRate: 0
+  attackRate: 1
   radiusAttack: 1

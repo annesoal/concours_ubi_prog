@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
@@ -35,32 +36,57 @@ namespace Enemies
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
+        protected bool hasFinishedToMove = false;
+        protected bool hasFinishedMoveAnimation = false;
+        protected bool hasFinishedSpawnAnimation = false; 
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
-        protected Vector2Int _reculer2d = new Vector2Int(0, 1);
-
-        protected virtual void Initialize()
+        
+        [SerializeField] protected Animator animator;
+        protected void Initialize()
         {
+            AddInGame(this.gameObject);
         }
 
         public void Start()
         {
             Initialize();
             SetDestinations();
+            RunSpawnAnimation();
         }
 
+        private void RunSpawnAnimation()
+        {
+            StartCoroutine(AnimationSpawn());
+        }
+
+        private IEnumerator AnimationSpawn()
+        {
+            float timeToAnimate = 0.3f;
+            float currentTime = 0.0f;
+            hasFinishedSpawnAnimation = false;
+            animator.SetBool("Spawn", true);
+            while (currentTime < timeToAnimate)
+            {
+                yield return null;
+                currentTime += Time.deltaTime;
+            }
+            animator.SetBool("Spawn", false);
+            hasFinishedSpawnAnimation = true;
+        }
+
+         protected bool AnimationSpawnIsFinished()
+        {
+            return hasFinishedSpawnAnimation;
+        }
         private void SetDestinations()
         {
             _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
         }
 
-        protected bool IsAtDestination(Cell nextCell)
-        {
-            return (nextCell.type & BlockType.EnemyDestination) > 0;
-        }
 
-        protected abstract bool IsValidCell(Cell toCheck);
+        protected abstract bool TryStepBackward();
         
         private Cell GetClosestDestination()
         {
@@ -103,14 +129,17 @@ namespace Enemies
         {
             Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
+            animator.SetBool("Die", true);
             TilingGrid.RemoveElement(this.gameObject, transform.position);
-            Destroy(this.gameObject);
         }
 
         public static event EventHandler OnAnyEnemyMoved;
-        public abstract void Move(int energy);
+        public abstract IEnumerator Move(int energy);
 
-
+        public bool hasFinishedMoving()
+        {
+            return hasFinishedToMove;
+        }
 
 
         protected void AddInGame(GameObject enemy)
@@ -127,11 +156,7 @@ namespace Enemies
 
         public static List<GameObject> GetEnemiesInGame()
         {
-            foreach (var ennemy in enemiesInGame)
-            {
-                Debug.Log("LISTE ENNEMIS zzz");
-                Debug.Log(TilingGrid.LocalToGridPosition(ennemy.transform.position));
-            }
+
             return enemiesInGame;
         }
         

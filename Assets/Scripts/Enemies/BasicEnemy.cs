@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
+using Utils;
 using Random = System.Random;
 
 namespace Enemies
@@ -9,41 +12,44 @@ namespace Enemies
     public class BasicEnemy : Enemy
     {
         private Random _rand = new();
-
+        protected float timeToMove = 1.0f;
+        
         public BasicEnemy()
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-
-        protected override void Initialize()
+        
+        
+        public override IEnumerator Move(int energy)
         {
-            AddInGame(this.gameObject);
-        }
-
-
-        public override void Move(int energy)
-        {
-            if (!IsServer) return;
-
-            if (!IsTimeToMove(energy)) return;
-            if (isStupefiedState)
+            if (!IsServer)
             {
-                isStupefiedState = false;
-                return;
+                yield break;
             }
+
+            if (!IsTimeToMove(energy))
+            {
+                hasFinishedToMove = true;
+                yield break;
+            }
+            
+            
+            hasFinishedToMove = false;
+            
+            yield return new WaitUntil(AnimationSpawnIsFinished);
+            
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    if (!TryMoveOnNextCell(_reculer2d))
-                    {
-                        transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                        Debug.Log("ENEMY NE PEUT PAS BOUGER");
-                    }
+                    //TODO 
+                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
                 }
             }
 
+            yield return new WaitUntil(hasFinishedMovingAnimation);
+            hasFinishedToMove = true;
             EmitOnAnyEnemyMoved();
         }
 
@@ -69,10 +75,10 @@ namespace Enemies
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
+                StartCoroutine(MoveEnemy(
+                    TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
-
             return false;
         }
 
@@ -98,29 +104,86 @@ namespace Enemies
             return false;
         }
 
-        //Essayer de bouger vers direction
-        private bool TryMoveOnNextCell(Vector2Int direction)
+        protected override bool TryStepBackward()
         {
-            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
 
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextPosition));
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
+
                 return true;
             }
 
+            // TODO REVENIR SUR PLACE SI PEUT PAS RECULER ??
             return false;
         }
+
+
+        //Essayer de bouger vers direction
+        private bool TryMoveOnNextCell(Vector2Int direction)
+        {
+            bool isLeft = direction == _gauche2d;
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + 1);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+            
+            // tout de suite changer l'orientation ??
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+
+                
+                StartCoroutine(
+                    RotateThenMove(
+                        TilingGrid.GridPositionToLocal(nextCell.position), isLeft));
+                return true;
+            }
+            return false;
+        }
+
+        private IEnumerator RotateThenMove(Vector3 direction, bool left)
+        {
+            RotationAnimation rotationAnimation = new RotationAnimation();
+            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, left));
+            yield return new WaitUntil(rotationAnimation.HasMoved);
+            StartCoroutine(MoveEnemy(direction));
+            yield return new WaitUntil(hasFinishedMovingAnimation);
+            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, !left));
+            yield return new WaitUntil(rotationAnimation.HasMoved);
+        }
+
 
         /*
          * Bouge l'ennemi
          */
-        private void MoveEnemy(Vector3 direction)
+        private IEnumerator MoveEnemy(Vector3 direction)
         {
-            if (!IsServer) return;
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
+            if (!IsServer) yield break;
+            hasFinishedMoveAnimation = false;
+            animator.SetBool("Move", true);
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            float currentTime = 0.0f;
+            Vector3 origin = transform.position;
+            while (timeToMove > currentTime)
+            {
+                transform.position = Vector3.Lerp(
+                    origin, direction, currentTime / timeToMove);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
+            animator.SetBool("Move", false);
+            hasFinishedMoveAnimation = true;
+        }
+
+        private bool hasFinishedMovingAnimation()
+        {
+            return hasFinishedMoveAnimation;
         }
 
         protected override bool IsValidCell(Cell toCheck)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Enemies;
@@ -15,20 +16,30 @@ namespace Managers
         public static IAManager Instance{ get; private set; }
 
 
+        private bool hasMovedEveryEnemies = false;
         private void Awake()
         {
             Instance = this;
         }
     
-        public static void MoveEnemies(int totalEnergy)
+        public IEnumerator MoveEnemies(int totalEnergy)
         {
+            hasMovedEveryEnemies = false;
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
             for (int i = enemies.Count - 1; i >= 0; i--)
             {
                 var enemy = enemies[i].GetComponent<Enemy>();
                 SetEnemyPath(enemy);
-                enemy.Move(totalEnergy);
+                StartCoroutine(enemy.Move(totalEnergy));
+                yield return new WaitUntil(enemy.hasFinishedMoving);
             }
+
+            hasMovedEveryEnemies = true;
+        }
+
+        public bool hasMovedEnemies()
+        {
+            return hasMovedEveryEnemies;
         }
 
         private static void SetEnemyPath(Enemy enemy)
@@ -57,6 +68,6 @@ namespace Managers
             {
                 enemy.GetComponent<Enemy>().hasPath = false;
             }
-           }
+        }
     }
 }

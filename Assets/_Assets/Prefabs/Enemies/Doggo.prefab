@@ -63,14 +63,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemi-4_Doggo
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 220eaf362101c4043a63a630ba15ecd0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1ba8577e573a21f9a9c8958344089b8f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 220eaf362101c4043a63a630ba15ecd0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4806383708665064286}
   m_SourcePrefab: {fileID: 100100000, guid: 220eaf362101c4043a63a630ba15ecd0, type: 3}
 --- !u!4 &240348568182387141 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 220eaf362101c4043a63a630ba15ecd0,
+    type: 3}
+  m_PrefabInstance: {fileID: 351099088088176174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &584961159618669439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 220eaf362101c4043a63a630ba15ecd0,
+    type: 3}
+  m_PrefabInstance: {fileID: 351099088088176174}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4806383708665064286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584961159618669439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6176070523847781311}
+--- !u!95 &6176070523847781311 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 220eaf362101c4043a63a630ba15ecd0,
     type: 3}
   m_PrefabInstance: {fileID: 351099088088176174}
   m_PrefabAsset: {fileID: 0}
@@ -200,3 +235,4 @@ MonoBehaviour:
   isStupefiedState: 0
   ratioMovement: 2
   hasPath: 0
+  animator: {fileID: 6176070523847781311}

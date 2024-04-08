@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Ennemies;
 using Grid;
@@ -16,45 +17,41 @@ namespace Enemies
         [SerializeField] private int enemyDomage = 1;
         [SerializeField] private int attackRate;
         [SerializeField] private int radiusAttack = 1;
-
-
-        protected override void Initialize()
-        {
-            AddInGame(this.gameObject);
-        }
-
-
+        protected float timeToMove = 1.0f;
+        protected float timeToAttack = 0.5f;
+        
         /**
          * Bouge aleatoirement selon les cells autour de l'ennemi.
          * - Attaquer un obstacle ou une tower
          * - Avancer (et eviter ?)
          */
-        public override void Move(int energy)
+        public override IEnumerator Move(int energy)
         {
             {
-                if (!IsServer) return;
-                if (!IsTimeToMove(energy)) return;
-                if (isStupefiedState)
+                if (!IsServer) yield break;
+                
+                if (!IsTimeToMove(energy))
                 {
-                    isStupefiedState = false;
-                    return;
+                    hasFinishedToMove = true;
+                    yield break;
                 }
+                
+                hasFinishedToMove = false;
                 if (!ChoseToAttack())
                 {
                     if (!TryMoveOnNextCell())
                     {
                         if (!MoveSides())
                         {
-                            if (!TryMoveOnNextCell(_reculer2d))
-                            {
-                                transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-                                Debug.Log("ENEMY NE PEUT PAS BOUGER");
-                            }
-                          
+                            //TODO
+                            transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                            
                         }
                     }
                 }
             }
+            yield return new WaitUntil(hasFinishedMovingAnimation);
+            hasFinishedToMove = true;
             EmitOnAnyEnemyMoved();
         }
 
@@ -62,26 +59,26 @@ namespace Enemies
         {
             if (path == null || path.Count == 0)
                 return true;
+            
+            //TODO mettre dans TryToMove
             Cell nextCell = path[0];
             path.RemoveAt(0);
 
-            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
-
+            
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
-            if (ChoseAttackObstacle(cellsInRadius)) return true;
-
-            // TODO pour tower
-            return false;
+            return (ChoseAttack(cellsInRadius));
+         
         }
 
-        private bool ChoseAttackObstacle(List<Cell> cellsInRadius)
+        private bool ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Obstacle) &&
-                    IsAttacking(aCell.GetObstacle()))
+                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
+                    canAttack())
                 {
+                    Attack(aCell.GetTower());
                     hasPath = false;
                     return true;
                 }
@@ -89,18 +86,36 @@ namespace Enemies
 
             return false;
         }
-
-
-        // Choisit d'attaquer selon aleatoirement
-        private bool IsAttacking(Obstacle toCorrupt)
+        
+        // Choisit d'attaquer aleatoirement
+        private bool canAttack()
         {
-            if (_rand.NextDouble() > 1 - attackRate)
-            {
-                toCorrupt.Damage(enemyDomage);
-                return true;
-            }
+            return (_rand.NextDouble() > 1 - attackRate);
+        }
+        
+        private void Attack(BaseTower toAttack)
+        {
+            toAttack.Damage(enemyDomage);
+            StartCoroutine(AttackAnimation());
+        }
 
-            return false;
+        private IEnumerator AttackAnimation()
+        {
+            if (!IsServer) yield break;
+            hasFinishedMoveAnimation = false;
+            animator.SetBool("Attack", true);
+            float currentTime = 0.0f;
+
+            //TODO time to attack? et regarder avec anim tour
+            while (timeToMove > currentTime)
+            {
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            
+            animator.SetBool("Attack", false);
+            hasFinishedMoveAnimation = true;
+            
         }
 
 
@@ -122,11 +137,10 @@ namespace Enemies
                 return true;
 
             Cell nextCell = path[0];
-            Debug.Log("BIGGUY PATH next cell position" + nextCell.position);
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position));
+                StartCoroutine(MoveEnemy(TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
 
@@ -157,7 +171,6 @@ namespace Enemies
         {
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
-            Debug.Log("BASIC SIDE cellPos + direction == " + nextPosition);
 
             if (IsValidCell(nextCell))
             {
@@ -172,15 +185,52 @@ namespace Enemies
         /*
          * Bouge l'ennemi
          */
-        private void MoveEnemy(Vector3 direction)
+        private IEnumerator MoveEnemy(Vector3 direction)
         {
-            if (!IsServer) return;
-            Debug.Log("BIGGUY PLACE AVANT : " + transform.position);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, direction);
-            Debug.Log("BIGGUY PLACE APRES : " + transform.position);
+            if (!IsServer) yield break;
+            hasFinishedMoveAnimation = false;
+            animator.SetBool("Move", true);
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            float currentTime = 0.0f;
+            Vector3 origin = transform.position;
+            while (timeToMove > currentTime)
+            {
+                transform.position = Vector3.Lerp(
+                    origin, direction, currentTime/timeToMove);
+                currentTime += Time.deltaTime;
+                yield return null;
+            } 
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
+            animator.SetBool("Move", false);
+            hasFinishedMoveAnimation = true;
+        }
+        
+        private bool hasFinishedMovingAnimation()
+        {
+            return hasFinishedMoveAnimation;
         }
 
-        protected override bool IsValidCell(Cell cell)
+        
+        protected override bool TryStepBackward()
+        {
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
+            Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
+
+            if (IsValidCell(nextCell))
+            {
+                cell = TilingGrid.grid.GetCell(nextPosition);
+                StartCoroutine(
+                    MoveEnemy(
+                        TilingGrid.GridPositionToLocal(nextPosition)));
+
+                return true;
+            }
+            // TODO REVENIR SUR PLACE SI PEUT PAS RECULER ??
+            return false;
+        }
+        
+        
+        private bool IsValidCell(Cell cell)
         {
             bool isValidBlockType = (cell.type & BlockType.EnemyWalkable) > 0;
             bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(cell, TypeTopOfCell.Enemy);

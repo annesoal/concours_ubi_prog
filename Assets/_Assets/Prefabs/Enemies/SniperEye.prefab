@@ -63,11 +63,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemi-2_SniperEye
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 18d1a553d3bfdbf499398b3156951a8b,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0b4c4c0d5f3b7e937b4aba4be663865d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18d1a553d3bfdbf499398b3156951a8b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8043634850229754790}
   m_SourcePrefab: {fileID: 100100000, guid: 18d1a553d3bfdbf499398b3156951a8b, type: 3}
+--- !u!95 &2233567895258347816 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 18d1a553d3bfdbf499398b3156951a8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5734682678932243641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4851720756982888936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 18d1a553d3bfdbf499398b3156951a8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5734682678932243641}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8043634850229754790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4851720756982888936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 2233567895258347816}
 --- !u!4 &5196897776124486482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 18d1a553d3bfdbf499398b3156951a8b,
@@ -106,6 +141,21 @@ PrefabInstance:
         type: 3}
       propertyPath: SyncScaleZ
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7144109569043832097, guid: 54118bcc1d7276338bc17dd0145a99a8,
         type: 3}
@@ -200,6 +250,7 @@ MonoBehaviour:
   isStupefiedState: 1
   ratioMovement: 3
   hasPath: 0
+  animator: {fileID: 2233567895258347816}
   enemyDomage: 1
   attackRate: 1
-  radiusAttack: 1
+  radiusAttack: 2
