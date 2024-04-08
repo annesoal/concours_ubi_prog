@@ -47,7 +47,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Max_Brightness: 0.9
-    - _Min_Brightness: 0.02
+    - _Min_Brightness: 0.14
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Shades: 0.4
