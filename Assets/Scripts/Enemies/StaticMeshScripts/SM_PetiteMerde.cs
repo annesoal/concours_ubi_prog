@@ -9,6 +9,6 @@ public class SM_PetiteMerde : MonoBehaviour
     public void Destroy()
     {
         Debug.Log("inside destroy");
-        Destroy(transform.parent.parent.gameObject);
+        GameObject.Destroy(transform.parent.parent.gameObject);
     }
 }
