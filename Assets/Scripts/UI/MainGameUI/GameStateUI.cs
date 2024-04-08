@@ -57,7 +57,7 @@ public class GameStateUI : MonoBehaviour
 
     private void DisplayEnvironmentTurnStateUI()
     {
-        BasicShowHide.Hide(currentStateBorder);
+        BasicShowHide.Show(currentStateBorder);
         
         BasicShowHide.Show(gameObject);
         
