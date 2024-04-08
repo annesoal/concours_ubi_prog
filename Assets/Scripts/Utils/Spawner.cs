@@ -110,7 +110,8 @@ namespace Utils
                 {
                     _position.y = j;
                     _helper.SetHelperPosition(_position);
-                    if (_helper.IsValidCell(_position) && RandomBool()) 
+                    if (_helper.IsValidCell(_position) && RandomBool() 
+                                                       && !IsInvalidCell(TilingGrid.grid.GetCell(_position))) 
                         listOfPosition.Add(_position);
                     j++;
                 } while (j < TilingGrid.Size);
@@ -125,7 +126,6 @@ namespace Utils
         {
             List<Vector2Int> listOfPositions = new();
 
-            Random randomGenerator = new Random();
             Cell cell;
             Cell robotReachableCell;
             Cell monkeyReachableCell;
