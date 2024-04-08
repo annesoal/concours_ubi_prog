@@ -7,19 +7,25 @@ using UnityEngine;
 
 public class SpawnMalus : NetworkBehaviour
 {
+    
+    
     private static float _overTheTiles = 0.5f;
     private static Dictionary<Vector2Int, int> positionsPlayer;
     public static List<Cell> _reachableCells = new List<Cell>();
     private List<TypeTopOfCell> blockingElementsType; //TODO fonctionne ?
     
+    public static SpawnMalus Instance { get; private set; } //TODO enelver
+
 
 
     //compte le nombre de deplacementa des joueurs par position de Cell
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
+        Debug.Log("Regsiter position player " + positionCellPlayer);
         if (positionsPlayer is null)
         {
             positionsPlayer = new Dictionary<Vector2Int, int>();
+            Debug.Log("Register etati null " + positionsPlayer);
         }
 
         if (positionsPlayer.ContainsKey(positionCellPlayer))
@@ -30,10 +36,12 @@ public class SpawnMalus : NetworkBehaviour
         {
             positionsPlayer.Add(positionCellPlayer, 1);
         }
+
+        Debug.Log("position Register " + positionsPlayer[positionCellPlayer]);
     }
 
 
-    public void SpawnMalusOnGridPlayers(GameObject malus)
+    public static void SpawnMalusOnGridPlayers(GameObject malus)
     {
         Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
         Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
@@ -44,7 +52,7 @@ public class SpawnMalus : NetworkBehaviour
         
     }
 
-    private void SpawnMalusOnCell(Vector2Int mostUsedCell, GameObject malus)
+    private static void SpawnMalusOnCell(Vector2Int mostUsedCell, GameObject malus)
     {
         if (mostUsedCell == Vector2Int.zero)
         {
@@ -57,7 +65,7 @@ public class SpawnMalus : NetworkBehaviour
     }
 
 
-    private bool IsPlayerCell(Vector2Int position, List<Cell> players)
+    private static bool IsPlayerCell(Vector2Int position, List<Cell> players)
     {
         foreach (var cellPlayer in players)
         {
@@ -68,7 +76,8 @@ public class SpawnMalus : NetworkBehaviour
         return false;
     }
 
-    private Vector2Int GetMostUsedCell(bool isMonkey)
+    // TODO ajouter si aucun mouvement fait par le player
+    private static Vector2Int GetMostUsedCell(bool isMonkey)
     {
         Vector2Int mostUsedCell = Vector2Int.zero;
         int maxOccurence = 0;
@@ -81,6 +90,7 @@ public class SpawnMalus : NetworkBehaviour
             _reachableCells = TilingGrid.GetRobotReachableCells();
         }
 
+        Debug.LogError("position player " + positionsPlayer.Count);
         foreach (var keyValue in positionsPlayer)
         {
             if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, _reachableCells))
@@ -93,7 +103,7 @@ public class SpawnMalus : NetworkBehaviour
     }
 
     //voir PlaceObjects de spawnermanager
-    private void PlaceMalus(Vector2Int positionOfSpawn, GameObject malus)
+    private static void PlaceMalus(Vector2Int positionOfSpawn, GameObject malus)
     {
         Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
         if (isValidCell(cell))
@@ -107,14 +117,15 @@ public class SpawnMalus : NetworkBehaviour
     }
 
     // Tester
-    private bool isValidCell(Cell cellToCheck)
+    private static bool isValidCell(Cell cellToCheck)
     {
+        /*
         foreach (var elementType in blockingElementsType)
         {
             if (cellToCheck.HasObjectOfTypeOnTop(elementType))
                 return false;
         }
-
+*/
         return true;
     }
 }

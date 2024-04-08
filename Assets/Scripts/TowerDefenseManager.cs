@@ -66,7 +66,6 @@ public class TowerDefenseManager : NetworkBehaviour
     [FormerlySerializedAs("selector")] [Header("Amulet")] [SerializeField]
     public AmuletSelector amuletSelector;
 
-    [SerializeField] private Transform bossPrefab;
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
 
     private readonly NetworkVariable<State> _currentState = new();
@@ -97,7 +96,6 @@ public class TowerDefenseManager : NetworkBehaviour
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
-        InitializeSpawnBoss();
         currentRoundNumber = 0;
         // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
         amuletSelector.SetAmulet();
@@ -362,7 +360,6 @@ public class TowerDefenseManager : NetworkBehaviour
         (string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
         CarryOutSpawnPlayersProcedure();
-        CarryOutSpawnBoss();
     }
 
     public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
@@ -375,17 +372,7 @@ public class TowerDefenseManager : NetworkBehaviour
             newValue = newValue
         });
     }
-
-    private void CarryOutSpawnBoss()
-    {
-        try
-        {
-            SpawnBoss();
-        }catch (NoMatchingClientIdFoundException e)
-        {
-            Debug.LogError(e);
-        }
-    }
+    
     private void CarryOutSpawnPlayersProcedure()
     {
         try
@@ -407,15 +394,7 @@ public class TowerDefenseManager : NetworkBehaviour
             DebugPlayerSpawnError
         };
     }
-
-    private void InitializeSpawnBoss()
-    {
-        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            Debug.Log((clientId == NetworkManager.ServerClientId) + " IN BOSS SPAWN");
-            SpawnBossPrefab(clientId, bossPrefab);
-        }
-    }
+    
 
     /**
      * Throws NoMatchingClientIdFoundException.
@@ -430,21 +409,7 @@ public class TowerDefenseManager : NetworkBehaviour
             _spawnPlayerMethods[(int)characterSelection](clientId);
         }
     }
-
-    private void SpawnBoss(ulong clientId)
-    {
-        Debug.Log((clientId == NetworkManager.ServerClientId) + " IN BOSS SPAWN");
-        SpawnBossPrefab(clientId, bossPrefab);
-    }
-
-    private void SpawnBoss()
-    {
-        foreach (var clientId in NetworkManager.Singleton.ConnectedClientsIds)
-        {
-            Debug.Log((clientId == NetworkManager.ServerClientId) + " IN BOSS SPAWN");
-            SpawnBossPrefab(clientId, bossPrefab);
-        }
-    }
+    
     
     private void SpawnMonkey(ulong clientId)
     {
@@ -458,15 +423,7 @@ public class TowerDefenseManager : NetworkBehaviour
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN ROBOT SPAWN");
         SpawnPlayerPrefab(clientId, playerRobotPrefab);
     }
-
-
-    private void SpawnBossPrefab(ulong clientId, Transform bossPrefab)
-    {
-        var bossInstance = Instantiate(bossPrefab);
-        var bossNetworkObject = bossInstance.GetComponent<NetworkObject>();
-        bossNetworkObject.Spawn(true);
-    }
-
+    
     private void SpawnPlayerPrefab(ulong clientId, Transform playerPrefab)
     {
         var playerInstance = Instantiate(playerPrefab);

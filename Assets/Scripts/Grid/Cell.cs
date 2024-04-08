@@ -241,6 +241,8 @@ namespace Grid
                     return BlockType.EnemyWalkable;
                 case Type.EnemyDestination:
                     return BlockType.EnemyDestination;
+                case Type.BossSpawnBlock:
+                    return BlockType.BossSpawnBlock;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -257,5 +259,6 @@ namespace Grid
          EnemyWalkable,
          EnemySpawnBlock,
          EnemyDestination,
+         BossSpawnBlock,
     }
 }

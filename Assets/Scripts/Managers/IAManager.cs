@@ -21,11 +21,7 @@ namespace Managers
             Instance = this;
         }
 
-        public void StartBossTurn(int totalEnergy)
-        {
-           
 
-        }
         public static void MoveEnemies(int totalEnergy)
         {
             List<GameObject> enemies = Enemy.GetEnemiesInGame();
@@ -35,6 +31,13 @@ namespace Managers
                 SetEnemyPath(enemy);
                 enemy.Move(totalEnergy);
             }
+
+            StartBossTurn(totalEnergy);
+        }
+        
+        private static void StartBossTurn(int totalEnergy)
+        {
+            BigBossEnemy.Instance.SpawnMalusOnGrid(totalEnergy);
         }
 
         private static void SetEnemyPath(Enemy enemy)

@@ -215,6 +215,8 @@ namespace Grid
             grid.UpdateCell(originCell);
             
             Cell destinationCell = grid.GetCell(destination);
+            SpawnMalus.RegisterCellForMalus(destination);
+            Debug.Log("Register cell client ?");
             destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
             grid.UpdateCell(originCell);
         }

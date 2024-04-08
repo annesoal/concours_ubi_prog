@@ -242,7 +242,10 @@ public class Player : NetworkBehaviour, ITopOfCell
         RemoveNextHighlighter();
         StartCoroutine(MoveToNextPosition((Vector2Int)nextPosition));
         
-        // TODO cote server 
+        
+        SpawnMalus.RegisterCellForMalus((Vector2Int)nextPosition);
+        Debug.Log("Player spawn malus");
+        
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int)nextPosition);
         TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int)nextPosition);
@@ -304,7 +307,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
-        SpawnMalus.RegisterCellForMalus(toPosition);
+        
         transform.LookAt(cellLocalPosition);
         _hasFinishedToMove = false;
         int i = 0;
