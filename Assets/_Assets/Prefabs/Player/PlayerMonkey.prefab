@@ -90,7 +90,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 329316a09b95c5a408dc59b3f442a203,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2716891717997621943}
+      addedObject: {fileID: 7157212594772241368}
   m_SourcePrefab: {fileID: 100100000, guid: 329316a09b95c5a408dc59b3f442a203, type: 3}
 --- !u!4 &2345473144655664755 stripped
 Transform:
@@ -104,7 +104,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2812060467157414296}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2716891717997621943
+--- !u!114 &7157212594772241368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3154520615908216009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Script: {fileID: 11500000, guid: 101db8a2f360a47c4a9e06ece3cf2d83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
@@ -220,13 +220,18 @@ PrefabInstance:
     - target: {fileID: 6296155453993736320, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1991005765
+      value: 1972862775
       objectReference: {fileID: 0}
     - target: {fileID: 6722293896940644102, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
       propertyPath: animator
       value: 
       objectReference: {fileID: 8533450143303109641}
+    - target: {fileID: 6722293896940644102, guid: e526c4caf8f47b6158e994c81b9c1341,
+        type: 3}
+      propertyPath: _characterSM
+      value: 
+      objectReference: {fileID: 3154520615908216009}
     - target: {fileID: 7472343039729643430, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
       propertyPath: m_Name
