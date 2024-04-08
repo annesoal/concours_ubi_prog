@@ -37,8 +37,8 @@ namespace Enemies
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
         protected bool hasFinishedToMove = false;
-        protected bool hasFinishedMoveAnimation = false; 
-        
+        protected bool hasFinishedMoveAnimation = false;
+        protected bool hasFinishedSpawnAnimation = false; 
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
@@ -53,8 +53,33 @@ namespace Enemies
         {
             Initialize();
             SetDestinations();
+            RunSpawnAnimation();
         }
 
+        private void RunSpawnAnimation()
+        {
+            StartCoroutine(AnimationSpawn());
+        }
+
+        private IEnumerator AnimationSpawn()
+        {
+            float timeToAnimate = 0.3f;
+            float currentTime = 0.0f;
+            hasFinishedSpawnAnimation = false;
+            animator.SetBool("Spawn", true);
+            while (currentTime < timeToAnimate)
+            {
+                yield return null;
+                currentTime += Time.deltaTime;
+            }
+            animator.SetBool("Spawn", false);
+            hasFinishedSpawnAnimation = true;
+        }
+
+         protected bool AnimationSpawnIsFinished()
+        {
+            return hasFinishedSpawnAnimation;
+        }
         private void SetDestinations()
         {
             _destinationsCell = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);

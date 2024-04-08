@@ -32,8 +32,12 @@ namespace Enemies
                 hasFinishedToMove = true;
                 yield break;
             }
-
+            
+            
             hasFinishedToMove = false;
+            
+            yield return new WaitUntil(AnimationSpawnIsFinished);
+            
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
@@ -132,6 +136,7 @@ namespace Enemies
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
 
+                
                 StartCoroutine(
                     RotateThenMove(
                         TilingGrid.GridPositionToLocal(nextCell.position), isLeft));
