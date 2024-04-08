@@ -28,21 +28,21 @@ public class PlayerTileSelector : MonoBehaviour
     /// </summary>
     /// <param name="direction"></param>
     private int debug = 0; 
-    public MoveType GetTypeOfMovement( Vector2Int direction)
+    public Player.MoveType GetTypeOfMovement( Vector2Int direction)
     {
         debug++;
-        MoveType moveType = MoveType.Invalid;
+        Player.MoveType moveType = Player.MoveType.Invalid;
         if (direction != Vector2Int.zero && _helper.IsValidCell(direction))
         {
             if (_recorder.Size() > 1)
             {
                 Vector2Int cellAtDirection = _helper.PositionAtDirection(direction);
                 moveType = cellAtDirection == _recorder.HeadSecond().position 
-                    ? MoveType.ConsumeLast : MoveType.New ;
+                    ? Player.MoveType.ConsumeLast : Player.MoveType.New ;
             }
             else
             {
-                moveType = MoveType.New;
+                moveType = Player.MoveType.New;
             }
         }
         return moveType;

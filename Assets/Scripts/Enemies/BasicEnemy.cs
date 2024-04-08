@@ -186,7 +186,7 @@ namespace Enemies
             return hasFinishedMoveAnimation;
         }
 
-        protected override bool IsValidCell(Cell toCheck)
+        private bool IsValidCell(Cell toCheck)
         {
             PathfindingInvalidCell(toCheck);
             bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
