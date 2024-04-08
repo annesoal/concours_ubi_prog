@@ -7,9 +7,12 @@ using UnityEngine;
 
 public class SingleResourceTemplateUI : MonoBehaviour
 {
+    [field: Header("Resources")]
     [field: SerializeField] public BuildingMaterialSO ResourceData { get; private set; }
 
     [SerializeField] private TextMeshProUGUI numberOfResourcesText;
+    
+    [Header("cost")]
     [SerializeField] private TextMeshProUGUI costText;
 
     private RectTransform _costTextRectTransform;
@@ -29,7 +32,7 @@ public class SingleResourceTemplateUI : MonoBehaviour
         BasicShowHide.Hide(costText.gameObject);
     }
 
-    private const string NUMBER_OF_RESOURCES_TEXT = "RESOURCES AVAILABLE : ";
+    private const string NUMBER_OF_RESOURCES_TEXT = "";
     
     public void SetNumberOfResource(int newValue)
     {
@@ -43,7 +46,7 @@ public class SingleResourceTemplateUI : MonoBehaviour
     
     public void ShowResourceCost(int numberOfResourcesAvailable, int cost)
     {
-        SetCostTextPosition(numberOfResourcesAvailable);
+        //SetCostTextPosition(numberOfResourcesAvailable);
         
         costText.text = COST_TEXT_BEFORE + cost;
         
