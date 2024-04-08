@@ -62,7 +62,7 @@ public class GameStateUI : MonoBehaviour
         BasicShowHide.Show(gameObject);
         
         _canUpdateTimerText = false;
-        BasicShowHide.Hide(timerGameObject);
+        //BasicShowHide.Hide(timerGameObject);
     }
     
     private void DisplayTacticalPauseStateUI()
@@ -72,6 +72,6 @@ public class GameStateUI : MonoBehaviour
         BasicShowHide.Show(gameObject);
         
         _canUpdateTimerText = true;
-        BasicShowHide.Show(timerGameObject);
+        //BasicShowHide.Show(timerGameObject);
     }
 }
