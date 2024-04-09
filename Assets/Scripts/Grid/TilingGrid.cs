@@ -29,6 +29,7 @@ namespace Grid
         private readonly Cell[,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
+        [SerializeField] private GameObject _obstaclePlane;
 
         public static void ResetReachableCells()
         {
@@ -67,10 +68,20 @@ namespace Grid
         void Start()
         {
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
-
             foreach (var block in blocks)
             {
                 AddBlockAsCell(block);
+            }
+
+            InitializeObstacles();
+        }
+
+        private void InitializeObstacles()
+        {
+            Obstacle[] obstacles = _obstaclePlane.GetComponentsInChildren<Obstacle>();
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.Initialize();
             }
         }
 
@@ -209,7 +220,7 @@ namespace Grid
             grid.UpdateCell(originCell);
         }
         
-  
+
         
         public bool HasTopOfCellOfType(Cell cell, TypeTopOfCell typeTopOfCell)
         {
@@ -322,7 +333,7 @@ namespace Grid
             toPlace.transform.position = GridPositionToLocal(cell.position, yPos);
         }
 
-        private void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
+        public void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
         {
             Cell cell = GetCell(cellPosition);
             cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
