@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 using Utils;
 using Random = System.Random;
 
-namespace Enemies
+namespace Enemies.Basic
 {
     public class BasicEnemy : Enemy
     {

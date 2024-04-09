@@ -59,6 +59,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [Header("Player Spawn")] [SerializeField]
     private Transform playerMonkeyPrefab;
 
+
     [field: SerializeField] public Transform MonkeyBlockPlayerSpawn { get; private set; }
 
     [SerializeField] private Transform playerRobotPrefab;
@@ -66,6 +67,8 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [FormerlySerializedAs("selector")] [Header("Amulet")] [SerializeField]
     public AmuletSelector amuletSelector;
+
+    [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
 
     private readonly NetworkVariable<State> _currentState = new();
 
@@ -394,6 +397,7 @@ public class TowerDefenseManager : NetworkBehaviour
         };
     }
 
+
     /**
      * Throws NoMatchingClientIdFoundException.
      */
@@ -408,11 +412,13 @@ public class TowerDefenseManager : NetworkBehaviour
         }
     }
 
+
     private void SpawnMonkey(ulong clientId)
     {
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN MONKEY SPAWN");
         SpawnPlayerPrefab(clientId, playerMonkeyPrefab);
     }
+
 
     private void SpawnRobot(ulong clientId)
     {

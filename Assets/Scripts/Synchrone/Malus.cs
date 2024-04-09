@@ -11,8 +11,9 @@ namespace Synchrone
         [field: SerializeField] public BuildingMaterialSO BuildingMaterialSO { get; private set; }
         public TypeTopOfCell GetType()
         {
-            return TypeTopOfCell.Bonus;
+            return TypeTopOfCell.Malus;
         }
+
 
         public GameObject ToGameObject()
         {

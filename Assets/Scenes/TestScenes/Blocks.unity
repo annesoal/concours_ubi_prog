@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.39284125, g: 0.21482371, b: 0.50118357, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029127, g: 0.22572401, b: 0.3069303, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18265,6 +18265,7 @@ MonoBehaviour:
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 1044088096}
   amuletSelector: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b, type: 2}
+  <BossBlockSpawn>k__BackingField: {fileID: 0}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
@@ -18309,8 +18310,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 193306690}
+  m_Children: [{fileID: 193306690}]
   m_Father: {fileID: 213502845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -19457,7 +19457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.41232136, y: 0.00834622, z: -0.0037774574, w: 0.91099244}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 11.624311, y: 12.221719, z: -3.8524408}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

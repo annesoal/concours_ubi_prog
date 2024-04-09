@@ -99,6 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9adb83383f49f0931fc3aab7e37df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerMalus: {fileID: -6431796730874565461, guid: af4b5d2eee59592fcb97c5eddd22c92e,
+    type: 3}
+  ratioMovement: 1
+  malus: {fileID: 7650414445784578766, guid: 0364adeba09f7ea7e8aeba1c33966510, type: 3}
   animator: {fileID: 0}
 --- !u!114 &-7006683443239023634
 MonoBehaviour:
@@ -201,11 +205,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 658f29ea1fe1524479614b6b9ee73c51,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 170927677474696066}
+    m_AddedComponents: [{targetCorrespondingSourceObject: {fileID: 919132149155446097,
+          guid: 658f29ea1fe1524479614b6b9ee73c51, type: 3}, insertIndex: -1, addedObject: {
+          fileID: 170927677474696066}}]
   m_SourcePrefab: {fileID: 100100000, guid: 658f29ea1fe1524479614b6b9ee73c51, type: 3}
 --- !u!4 &536206399152233615 stripped
 Transform:

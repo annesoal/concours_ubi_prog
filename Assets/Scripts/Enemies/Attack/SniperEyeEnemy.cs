@@ -1,10 +1,5 @@
-using System.Collections.Generic;
-using Ennemies;
-using Grid;
-using Grid.Interface;
-using UnityEngine;
 using Random = System.Random;
-namespace Enemies
+namespace Enemies.Attack
 {
     public class SniperEyeEnemy : AttackingEnemy
     {
