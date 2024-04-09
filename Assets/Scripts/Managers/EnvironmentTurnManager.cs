@@ -56,7 +56,7 @@ public class EnvironmentTurnManager : MonoBehaviour
             totalEnergy--;
         }
         
-        IAManager.StartBossTurn(1);
+        //IAManager.StartBossTurn(1);
         IAManager.ResetEnemies();
 
         yield return new WaitForSeconds(0.01f);
