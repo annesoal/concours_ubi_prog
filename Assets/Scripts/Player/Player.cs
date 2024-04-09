@@ -243,8 +243,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         StartCoroutine(MoveToNextPosition((Vector2Int)nextPosition));
         
         
-        SpawnMalus.RegisterCellForMalus((Vector2Int)nextPosition);
-        Debug.Log("Player spawn malus");
+       // SpawnMalus.RegisterCellForMalus((Vector2Int)nextPosition);
+       // Debug.Log("Player spawn malus");
         
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int)nextPosition);
