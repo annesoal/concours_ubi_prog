@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MI_Cloud-03 3
+  m_Name: MI_Orange
   m_Shader: {fileID: -6465566751694194690, guid: bb90fa07bca13f74db5c2eb6b4183dc5,
     type: 3}
   m_Parent: {fileID: 0}
@@ -52,7 +52,7 @@ Material:
     - _QueueOffset: 0
     - _Shades: 0.4
     m_Colors:
-    - _Tint: {r: 0.59900004, g: 0.58509696, b: 0.56964904, a: 0}
+    - _Tint: {r: 0.9245283, g: 0.5728806, b: 0.11774653, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &619387713763337147
 MonoBehaviour:
