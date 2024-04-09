@@ -9,7 +9,7 @@ namespace Enemies.Boss
     {
         public static BigBossEnemy Instance { get; private set; }
 
-        
+        [SerializeField] private int nbMalus = 1;
         [SerializeField] private int ratioMovement = 8;
         [SerializeField] private GameObject malus;
         

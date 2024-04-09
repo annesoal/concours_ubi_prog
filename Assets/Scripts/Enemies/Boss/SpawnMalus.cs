@@ -7,15 +7,11 @@ using UnityEngine;
 
 public class SpawnMalus : NetworkBehaviour
 {
-    
-    
     private static float _overTheTiles = 0.5f;
     private static Dictionary<Vector2Int, int> positionsPlayer;
     public static List<Cell> _reachableCells = new List<Cell>();
-    private List<TypeTopOfCell> blockingElementsType; //TODO fonctionne ?
-    
-    public static SpawnMalus Instance { get; private set; } //TODO enelver
 
+    public static SpawnMalus Instance { get; private set; }
 
 
     //compte le nombre de deplacementa des joueurs par position de Cell
@@ -44,23 +40,25 @@ public class SpawnMalus : NetworkBehaviour
     public static void SpawnMalusOnGridPlayers(GameObject malus)
     {
         Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
-        Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
-
-        SpawnMalusOnCell(mostUsedCellMonkey, malus);
-        SpawnMalusOnCell(mostUsedCellRobot, malus);
-        
-        
-    }
-
-    private static void SpawnMalusOnCell(Vector2Int mostUsedCell, GameObject malus)
-    {
-        if (mostUsedCell == Vector2Int.zero)
+        if (mostUsedCellMonkey != Vector2Int.zero)
         {
-            Debug.LogError("Aucun malus spawn ");
+            PlaceMalus(mostUsedCellMonkey, malus);
         }
         else
         {
-            PlaceMalus(mostUsedCell, malus);
+            Debug.Log("Pas de spawn malus monkey");
+        }
+
+
+        Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
+
+        if (mostUsedCellRobot != Vector2Int.zero)
+        {
+            PlaceMalus(mostUsedCellRobot, malus);
+        }
+        else
+        {
+            Debug.Log("Pas de spawn malus robot");
         }
     }
 
@@ -77,6 +75,7 @@ public class SpawnMalus : NetworkBehaviour
     }
 
     // TODO ajouter si aucun mouvement fait par le player
+    // Retourne (0,0) si aucune cell nest trouve
     private static Vector2Int GetMostUsedCell(bool isMonkey)
     {
         Vector2Int mostUsedCell = Vector2Int.zero;
@@ -93,7 +92,8 @@ public class SpawnMalus : NetworkBehaviour
         Debug.LogError("position player " + positionsPlayer.Count);
         foreach (var keyValue in positionsPlayer)
         {
-            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, _reachableCells))
+            Cell toCheck = TilingGrid.grid.GetCell(keyValue.Key);
+            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, _reachableCells) && isValidCell(toCheck))
             {
                 mostUsedCell = keyValue.Key;
             }
@@ -106,26 +106,24 @@ public class SpawnMalus : NetworkBehaviour
     private static void PlaceMalus(Vector2Int positionOfSpawn, GameObject malus)
     {
         Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-        if (isValidCell(cell))
-        {
-            //event ? si pas valide ? (comme dans spawner manager)
-            GameObject instance = Instantiate(malus);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
-            instance.GetComponent<NetworkObject>().Spawn(true);
-        }
-      
+
+        GameObject instance = Instantiate(malus);
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+        instance.GetComponent<NetworkObject>().Spawn(true);
     }
 
-    // Tester
-    private static bool isValidCell(Cell cellToCheck)
+
+    //table construction ? TODO
+    private static bool isValidCell(Cell toCheck)
     {
-        /*
-        foreach (var elementType in blockingElementsType)
-        {
-            if (cellToCheck.HasObjectOfTypeOnTop(elementType))
-                return false;
-        }
-*/
-        return true;
+        Cell test = TilingGrid.grid.GetCell(toCheck.position);
+        bool hasNoPlayer = toCheck.HasObjectOfTypeOnTop(TypeTopOfCell.Player);
+        bool hasNoRessources = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Resource);
+        bool hasNoBonus = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Bonus);
+        bool hasNoBuilding = !toCheck.HasNonWalkableBuilding();
+        bool hasNoMalus = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Malus);
+        Debug.Log("No Player on cell ? " + hasNoPlayer);
+
+        return hasNoPlayer && hasNoBonus && hasNoRessources && hasNoBuilding && hasNoMalus;
     }
 }
