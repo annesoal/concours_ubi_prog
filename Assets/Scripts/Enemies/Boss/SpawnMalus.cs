@@ -18,9 +18,10 @@ public class SpawnMalus : NetworkBehaviour
     //compte le nombre de deplacementa des joueurs par position de Cell
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
+        
+ 
         Debug.Log("Regsiter position player " + positionCellPlayer);
-
-        if (positionsPlayerRegister is null)
+        
         {
             positionsPlayerRegister = new Dictionary<Vector2Int, int>();
             Debug.Log("Register etait null " + positionsPlayerRegister);
@@ -41,6 +42,7 @@ public class SpawnMalus : NetworkBehaviour
 
     public static void SpawnMalusOnGridPlayers(GameObject malus)
     {
+        //sil y a eu au moins un deplacement de lun des deux players
         if (positionsPlayerRegister != null)
         {
             var mostUsedCells = GetMostUsedCells();
@@ -89,11 +91,12 @@ public class SpawnMalus : NetworkBehaviour
         Vector2Int mostUsedCellTemp = Vector2Int.zero;
         
         //pour chaque position contenu dans le dictionnaire
+        Debug.Log("boucle sur dictionnaire, nb elemen " + positionsPlayerRegister.Count);
         foreach (var keyValue in positionsPlayerRegister)
         {
             Cell toCheck = TilingGrid.grid.GetCell(keyValue.Key);
             
-            if (keyValue.Value >= maxOccurence && IsPlayerCell(keyValue.Key, cells) &&
+            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, cells) &&
                 isValidCell(toCheck))
             {
                 mostUsedCellTemp = keyValue.Key;
@@ -140,6 +143,7 @@ public class SpawnMalus : NetworkBehaviour
     {
         Cell test = TilingGrid.grid.GetCell(toCheck.position);
         Debug.Log("position in isValid position malus " + test.position);
+        Debug.Log("has player on top of cell " + test.HasTopOfCellOfType(TypeTopOfCell.Player));
 
         foreach (TypeTopOfCell type in Enum.GetValues(typeof(TypeTopOfCell)))
         {
@@ -153,8 +157,7 @@ public class SpawnMalus : NetworkBehaviour
         }
         
         //has player ?
-        Debug.Log("has player on top of cell " + test.HasTopOfCellOfType(TypeTopOfCell.Player));
-
+     
         return true;
     }
 }
