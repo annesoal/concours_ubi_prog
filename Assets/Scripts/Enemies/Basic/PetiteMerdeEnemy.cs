@@ -1,4 +1,4 @@
-namespace Enemies
+namespace Enemies.Basic
 {
     public class PetiteMerdeEnemy : BasicEnemy
     {

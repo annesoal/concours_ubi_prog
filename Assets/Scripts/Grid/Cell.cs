@@ -65,19 +65,13 @@ namespace Grid
 
         public bool ContainsEnemy()
         { 
-            Debug.Log("AU MOINS SE REND ICI");
-            Debug.Log("OBJECT == NULL " + (_objectsTopOfCell == null));
-            if(_objectsTopOfCell != null)
-                Debug.Log("OBJECT count == 0  " + (_objectsTopOfCell.Count == 0));
-            
             
             if (_objectsTopOfCell == null || _objectsTopOfCell.Count == 0)
                return false; 
-            Debug.Log("ContainsENEMY pass false ");
+         
             foreach (ITopOfCell objectTopOfCell in _objectsTopOfCell)
             {
-                Debug.Log("ContainsEnemy : "+ (objectTopOfCell.GetType() == TypeTopOfCell.Enemy));
-                Debug.Log(objectTopOfCell.GetType());
+               
                 
                 if (objectTopOfCell.GetType() == TypeTopOfCell.Enemy)
                     return true;
@@ -240,6 +234,7 @@ namespace Grid
         public const int BasicBlock =         0b0000_0000_0100_0000; 
         public const int EnemyWalkable =     0b0000_0000_1000_0000; 
         public const int EnemyDestination =  0b0000_0001_0000_0000; 
+        public const int BossSpawnBlock = 0b0000_0010_0000_0000;
         
         public static int Translate(Type type)
         {
@@ -261,6 +256,8 @@ namespace Grid
                     return BlockType.EnemyWalkable;
                 case Type.EnemyDestination:
                     return BlockType.EnemyDestination;
+                case Type.BossSpawnBlock:
+                    return BlockType.BossSpawnBlock;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
@@ -277,5 +274,6 @@ namespace Grid
          EnemyWalkable,
          EnemySpawnBlock,
          EnemyDestination,
+         BossSpawnBlock,
     }
 }
