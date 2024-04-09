@@ -31,13 +31,21 @@ namespace Managers
                 SetEnemyPath(enemy);
                 enemy.Move(totalEnergy);
             }
-
-            StartBossTurn(totalEnergy);
+            
         }
         
-        private static void StartBossTurn(int totalEnergy)
+        public static void StartBossTurn(int totalEnergy)
         {
-            BigBossEnemy.Instance.SpawnMalusOnGrid(totalEnergy);
+            if (BigBossEnemy.Instance != null)
+            {
+                BigBossEnemy.Instance.SpawnMalusOnGrid(totalEnergy);
+                Debug.Log("BigBoss pas null");
+            }
+            else
+            {
+                Debug.Log("BigBoss null");
+            }
+           
         }
 
         private static void SetEnemyPath(Enemy enemy)
