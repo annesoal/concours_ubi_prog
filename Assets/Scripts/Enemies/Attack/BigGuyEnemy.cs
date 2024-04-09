@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using Ennemies;
-using Grid;
-using Grid.Interface;
-using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
-using Interfaces;
 
-namespace Enemies
+namespace Enemies.Attack
 {
     public class BigGuyEnemy : AttackingEnemy
     {

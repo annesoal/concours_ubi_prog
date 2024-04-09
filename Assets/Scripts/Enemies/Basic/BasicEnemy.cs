@@ -1,10 +1,9 @@
-using System;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Enemies
+namespace Enemies.Basic
 {
     public class BasicEnemy : Enemy
     {
