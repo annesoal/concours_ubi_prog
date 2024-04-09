@@ -1,16 +1,17 @@
+using System;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
+using Managers;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 
 public class SpawnMalus : NetworkBehaviour
 {
     private static float _overTheTiles = 0.5f;
-    private static Dictionary<Vector2Int, int> positionsPlayer;
-    public static List<Cell> _reachableCells = new List<Cell>();
-
+    private static Dictionary<Vector2Int, int> positionsPlayerRegister;
     public static SpawnMalus Instance { get; private set; }
 
 
@@ -18,50 +19,104 @@ public class SpawnMalus : NetworkBehaviour
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
         Debug.Log("Regsiter position player " + positionCellPlayer);
-        if (positionsPlayer is null)
+
+        if (positionsPlayerRegister is null)
         {
-            positionsPlayer = new Dictionary<Vector2Int, int>();
-            Debug.Log("Register etati null " + positionsPlayer);
+            positionsPlayerRegister = new Dictionary<Vector2Int, int>();
+            Debug.Log("Register etait null " + positionsPlayerRegister);
         }
 
-        if (positionsPlayer.ContainsKey(positionCellPlayer))
+        if (positionsPlayerRegister.ContainsKey(positionCellPlayer))
         {
-            positionsPlayer[positionCellPlayer]++;
+            positionsPlayerRegister[positionCellPlayer]++;
         }
         else
         {
-            positionsPlayer.Add(positionCellPlayer, 1);
+            positionsPlayerRegister.Add(positionCellPlayer, 1);
         }
 
-        Debug.Log("position Register " + positionsPlayer[positionCellPlayer]);
+        Debug.Log("position Register " + positionsPlayerRegister[positionCellPlayer]);
     }
 
 
     public static void SpawnMalusOnGridPlayers(GameObject malus)
     {
-        Vector2Int mostUsedCellMonkey = GetMostUsedCell(true);
-        if (mostUsedCellMonkey != Vector2Int.zero)
+        if (positionsPlayerRegister != null)
         {
-            PlaceMalus(mostUsedCellMonkey, malus);
-        }
-        else
-        {
-            Debug.Log("Pas de spawn malus monkey");
-        }
+            var mostUsedCells = GetMostUsedCells();
 
-
-        Vector2Int mostUsedCellRobot = GetMostUsedCell(false);
-
-        if (mostUsedCellRobot != Vector2Int.zero)
-        {
-            PlaceMalus(mostUsedCellRobot, malus);
-        }
-        else
-        {
-            Debug.Log("Pas de spawn malus robot");
+            //Si une ou plusieurs used cells trouve, faire spawner
+            if (mostUsedCells != null || mostUsedCells.Count > 0)
+            {
+                PlaceMalus(mostUsedCells.ToArray(), malus, IsInvalidCell);
+            }
         }
     }
 
+    
+
+    // retourne une liste contenant la cell la plus utilisee pour chacun des joueurs
+    private static List<Vector2Int> GetMostUsedCells()
+    {
+        List<Vector2Int> mostUsedCells = new();
+        List<Cell> reachableCellsMonkey = GetReachableCells(true);
+        List<Cell> reachableCellsRobot = GetReachableCells(false);
+
+        //most used cell de Monkey
+        var mostUsedCellTemp = MostUsedCell(reachableCellsMonkey);
+        if (mostUsedCellTemp != Vector2Int.zero)
+            mostUsedCells.Add(mostUsedCellTemp);
+
+        //most used cell de Robot
+        mostUsedCellTemp = MostUsedCell(reachableCellsRobot);
+        if (mostUsedCellTemp != Vector2Int.zero)
+            mostUsedCells.Add(mostUsedCellTemp);
+
+        return mostUsedCells;
+    }
+    
+    private static List<Cell> GetReachableCells(bool isMonkey)
+    {
+        if (isMonkey)
+            return TilingGrid.GetMonkeyReachableCells();
+        
+        return TilingGrid.GetRobotReachableCells();
+    }
+
+    private static Vector2Int MostUsedCell(List<Cell> cells)
+    {
+        int maxOccurence = 0;
+        Vector2Int mostUsedCellTemp = Vector2Int.zero;
+        
+        //pour chaque position contenu dans le dictionnaire
+        foreach (var keyValue in positionsPlayerRegister)
+        {
+            Cell toCheck = TilingGrid.grid.GetCell(keyValue.Key);
+            
+            if (keyValue.Value >= maxOccurence && IsPlayerCell(keyValue.Key, cells) &&
+                isValidCell(toCheck))
+            {
+                mostUsedCellTemp = keyValue.Key;
+            }
+        }
+
+        return mostUsedCellTemp;
+    }
+
+
+    private static void PlaceMalus(Vector2Int[] positionToObstacles, GameObject gameObjectsToSpawn,
+        Func<Cell, bool> isInvalidCell)
+    {
+        foreach (Vector2Int positionOfSpawn in positionToObstacles)
+        {
+            Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
+            if (isInvalidCell.Invoke(cell))
+                continue;
+            GameObject instance = Instantiate(gameObjectsToSpawn);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+            instance.GetComponent<NetworkObject>().Spawn(true);
+        }
+    }
 
     private static bool IsPlayerCell(Vector2Int position, List<Cell> players)
     {
@@ -73,57 +128,33 @@ public class SpawnMalus : NetworkBehaviour
 
         return false;
     }
+    
 
-    // TODO ajouter si aucun mouvement fait par le player
-    // Retourne (0,0) si aucune cell nest trouve
-    private static Vector2Int GetMostUsedCell(bool isMonkey)
+    private static bool IsInvalidCell(Cell cell)
     {
-        Vector2Int mostUsedCell = Vector2Int.zero;
-        int maxOccurence = 0;
-        if (isMonkey)
-        {
-            _reachableCells = TilingGrid.GetMonkeyReachableCells();
-        }
-        else
-        {
-            _reachableCells = TilingGrid.GetRobotReachableCells();
-        }
-
-        Debug.LogError("position player " + positionsPlayer.Count);
-        foreach (var keyValue in positionsPlayer)
-        {
-            Cell toCheck = TilingGrid.grid.GetCell(keyValue.Key);
-            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, _reachableCells) && isValidCell(toCheck))
-            {
-                mostUsedCell = keyValue.Key;
-            }
-        }
-
-        return mostUsedCell;
-    }
-
-    //voir PlaceObjects de spawnermanager
-    private static void PlaceMalus(Vector2Int positionOfSpawn, GameObject malus)
-    {
-        Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-
-        GameObject instance = Instantiate(malus);
-        TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
-        instance.GetComponent<NetworkObject>().Spawn(true);
+        return !isValidCell(cell);
     }
 
 
-    //table construction ? TODO
     private static bool isValidCell(Cell toCheck)
     {
         Cell test = TilingGrid.grid.GetCell(toCheck.position);
-        bool hasNoPlayer = toCheck.HasObjectOfTypeOnTop(TypeTopOfCell.Player);
-        bool hasNoRessources = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Resource);
-        bool hasNoBonus = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Bonus);
-        bool hasNoBuilding = !toCheck.HasNonWalkableBuilding();
-        bool hasNoMalus = !TilingGrid.grid.HasTopOfCellOfType(test, TypeTopOfCell.Malus);
-        Debug.Log("No Player on cell ? " + hasNoPlayer);
+        Debug.Log("position in isValid position malus " + test.position);
 
-        return hasNoPlayer && hasNoBonus && hasNoRessources && hasNoBuilding && hasNoMalus;
+        foreach (TypeTopOfCell type in Enum.GetValues(typeof(TypeTopOfCell)))
+        {
+            bool hasType = TilingGrid.grid.HasTopOfCellOfType(test, type);
+
+            if (hasType)
+            {
+                Debug.Log($"Cell contains {type}.");
+                return false;
+            }
+        }
+        
+        //has player ?
+        Debug.Log("has player on top of cell " + test.HasTopOfCellOfType(TypeTopOfCell.Player));
+
+        return true;
     }
 }

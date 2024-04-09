@@ -4,6 +4,7 @@ using System.Linq;
 using Amulets;
 using Enemies;
 using Grid;
+using Managers;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -266,7 +267,7 @@ public class TowerDefenseManager : NetworkBehaviour
         CheckEnemiesAtDestinationCells();
         CleanBonuses();
         TilingGrid.grid.SyncAllTopOfCells();
-
+        
         if (_playersHealth < 1)
         {
             gameWon = false;
@@ -372,7 +373,7 @@ public class TowerDefenseManager : NetworkBehaviour
             newValue = newValue
         });
     }
-    
+
     private void CarryOutSpawnPlayersProcedure()
     {
         try
@@ -394,7 +395,7 @@ public class TowerDefenseManager : NetworkBehaviour
             DebugPlayerSpawnError
         };
     }
-    
+
 
     /**
      * Throws NoMatchingClientIdFoundException.
@@ -409,8 +410,8 @@ public class TowerDefenseManager : NetworkBehaviour
             _spawnPlayerMethods[(int)characterSelection](clientId);
         }
     }
-    
-    
+
+
     private void SpawnMonkey(ulong clientId)
     {
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN MONKEY SPAWN");
@@ -423,7 +424,7 @@ public class TowerDefenseManager : NetworkBehaviour
         Debug.Log((clientId == NetworkManager.ServerClientId) + " IN ROBOT SPAWN");
         SpawnPlayerPrefab(clientId, playerRobotPrefab);
     }
-    
+
     private void SpawnPlayerPrefab(ulong clientId, Transform playerPrefab)
     {
         var playerInstance = Instantiate(playerPrefab);
