@@ -36,6 +36,8 @@ namespace Enemies
                     yield break;
                 }
                 
+                if (isStupefiedState) { yield break; }
+                
                 hasFinishedToMove = false;
                 if (!ChoseToAttack())
                 {
@@ -75,7 +77,7 @@ namespace Enemies
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
+                if (TowerIsAtRange(aCell) &&
                     canAttack())
                 {
                     Attack(aCell.GetTower());
@@ -85,6 +87,13 @@ namespace Enemies
             }
 
             return false;
+        }
+
+        private bool TowerIsAtRange(Cell aCell)
+        {
+            // non walkable building are towers or obstacle.
+            return TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
+                   cell.HasNonWalkableBuilding();
         }
         
         // Choisit d'attaquer aleatoirement
