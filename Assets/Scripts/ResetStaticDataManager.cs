@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Amulets;
 using Enemies;
 using Grid;
 using UnityEngine;
@@ -18,5 +19,6 @@ public class ResetStaticDataManager : MonoBehaviour
         SingleAmuletTemplateUI.ResetStaticData();
         AmuletSelectionButton.ResetStaticData();
         TilingGrid.ResetReachableCells();
+        AmuletSelector.ResetStaticData();
     }
 }

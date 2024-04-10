@@ -60,6 +60,7 @@ public class LevelFocusUI : MonoBehaviour
         readyButton.Select();
     }
 
+    [Obsolete]
     private void OnReadyButtonClicked()
     {
         if (! NetworkManager.Singleton.IsServer) { return; }
@@ -68,7 +69,7 @@ public class LevelFocusUI : MonoBehaviour
         
         if (_selectedAmulet != null)
         {
-            AmuletSelector.PlayerAmuletSelection = _selectedAmulet.ID;
+            // AmuletSelector.PlayerAmuletSelection = _selectedAmulet.ID;
         }
         
         Loader.LoadNetwork(_selectedLevelSO.levelScene);
