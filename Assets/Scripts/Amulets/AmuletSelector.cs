@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Amulets
 {
@@ -37,10 +38,9 @@ namespace Amulets
             AmuletToUse = PlayerAmuletSelection;
         }
 
-        public static void ResetStaticData()
+        public static void ResetPlayerAmuletSelection()
         {
             PlayerAmuletSelection = null;
         }
-
     }
 }
