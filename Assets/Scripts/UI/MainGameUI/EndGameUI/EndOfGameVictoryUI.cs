@@ -30,5 +30,7 @@ public class EndOfGameVictoryUI : MonoBehaviour
     private void TowerDefenseManager_OnVictory(object sender, EventArgs e)
     {
         BasicShowHide.Show(gameObject);
+
+        amuletChoicesUI.InitiateFirstButtonSelect();
     }
 }

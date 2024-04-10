@@ -26,6 +26,11 @@ public class AmuletChoicesUI : MonoBehaviour
         rightAmuletChoice.SetVisuals(amuletChoiceAtEnd[2]);
     }
 
+    public void InitiateFirstButtonSelect()
+    {
+        centerAmuletChoice.SetButtonAsSelected();
+    }
+
     public event EventHandler<OnAmuletChosenEventArgs> OnAmuletChosen;
     public class OnAmuletChosenEventArgs : EventArgs { public AmuletSO AmuletChosen; }
     
@@ -54,5 +59,4 @@ public class AmuletChoicesUI : MonoBehaviour
             AmuletChosen = e.SelectedAmulet,
         });
     }
-
 }

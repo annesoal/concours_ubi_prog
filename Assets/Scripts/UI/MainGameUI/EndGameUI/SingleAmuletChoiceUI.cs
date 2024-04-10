@@ -31,4 +31,9 @@ public class SingleAmuletChoiceUI : MonoBehaviour
             });
         });
     }
+    
+    public void SetButtonAsSelected()
+    {
+        selectAmuletButton.Select();
+    }
 }
