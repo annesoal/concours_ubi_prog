@@ -38,6 +38,7 @@ namespace Enemies
                 {
                     if (!TryMoveOnNextCell())
                     {
+                        hasPath = false;
                         if (!MoveSides())
                         {
                            throw new Exception("nothing happend"); 
