@@ -9,10 +9,10 @@ using UnityEngine;
 public class EnvironmentTurnManager : MonoBehaviour
 {
     public static EnvironmentTurnManager Instance;
-    
+
     public event EventHandler OnEnvironmentTurnEnded;
     public bool PlayerHasBeenMoved { private get; set; }
-    
+
     private void Awake()
     {
         Instance = this;
@@ -22,7 +22,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     {
         if (NetworkManager.Singleton.IsServer)
         {
-            TowerDefenseManager.Instance.OnCurrentStateChanged += ListenForEnvironmentTurn; 
+            TowerDefenseManager.Instance.OnCurrentStateChanged += ListenForEnvironmentTurn;
         }
     }
 
@@ -39,20 +39,21 @@ public class EnvironmentTurnManager : MonoBehaviour
     private IEnumerator EnvironmentTurn(int totalEnergy)
     {
         PreparePlayers();
-        
-        while (HasEnergyLeft(totalEnergy))
-        {   
+        int totalEnergyPlayers = totalEnergy;
+        while (HasEnergyLeft(totalEnergyPlayers))
+        {
             MovePlayers();
             yield return new WaitUntil(ReadyToMoveNPCs);
-            
-            
+            totalEnergyPlayers--;
+            ResetPlayerReadyCount();
+        }
+
+        while (HasEnergyLeft(totalEnergy))
+        {
             StartCoroutine(BaseTower.PlayTowersInGameTurn());
-            // Play Trap turn
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
             StartCoroutine(IAManager.Instance.MoveEnemies(totalEnergy));
             yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
-            totalEnergy--;
-            ResetPlayerReadyCount();
         }
 
         IAManager.ResetEnemies();
@@ -73,7 +74,7 @@ public class EnvironmentTurnManager : MonoBehaviour
 
     private void PreparePlayers()
     {
-       GameMultiplayerManager.Instance.PreparePlayersClientRpc(); 
+        GameMultiplayerManager.Instance.PreparePlayersClientRpc();
     }
 
     private int playersFinishedMoving = 0;
@@ -90,6 +91,6 @@ public class EnvironmentTurnManager : MonoBehaviour
 
     private void ResetPlayerReadyCount()
     {
-        playersFinishedMoving = 0; 
+        playersFinishedMoving = 0;
     }
 }
