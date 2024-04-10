@@ -3,7 +3,52 @@ guid: 67d8b372520b98d4db2403b213a519f6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: feuille
+    second: {fileID: 2100000, guid: ba05030f6fcd1734e98dd51102db0ee3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: metal
+    second: {fileID: 2100000, guid: 1cbee87d4dde76f4b9fe77fb314153c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mteal_2
+    second: {fileID: 2100000, guid: ddb443798d9a02e4a82401b90244919a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: singe_1
+    second: {fileID: 2100000, guid: 734ad9435e8cdff4a909f32d2fb4f3d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: singe_2
+    second: {fileID: 2100000, guid: 872db33da94e44140b21f15807f63b4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface2
+    second: {fileID: 2100000, guid: ada0c00352b912942b31ff79eb9283ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: star
+    second: {fileID: 2100000, guid: 235779d17fac03f48a7b8d9446147675, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tron_ext
+    second: {fileID: 2100000, guid: ada0c00352b912942b31ff79eb9283ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tron_int
+    second: {fileID: 2100000, guid: deb0f5da2b696464fa40cf31dad4851e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
