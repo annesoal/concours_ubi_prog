@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 
 public class EndGameDefeatUI : MonoBehaviour
@@ -16,7 +17,11 @@ public class EndGameDefeatUI : MonoBehaviour
     private void TowerDefenseManager_OnDefeat(object sender, EventArgs e)
     {
         BasicShowHide.Show(gameObject);
-        StartCoroutine(GoBackToCharacterSelectScene());
+        
+        if (NetworkManager.Singleton.IsServer)
+        {
+            StartCoroutine(GoBackToCharacterSelectScene());
+        }
     }
 
     private IEnumerator GoBackToCharacterSelectScene()

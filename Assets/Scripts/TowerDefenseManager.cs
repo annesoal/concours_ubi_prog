@@ -182,11 +182,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [ClientRpc]
     private void EndLevelClientRpc(bool won)
     {
-        if (won)
-            SaveProgress();
-
-        Debug.LogError("devrait load une autre scene je pense");
-        Loader.Load(Loader.Scene.CharacterSelectScene);
+        ShowEndGameScreen();
     }
 
     private void Update()
@@ -202,7 +198,7 @@ public class TowerDefenseManager : NetworkBehaviour
             ProgressCountDownToStartTimer,
             PlayEnvironmentTurn,
             ProgressTacticalTimer,
-            ShowEndGameScreen
+            () => { }
         };
     }
 
@@ -549,5 +545,11 @@ public class TowerDefenseManager : NetworkBehaviour
         {
             Destroy(bonus);
         }
+    }
+
+    public override void OnDestroy()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= NetworkManager_OnLoadEventCompleted;
+        base.OnDestroy();
     }
 }
