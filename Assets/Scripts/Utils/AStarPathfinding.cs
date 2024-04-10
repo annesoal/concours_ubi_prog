@@ -36,7 +36,7 @@ namespace Utils
 
                 openSet.Remove(current);
 
-                List<Cell> neighbors = TilingGrid.grid.GetCellsInRadius(current, 1);
+                List<Cell> neighbors = TilingGrid.FindCellsInCross(current);
               
                 foreach (var neighbor in neighbors)
                 {

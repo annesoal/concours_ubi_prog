@@ -448,6 +448,16 @@ namespace Grid
 
             return cells;
         }
+        public static List<Cell> FindCellsInCross(Cell origin)
+        {
+            List<Cell> cells = new();
+            cells.Add(grid.GetCell(origin.position));
+            cells.Add(grid.GetCell(origin.position + Vector2Int.down));
+            cells.Add(grid.GetCell(origin.position + Vector2Int.up));
+            cells.Add(grid.GetCell(origin.position + Vector2Int.left));
+            cells.Add(grid.GetCell(origin.position + Vector2Int.right));
+            return cells;
+        }
 
         public static void RemoveElement(GameObject element, Vector2Int position)
         {
@@ -508,6 +518,7 @@ namespace Grid
                 toClear.ObjectsTopOfCell.Clear();
             }
         }
+
 
         private delegate void ActionRef<T>(ref T item);
         //--------------------------------------------------------------------------------------------------------------
