@@ -29,7 +29,7 @@ namespace Amulets
         }
         public void SetAmulet()
         {
-            if (AmuletToUse == null)
+            if (PlayerAmuletSelection == null)
             {
                 AmuletToUse = defaultAmulet;
                 return;
