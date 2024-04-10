@@ -319,7 +319,7 @@ public class InputManager : MonoBehaviour
 		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].ToDisplayString();
 	}
 
-	public event EventHandler OnInputRebinding;
+	public event EventHandler OnInputRebindingCompleted;
 	
 	private const string BINDINGS_JSON_KEY = "BindingJsonKey";
 	
@@ -335,6 +335,8 @@ public class InputManager : MonoBehaviour
 				Debug.Log(callback.action.bindings[BindingActionMapIndexEquivalent[toRebind]].path);
 				Debug.Log(callback.action.bindings[BindingActionMapIndexEquivalent[toRebind]].overridePath);
 				
+				TryRebindUserInterfaceBinding(callback.action, toRebind);
+				
 				callback.Dispose();
 				
 				_playerInputActions.Enable();
@@ -344,9 +346,59 @@ public class InputManager : MonoBehaviour
 				PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
 				PlayerPrefs.Save();
 				
-				OnInputRebinding?.Invoke(this, EventArgs.Empty);
+				OnInputRebindingCompleted?.Invoke(this, EventArgs.Empty);
 			})
 			.Start();
+	}
+
+	private void TryRebindUserInterfaceBinding(InputAction inputActionRebinded, Binding playerEquivalentRebinded)
+	{
+		string path = inputActionRebinded.bindings[BindingActionMapIndexEquivalent[playerEquivalentRebinded]].path;
+			
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Up])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Up, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalUp, path);
+			return;
+		}
+		
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Down])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Down, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalDown, path);
+			return;
+		}
+		
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Left])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Left, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalLeft, path);
+			return;
+		}
+		
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Left])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Right, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalRight, path);
+			return;
+		}
+		
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Select])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Select, path);
+			return;
+		}
+		
+		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Cancel])
+		{
+			RebindUserInterfaceBinding(_playerInputActions.UI.Cancel, path);
+			return;
+		}
+	}
+
+	private void RebindUserInterfaceBinding(InputAction toRebind, string path)
+	{
+			toRebind.ApplyBindingOverride (0, path);
 	}
 
 	private void LoadSavedBindings()
