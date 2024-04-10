@@ -219,7 +219,7 @@ public class GameMultiplayerManager : NetworkBehaviour
         {
             // TODO transition vers scene de jeu
             Debug.Log("BOTH PLAYER ARE READY :)");
-            Loader.LoadNetwork(Loader.Scene.LevelSelection);
+            Loader.LoadNetwork(Loader.Scene.Blocks);
         }
     }
 
