@@ -12,7 +12,7 @@ namespace Enemies
     public class AttackingEnemy : BasicEnemy 
     {
         private Random _rand = new();
-        private int enemyDomage = 1;
+        private int enemyDamage = 1;
         private int attackRate;
         private int radiusAttack = 1;
         protected float timeToAttack = 0.5f;
@@ -85,7 +85,7 @@ namespace Enemies
         
         private void Attack(BaseTower toAttack)
         {
-            toAttack.Damage(enemyDomage);
+            toAttack.Damage(enemyDamage);
             StartCoroutine(AttackAnimation());
         }
 
