@@ -96,7 +96,7 @@ PrefabInstance:
     - target: {fileID: 6296155453993736320, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1991005765
+      value: 1972862775
       objectReference: {fileID: 0}
     - target: {fileID: 6722293896940644102, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
@@ -222,7 +222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
-  m_Animator: {fileID: 0}
+  m_Animator: {fileID: 5866666021909216657, guid: 51062ac69f4591d4abf912e5e7dd25c1,
+    type: 3}
 --- !u!4 &6892347110357673162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 51062ac69f4591d4abf912e5e7dd25c1,
