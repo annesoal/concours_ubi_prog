@@ -32,6 +32,7 @@ namespace Managers
                 SetEnemyPath(enemy);
                 StartCoroutine(enemy.Move(totalEnergy));
                 yield return new WaitUntil(enemy.hasFinishedMoving);
+                enemy.ResetAnimationStates();
             }
 
             hasMovedEveryEnemies = true;
@@ -68,6 +69,8 @@ namespace Managers
             {
                 enemy.GetComponent<Enemy>().hasPath = false;
             }
+
+            Instance.hasMovedEveryEnemies = false;
         }
     }
 }

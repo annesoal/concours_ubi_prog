@@ -222,5 +222,11 @@ namespace Enemies
             enemiesInGame = new List<GameObject>();
             OnAnyEnemyMoved = null;
         }
+
+        public void ResetAnimationStates()
+        {
+            hasFinishedToMove = false; 
+            hasFinishedMoveAnimation = false; 
+        }
     }
 }

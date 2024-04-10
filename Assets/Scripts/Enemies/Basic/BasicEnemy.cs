@@ -22,6 +22,7 @@ namespace Enemies.Basic
         
         public override IEnumerator Move(int energy)
         {
+            hasFinishedToMove = false;
             if (!IsServer)
             {
                 yield break;
@@ -32,9 +33,6 @@ namespace Enemies.Basic
                 hasFinishedToMove = true;
                 yield break;
             }
-            
-            
-            hasFinishedToMove = false;
             
             yield return new WaitUntil(AnimationSpawnIsFinished);
             
@@ -74,7 +72,7 @@ namespace Enemies.Basic
             if (IsValidCell(nextCell))
             {
                 cell = nextCell;
-                StartCoroutine(MoveEnemy(
+                StartCoroutine(RotateThenMove(
                     TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
@@ -126,7 +124,6 @@ namespace Enemies.Basic
         //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
-            bool isLeft = direction == _gauche2d;
             Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
             
@@ -137,21 +134,19 @@ namespace Enemies.Basic
                 
                 StartCoroutine(
                     RotateThenMove(
-                        TilingGrid.GridPositionToLocal(nextCell.position), isLeft));
+                        TilingGrid.GridPositionToLocal(nextCell.position)));
                 return true;
             }
             return false;
         }
 
-        protected IEnumerator RotateThenMove(Vector3 direction, bool left)
+        protected IEnumerator RotateThenMove(Vector3 direction)
         {
             RotationAnimation rotationAnimation = new RotationAnimation();
-            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, left));
+            StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, direction));
             yield return new WaitUntil(rotationAnimation.HasMoved);
             StartCoroutine(MoveEnemy(direction));
             yield return new WaitUntil(hasFinishedMovingAnimation);
-            StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, !left));
-            yield return new WaitUntil(rotationAnimation.HasMoved);
         }
 
 
