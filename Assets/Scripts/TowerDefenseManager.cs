@@ -202,7 +202,7 @@ public class TowerDefenseManager : NetworkBehaviour
             ProgressCountDownToStartTimer,
             PlayEnvironmentTurn,
             ProgressTacticalTimer,
-            () => { }
+            ShowEndGameScreen
         };
     }
 
@@ -298,6 +298,20 @@ public class TowerDefenseManager : NetworkBehaviour
         _currentTimer.Value -= Time.deltaTime;
 
         if (_currentTimer.Value <= 0f || PlayersAreReadyToPass()) GoToSpecifiedState(State.EnvironmentTurn);
+    }
+
+    public event EventHandler OnVictory;
+    public event EventHandler OnDefeat;
+    private void ShowEndGameScreen()
+    {
+        if (gameWon)
+        {
+            OnVictory?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            OnDefeat?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private bool AllRoundsAreDone()
