@@ -201,6 +201,12 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2351179887
       objectReference: {fileID: 0}
+    - target: {fileID: 6722293896940644102, guid: e526c4caf8f47b6158e994c81b9c1341,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 5866666021909216657, guid: 814ba6c506eaf034ca2c09501469a624,
+        type: 3}
     - target: {fileID: 7472343039729643430, guid: e526c4caf8f47b6158e994c81b9c1341,
         type: 3}
       propertyPath: m_Name
