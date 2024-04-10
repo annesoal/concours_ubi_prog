@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +28,9 @@ public class InputManager : MonoBehaviour
         Instance = this;
         
         _playerInputActions = new PlayerInputActions();
+        
+		LoadSavedBindings();
+        
         _playerInputActions.Player.Enable();
         _playerInputActions.Camera.Enable();
         _playerInputActions.Player.Select.performed += Select;
@@ -46,6 +50,8 @@ public class InputManager : MonoBehaviour
         
         _playerInputActions.UI.ShoulderRight.performed += UserInterfaceInput_OnShoulderRightPerformed;
         _playerInputActions.UI.ShoulderLeft.performed += UserInterfaceInput_OnShoulderLeftPerformed;
+        
+		InitializeActionMapBindingEquivalent();
     }
 
     private void Start()
@@ -224,4 +230,130 @@ public class InputManager : MonoBehaviour
         
         _playerInputActions.Dispose();
     }
+    
+    // REBINDING
+    
+	public enum Binding
+	{
+		Up = 0,
+		Down,
+		Left,
+		Right,
+		Select,
+		Cancel,
+		Confirm,
+		Interact,
+		MinimalUp,
+		MinimalDown,
+		MinimalLeft,
+		MinimalRight,
+		ShoulderLeft,
+		ShoulderRight,
+	}
+    
+	private const int SINGLE_ACTION_MAP_DEFAULT_INDEX = 0;
+
+	private const int UP_ACTION_MAP_INDEX = 1;
+	private const int DOWN_ACTION_MAP_INDEX = 2;
+	private const int LEFT_ACTION_MAP_INDEX = 3;
+	private const int RIGHT_ACTION_MAP_INDEX = 4;
+	
+	private const int SELECT_ACTION_MAP_INDEX = 0;
+	private const int CANCEL_ACTION_MAP_INDEX = 0;
+	private const int CONFIRM_ACTION_MAP_INDEX = 0;
+	private const int INTERACT_ACTION_MAP_INDEX = 0;
+	
+	private const int MINIMAL_UP_ACTION_MAP_INDEX = 0;
+	private const int MINIMAL_DOWN_ACTION_MAP_INDEX = 0;
+	private const int MINIMAL_LEFT_ACTION_MAP_INDEX = 0;
+	private const int MINIMAL_RIGHT_ACTION_MAP_INDEX = 0;
+	
+	private const int SHOULDER_LEFT_ACTION_MAP_INDEX = 0;
+	private const int SHOULDER_RIGHT_ACTION_MAP_INDEX = 0;
+
+	private static readonly Dictionary<Binding, int> BindingActionMapIndexEquivalent = new Dictionary<Binding, int>()
+	{
+		{Binding.Up, UP_ACTION_MAP_INDEX},
+		{Binding.Down, DOWN_ACTION_MAP_INDEX},
+		{Binding.Left, LEFT_ACTION_MAP_INDEX},
+		{Binding.Right, RIGHT_ACTION_MAP_INDEX},
+		{Binding.Select, SELECT_ACTION_MAP_INDEX},
+		{Binding.Cancel, CANCEL_ACTION_MAP_INDEX},
+		{Binding.Confirm, CONFIRM_ACTION_MAP_INDEX},
+		{Binding.Interact, INTERACT_ACTION_MAP_INDEX},
+		{Binding.MinimalUp, MINIMAL_UP_ACTION_MAP_INDEX},
+		{Binding.MinimalDown, MINIMAL_DOWN_ACTION_MAP_INDEX},
+		{Binding.MinimalLeft, MINIMAL_LEFT_ACTION_MAP_INDEX},
+		{Binding.MinimalRight, MINIMAL_RIGHT_ACTION_MAP_INDEX},
+		{Binding.ShoulderLeft, SHOULDER_LEFT_ACTION_MAP_INDEX},
+		{Binding.ShoulderRight, SHOULDER_RIGHT_ACTION_MAP_INDEX},
+	};
+
+	private Dictionary<Binding, InputAction> _actionMapBindingEquivalent;
+
+	private void InitializeActionMapBindingEquivalent()
+	{
+		_actionMapBindingEquivalent = new Dictionary<Binding, InputAction>()
+		{
+			{ Binding.Up, _playerInputActions.Player.Movement },
+			{ Binding.Down, _playerInputActions.Player.Movement },
+			{ Binding.Left, _playerInputActions.Player.Movement },
+			{ Binding.Right, _playerInputActions.Player.Movement },
+			{ Binding.Select, _playerInputActions.Player.Select },
+			{ Binding.Cancel, _playerInputActions.Player.Cancel },
+			{ Binding.Confirm, _playerInputActions.Player.Confirm },
+			{ Binding.Interact, _playerInputActions.Player.Interact },
+			{ Binding.MinimalUp, _playerInputActions.UI.MinimalUp },
+			{ Binding.MinimalDown, _playerInputActions.UI.MinimalUp },
+			{ Binding.MinimalLeft, _playerInputActions.UI.MinimalUp },
+			{ Binding.MinimalRight, _playerInputActions.UI.MinimalUp },
+			{ Binding.ShoulderLeft, _playerInputActions.UI.ShoulderLeft },
+			{ Binding.ShoulderRight, _playerInputActions.UI.ShoulderRight },
+		};
+	}
+
+	public string GetBindingText(Binding binding)
+	{
+		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
+		
+		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].ToDisplayString();
+	}
+
+	public event EventHandler OnInputRebinding;
+	
+	private const string BINDINGS_JSON_KEY = "BindingJsonKey";
+	
+	public void RebindBinding(Binding toRebind, Action onRebindDone)
+	{
+		_playerInputActions.Player.Disable();
+
+		InputAction inputActionOfToRebind = _actionMapBindingEquivalent[toRebind];
+		
+		inputActionOfToRebind.PerformInteractiveRebinding(BindingActionMapIndexEquivalent[toRebind])
+			.OnComplete(callback =>
+			{
+				Debug.Log(callback.action.bindings[BindingActionMapIndexEquivalent[toRebind]].path);
+				Debug.Log(callback.action.bindings[BindingActionMapIndexEquivalent[toRebind]].overridePath);
+				
+				callback.Dispose();
+				
+				_playerInputActions.Enable();
+				
+				onRebindDone();
+
+				PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
+				PlayerPrefs.Save();
+				
+				OnInputRebinding?.Invoke(this, EventArgs.Empty);
+			})
+			.Start();
+	}
+
+	private void LoadSavedBindings()
+	{
+		if (PlayerPrefs.HasKey(BINDINGS_JSON_KEY))
+		{
+			_playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(BINDINGS_JSON_KEY));
+		}
+	}
 }
