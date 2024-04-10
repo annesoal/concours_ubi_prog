@@ -44,8 +44,7 @@ namespace Enemies.Basic
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    //TODO 
-                    transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+                    throw new Exception("sides did NOT work");
                 }
             }
 
@@ -67,7 +66,7 @@ namespace Enemies.Basic
 
 
         // Essaie de bouger vers l'avant
-        private bool TryMoveOnNextCell()
+        protected bool TryMoveOnNextCell()
         {
             if (path == null || path.Count == 0)
                 return true;
@@ -85,7 +84,7 @@ namespace Enemies.Basic
 
 
         //Commence a aller vers la droite ou la gauche aleatoirement
-        private bool MoveSides()
+        protected bool MoveSides()
         {
             if (_rand.NextDouble() < 0.5)
             {
@@ -102,12 +101,12 @@ namespace Enemies.Basic
                 }
             }
 
-            return false;
+            return true;
         }
 
         protected override bool TryStepBackward()
         {
-            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y + 1);
+            Vector2Int nextPosition = new Vector2Int(cell.position.x, cell.position.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
 
             if (IsValidCell(nextCell))
@@ -129,10 +128,9 @@ namespace Enemies.Basic
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
             bool isLeft = direction == _gauche2d;
-            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + 1);
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
             
-            // tout de suite changer l'orientation ??
             if (IsValidCell(nextCell))
             {
                 cell = TilingGrid.grid.GetCell(nextPosition);
@@ -146,7 +144,7 @@ namespace Enemies.Basic
             return false;
         }
 
-        private IEnumerator RotateThenMove(Vector3 direction, bool left)
+        protected IEnumerator RotateThenMove(Vector3 direction, bool left)
         {
             RotationAnimation rotationAnimation = new RotationAnimation();
             StartCoroutine(rotationAnimation.TurnObject90(this.gameObject, 0.2f, left));
@@ -187,12 +185,12 @@ namespace Enemies.Basic
             return hasFinishedMoveAnimation;
         }
 
-        private bool IsValidCell(Cell toCheck)
+         protected virtual bool IsValidCell(Cell toCheck)
         {
-            PathfindingInvalidCell(toCheck);
-            bool isValidBlockType = (toCheck.type & BlockType.EnemyWalkable) > 0;
-            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(toCheck, TypeTopOfCell.Enemy);
-            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(toCheck);
+            Cell updatedCell = TilingGrid.grid.GetCell(toCheck.position);
+            bool isValidBlockType = (updatedCell.type & BlockType.EnemyWalkable) > 0;
+            bool hasNoEnemy = !TilingGrid.grid.HasTopOfCellOfType(updatedCell, TypeTopOfCell.Enemy);
+            return isValidBlockType && hasNoEnemy && !PathfindingInvalidCell(updatedCell);
         }
     }
 }

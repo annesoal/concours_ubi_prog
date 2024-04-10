@@ -29,6 +29,7 @@ namespace Grid
         private readonly Cell[,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
+        [SerializeField] private GameObject _obstaclePlane;
 
         public static List<Cell> GetMonkeyReachableCells()
         {
@@ -77,10 +78,20 @@ namespace Grid
         void Start()
         {
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
-
             foreach (var block in blocks)
             {
                 AddBlockAsCell(block);
+            }
+
+            InitializeObstacles();
+        }
+
+        private void InitializeObstacles()
+        {
+            Obstacle[] obstacles = _obstaclePlane.GetComponentsInChildren<Obstacle>();
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.Initialize();
             }
         }
 
@@ -219,7 +230,7 @@ namespace Grid
             grid.UpdateCell(originCell);
         }
         
-  
+
         
         public bool HasTopOfCellOfType(Cell cell, TypeTopOfCell typeTopOfCell)
         {
@@ -250,46 +261,119 @@ namespace Grid
         /// <returns>The cell of type in direction found, or the initial cell if nothing was found.</returns>
         public Cell GetCellOfTypeAtDirection(Cell initialCell, Type searchType, Vector2Int searchDirection)
         {
-            Vector2Int nextCellPosition = (initialCell.position + searchDirection);
+            List<Cell> cells = GetCellsDirectionTriangle(initialCell, searchDirection);
 
-            // if not, it is Y.
-            bool isXDirection = searchDirection.x != 0;
-
-            int iInit = isXDirection ? nextCellPosition.x : nextCellPosition.y;
-
-            ActionRef<int> forPostFunction;
-            if (isXDirection)
+            foreach (var cell in cells)
             {
-                forPostFunction = searchDirection.x < 0 ? Decrement : Increment;
-            }
-            else
-            {
-                forPostFunction = searchDirection.y < 0 ? Decrement : Increment;
-            }
-
-            Predicate<int> forCompareFunction;
-            if (isXDirection)
-            {
-                forCompareFunction = searchDirection.x < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
-            }
-            else
-            {
-                forCompareFunction = searchDirection.y < 0 ? IsGreaterThanMimimumPosArray : IsLowerThanSize;
-            }
-
-            for (int i = iInit; forCompareFunction(i); forPostFunction(ref i))
-            {
-                Cell currentSearch = _cells[nextCellPosition.x, nextCellPosition.y];
-
-                if (currentSearch.Has(BlockType.Translate(searchType)))
+                if (cell.Has(BlockType.Translate(searchType)))
                 {
-                    return currentSearch;
+                    Debug.Log("returned " + cell.position);
+                    return cell;
                 }
-
-                nextCellPosition += searchDirection;
             }
 
             return initialCell;
+        }
+        
+        private List<Cell> GetCellsDirectionTriangle(Cell origin, Vector2Int direction)
+        {
+            if (direction == Vector2Int.left)
+            {
+                return GetCellsHorizontalSearchTriangle(origin, -1);
+            }
+
+            if (direction == Vector2Int.right)
+            {
+                
+                return GetCellsHorizontalSearchTriangle(origin, 1);
+            }
+
+            if (direction == Vector2Int.up)
+            {
+                
+                return GetCellsVerticalSearchTriangle(origin, 1);
+            }
+
+            if (direction == Vector2Int.down)
+            {
+                
+                return GetCellsVerticalSearchTriangle(origin, -1);
+            }
+
+            return new List<Cell>();
+        }
+        
+        private List<Cell> GetCellsHorizontalSearchTriangle(Cell origin, int xDirection)
+        {
+            List<Cell> cellsFound = new();
+            int x = origin.position.x + xDirection;
+            int y = origin.position.y; 
+            int prevSize;
+            int nextSize;
+            int numberOfWhile = 1;
+            do
+            {
+                prevSize = cellsFound.Count;
+                int minY = y - numberOfWhile;  
+                int maxY = y + numberOfWhile;
+
+                for (int i = minY; i < maxY; i++)
+                {
+                    try
+                    {
+                        Cell cell = GetCell(x, i);
+                        if (!cell.IsNone())
+                            cellsFound.Add(cell);
+                    }
+                    catch (ArgumentException)
+                    {
+                        
+                    }
+                }           
+                nextSize = cellsFound.Count;
+                x += xDirection;
+                numberOfWhile++;
+            } while (prevSize < nextSize);
+            Debug.LogWarning(cellsFound.Count);
+            return cellsFound;
+        }
+        
+        private List<Cell> GetCellsVerticalSearchTriangle(Cell origin, int yDirection)
+        {
+            
+            List<Cell> cellsFound = new(); 
+            int x = origin.position.x;
+            int y = origin.position.y + yDirection; 
+            int prevSize;
+            int nextSize;
+            int numberOfWhile = 1;
+            do
+            {
+                prevSize = cellsFound.Count;
+                int minX = x - numberOfWhile;  
+                int maxX = x + numberOfWhile;
+
+                for (int i = minX; i < maxX; i++)
+                {
+                    try
+                    {
+                        Cell cell = GetCell(i, y);
+                        if (!cell.IsNone())
+                            cellsFound.Add(cell);
+                    }
+                    catch (ArgumentException)
+                    {
+                        
+                    }
+                }
+                
+                nextSize = cellsFound.Count;
+                y += yDirection;
+                numberOfWhile++;
+            } while (prevSize < nextSize);
+
+            Debug.LogWarning(cellsFound.Count);
+            return cellsFound;
         }
 
         private const int MINIMUM_POSITION_OF_ARRAY = 0;
@@ -332,7 +416,7 @@ namespace Grid
             toPlace.transform.position = GridPositionToLocal(cell.position, yPos);
         }
 
-        private void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
+        public void AddObjectToCellAtPositionInit(GameObject toPlace, Vector2Int cellPosition)
         {
             Cell cell = GetCell(cellPosition);
             cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());

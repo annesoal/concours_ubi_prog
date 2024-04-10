@@ -23,7 +23,7 @@ public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
 
     private static bool _hasFinishedTowersTurn;
     public static int baseCost;
-
+    [SerializeField] protected Animator animator;
     [Header("Tower specifics")] [SerializeField]
     protected Transform shootingPoint;
 

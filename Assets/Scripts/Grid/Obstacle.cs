@@ -16,19 +16,17 @@ namespace Grid
 
     public class Obstacle : NetworkBehaviour, ITopOfCell, IDamageable
     {
+        [SerializeField] protected Animator animator;
         [SerializeField] private float topOfCell = 0.72f;
 
         [SerializeField] private int health = 1;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
 
-        private void Start()
+        public void Initialize()
         {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, transform.position);
+            if (!IsServer) return;
+            Vector2Int vector2Int = TilingGrid.LocalToGridPosition(this.transform.position);
+            TilingGrid.grid.AddObjectToCellAtPositionInit(this.gameObject, vector2Int);
         }
         public new TypeTopOfCell GetType()
         {

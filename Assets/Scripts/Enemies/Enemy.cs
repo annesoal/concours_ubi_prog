@@ -24,9 +24,9 @@ namespace Enemies
 
     public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell //, ICanDamage
     {
-        [SerializeField] protected EnnemyType ennemyType;
+        protected EnnemyType ennemyType;
 
-        [FormerlySerializedAs("stupefiedState")] [SerializeField] protected bool isStupefiedState = false; // Piege
+        [SerializeField] protected bool isStupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 1;
         private List<Cell> _destinationsCell;
