@@ -7,6 +7,7 @@ using Grid;
 using Managers;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Type = Grid.Type;
@@ -301,6 +302,10 @@ public class TowerDefenseManager : NetworkBehaviour
     private void ShowEndGameScreen()
     {
         InputManager.Instance.DisablePlayerInputAction();
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            EventSystem.current.sendNavigationEvents = false;
+        }
         
         if (gameWon)
         {
