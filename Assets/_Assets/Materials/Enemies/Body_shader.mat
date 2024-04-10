@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BC_texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -48,7 +52,7 @@ Material:
     - _QueueOffset: 0
     - _Shades: 0.4
     m_Colors:
-    - _Color: {r: 0.042812422, g: 0.008098972, b: 0.13207549, a: 0}
+    - _Color: {r: 0.16078432, g: 0.12156863, b: 0.29411766, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4232478126816663054
 MonoBehaviour:
