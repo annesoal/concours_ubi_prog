@@ -43,6 +43,9 @@ public class InputManager : MonoBehaviour
         
         _playerInputActions.UI.MinimalLeft.performed += UserInterfaceInput_OnMinimalLeftPerformed;
         _playerInputActions.UI.MinimalRight.performed += UserInterfaceInput_OnMinimalRightPerformed;
+        
+        _playerInputActions.UI.ShoulderRight.performed += UserInterfaceInput_OnShoulderRightPerformed;
+        _playerInputActions.UI.ShoulderLeft.performed += UserInterfaceInput_OnShoulderLeftPerformed;
     }
 
     private void Start()
@@ -186,4 +189,17 @@ public class InputManager : MonoBehaviour
     {
         OnUserInterfaceMinimalRightPerformed?.Invoke(this, EventArgs.Empty);
     }
+
+    public event EventHandler OnUserInterfaceShoulderRightPerformed;
+    private void UserInterfaceInput_OnShoulderRightPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceShoulderRightPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceShoulderLeftPerformed;
+    private void UserInterfaceInput_OnShoulderLeftPerformed(InputAction.CallbackContext obj)
+    {
+        OnUserInterfaceShoulderLeftPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
 }

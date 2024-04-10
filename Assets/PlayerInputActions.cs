@@ -666,6 +666,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShoulderRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f63a072-58f8-49e7-98f0-67b833560925"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShoulderLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""13bd7a35-cac3-4b89-ae7f-22cd68b9da87"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1009,6 +1027,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MinimalDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76af0a37-479f-4cd5-83b5-993e7f472ef7"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShoulderRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ee1cadc-f153-4143-94fd-a73a36248191"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShoulderRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65f562a8-39f4-4f06-ac4b-9cae861c26fc"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShoulderLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cd7ef8e-2e43-496a-8eab-b5f70bcc098d"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShoulderLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1062,6 +1124,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_MinimalDown = m_UI.FindAction("MinimalDown", throwIfNotFound: true);
         m_UI_MinimalLeft = m_UI.FindAction("MinimalLeft", throwIfNotFound: true);
         m_UI_MinimalRight = m_UI.FindAction("MinimalRight", throwIfNotFound: true);
+        m_UI_ShoulderRight = m_UI.FindAction("ShoulderRight", throwIfNotFound: true);
+        m_UI_ShoulderLeft = m_UI.FindAction("ShoulderLeft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1273,6 +1337,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_MinimalDown;
     private readonly InputAction m_UI_MinimalLeft;
     private readonly InputAction m_UI_MinimalRight;
+    private readonly InputAction m_UI_ShoulderRight;
+    private readonly InputAction m_UI_ShoulderLeft;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1287,6 +1353,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MinimalDown => m_Wrapper.m_UI_MinimalDown;
         public InputAction @MinimalLeft => m_Wrapper.m_UI_MinimalLeft;
         public InputAction @MinimalRight => m_Wrapper.m_UI_MinimalRight;
+        public InputAction @ShoulderRight => m_Wrapper.m_UI_ShoulderRight;
+        public InputAction @ShoulderLeft => m_Wrapper.m_UI_ShoulderLeft;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1326,6 +1394,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MinimalRight.started += instance.OnMinimalRight;
             @MinimalRight.performed += instance.OnMinimalRight;
             @MinimalRight.canceled += instance.OnMinimalRight;
+            @ShoulderRight.started += instance.OnShoulderRight;
+            @ShoulderRight.performed += instance.OnShoulderRight;
+            @ShoulderRight.canceled += instance.OnShoulderRight;
+            @ShoulderLeft.started += instance.OnShoulderLeft;
+            @ShoulderLeft.performed += instance.OnShoulderLeft;
+            @ShoulderLeft.canceled += instance.OnShoulderLeft;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1360,6 +1434,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MinimalRight.started -= instance.OnMinimalRight;
             @MinimalRight.performed -= instance.OnMinimalRight;
             @MinimalRight.canceled -= instance.OnMinimalRight;
+            @ShoulderRight.started -= instance.OnShoulderRight;
+            @ShoulderRight.performed -= instance.OnShoulderRight;
+            @ShoulderRight.canceled -= instance.OnShoulderRight;
+            @ShoulderLeft.started -= instance.OnShoulderLeft;
+            @ShoulderLeft.performed -= instance.OnShoulderLeft;
+            @ShoulderLeft.canceled -= instance.OnShoulderLeft;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1421,5 +1501,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMinimalDown(InputAction.CallbackContext context);
         void OnMinimalLeft(InputAction.CallbackContext context);
         void OnMinimalRight(InputAction.CallbackContext context);
+        void OnShoulderRight(InputAction.CallbackContext context);
+        void OnShoulderLeft(InputAction.CallbackContext context);
     }
 }
