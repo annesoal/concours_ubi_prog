@@ -267,6 +267,7 @@ namespace Grid
             {
                 if (cell.Has(BlockType.Translate(searchType)))
                 {
+                    Debug.Log("returned " + cell.position);
                     return cell;
                 }
             }
@@ -305,7 +306,7 @@ namespace Grid
         private List<Cell> GetCellsHorizontalSearchTriangle(Cell origin, int xDirection)
         {
             List<Cell> cellsFound = new();
-            int x = origin.position.x;
+            int x = origin.position.x + xDirection;
             int y = origin.position.y; 
             int prevSize;
             int nextSize;
@@ -333,7 +334,7 @@ namespace Grid
                 x += xDirection;
                 numberOfWhile++;
             } while (prevSize < nextSize);
-
+            Debug.LogWarning(cellsFound.Count);
             return cellsFound;
         }
         
@@ -342,7 +343,7 @@ namespace Grid
             
             List<Cell> cellsFound = new(); 
             int x = origin.position.x;
-            int y = origin.position.y; 
+            int y = origin.position.y + yDirection; 
             int prevSize;
             int nextSize;
             int numberOfWhile = 1;
@@ -371,6 +372,7 @@ namespace Grid
                 numberOfWhile++;
             } while (prevSize < nextSize);
 
+            Debug.LogWarning(cellsFound.Count);
             return cellsFound;
         }
 
