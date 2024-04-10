@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicTrapSO
   m_EditorClassIdentifier: 
   prefab: {fileID: 2773368944696159311, guid: 22a0021b39b048cf0a3b029d1b7760c4, type: 3}
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: b98b0c504e2bf28e9871645bddf8ce2f, type: 3}
   objectName: Basic Trap
   visuals: {fileID: 6450326503996897373, guid: 3fd77c610f31ede11a48523dcd47c1a4, type: 3}
   description: "C'est la premier pi\xE8ge h\xE9\xE9h\xE9\xE9"
