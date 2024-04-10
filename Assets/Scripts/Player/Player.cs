@@ -280,19 +280,38 @@ public class Player : NetworkBehaviour, ITopOfCell
         return _currentEnergy > 0; 
     }
 
+    
+    public event EventHandler<OnPlayerEnergyChangedEventArgs> OnPlayerEnergyChanged;
+    public class OnPlayerEnergyChangedEventArgs : EventArgs { public int Energy; }
+    
     private void ResetEnergy()
     {
         _currentEnergy = _totalEnergy;
+        
+       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+       {
+           Energy = _currentEnergy,
+       });
     }
 
     private void DecrementEnergy()
     {
        _currentEnergy--; 
+       
+       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+       {
+           Energy = _currentEnergy,
+       });
     }
     
     private void IncrementEnergy()
     {
         _currentEnergy++;
+        
+       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+       {
+           Energy = _currentEnergy,
+       });
     }
 
     public void OnCancel()

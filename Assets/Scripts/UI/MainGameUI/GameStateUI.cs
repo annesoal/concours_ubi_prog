@@ -14,13 +14,27 @@ public class GameStateUI : MonoBehaviour
     [SerializeField] private GameObject timerGameObject;
     [SerializeField] private TextMeshProUGUI timerText;
     
+    [Header("Energy")]
+    [SerializeField] private TextMeshProUGUI energyLeftText;
+    
     private bool _canUpdateTimerText = false;
     
     private void Start()
     {
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         TowerDefenseManager.Instance.OnRoundNumberIncreased += TowerDefenseManager_OnRoundNumberIncreased;
+
+        StartCoroutine(ConnectPlayerEventOnSpawn());
+    }
+
+    private IEnumerator ConnectPlayerEventOnSpawn()
+    {
+        while (Player.LocalInstance is null || !Player.LocalInstance)
+        {
+            yield return new WaitForSeconds(0.8f);
+        }
         
+        Player.LocalInstance.OnPlayerEnergyChanged += PlayerLocalInstance_OnPlayerEnergyChanged;
         BasicShowHide.Hide(gameObject);
     }
 
@@ -73,5 +87,10 @@ public class GameStateUI : MonoBehaviour
         
         _canUpdateTimerText = true;
         //BasicShowHide.Show(timerGameObject);
+    }
+    
+    private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
+    { 
+        energyLeftText.text = "Energy left : " +  e.Energy;
     }
 }
