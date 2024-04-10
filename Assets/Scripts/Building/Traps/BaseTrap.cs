@@ -11,7 +11,7 @@ public abstract class BaseTrap : BuildableObject
     static public int baseCost;
     [SerializeField] private BuildableObjectVisuals trapVisuals;
     [SerializeField] private int damage;
-
+    [SerializeField] protected Animator animator;
     private void Start()
     {
         Enemy.OnAnyEnemyMoved += Enemy_OnAnyEnemyMoved;
