@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Amulets;
 using UI;
+using Unity.Netcode;
 using UnityEngine;
 
 public class EndOfGameVictoryUI : MonoBehaviour
 {
     [SerializeField] private AmuletChoicesUI amuletChoicesUI;
+    [SerializeField] private GameObject HostIsChosingUI;
     
     private void Start()
     {
@@ -31,6 +33,20 @@ public class EndOfGameVictoryUI : MonoBehaviour
     {
         BasicShowHide.Show(gameObject);
 
+        TryShowHostIsChosingUI();
+
         amuletChoicesUI.InitiateFirstButtonSelect();
+    }
+
+    private void TryShowHostIsChosingUI()
+    {
+        if (! NetworkManager.Singleton.IsServer)
+        {
+            BasicShowHide.Show(HostIsChosingUI);
+        }
+        else
+        {
+            BasicShowHide.Hide(HostIsChosingUI);
+        }
     }
 }
