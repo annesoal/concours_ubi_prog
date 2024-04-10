@@ -300,6 +300,8 @@ public class TowerDefenseManager : NetworkBehaviour
     public event EventHandler OnDefeat;
     private void ShowEndGameScreen()
     {
+        InputManager.Instance.DisablePlayerInputAction();
+        
         if (gameWon)
         {
             OnVictory?.Invoke(this, EventArgs.Empty);

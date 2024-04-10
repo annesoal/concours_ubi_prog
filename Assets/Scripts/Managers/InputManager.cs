@@ -61,6 +61,11 @@ public class InputManager : MonoBehaviour
             _canMovePlayer = false;
         }
     }
+    
+    public void DisablePlayerInputAction()
+    {
+        _playerInputActions.Disable();
+    }
 
     private void Confirm(InputAction.CallbackContext obj)
     {
@@ -181,5 +186,4 @@ public class InputManager : MonoBehaviour
     {
         OnUserInterfaceMinimalRightPerformed?.Invoke(this, EventArgs.Empty);
     }
-
 }
