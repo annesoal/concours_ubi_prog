@@ -69,6 +69,9 @@ public class TowerDefenseManager : NetworkBehaviour
     public AmuletSelector amuletSelector;
 
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
+    
+    [Header("Next level data")]
+    public NextLevelDataSO nextLevelDataSo;
 
     private readonly NetworkVariable<State> _currentState = new();
 
