@@ -41,7 +41,7 @@ namespace Enemies.Basic
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    throw new Exception("sides did NOT work");
+                    hasFinishedMoveAnimation = true;
                 }
             }
 

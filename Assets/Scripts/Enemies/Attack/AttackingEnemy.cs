@@ -41,7 +41,7 @@ namespace Enemies
                         hasPath = false;
                         if (!MoveSides())
                         {
-                           throw new Exception("nothing happend"); 
+                            hasFinishedMoveAnimation = true;
                         }
                     }
                 }
