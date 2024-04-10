@@ -47,17 +47,20 @@ public class EnvironmentTurnManager : MonoBehaviour
             totalEnergyPlayers--;
             ResetPlayerReadyCount();
         }
-
-        while (HasEnergyLeft(totalEnergy))
+        // Discussion avec Malo pour decoupler l'energie des 2 groupes
+        int NPCEnegy = totalEnergy; 
+        while (HasEnergyLeft(NPCEnegy))
         {
             StartCoroutine(BaseTower.PlayTowersInGameTurn());
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
             StartCoroutine(IAManager.Instance.MoveEnemies(totalEnergy));
             yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
+            NPCEnegy--;
         }
 
         IAManager.ResetEnemies();
 
+        
         yield return new WaitForSeconds(0.01f);
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }
