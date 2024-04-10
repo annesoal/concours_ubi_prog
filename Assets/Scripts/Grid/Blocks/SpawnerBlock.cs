@@ -1,4 +1,6 @@
+using System;
 using Spawners;
+using Unity.Networking.Transport;
 using UnityEngine;
 
 namespace Grid.Blocks
@@ -6,16 +8,25 @@ namespace Grid.Blocks
     public class SpawnerBlock : BasicBlock 
     {
         [SerializeField] private IMathSpawn _mathSpawn;
+
+        [SerializeField] public Transform positionToSpawn;
         
+        private GameObject _merde; 
+        private GameObject _doggo; 
+        private GameObject _bigGuy; 
+        private GameObject _sniper; 
 
         private int numberOfMerde;
         private int numberOfDoggos;
         private int numberOfBigGuy;
         private int numberOfSnipers;
 
-        public void SetEnemiesToSpawn()
+        public void Initialize()
         {
-           blockType =  
+            blockType = BlockType.EnemySpawnBlock;
+        }
+        public void SetEnemiesToSpawn(ListEnemiesToSpawnSO list)
+        {
         }
         public void CalculateSpawnRate(int turn)
         {
@@ -30,23 +41,25 @@ namespace Grid.Blocks
             if (numberOfMerde > 0)
             {
                 numberOfMerde--;
-                return;
+                return _merde;
             } 
             else if (numberOfDoggos > 0)
             {
                 numberOfDoggos--;
-                return;
+                return _doggo;
             }
             else if (numberOfBigGuy > 0)
             {
                 numberOfBigGuy--;
-                return;
+                return _bigGuy;
             }
             else if (numberOfSnipers > 0)
             {
                 numberOfSnipers--;
-                return;
+                return _sniper;
             }
+
+            throw new Exception("wtf");
         }
     }
 }
