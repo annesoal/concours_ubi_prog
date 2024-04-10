@@ -2,23 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies.Basic;
-using Ennemies;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
-using Interfaces;
 
 namespace Enemies
 {
     public class AttackingEnemy : BasicEnemy 
     {
         private Random _rand = new();
-        [SerializeField] private int enemyDomage = 1;
-        [SerializeField] private int attackRate;
-        [SerializeField] private int radiusAttack = 1;
-        protected float timeToMove = 1.0f;
+        private int enemyDomage = 1;
+        private int attackRate;
+        private int radiusAttack = 1;
         protected float timeToAttack = 0.5f;
         
         /**
