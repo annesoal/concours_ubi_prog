@@ -265,7 +265,7 @@ PrefabInstance:
     - target: {fileID: 5635950511158437073, guid: 232d4a4653874781d8eb6d4e8bad458c,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 436191676
+      value: 3373096588
       objectReference: {fileID: 0}
     - target: {fileID: 5841426918530243920, guid: 232d4a4653874781d8eb6d4e8bad458c,
         type: 3}
@@ -315,6 +315,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
+  animator: {fileID: 5866666021909216657, guid: 67d8b372520b98d4db2403b213a519f6,
+    type: 3}
   shootingPoint: {fileID: 7876219794598605437}
   towerVisuals: {fileID: 6731371395667940669}
   numberOfProjectilesToShootInTurn: 1
