@@ -12,10 +12,12 @@ public abstract class BaseTrap : BuildableObject
     [SerializeField] private BuildableObjectVisuals trapVisuals;
     [SerializeField] private int damage;
 
-    private void Start()
+    protected virtual void Start()
     {
         Enemy.OnAnyEnemyMoved += Enemy_OnAnyEnemyMoved;
     }
+
+    protected abstract void ActivateTrapBehaviour(Enemy enemy);
     
     public override void Build(Vector2Int positionToBuild)
     {
@@ -42,7 +44,7 @@ public abstract class BaseTrap : BuildableObject
         {
             foreach (Enemy toDamage in enemiesOnTrapCell)
             {
-                toDamage.Damage(damage);
+                ActivateTrapBehaviour(toDamage);
             }
             
             TilingGrid.RemoveElement(gameObject, transform.position);
@@ -51,7 +53,7 @@ public abstract class BaseTrap : BuildableObject
         }
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         Enemy.OnAnyEnemyMoved -= Enemy_OnAnyEnemyMoved;
     }

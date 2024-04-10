@@ -33,6 +33,7 @@ namespace Enemies.Basic
                 yield break;
             }
             
+            if (isStupefiedState) { yield break; }
             
             hasFinishedToMove = false;
             
