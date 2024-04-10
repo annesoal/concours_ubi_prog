@@ -16,6 +16,7 @@ namespace Grid
 
     public class Obstacle : NetworkBehaviour, ITopOfCell, IDamageable
     {
+        [SerializeField] protected Animator animator;
         [SerializeField] private float topOfCell = 0.72f;
 
         [SerializeField] private int health = 1;
