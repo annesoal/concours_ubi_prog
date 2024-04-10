@@ -47,4 +47,13 @@ public class LobbyInputManager : MonoBehaviour
         OnDownUIPressed?.Invoke(this, EventArgs.Empty);
     }
 
+    private void OnDestroy()
+    {
+        _playerInputActions.UI.Select.performed -= PlayerInputActionUI_OnSelectperformed;
+        _playerInputActions.UI.Cancel.performed -= PlayerInputActionUI_OnCancelperformed;
+        _playerInputActions.UI.MinimalUp.performed -= PlayerInputActionUI_OnUpPerformed;
+        _playerInputActions.UI.MinimalDown.performed -= PlayerInputActionUI_OnDownPerformed;
+        
+        _playerInputActions.Dispose();
+    }
 }

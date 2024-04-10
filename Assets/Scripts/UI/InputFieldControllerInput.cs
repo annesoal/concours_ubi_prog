@@ -79,5 +79,12 @@ public class InputFieldControllerInput : MonoBehaviour
         yield return new WaitForSeconds(time);
         EventSystem.current.sendNavigationEvents = true;
     }
-    
+
+    private void OnDestroy()
+    {
+        LobbyInputManager.Instance.OnSelectUIPressed -= LobbyInputManager_OnSelectUIPressed;
+        LobbyInputManager.Instance.OnCancelUIPressed -= LobbyInputManager_OnCancelUIPressed;
+        LobbyInputManager.Instance.OnUpUIPressed -= LobbyInputManager_OnUpUIPressed;
+        LobbyInputManager.Instance.OnDownUIPressed -= LobbyInputManager_OnDownUIPressed;
+    }
 }

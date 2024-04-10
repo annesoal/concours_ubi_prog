@@ -202,4 +202,26 @@ public class InputManager : MonoBehaviour
         OnUserInterfaceShoulderLeftPerformed?.Invoke(this, EventArgs.Empty);
     }
 
+    private void OnDestroy()
+    {
+        _playerInputActions.Player.Select.performed -= Select;
+        _playerInputActions.Player.Cancel.performed -= Cancel;
+        _playerInputActions.Player.Confirm.performed -= Confirm;
+        _playerInputActions.Player.Interact.performed -= PlayerInput_OnInteractperformed;
+        
+        _playerInputActions.UI.Select.performed -= UserInterfaceInput_OnSelectperformed;
+        _playerInputActions.UI.Cancel.performed -= UserInterfaceInput_OnCancelPerformed;
+        _playerInputActions.UI.Left.performed -= UserInterfaceInput_OnLeftPerformed ;
+        _playerInputActions.UI.Right.performed -= UserInterfaceInput_OnRightPerformed;
+        _playerInputActions.UI.Up.performed -= UserInterfaceInput_OnUpPerformed;
+        _playerInputActions.UI.Down.performed -= UserInterfaceInput_OnDownPerformed;
+        
+        _playerInputActions.UI.MinimalLeft.performed -= UserInterfaceInput_OnMinimalLeftPerformed;
+        _playerInputActions.UI.MinimalRight.performed -= UserInterfaceInput_OnMinimalRightPerformed;
+        
+        _playerInputActions.UI.ShoulderRight.performed -= UserInterfaceInput_OnShoulderRightPerformed;
+        _playerInputActions.UI.ShoulderLeft.performed -= UserInterfaceInput_OnShoulderLeftPerformed;
+        
+        _playerInputActions.Dispose();
+    }
 }
