@@ -632,6 +632,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""MinimalUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""d69f61f7-4d6e-48a7-bf4a-892e5007c157"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MinimalDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""7aa10fbf-cdc2-4961-8dc5-d00b03761fb8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MinimalLeft"",
                     ""type"": ""Button"",
                     ""id"": ""9a797f6b-3335-47f3-876c-2b932f652bcd"",
@@ -925,6 +943,72 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MinimalLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5e689f20-512f-41b0-8dc1-7446b30f363d"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4aafcf84-f660-4bce-9bd5-6d24c8623481"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""36abef77-3507-4b80-a0b2-e8a9b87bdd4e"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""882a37fe-1837-4483-8dd2-1f62117bd678"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f7af82b-474f-4f3b-a2f7-7f27c285acfb"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b85e021a-92e0-48fb-b668-1b85d4121eff"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MinimalDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -974,6 +1058,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_Up = m_UI.FindAction("Up", throwIfNotFound: true);
         m_UI_Left = m_UI.FindAction("Left", throwIfNotFound: true);
         m_UI_Right = m_UI.FindAction("Right", throwIfNotFound: true);
+        m_UI_MinimalUp = m_UI.FindAction("MinimalUp", throwIfNotFound: true);
+        m_UI_MinimalDown = m_UI.FindAction("MinimalDown", throwIfNotFound: true);
         m_UI_MinimalLeft = m_UI.FindAction("MinimalLeft", throwIfNotFound: true);
         m_UI_MinimalRight = m_UI.FindAction("MinimalRight", throwIfNotFound: true);
     }
@@ -1183,6 +1269,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Up;
     private readonly InputAction m_UI_Left;
     private readonly InputAction m_UI_Right;
+    private readonly InputAction m_UI_MinimalUp;
+    private readonly InputAction m_UI_MinimalDown;
     private readonly InputAction m_UI_MinimalLeft;
     private readonly InputAction m_UI_MinimalRight;
     public struct UIActions
@@ -1195,6 +1283,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Up => m_Wrapper.m_UI_Up;
         public InputAction @Left => m_Wrapper.m_UI_Left;
         public InputAction @Right => m_Wrapper.m_UI_Right;
+        public InputAction @MinimalUp => m_Wrapper.m_UI_MinimalUp;
+        public InputAction @MinimalDown => m_Wrapper.m_UI_MinimalDown;
         public InputAction @MinimalLeft => m_Wrapper.m_UI_MinimalLeft;
         public InputAction @MinimalRight => m_Wrapper.m_UI_MinimalRight;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
@@ -1224,6 +1314,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Right.started += instance.OnRight;
             @Right.performed += instance.OnRight;
             @Right.canceled += instance.OnRight;
+            @MinimalUp.started += instance.OnMinimalUp;
+            @MinimalUp.performed += instance.OnMinimalUp;
+            @MinimalUp.canceled += instance.OnMinimalUp;
+            @MinimalDown.started += instance.OnMinimalDown;
+            @MinimalDown.performed += instance.OnMinimalDown;
+            @MinimalDown.canceled += instance.OnMinimalDown;
             @MinimalLeft.started += instance.OnMinimalLeft;
             @MinimalLeft.performed += instance.OnMinimalLeft;
             @MinimalLeft.canceled += instance.OnMinimalLeft;
@@ -1252,6 +1348,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Right.started -= instance.OnRight;
             @Right.performed -= instance.OnRight;
             @Right.canceled -= instance.OnRight;
+            @MinimalUp.started -= instance.OnMinimalUp;
+            @MinimalUp.performed -= instance.OnMinimalUp;
+            @MinimalUp.canceled -= instance.OnMinimalUp;
+            @MinimalDown.started -= instance.OnMinimalDown;
+            @MinimalDown.performed -= instance.OnMinimalDown;
+            @MinimalDown.canceled -= instance.OnMinimalDown;
             @MinimalLeft.started -= instance.OnMinimalLeft;
             @MinimalLeft.performed -= instance.OnMinimalLeft;
             @MinimalLeft.canceled -= instance.OnMinimalLeft;
@@ -1315,6 +1417,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnUp(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
+        void OnMinimalUp(InputAction.CallbackContext context);
+        void OnMinimalDown(InputAction.CallbackContext context);
         void OnMinimalLeft(InputAction.CallbackContext context);
         void OnMinimalRight(InputAction.CallbackContext context);
     }

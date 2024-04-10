@@ -19,8 +19,8 @@ public class LobbyInputManager : MonoBehaviour
         
         _playerInputActions.UI.Select.performed += PlayerInputActionUI_OnSelectperformed;
         _playerInputActions.UI.Cancel.performed += PlayerInputActionUI_OnCancelperformed;
-        _playerInputActions.UI.Up.performed += PlayerInputActionUI_OnUpPerformed;
-        _playerInputActions.UI.Down.performed += PlayerInputActionUI_OnDownPerformed;
+        _playerInputActions.UI.MinimalUp.performed += PlayerInputActionUI_OnUpPerformed;
+        _playerInputActions.UI.MinimalDown.performed += PlayerInputActionUI_OnDownPerformed;
     }
 
     public event EventHandler OnSelectUIPressed;
