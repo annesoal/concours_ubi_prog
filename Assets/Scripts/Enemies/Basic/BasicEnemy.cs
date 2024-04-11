@@ -153,7 +153,7 @@ namespace Enemies.Basic
         /*
          * Bouge l'ennemi
          */
-        private IEnumerator MoveEnemy(Vector3 direction)
+        protected virtual IEnumerator MoveEnemy(Vector3 direction)
         {
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
