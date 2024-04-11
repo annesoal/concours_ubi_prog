@@ -16972,6 +16972,11 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[1]._period
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
@@ -17022,12 +17027,12 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[0]._spawnRate
-      value: 0.05
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._spawnRate
-      value: 1
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -17102,7 +17107,7 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._cellsToCheck
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -17138,7 +17143,7 @@ PrefabInstance:
         type: 3}
       propertyPath: listOfSpawners.Array.data[0]._objectToSpawn
       value: 
-      objectReference: {fileID: 3264472064520538293, guid: aca8a258f96500008a09af5f57d01ce4,
+      objectReference: {fileID: 7650414445784578766, guid: 14076d7f6143ae9cd9a76a01d6e18b58,
         type: 3}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -17149,7 +17154,7 @@ PrefabInstance:
         type: 3}
       propertyPath: listOfSpawners.Array.data[1]._objectToSpawn
       value: 
-      objectReference: {fileID: 7650414445784578766, guid: 14076d7f6143ae9cd9a76a01d6e18b58,
+      objectReference: {fileID: 3264472064520538293, guid: aca8a258f96500008a09af5f57d01ce4,
         type: 3}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -17345,12 +17350,12 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[0].blockingElementsType.Array.data[1]
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[0].blockingElementsType.Array.data[2]
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
