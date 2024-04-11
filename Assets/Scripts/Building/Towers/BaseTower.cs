@@ -38,7 +38,7 @@ public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
     /// En radiant
     [SerializeField] private float firingAngle;
 
-    [SerializeField] private int timeBetweenShots = 2;
+    [SerializeField] private int timeBetweenShots = 1;
 
     [Header("BulletToFire")] [SerializeField]
     protected GameObject _bullet;
