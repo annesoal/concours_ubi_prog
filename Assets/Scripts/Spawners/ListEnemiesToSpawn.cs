@@ -2,12 +2,13 @@ using UnityEngine;
 
 namespace Spawners
 {
+    [CreateAssetMenu()]
     public class ListEnemiesToSpawnSO : ScriptableObject
     {
-        [SerializeField] private GameObject Doggo; 
-        [SerializeField] private GameObject Merde; 
-        [SerializeField] private GameObject BigGuy; 
-        [SerializeField] private GameObject Sniper; 
+        [SerializeField] public GameObject Doggo; 
+        [SerializeField] public GameObject Merde; 
+        [SerializeField] public GameObject BigGuy; 
+        [SerializeField] public GameObject Sniper; 
         
     }
 }

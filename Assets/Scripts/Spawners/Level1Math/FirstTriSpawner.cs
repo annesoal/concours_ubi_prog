@@ -2,25 +2,25 @@ using System;
 
 namespace Spawners
 {
-    public class FirstTriSpawner : IMathSpawn
+    public class FirstTriSpawner : MathSpawnSO
     {
-        int IMathSpawn.GetNumberMerdeToSpawn(int turn)
+        public override int GetNumberMerdeToSpawn(int turn)
         {
             return (int)Math.Ceiling((turn * 1.2) / 4);
         }
 
-        int IMathSpawn.GetBigGuyToSpawn(int turn)
+        public override int GetBigGuyToSpawn(int turn)
         {
             return 0; 
         }
 
-        int IMathSpawn.GetDoggoToSpawn(int turn)
+        public override int GetDoggoToSpawn(int turn)
         {
             
             return (int)Math.Ceiling((turn * 0.7) / 3);
         }
 
-        int IMathSpawn.GetSnipperToSpawn(int turn)
+        public override int GetSnipperToSpawn(int turn)
         {
             return (int)Math.Ceiling((turn * 0.5) / 3);
         }

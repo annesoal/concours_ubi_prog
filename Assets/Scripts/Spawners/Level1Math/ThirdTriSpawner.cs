@@ -1,25 +1,26 @@
 using System;
+using UnityEngine;
 
 namespace Spawners
 {
-    public class ThirdTriSpawner : IMathSpawn
+    public class ThirdTriSpawner : MathSpawnSO
     {
-        int IMathSpawn.GetNumberMerdeToSpawn(int turn)
+        public override int GetNumberMerdeToSpawn(int turn)
         {
             return (int)Math.Ceiling((turn * 0.8) / 3);
         }
 
-        int IMathSpawn.GetBigGuyToSpawn(int turn)
+        public override int GetBigGuyToSpawn(int turn)
         {
             return (int) Math.Max(Math.Ceiling((turn - 1 * 0.5)), 0)  ;
         }
 
-        int IMathSpawn.GetDoggoToSpawn(int turn)
+        public override int GetDoggoToSpawn(int turn)
         {
             return (int) Math.Round(turn * 0.7);
         }
 
-        int IMathSpawn.GetSnipperToSpawn(int turn)
+        public override int GetSnipperToSpawn(int turn)
         {
             return 0;
         }
