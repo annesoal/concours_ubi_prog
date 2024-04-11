@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using Vector2 = UnityEngine.Vector2;
 
@@ -32,6 +34,7 @@ public class InputManager : MonoBehaviour
 		LoadSavedBindings();
         
         _playerInputActions.Player.Enable();
+        
         _playerInputActions.Player.Select.performed += Select;
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
@@ -251,6 +254,10 @@ public class InputManager : MonoBehaviour
 		MinimalRight,
 		ShoulderLeft,
 		ShoulderRight,
+		UpDPadEventSystem,
+		DownDPadEventSystem,
+		LeftDPadEventSystem,
+		RightDPadEventSystem,
 	}
     
 	private const int SINGLE_ACTION_MAP_DEFAULT_INDEX = 0;
@@ -273,6 +280,11 @@ public class InputManager : MonoBehaviour
 	private const int SHOULDER_LEFT_ACTION_MAP_INDEX = 0;
 	private const int SHOULDER_RIGHT_ACTION_MAP_INDEX = 0;
 
+	private const int UP_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX = 1;
+	private const int DOWN_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX = 2;
+	private const int LEFT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX = 3;
+	private const int RIGHT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX = 4;
+
 	private static readonly Dictionary<Binding, int> BindingActionMapIndexEquivalent = new Dictionary<Binding, int>()
 	{
 		{Binding.Up, UP_ACTION_MAP_INDEX},
@@ -289,6 +301,10 @@ public class InputManager : MonoBehaviour
 		{Binding.MinimalRight, MINIMAL_RIGHT_ACTION_MAP_INDEX},
 		{Binding.ShoulderLeft, SHOULDER_LEFT_ACTION_MAP_INDEX},
 		{Binding.ShoulderRight, SHOULDER_RIGHT_ACTION_MAP_INDEX},
+		{Binding.UpDPadEventSystem, UP_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX},
+		{Binding.DownDPadEventSystem, DOWN_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX},
+		{Binding.LeftDPadEventSystem, LEFT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX},
+		{Binding.RightDPadEventSystem, RIGHT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX},
 	};
 
 	private Dictionary<Binding, InputAction> _actionMapBindingEquivalent;
@@ -311,6 +327,10 @@ public class InputManager : MonoBehaviour
 			{ Binding.MinimalRight, _playerInputActions.UI.MinimalUp },
 			{ Binding.ShoulderLeft, _playerInputActions.UI.ShoulderLeft },
 			{ Binding.ShoulderRight, _playerInputActions.UI.ShoulderRight },
+			{ Binding.UpDPadEventSystem, _playerInputActions.EventSystemUI.Navigate },
+			{ Binding.DownDPadEventSystem, _playerInputActions.EventSystemUI.Navigate },
+			{ Binding.LeftDPadEventSystem, _playerInputActions.EventSystemUI.Navigate },
+			{ Binding.RightDPadEventSystem, _playerInputActions.EventSystemUI.Navigate },
 		};
 	}
 
@@ -327,7 +347,7 @@ public class InputManager : MonoBehaviour
 	
 	public void RebindBinding(Binding toRebind, Action onRebindDone)
 	{
-		_playerInputActions.Player.Disable();
+		_playerInputActions.Disable();
 
 		InputAction inputActionOfToRebind = _actionMapBindingEquivalent[toRebind];
 		
@@ -345,6 +365,9 @@ public class InputManager : MonoBehaviour
 				
 				onRebindDone();
 
+				// Must do in order to apply the other rebindings that weren't made in the PerformInteractive.
+				EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset = _playerInputActions.asset;
+
 				//PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
 				//PlayerPrefs.Save();
 				
@@ -355,52 +378,56 @@ public class InputManager : MonoBehaviour
 
 	private void TryRebindUserInterfaceBinding(InputAction inputActionRebinded, Binding playerEquivalentRebinded)
 	{
-		string path = inputActionRebinded.bindings[BindingActionMapIndexEquivalent[playerEquivalentRebinded]].path;
+		string path = inputActionRebinded.bindings[BindingActionMapIndexEquivalent[playerEquivalentRebinded]].overridePath;
 			
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Up])
+		if (playerEquivalentRebinded == Binding.Up)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Up, path);
-			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalUp, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Up, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalUp, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Navigate, path, UP_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX);
 			return;
 		}
 		
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Down])
+		if (playerEquivalentRebinded == Binding.Down)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Down, path);
-			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalDown, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Down, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalDown, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Navigate, path, DOWN_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX);
 			return;
 		}
 		
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Left])
+		if (playerEquivalentRebinded == Binding.Left)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Left, path);
-			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalLeft, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Left, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalLeft, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Navigate, path, LEFT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX);
 			return;
 		}
 		
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Left])
+		if (playerEquivalentRebinded == Binding.Right)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Right, path);
-			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalRight, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Right, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.UI.MinimalRight, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Navigate, path, RIGHT_DPAD_EVENT_SYSTEM_ACTION_MAP_INDEX);
 			return;
 		}
 		
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Select])
+		if (playerEquivalentRebinded == Binding.Select)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Select, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Select, path, 0);
 			return;
 		}
 		
-		if (inputActionRebinded == _actionMapBindingEquivalent[Binding.Cancel])
+		if (playerEquivalentRebinded == Binding.Cancel)
 		{
-			RebindUserInterfaceBinding(_playerInputActions.UI.Cancel, path);
+			RebindUserInterfaceBinding(_playerInputActions.UI.Cancel, path, 0);
 			return;
 		}
 	}
 
-	private void RebindUserInterfaceBinding(InputAction toRebind, string path)
+	private void RebindUserInterfaceBinding(InputAction toRebind, string path, int bindingIndex)
 	{
-			toRebind.ApplyBindingOverride (0, path);
+		toRebind.ApplyBindingOverride(bindingIndex, path);
 	}
 
 	private void LoadSavedBindings()
