@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pairsList:
   - path: <Gamepad>/dpad/up
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 91b2645370731f4348e07941fe52011c, type: 3}
   - path: <Gamepad>/dpad/down
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 430b3b969bc276eeeae08460c639e091, type: 3}
   - path: <Gamepad>/dpad/left
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 1173cc3961567ee1e886ecd87e62cddf, type: 3}
   - path: <Gamepad>/dpad/right
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: b14f46f0984131d2296b3a5d5ea78bf2, type: 3}
   - path: <Gamepad>/buttonSouth
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 17410d7ba4143394caf279729fec6219, type: 3}
   - path: <Gamepad>/buttonEast
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 62b31ec5219326a469b4cee6f204c00a, type: 3}
   - path: <Gamepad>/buttonNorth
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 99f244e9f96a923bda5c3e0750ac7580, type: 3}
   - path: <Gamepad>/buttonWest
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: cfbf2a7e43c3477b99912643c484c6ca, type: 3}
   - path: <Gamepad>/rightShoulder
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 4fd9bcd5676017a9d95752c649150bbf, type: 3}
   - path: <Gamepad>/leftShoulder
-    sprite: {fileID: 0}
+    sprite: {fileID: 21300000, guid: 2c0f576a893ff3582aa28b3dc14a1ea8, type: 3}
