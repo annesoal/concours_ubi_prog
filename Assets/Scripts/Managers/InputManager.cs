@@ -345,8 +345,8 @@ public class InputManager : MonoBehaviour
 				
 				onRebindDone();
 
-				PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
-				PlayerPrefs.Save();
+				//PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
+				//PlayerPrefs.Save();
 				
 				OnInputRebindingCompleted?.Invoke(this, EventArgs.Empty);
 			})
