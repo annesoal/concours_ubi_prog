@@ -16871,7 +16871,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mathSpawnSo
       value: 
-      objectReference: {fileID: 11400000, guid: e6dd00dcd2896c96c92fad5346162730,
+      objectReference: {fileID: 11400000, guid: 6e6d9552db0e9b14295b65b4dda773f8,
         type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
@@ -20034,7 +20034,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mathSpawnSo
       value: 
-      objectReference: {fileID: 11400000, guid: e6dd00dcd2896c96c92fad5346162730,
+      objectReference: {fileID: 11400000, guid: 1deb07f2896d589b1a71046cb51ec856,
         type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
@@ -34553,7 +34553,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mathSpawnSo
       value: 
-      objectReference: {fileID: 11400000, guid: e6dd00dcd2896c96c92fad5346162730,
+      objectReference: {fileID: 11400000, guid: d74b17997f4a0fed4a3ae90200bbdd1f,
         type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
