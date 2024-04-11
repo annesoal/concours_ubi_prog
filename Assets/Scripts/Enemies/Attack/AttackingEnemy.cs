@@ -32,8 +32,12 @@ namespace Enemies
                 hasFinishedToMove = true;
                 yield break;
             }
-                
-            if (isStupefiedState) { yield break; }
+
+            if (isStupefiedState)
+            {
+                hasFinishedToMove = true;
+                yield break;
+            }
                 
             hasFinishedToMove = false;
             if (!ChoseToAttack())
