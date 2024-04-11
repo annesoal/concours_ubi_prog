@@ -4,6 +4,7 @@ using System.Linq;
 using Amulets;
 using Enemies;
 using Grid;
+using Grid.Blocks;
 using Managers;
 using Unity.Netcode;
 using UnityEngine;
@@ -70,6 +71,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
 
+    [SerializeField] private List<SpawnerBlock> listOfSpawners;
     private readonly NetworkVariable<State> _currentState = new();
 
     private NetworkVariable<float> _currentTimer;
@@ -130,6 +132,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
         //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0;
+        this.gameObject.AddComponent<EnemySpawnerManager>().SetSpawners(listOfSpawners);
     }
 
     private void EndGame(object sender, OnCurrentStateChangedEventArgs e)
