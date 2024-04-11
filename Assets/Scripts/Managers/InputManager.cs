@@ -11,6 +11,8 @@ using Vector2 = UnityEngine.Vector2;
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
+
+    [SerializeField] private bool enableUserInterfaceInput;
     
     private PlayerInputActions _playerInputActions;
 
@@ -47,6 +49,8 @@ public class InputManager : MonoBehaviour
         _playerInputActions.UI.Up.performed += UserInterfaceInput_OnUpPerformed;
         _playerInputActions.UI.Down.performed += UserInterfaceInput_OnDownPerformed;
         
+        _playerInputActions.UI.MinimalUp.performed += UserInterfaceInput_OnMinimalUpPerformed;
+        _playerInputActions.UI.MinimalDown.performed += UserInterfaceInput_OnMinimalDownPerformed;
         _playerInputActions.UI.MinimalLeft.performed += UserInterfaceInput_OnMinimalLeftPerformed;
         _playerInputActions.UI.MinimalRight.performed += UserInterfaceInput_OnMinimalRightPerformed;
         
@@ -54,6 +58,11 @@ public class InputManager : MonoBehaviour
         _playerInputActions.UI.ShoulderLeft.performed += UserInterfaceInput_OnShoulderLeftPerformed;
         
 		InitializeActionMapBindingEquivalent();
+		
+		if (enableUserInterfaceInput)
+		{
+			_playerInputActions.UI.Enable();
+		}
     }
 
     private void Start()
@@ -187,6 +196,18 @@ public class InputManager : MonoBehaviour
     private void UserInterfaceInput_OnDownPerformed(InputAction.CallbackContext obj)
     {
         OnUserInterfaceDownPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceMinimalUpPerformed;
+    private void UserInterfaceInput_OnMinimalUpPerformed(InputAction.CallbackContext obj)
+    {
+		OnUserInterfaceMinimalUpPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler OnUserInterfaceMinimalDownPerformed;
+    private void UserInterfaceInput_OnMinimalDownPerformed(InputAction.CallbackContext obj)
+    {
+		OnUserInterfaceMinimalDownPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     public event EventHandler OnUserInterfaceMinimalLeftPerformed;

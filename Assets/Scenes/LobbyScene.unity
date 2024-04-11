@@ -3613,6 +3613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fbe801cd0f5b7549fd221aeacfd645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableUserInterfaceInput: 1
 --- !u!1 &1640632400
 GameObject:
   m_ObjectHideFlags: 0
@@ -5402,9 +5403,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2077176930}
   - component: {fileID: 2077176935}
+  - component: {fileID: 2077176934}
   - component: {fileID: 2077176933}
   - component: {fileID: 2077176932}
-  - component: {fileID: 2077176934}
   - component: {fileID: 2077176931}
   m_Layer: 5
   m_Name: LobbyNameInputField

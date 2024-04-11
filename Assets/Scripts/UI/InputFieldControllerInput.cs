@@ -16,8 +16,8 @@ public class InputFieldControllerInput : MonoBehaviour
     {
         InputManager.Instance.OnUserInterfaceSelectPerformed += LobbyInputManager_OnSelectUIPressed;
         InputManager.Instance.OnUserInterfaceCancelPerformed += LobbyInputManager_OnCancelUIPressed;
-        InputManager.Instance.OnUserInterfaceUpPerformed += LobbyInputManager_OnUpUIPressed;
-        InputManager.Instance.OnUserInterfaceDownPerformed += LobbyInputManager_OnDownUIPressed;
+        InputManager.Instance.OnUserInterfaceMinimalUpPerformed += LobbyInputManager_OnUpUIPressed;
+        InputManager.Instance.OnUserInterfaceMinimalDownPerformed += LobbyInputManager_OnDownUIPressed;
     }
 
     void Update()
