@@ -19,6 +19,6 @@ MonoBehaviour:
   description: "Je d\xE9cris cette tour de mani\xE8re hasardeuse."
   type: 0
   materialAndQuantityPairs:
-  - quantityOfMaterialRequired: 8
+  - quantityOfMaterialRequired: 7
     buildingMaterialSO: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
       type: 2}
