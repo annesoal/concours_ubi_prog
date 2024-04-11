@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b5e828a48e60f1abd3597e57fd6e99, type: 3}
+  m_Name: PairInputPathAndSpriteSO
+  m_EditorClassIdentifier: 
+  pairsList:
+  - path: <Gamepad>/dpad/up
+    sprite: {fileID: 0}
+  - path: <Gamepad>/dpad/down
+    sprite: {fileID: 0}
+  - path: <Gamepad>/dpad/left
+    sprite: {fileID: 0}
+  - path: <Gamepad>/dpad/right
+    sprite: {fileID: 0}
+  - path: <Gamepad>/buttonSouth
+    sprite: {fileID: 0}
+  - path: <Gamepad>/buttonEast
+    sprite: {fileID: 0}
+  - path: <Gamepad>/buttonNorth
+    sprite: {fileID: 0}
+  - path: <Gamepad>/buttonWest
+    sprite: {fileID: 0}
+  - path: <Gamepad>/rightShoulder
+    sprite: {fileID: 0}
+  - path: <Gamepad>/leftShoulder
+    sprite: {fileID: 0}

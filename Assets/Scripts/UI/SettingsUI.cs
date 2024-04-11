@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class SettingsUI : MonoBehaviour
 {
     [SerializeField] private GameObject pressToRebindUI;
+    [SerializeField] private PairInputPathAndSpriteSO pairInputPathAndSpriteSo;
     
     [Header("Rebinding Movement")]
     [SerializeField] private Button upButton;
