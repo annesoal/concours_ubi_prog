@@ -430,6 +430,7 @@ namespace Grid
 
         public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
         {
+            Debug.Log("Dans get cells in radius");
             List<Cell> cells = new List<Cell>();
 
             int minX = Math.Max(origin.x - radius, 0);
