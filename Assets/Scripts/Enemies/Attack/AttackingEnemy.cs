@@ -24,8 +24,12 @@ namespace Enemies
         public override IEnumerator Move(int energy)
         {
             Debug.Log("Dans move attacking enemy");
-            
-            if (!IsServer) { yield break; }
+
+            if (!IsServer)
+            {
+                Debug.Log("Dans early return IsServer");
+                yield break;
+            }
                 
             if (!IsTimeToMove(energy))
             {
@@ -59,6 +63,10 @@ namespace Enemies
                         hasFinishedMoveAnimation = true;
                     }
                 }
+            }
+            else
+            {
+                hasFinishedMoveAnimation = true;
             }
             
             yield return new WaitUntil(hasFinishedMovingAnimation);
