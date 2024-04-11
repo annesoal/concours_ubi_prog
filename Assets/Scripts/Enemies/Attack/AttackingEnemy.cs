@@ -51,7 +51,7 @@ namespace Enemies
             EmitOnAnyEnemyMoved();
         }
 
-        public bool ChoseToAttack()
+        public virtual bool ChoseToAttack()
         {
             if (path == null || path.Count == 0)
                 return true;
@@ -59,10 +59,9 @@ namespace Enemies
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
             return (ChoseAttack(cellsInRadius));
-         
         }
 
-        private bool ChoseAttack(List<Cell> cellsInRadius)
+        public virtual bool ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
@@ -74,7 +73,6 @@ namespace Enemies
                     return true;
                 }
             }
-
             return false;
         }
         
@@ -84,7 +82,13 @@ namespace Enemies
             return (_rand.NextDouble() > 1 - attackRate);
         }
         
-        private void Attack(BaseTower toAttack)
+        protected void Attack(BaseTower toAttack)
+        {
+            toAttack.Damage(enemyDamage);
+            StartCoroutine(AttackAnimation());
+        }
+        
+        protected void Attack(Obstacle toAttack)
         {
             toAttack.Damage(enemyDamage);
             StartCoroutine(AttackAnimation());
@@ -116,15 +120,6 @@ namespace Enemies
             return false;
         }
 
-        private bool IsTimeToMove(int energy)
-        {
-            return energy % ratioMovement == 0;
-        }
-        
-        private bool hasFinishedMovingAnimation()
-        {
-            return hasFinishedMoveAnimation;
-        }
 
         protected override bool IsValidCell(Cell toCheck)
         {

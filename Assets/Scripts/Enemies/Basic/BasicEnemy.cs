@@ -56,7 +56,7 @@ namespace Enemies.Basic
                    cellToCheck.HasNonWalkableBuilding();
         }
 
-        private bool IsTimeToMove(int energy)
+        protected bool IsTimeToMove(int energy)
         {
             return energy % ratioMovement == 0;
         }
@@ -174,7 +174,7 @@ namespace Enemies.Basic
             hasFinishedMoveAnimation = true;
         }
 
-        private bool hasFinishedMovingAnimation()
+        protected bool hasFinishedMovingAnimation()
         {
             return hasFinishedMoveAnimation;
         }
