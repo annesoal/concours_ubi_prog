@@ -369,6 +369,7 @@ public class InputManager : MonoBehaviour
 	public void RebindBinding(Binding toRebind, Action onRebindDone)
 	{
 		_playerInputActions.Disable();
+		EventSystem.current.sendNavigationEvents = false;
 
 		InputAction inputActionOfToRebind = _actionMapBindingEquivalent[toRebind];
 		
@@ -384,10 +385,11 @@ public class InputManager : MonoBehaviour
 				
 				_playerInputActions.Enable();
 				
-				onRebindDone();
-
 				// Must do in order to apply the other rebindings that weren't made in the PerformInteractive.
 				EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset = _playerInputActions.asset;
+				EventSystem.current.sendNavigationEvents = true;
+				
+				onRebindDone();
 
 				PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
 				PlayerPrefs.Save();
@@ -436,12 +438,14 @@ public class InputManager : MonoBehaviour
 		if (playerEquivalentRebinded == Binding.Select)
 		{
 			RebindUserInterfaceBinding(_playerInputActions.UI.Select, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Submit, path, 0);
 			return;
 		}
 		
 		if (playerEquivalentRebinded == Binding.Cancel)
 		{
 			RebindUserInterfaceBinding(_playerInputActions.UI.Cancel, path, 0);
+			RebindUserInterfaceBinding(_playerInputActions.EventSystemUI.Cancel, path, 0);
 			return;
 		}
 	}
