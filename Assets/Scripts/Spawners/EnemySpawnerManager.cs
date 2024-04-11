@@ -47,7 +47,7 @@ namespace Managers
                     continue;
                 GameObject enemySpawned = Instantiate(enemyToSpawn, spawner.positionToSpawn);
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(enemySpawned.gameObject, spawner.positionToSpawn.position);
-                enemySpawned.GetComponent<NetworkObject>().Spawn();
+                enemySpawned.GetComponent<NetworkObject>().Spawn(true);
             }
         }
     }
