@@ -111,6 +111,7 @@ public class SettingsUI : MonoBehaviour
     public void Show()
     {
         BasicShowHide.Show(gameObject);
+        UpdateVisuals();
         EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
     }
 
@@ -121,7 +122,7 @@ public class SettingsUI : MonoBehaviour
         InputManager.Instance.RebindBinding(toRebind, () =>
         {
             HidePressToRebindUI();
-            // TODO UpdateVisuals
+            UpdateVisuals();
         });
     }
 
@@ -134,5 +135,26 @@ public class SettingsUI : MonoBehaviour
     {
         
         BasicShowHide.Hide(pressToRebindUI);
+    }
+
+    private void UpdateVisuals()
+    { 
+        Sprite toSet = GetSpriteForBinding(InputManager.Binding.Up);
+        if (toSet != null) { upImage.sprite = toSet; }
+    }
+
+    private Sprite GetSpriteForBinding(InputManager.Binding binding)
+    {
+        string overridePath = InputManager.Instance.GetBindingOverridePath(InputManager.Binding.Up);
+
+        foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
+        {
+            if (pair.path == overridePath)
+            {
+                return pair.sprite;
+            }
+        }
+
+        return null;
     }
 }

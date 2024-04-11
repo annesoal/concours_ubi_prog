@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -361,6 +362,13 @@ public class InputManager : MonoBehaviour
 		
 		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].ToDisplayString();
 	}
+	
+	public string GetBindingOverridePath(Binding binding)
+	{
+		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
+		
+		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].overridePath;
+	}
 
 	public event EventHandler OnInputRebindingCompleted;
 	
@@ -382,12 +390,13 @@ public class InputManager : MonoBehaviour
 				TryRebindUserInterfaceBinding(callback.action, toRebind);
 				
 				callback.Dispose();
+
 				
 				_playerInputActions.Enable();
 				
 				// Must do in order to apply the other rebindings that weren't made in the PerformInteractive.
 				EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset = _playerInputActions.asset;
-				EventSystem.current.sendNavigationEvents = true;
+				StartCoroutine(EnableSendNavigationEvents());
 				
 				onRebindDone();
 
@@ -397,6 +406,12 @@ public class InputManager : MonoBehaviour
 				OnInputRebindingCompleted?.Invoke(this, EventArgs.Empty);
 			})
 			.Start();
+	}
+	
+	private IEnumerator EnableSendNavigationEvents()
+	{
+		yield return new WaitForSeconds(0.2f);
+		EventSystem.current.sendNavigationEvents = true;
 	}
 
 	private void TryRebindUserInterfaceBinding(InputAction inputActionRebinded, Binding playerEquivalentRebinded)
