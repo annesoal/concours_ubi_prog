@@ -25,7 +25,7 @@ namespace Enemies
         {
             Debug.Log("Dans move attacking enemy");
             
-            if (!IsServer) yield break;
+            if (!IsServer) { yield break; }
                 
             if (!IsTimeToMove(energy))
             {
