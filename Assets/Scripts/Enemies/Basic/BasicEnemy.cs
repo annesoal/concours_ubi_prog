@@ -34,6 +34,12 @@ namespace Enemies.Basic
                 yield break;
             }
             
+			if (isStupefiedState)
+			{
+				hasFinishedToMove = true;
+				yield break; 
+			}
+            
             yield return new WaitUntil(AnimationSpawnIsFinished);
             
             if (!TryMoveOnNextCell())

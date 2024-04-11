@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: BlocksLevelSO
   m_EditorClassIdentifier: 
   levelName: Blocks
-  levelScene: 7
+  levelScene: 4

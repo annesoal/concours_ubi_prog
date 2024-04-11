@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Amulets
 {
@@ -7,12 +8,14 @@ namespace Amulets
     [CreateAssetMenu(menuName = "AmuletSelector")]
     public class AmuletSelector : ScriptableObject
     {
-        public static int PlayerAmuletSelection = 0;
+        public static AmuletSO PlayerAmuletSelection;
         public AmuletSO AmuletToUse;
 
         public static AmuletSelector Instance;
 
         [SerializeField] private AmuletSO[] _amulets;
+
+        [SerializeField] private AmuletSO defaultAmulet;
 
         private void Awake()
         {
@@ -24,22 +27,20 @@ namespace Amulets
             get => _amulets;
             private set => _amulets = value;
         }
-        public AmuletSO SetAmulet()
+        public void SetAmulet()
         {
-            foreach (var amulet in _amulets)
+            if (PlayerAmuletSelection == null)
             {
-                if (amulet.ID == PlayerAmuletSelection)
-                {
-                
-                    AmuletToUse = amulet;
-                    return AmuletToUse;
-                }
+                AmuletToUse = defaultAmulet;
+                return;
             }
-
-            throw new Exception("Amulet " + PlayerAmuletSelection + " does not exist!");
+            
+            AmuletToUse = PlayerAmuletSelection;
         }
 
- 
-
+        public static void ResetPlayerAmuletSelection()
+        {
+            PlayerAmuletSelection = null;
+        }
     }
 }

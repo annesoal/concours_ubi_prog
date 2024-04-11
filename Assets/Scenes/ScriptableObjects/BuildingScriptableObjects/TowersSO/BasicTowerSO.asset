@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BasicTowerSO
   m_EditorClassIdentifier: 
   prefab: {fileID: 1798826350640963164, guid: dcdfe9e2473fb9a9b937c2738bea04fe, type: 3}
-  icon: {fileID: 21300000, guid: 03e5dd39b1fd506e0b795f847510c64e, type: 3}
+  icon: {fileID: 21300000, guid: f41bee44b136de68daf5b9fc93ac7725, type: 3}
   objectName: Basic Tower
   visuals: {fileID: 2891917162457659208, guid: f11ad6cb94e99092abb41deeb4dbf3ab, type: 3}
   description: "Je d\xE9cris cette tour de mani\xE8re hasardeuse."

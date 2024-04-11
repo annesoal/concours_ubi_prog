@@ -3580,7 +3580,7 @@ GameObject:
   - component: {fileID: 1627090621}
   - component: {fileID: 1627090622}
   m_Layer: 0
-  m_Name: LobbyInputManager
+  m_Name: InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3595,7 +3595,7 @@ Transform:
   m_GameObject: {fileID: 1627090620}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 614.262, y: 293.5125, z: 53.598236}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3610,9 +3610,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1627090620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fefb6e45864490a586de8a308a9d1fb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7fbe801cd0f5b7549fd221aeacfd645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableUserInterfaceInput: 1
 --- !u!1 &1640632400
 GameObject:
   m_ObjectHideFlags: 0
@@ -5402,9 +5403,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2077176930}
   - component: {fileID: 2077176935}
+  - component: {fileID: 2077176934}
   - component: {fileID: 2077176933}
   - component: {fileID: 2077176932}
-  - component: {fileID: 2077176934}
   - component: {fileID: 2077176931}
   m_Layer: 5
   m_Name: LobbyNameInputField

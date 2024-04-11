@@ -51,6 +51,8 @@ namespace Enemies
 
         public void Start()
         {
+            TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
+        
             Initialize();
             SetDestinations();
             RunSpawnAnimation();
@@ -206,6 +208,25 @@ namespace Enemies
         {
             get => _attackDamage;
             set => value = _attackDamage;
+        }
+
+        public void SetAsStupefied()
+        {
+            isStupefiedState = true;
+        }
+        
+        public void ResetStupefiedState()
+        {
+            isStupefiedState = false;
+        }
+        
+        private void TowerDefenseManager_OnCurrentStateChanged
+            (object sender, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
+        {
+            if (e.newValue != TowerDefenseManager.State.EnvironmentTurn)
+            {
+                isStupefiedState = false;
+            }
         }
         
         protected void EmitOnAnyEnemyMoved()

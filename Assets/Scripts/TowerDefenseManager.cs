@@ -8,6 +8,7 @@ using Grid.Blocks;
 using Managers;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Type = Grid.Type;
@@ -70,6 +71,9 @@ public class TowerDefenseManager : NetworkBehaviour
     public AmuletSelector amuletSelector;
 
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
+    
+    [Header("Next level data")]
+    public NextLevelDataSO nextLevelDataSo;
 
     [SerializeField] private List<SpawnerBlock> listOfSpawners;
     private readonly NetworkVariable<State> _currentState = new();
@@ -183,11 +187,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [ClientRpc]
     private void EndLevelClientRpc(bool won)
     {
-        if (won)
-            SaveProgress();
-
-        Debug.LogError("devrait load une autre scene je pense");
-        Loader.Load(Loader.Scene.CharacterSelectScene);
+        ShowEndGameScreen();
     }
 
     private void Update()
@@ -299,6 +299,26 @@ public class TowerDefenseManager : NetworkBehaviour
         _currentTimer.Value -= Time.deltaTime;
 
         if (_currentTimer.Value <= 0f || PlayersAreReadyToPass()) GoToSpecifiedState(State.EnvironmentTurn);
+    }
+
+    public event EventHandler OnVictory;
+    public event EventHandler OnDefeat;
+    private void ShowEndGameScreen()
+    {
+        InputManager.Instance.DisablePlayerInputAction();
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            EventSystem.current.sendNavigationEvents = false;
+        }
+        
+        if (gameWon)
+        {
+            OnVictory?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            OnDefeat?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private bool AllRoundsAreDone()
@@ -536,5 +556,11 @@ public class TowerDefenseManager : NetworkBehaviour
         {
             Destroy(bonus);
         }
+    }
+
+    public override void OnDestroy()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= NetworkManager_OnLoadEventCompleted;
+        base.OnDestroy();
     }
 }

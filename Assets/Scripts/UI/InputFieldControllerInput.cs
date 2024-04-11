@@ -14,10 +14,10 @@ public class InputFieldControllerInput : MonoBehaviour
 
     private void Start()
     {
-        LobbyInputManager.Instance.OnSelectUIPressed += LobbyInputManager_OnSelectUIPressed;
-        LobbyInputManager.Instance.OnCancelUIPressed += LobbyInputManager_OnCancelUIPressed;
-        LobbyInputManager.Instance.OnUpUIPressed += LobbyInputManager_OnUpUIPressed;
-        LobbyInputManager.Instance.OnDownUIPressed += LobbyInputManager_OnDownUIPressed;
+        InputManager.Instance.OnUserInterfaceSelectPerformed += LobbyInputManager_OnSelectUIPressed;
+        InputManager.Instance.OnUserInterfaceCancelPerformed += LobbyInputManager_OnCancelUIPressed;
+        InputManager.Instance.OnUserInterfaceMinimalUpPerformed += LobbyInputManager_OnUpUIPressed;
+        InputManager.Instance.OnUserInterfaceMinimalDownPerformed += LobbyInputManager_OnDownUIPressed;
     }
 
     void Update()
@@ -79,5 +79,12 @@ public class InputFieldControllerInput : MonoBehaviour
         yield return new WaitForSeconds(time);
         EventSystem.current.sendNavigationEvents = true;
     }
-    
+
+    private void OnDestroy()
+    {
+        InputManager.Instance.OnUserInterfaceSelectPerformed -= LobbyInputManager_OnSelectUIPressed;
+        InputManager.Instance.OnUserInterfaceCancelPerformed -= LobbyInputManager_OnCancelUIPressed;
+        InputManager.Instance.OnUserInterfaceUpPerformed -= LobbyInputManager_OnUpUIPressed;
+        InputManager.Instance.OnUserInterfaceDownPerformed -= LobbyInputManager_OnDownUIPressed;
+    }
 }
