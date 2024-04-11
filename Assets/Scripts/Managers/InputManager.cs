@@ -32,7 +32,6 @@ public class InputManager : MonoBehaviour
 		LoadSavedBindings();
         
         _playerInputActions.Player.Enable();
-        _playerInputActions.Camera.Enable();
         _playerInputActions.Player.Select.performed += Select;
         _playerInputActions.Player.Cancel.performed += Cancel;
         _playerInputActions.Player.Confirm.performed += Confirm;
@@ -78,14 +77,14 @@ public class InputManager : MonoBehaviour
 
     private void Confirm(InputAction.CallbackContext obj)
     {
-        if(_canMovePlayer)
+        if(_canMovePlayer && _player != null)
             _player.OnConfirm();
         
     }
 
     private void Cancel(InputAction.CallbackContext obj)
     {
-        if(_canMovePlayer)
+        if(_canMovePlayer && _player != null)
             _player.OnCancel();
     }
 
@@ -138,7 +137,7 @@ public class InputManager : MonoBehaviour
 
     private void Select(InputAction.CallbackContext context)
     {
-        if(_canMovePlayer)
+	    if (_canMovePlayer && _player != null)
             _player.OnSelect();
     }
     
