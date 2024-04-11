@@ -45,11 +45,17 @@ namespace Grid.Blocks
 
         public GameObject GetEnemyToSpawn()
         {
-            if (numberOfMerde > 0)
+            if (numberOfDoggos > 0)
             {
-                numberOfMerde--;
-                return _merde;
-            } 
+                numberOfDoggos--;
+                return _doggo;
+            }
+            
+            //if (numberOfMerde > 0)
+            //{
+            //    numberOfMerde--;
+            //    return _merde;
+            //} 
             //else if (numberOfDoggos > 0)
             //{
             //    numberOfDoggos--;
