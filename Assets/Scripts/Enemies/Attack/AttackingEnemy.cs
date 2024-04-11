@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies.Basic;
@@ -54,14 +53,17 @@ namespace Enemies
         public virtual bool ChoseToAttack()
         {
             if (path == null || path.Count == 0)
+            {
+                hasFinishedMoveAnimation = true;
                 return true;
+            }
             
             List<Cell> cellsInRadius =
                 TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
             return (ChoseAttack(cellsInRadius));
         }
 
-        public virtual bool ChoseAttack(List<Cell> cellsInRadius)
+        public bool ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {

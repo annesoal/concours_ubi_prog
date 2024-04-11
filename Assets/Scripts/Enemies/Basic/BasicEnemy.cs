@@ -12,7 +12,7 @@ namespace Enemies.Basic
     public class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        protected float timeToMove = 0.3f;
+        protected float timeToMove = 0.1f;
         
         public BasicEnemy()
         {
@@ -66,7 +66,10 @@ namespace Enemies.Basic
         protected bool TryMoveOnNextCell()
         {
             if (path == null || path.Count == 0)
+            {
+                hasFinishedMoveAnimation = true;
                 return true;
+            }
             Cell nextCell = path[0];
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
@@ -176,6 +179,7 @@ namespace Enemies.Basic
 
         protected bool hasFinishedMovingAnimation()
         {
+            Debug.LogWarning("hasFinished animation " + hasFinishedMoveAnimation);
             return hasFinishedMoveAnimation;
         }
 

@@ -36,9 +36,9 @@ namespace Enemies
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
-        protected bool hasFinishedToMove = false;
-        protected bool hasFinishedMoveAnimation = false;
-        protected bool hasFinishedSpawnAnimation = false; 
+        public bool hasFinishedToMove = false;
+        public bool hasFinishedMoveAnimation = false;
+        public  bool hasFinishedSpawnAnimation = false; 
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
@@ -138,6 +138,7 @@ namespace Enemies
 
         public bool hasFinishedMoving()
         {
+            Debug.LogError("hasFinishedToMove" + hasFinishedToMove);
             return hasFinishedToMove;
         }
 
