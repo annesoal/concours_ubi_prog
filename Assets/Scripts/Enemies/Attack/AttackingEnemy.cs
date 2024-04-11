@@ -42,11 +42,14 @@ namespace Enemies
             hasFinishedToMove = false;
             if (!ChoseToAttack())
             {
+                Debug.Log("Apres chose to attack");
                 if (!TryMoveOnNextCell())
                 {
+                    Debug.Log("Apres try move on next cell");
                     hasPath = false;
                     if (!MoveSides())
                     {
+                        Debug.Log("Apres move sides");
                         hasFinishedMoveAnimation = true;
                     }
                 }
@@ -61,6 +64,7 @@ namespace Enemies
         {
             if (path == null || path.Count == 0)
             {
+                Debug.Log("Dans le early return de chose to attack");
                 hasFinishedMoveAnimation = true;
                 return true;
             }
@@ -72,6 +76,7 @@ namespace Enemies
 
         public bool ChoseAttack(List<Cell> cellsInRadius)
         {
+            Debug.Log("Dans chose to attack avec cell in radius");
             foreach (var aCell in cellsInRadius)
             {
                 if (TowerIsAtRange(aCell) &&
