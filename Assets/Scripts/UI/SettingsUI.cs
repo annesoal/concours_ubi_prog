@@ -139,13 +139,55 @@ public class SettingsUI : MonoBehaviour
 
     private void UpdateVisuals()
     { 
+        UpdateMovementInputSprite();
+
+        UpdateInteractionsInputSprite();
+
+        UpdateBuildingInputSprite();
+    }
+
+    private void UpdateMovementInputSprite()
+    {
         Sprite toSet = GetSpriteForBinding(InputManager.Binding.Up);
         if (toSet != null) { upImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Down);
+        if (toSet != null) { downImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Left);
+        if (toSet != null) { leftImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Right);
+        if (toSet != null) { rightImage.sprite = toSet; }
+    }
+    
+    private void UpdateInteractionsInputSprite()
+    {
+        Sprite toSet = GetSpriteForBinding(InputManager.Binding.Select);
+        if (toSet != null) { selectImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Cancel);
+        if (toSet != null) { cancelImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Confirm);
+        if (toSet != null) { confirmImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.Interact);
+        if (toSet != null) { interactImage.sprite = toSet; }
+    }
+    
+    private void UpdateBuildingInputSprite()
+    {
+        Sprite toSet = GetSpriteForBinding(InputManager.Binding.ShoulderLeft);
+        if (toSet != null) { leftCarouselImage.sprite = toSet; }
+        
+        toSet = GetSpriteForBinding(InputManager.Binding.ShoulderRight);
+        if (toSet != null) { rightCarouselImage.sprite = toSet; }
     }
 
     private Sprite GetSpriteForBinding(InputManager.Binding binding)
     {
-        string overridePath = InputManager.Instance.GetBindingOverridePath(InputManager.Binding.Up);
+        string overridePath = InputManager.Instance.GetBindingOverridePath(binding);
 
         foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
         {
