@@ -31,6 +31,7 @@ namespace Enemies
             {
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
+                EmitOnAnyEnemyMoved();
                 yield break;
             }
 
@@ -38,6 +39,7 @@ namespace Enemies
             {
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
+                EmitOnAnyEnemyMoved();
                 yield break;
             }
                 
