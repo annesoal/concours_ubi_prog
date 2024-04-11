@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e80549c7d045d0b2e83d47db2dfb8d, type: 3}
+  m_Name: ListEnemiesSO
+  m_EditorClassIdentifier: 
+  Doggo: {fileID: 3516699211304915548, guid: 122847c73d8b9177d92f99cbbea41df4, type: 3}
+  Merde: {fileID: 4246755180253531948, guid: f933c1f3236140cbbb597ddbd988de6d, type: 3}
+  BigGuy: {fileID: 3337807685228708749, guid: 55e7396b0de32c5dda46df909ec8a8a9, type: 3}
+  Sniper: {fileID: 6622173684583430126, guid: 43daf59f5816f6727a564a818a36ebf2, type: 3}
