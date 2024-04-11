@@ -375,6 +375,9 @@ public class GameMultiplayerManager : NetworkBehaviour
 
     private void NetworkManager_Host_OnClientDisconnectCallback(ulong clientId)
     {
+        // Must be nullify when host is quitting.
+        if (_playerDataNetworkList == null) { return; }
+        
         foreach (PlayerData playerData in _playerDataNetworkList)
         {
             if (playerData.clientId == clientId)
@@ -382,6 +385,11 @@ public class GameMultiplayerManager : NetworkBehaviour
                 _playerDataNetworkList.Remove(playerData);
             }
         }
+    }
+    
+    public void NullifyPlayerDataNetworkList()
+    {
+        _playerDataNetworkList = null;
     }
 
     private const string LOBBY_FULL_REASON_TEXT = "Lobby is already full !";
