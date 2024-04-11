@@ -29,12 +29,14 @@ namespace Enemies
                 
             if (!IsTimeToMove(energy))
             {
+                hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 yield break;
             }
 
             if (isStupefiedState)
             {
+                hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 yield break;
             }
