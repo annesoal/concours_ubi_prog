@@ -45,32 +45,26 @@ namespace Grid.Blocks
 
         public GameObject GetEnemyToSpawn()
         {
-            if (numberOfSnipers > 0)
+            if (numberOfMerde > 0)
+            {
+                numberOfMerde--;
+                return _merde;
+            } 
+            else if (numberOfDoggos > 0)
+            {
+                numberOfDoggos--;
+                return _doggo;
+            }
+            else if (numberOfBigGuy > 0)
+            {
+                numberOfBigGuy--;
+                return _bigGuy;
+            }
+            else if (numberOfSnipers > 0)
             {
                 numberOfSnipers--;
                 return _sniper;
             }
-            
-            //if (numberOfMerde > 0)
-            //{
-            //    numberOfMerde--;
-            //    return _merde;
-            //} 
-            //else if (numberOfDoggos > 0)
-            //{
-            //    numberOfDoggos--;
-            //    return _doggo;
-            //}
-            //else if (numberOfBigGuy > 0)
-            //{
-            //    numberOfBigGuy--;
-            //    return _bigGuy;
-            //}
-            //else if (numberOfSnipers > 0)
-            //{
-            //    numberOfSnipers--;
-            //    return _sniper;
-            //}
 
             return null;
         }
