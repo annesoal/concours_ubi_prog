@@ -50,21 +50,21 @@ namespace Grid.Blocks
                 numberOfMerde--;
                 return _merde;
             } 
-            else if (numberOfDoggos > 0)
-            {
-                numberOfDoggos--;
-                return _doggo;
-            }
-            else if (numberOfBigGuy > 0)
-            {
-                numberOfBigGuy--;
-                return _bigGuy;
-            }
-            else if (numberOfSnipers > 0)
-            {
-                numberOfSnipers--;
-                return _sniper;
-            }
+            //else if (numberOfDoggos > 0)
+            //{
+            //    numberOfDoggos--;
+            //    return _doggo;
+            //}
+            //else if (numberOfBigGuy > 0)
+            //{
+            //    numberOfBigGuy--;
+            //    return _bigGuy;
+            //}
+            //else if (numberOfSnipers > 0)
+            //{
+            //    numberOfSnipers--;
+            //    return _sniper;
+            //}
 
             return null;
         }
