@@ -8,6 +8,7 @@ using UnityEngine;
 public class GameStateUI : MonoBehaviour
 {
     [SerializeField] private GameObject currentStateBorder;
+    [SerializeField] private TextMeshProUGUI enemyPlayerTurnText;
     [SerializeField] private TextMeshProUGUI roundsLeftText;
     
     [Header("Timer")]
@@ -66,11 +67,15 @@ public class GameStateUI : MonoBehaviour
     private void TowerDefenseManager_OnRoundNumberIncreased(object sender, EventArgs e)
     {
         int roundsLeft = TowerDefenseManager.Instance.totalRounds - TowerDefenseManager.Instance.currentRoundNumber;
-        roundsLeftText.text ="Rounds left: " + roundsLeft;
+        roundsLeftText.text ="Rounds : " + roundsLeft;
     }
 
+    private const string ENEMY_TURN_TEXT = "ENEMY TURN";
+    
     private void DisplayEnvironmentTurnStateUI()
     {
+        enemyPlayerTurnText.text = ENEMY_TURN_TEXT;
+        
         BasicShowHide.Show(currentStateBorder);
         
         BasicShowHide.Show(gameObject);
@@ -78,9 +83,13 @@ public class GameStateUI : MonoBehaviour
         _canUpdateTimerText = false;
         //BasicShowHide.Hide(timerGameObject);
     }
-    
+
+    private const string PLAYER_TURN_TEXT = "PLAYER TURN";
+        
     private void DisplayTacticalPauseStateUI()
     {
+        enemyPlayerTurnText.text = PLAYER_TURN_TEXT;
+        
         BasicShowHide.Hide(currentStateBorder);
         
         BasicShowHide.Show(gameObject);
@@ -91,6 +100,6 @@ public class GameStateUI : MonoBehaviour
     
     private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
     { 
-        energyLeftText.text = "Energy left : " +  e.Energy;
+        energyLeftText.text = "Energy : " +  e.Energy;
     }
 }
