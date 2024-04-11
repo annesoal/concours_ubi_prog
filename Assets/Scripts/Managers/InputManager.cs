@@ -55,7 +55,10 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        TowerDefenseManager.Instance.OnCurrentStateChanged += UpdateCanPlayState;
+	    if (TowerDefenseManager.Instance != null)
+	    {
+		    TowerDefenseManager.Instance.OnCurrentStateChanged += UpdateCanPlayState;
+	    }
     }
 
     private void UpdateCanPlayState(object o, TowerDefenseManager.OnCurrentStateChangedEventArgs e)
