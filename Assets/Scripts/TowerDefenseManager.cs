@@ -111,7 +111,8 @@ public class TowerDefenseManager : NetworkBehaviour
         _playersHealth = amuletSelector.AmuletToUse.playersHealth;
         tacticalPauseDuration = amuletSelector.AmuletToUse.tacticalPauseTime;
         totalRounds = amuletSelector.AmuletToUse.numberOfTurns;
-        EnergyAvailable = amuletSelector.AmuletToUse.energy;
+        EnergyAvailable = amuletSelector.AmuletToUse.playerEnergy; 
+        EnvironmentTurnManager.EnemyEnergy = amuletSelector.AmuletToUse.enemiEnergy;
         BaseTower.baseHealth = amuletSelector.AmuletToUse.towerBaseHealth;
         BaseTower.baseAttack = amuletSelector.AmuletToUse.towerBaseAttack;
         BaseTower.baseCost = amuletSelector.AmuletToUse.towerBaseCost;

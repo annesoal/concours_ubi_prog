@@ -10,6 +10,7 @@ public class EnvironmentTurnManager : MonoBehaviour
 {
     public static EnvironmentTurnManager Instance;
 
+    public static int EnemyEnergy = 0;
     public event EventHandler OnEnvironmentTurnEnded;
     public bool PlayerHasBeenMoved { private get; set; }
 
@@ -49,7 +50,7 @@ public class EnvironmentTurnManager : MonoBehaviour
             ResetPlayerReadyCount();
         }
         // Discussion avec Malo pour decoupler l'energie des 2 groupes
-        int NPCEnegy = totalEnergy; 
+        int NPCEnegy = EnemyEnergy; 
         
         EnemySpawnerManager.Instance.StartMathSpawners(_turn);
         while (HasEnergyLeft(NPCEnegy))

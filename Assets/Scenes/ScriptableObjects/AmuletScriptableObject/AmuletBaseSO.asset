@@ -22,8 +22,10 @@ MonoBehaviour:
   enemyBaseAttack: 1
   towerBaseAttack: 1
   tacticalPauseTime: 20
-  numberOfTurns: 20
-  energy: 10
+  numberOfTurns: 10
+  playerEnergy: 10
+  enemiEnergy: 12
   resourcesSpawnRate: 0.2
-  towerBaseCost: 3
+  towerBaseCost: 8
   trapBaseCost: 1
+  towerRange: 1

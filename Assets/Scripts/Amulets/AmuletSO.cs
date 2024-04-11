@@ -12,7 +12,6 @@ namespace Amulets
         public string description = "To Be Changed/Overwritten";
         
         [Header("ID")]
-        private static int _id = 0; 
         public int ID = 0;
         
         [Header("Health related issues : ")]
@@ -24,15 +23,12 @@ namespace Amulets
         
         [Header("Mechanical hazards : ")]
         public float tacticalPauseTime = 20.0f;
-        public int numberOfTurns = 20;
-        public int energy = 10;
+        public int numberOfTurns = 10;
+        public int playerEnergy = 10;
+        public int enemiEnergy = 12;
         public float resourcesSpawnRate = 0.2f;
-        public int towerBaseCost = 3;
-        public int trapBaseCost = 1; 
-        
-        private AmuletSO()
-        {
-            ID = _id++;
-        }
+        public int towerBaseCost = 8;
+        public int trapBaseCost = 1;
+        public int towerRange = 3; 
     }
 }
