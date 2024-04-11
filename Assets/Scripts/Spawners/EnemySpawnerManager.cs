@@ -39,7 +39,7 @@ namespace Managers
         }
         public void Spawn(int turn)
         {
-            if (turn == 0) return;
+            if (turn <= 0) return;
             foreach (var spawner in _spawners)
             {
                 GameObject enemyToSpawn = spawner.GetEnemyToSpawn();

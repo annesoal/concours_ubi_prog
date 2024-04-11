@@ -13,7 +13,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     public event EventHandler OnEnvironmentTurnEnded;
     public bool PlayerHasBeenMoved { private get; set; }
 
-    private static int _turn = 0;
+    private static int _turn = -1;
     private void Awake()
     {
         Instance = this;
