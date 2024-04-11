@@ -2,14 +2,16 @@ using System;
 using Spawners;
 using Unity.Networking.Transport;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Grid.Blocks
 {
     public class SpawnerBlock : BasicBlock 
     {
-        [SerializeField] private IMathSpawn _mathSpawn;
+        [FormerlySerializedAs("_mathSpawn")] public MathSpawnSO mathSpawnSo;
 
         [SerializeField] public Transform positionToSpawn;
+        [SerializeField] private ListEnemiesToSpawnSO list;
         
         private GameObject _merde; 
         private GameObject _doggo; 
@@ -21,19 +23,24 @@ namespace Grid.Blocks
         private int numberOfBigGuy;
         private int numberOfSnipers;
 
-        public void Initialize()
+        public void Awake()
         {
             blockType = BlockType.EnemySpawnBlock;
+            SetEnemiesToSpawn(list);
         }
         public void SetEnemiesToSpawn(ListEnemiesToSpawnSO list)
         {
+            this._merde = list.Merde;
+            this._doggo = list.Doggo;
+            this._bigGuy = list.BigGuy;
+            this._sniper = list.Sniper;
         }
         public void CalculateSpawnRate(int turn)
         {
-            numberOfMerde = _mathSpawn.GetNumberMerdeToSpawn(turn);
-            numberOfDoggos = _mathSpawn.GetDoggoToSpawn(turn);
-            numberOfBigGuy = _mathSpawn.GetBigGuyToSpawn(turn);
-            numberOfSnipers = _mathSpawn.GetSnipperToSpawn(turn);
+            numberOfMerde = mathSpawnSo.GetNumberMerdeToSpawn(turn);
+            numberOfDoggos = mathSpawnSo.GetDoggoToSpawn(turn);
+            numberOfBigGuy = mathSpawnSo.GetBigGuyToSpawn(turn);
+            numberOfSnipers = mathSpawnSo.GetSnipperToSpawn(turn);
         }
 
         public GameObject GetEnemyToSpawn()
@@ -59,7 +66,7 @@ namespace Grid.Blocks
                 return _sniper;
             }
 
-            throw new Exception("wtf");
+            return null;
         }
     }
 }
