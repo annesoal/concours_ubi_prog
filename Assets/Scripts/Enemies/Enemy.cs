@@ -140,7 +140,6 @@ namespace Enemies
 
         public bool hasFinishedMoving()
         {
-            Debug.LogError("hasFinishedToMove" + hasFinishedToMove);
             return hasFinishedToMove;
         }
 
