@@ -23,43 +23,41 @@ namespace Enemies
          */
         public override IEnumerator Move(int energy)
         {
-            Debug.Log("Dans move attacking enemy");
+            //Debug.Log("Dans move attacking enemy");
 
             if (!IsServer)
             {
-                Debug.Log("Dans early return IsServer");
+                //Debug.Log("Dans early return IsServer");
                 yield break;
             }
                 
             if (!IsTimeToMove(energy))
             {
-                Debug.Log("Early return IsTimeToMove dans attacking enemy");
+                //Debug.Log("Early return IsTimeToMove dans attacking enemy");
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
-                EmitOnAnyEnemyMoved();
                 yield break;
             }
 
             if (isStupefiedState)
             {
-                Debug.Log("Early return isStupefiedState dans attacking enemy");
+                //Debug.Log("Early return isStupefiedState dans attacking enemy");
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
-                EmitOnAnyEnemyMoved();
                 yield break;
             }
                 
             hasFinishedToMove = false;
             if (!ChoseToAttack())
             {
-                Debug.Log("Apres chose to attack");
+                //Debug.Log("Apres chose to attack");
                 if (!TryMoveOnNextCell())
                 {
-                    Debug.Log("Apres try move on next cell");
+                    //Debug.Log("Apres try move on next cell");
                     hasPath = false;
                     if (!MoveSides())
                     {
-                        Debug.Log("Apres move sides");
+                        //Debug.Log("Apres move sides");
                         hasFinishedMoveAnimation = true;
                     }
                 }

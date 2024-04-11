@@ -29,10 +29,12 @@ namespace Managers
             for (int i = enemies.Count - 1; i >= 0; i--)
             {
                 var enemy = enemies[i].GetComponent<Enemy>();
+                
                 SetEnemyPath(enemy);
+                
                 StartCoroutine(enemy.Move(totalEnergy));
                 yield return new WaitUntil(enemy.hasFinishedMoving);
-                Debug.Log("Apres yield return has finished moving");
+                
                 enemy.ResetAnimationStates();
             }
 
