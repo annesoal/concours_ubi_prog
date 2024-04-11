@@ -32,6 +32,7 @@ namespace Managers
                 SetEnemyPath(enemy);
                 StartCoroutine(enemy.Move(totalEnergy));
                 yield return new WaitUntil(enemy.hasFinishedMoving);
+                Debug.Log("Apres yield return has finished moving");
                 enemy.ResetAnimationStates();
             }
 
