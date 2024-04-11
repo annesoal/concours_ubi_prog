@@ -10,8 +10,16 @@ public class SettingsUI : MonoBehaviour
 {
     [Header("Rebinding")]
     [SerializeField] private GameObject pressToRebindUI;
+    
     [SerializeField] private Button upButton;
     [SerializeField] private Button downButton;
+    [SerializeField] private Button leftButton;
+    [SerializeField] private Button rightButton;
+    
+    [SerializeField] private Button selectButton;
+    [SerializeField] private Button cancelButton;
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private Button interactButton;
     
     [Header("Close")]
     [SerializeField] private Button closeButton;
@@ -33,6 +41,36 @@ public class SettingsUI : MonoBehaviour
         downButton.onClick.AddListener(() =>
         {
             CarryOutRebinding(InputManager.Binding.Down);
+        });
+        
+        leftButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Left);
+        });
+        
+        rightButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Right);
+        });
+        
+        selectButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Select);
+        });
+        
+        cancelButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Cancel);
+        });
+        
+        confirmButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Confirm);
+        });
+        
+        interactButton.onClick.AddListener(() =>
+        {
+            CarryOutRebinding(InputManager.Binding.Interact);
         });
         
         BasicShowHide.Hide(gameObject);
