@@ -12,7 +12,7 @@ namespace Enemies.Basic
     public class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        protected float timeToMove = 0.1f;
+        protected float timeToMove = 0.3f;
         
         public BasicEnemy()
         {
