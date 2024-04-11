@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UI;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingsUI : MonoBehaviour
@@ -34,6 +35,14 @@ public class SettingsUI : MonoBehaviour
         {
             CarryOutRebinding(InputManager.Binding.Down);
         });
+        
+        BasicShowHide.Hide(gameObject);
+    }
+    
+    public void Show()
+    {
+        BasicShowHide.Show(gameObject);
+        EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
     }
 
     private void CarryOutRebinding(InputManager.Binding toRebind)
