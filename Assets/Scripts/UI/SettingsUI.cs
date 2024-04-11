@@ -17,15 +17,31 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Button leftButton;
     [SerializeField] private Button rightButton;
     
+    [Header("Movement sprite")]
+    [SerializeField] private Image upImage;
+    [SerializeField] private Image downImage;
+    [SerializeField] private Image leftImage;
+    [SerializeField] private Image rightImage;
+    
     [Header("Rebinding Interactions")]
     [SerializeField] private Button selectButton;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button interactButton;
     
+    [Header("Interactions sprite")]
+    [SerializeField] private Image selectImage;
+    [SerializeField] private Image cancelImage;
+    [SerializeField] private Image confirmImage;
+    [SerializeField] private Image interactImage;
+    
     [Header("Rebinding Building")]
     [SerializeField] private Button leftCarouselButton;
     [SerializeField] private Button rightCarouselButton;
+    
+    [Header("Building sprite")]
+    [SerializeField] private Image leftCarouselImage;
+    [SerializeField] private Image rightCarouselImage;
     
     [Header("Close")]
     [SerializeField] private Button closeButton;
