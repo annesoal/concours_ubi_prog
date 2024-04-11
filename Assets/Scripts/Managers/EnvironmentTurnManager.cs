@@ -13,6 +13,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     public event EventHandler OnEnvironmentTurnEnded;
     public bool PlayerHasBeenMoved { private get; set; }
 
+    private static int _turn = 0;
     private void Awake()
     {
         Instance = this;
@@ -49,8 +50,11 @@ public class EnvironmentTurnManager : MonoBehaviour
         }
         // Discussion avec Malo pour decoupler l'energie des 2 groupes
         int NPCEnegy = totalEnergy; 
+        
+        EnemySpawnerManager.Instance.StartMathSpawners(_turn);
         while (HasEnergyLeft(NPCEnegy))
         {
+            EnemySpawnerManager.Instance.Spawn(_turn);
             StartCoroutine(BaseTower.PlayTowersInGameTurn());
             yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
             StartCoroutine(IAManager.Instance.MoveEnemies(totalEnergy));
@@ -60,7 +64,7 @@ public class EnvironmentTurnManager : MonoBehaviour
 
         IAManager.ResetEnemies();
 
-        
+        _turn++;
         yield return new WaitForSeconds(0.01f);
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }
