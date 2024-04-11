@@ -48,11 +48,17 @@ namespace Grid
         public void Damage(int damage)
         {
             Health -= damage;
-            if (Health < 1)
+            if (Health < 1 && IsServer)
             {
-                TilingGrid.RemoveElement(gameObject, transform.position);
-                Destroy(this.gameObject);
+                TilingGrid.RemoveElement(gameObject, transform.position); 
+                DestroyClientRpc();
             }
+        }
+
+        [ClientRpc]
+        private void DestroyClientRpc()
+        {
+            Destroy(this.gameObject);
         }
     }
 }
