@@ -45,10 +45,10 @@ namespace Grid.Blocks
 
         public GameObject GetEnemyToSpawn()
         {
-            if (numberOfBigGuy > 0)
+            if (numberOfSnipers > 0)
             {
-                numberOfBigGuy--;
-                return _bigGuy;
+                numberOfSnipers--;
+                return _sniper;
             }
             
             //if (numberOfMerde > 0)
