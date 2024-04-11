@@ -185,7 +185,6 @@ namespace Enemies.Basic
 
         protected bool hasFinishedMovingAnimation()
         {
-            Debug.LogWarning("hasFinished animation " + hasFinishedMoveAnimation);
             return hasFinishedMoveAnimation;
         }
 
