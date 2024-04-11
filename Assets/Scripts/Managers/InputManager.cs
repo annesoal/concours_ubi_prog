@@ -368,8 +368,8 @@ public class InputManager : MonoBehaviour
 				// Must do in order to apply the other rebindings that weren't made in the PerformInteractive.
 				EventSystem.current.GetComponent<InputSystemUIInputModule>().actionsAsset = _playerInputActions.asset;
 
-				//PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
-				//PlayerPrefs.Save();
+				PlayerPrefs.SetString(BINDINGS_JSON_KEY, _playerInputActions.SaveBindingOverridesAsJson());
+				PlayerPrefs.Save();
 				
 				OnInputRebindingCompleted?.Invoke(this, EventArgs.Empty);
 			})
