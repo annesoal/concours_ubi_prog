@@ -29,6 +29,7 @@ namespace Enemies
                 
             if (!IsTimeToMove(energy))
             {
+                Debug.Log("Early return IsTimeToMove dans attacking enemy");
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 EmitOnAnyEnemyMoved();
@@ -37,6 +38,7 @@ namespace Enemies
 
             if (isStupefiedState)
             {
+                Debug.Log("Early return isStupefiedState dans attacking enemy");
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 EmitOnAnyEnemyMoved();
