@@ -41,4 +41,9 @@ public class DisconnectMessageUI : MonoBehaviour
     {
         messageText.text = messageToShow;
     }
+
+    private void OnDestroy()
+    {
+        GameMultiplayerManager.Instance.OnHostDisconneted -= GameMultiplayerManager_OnHostDisconneted;
+    }
 }
