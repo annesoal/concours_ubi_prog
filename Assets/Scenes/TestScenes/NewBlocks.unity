@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2791329, g: 0.15264997, b: 0.3561327, a: 1}
+  m_IndirectSpecularColor: {r: 0.27914855, g: 0.15266064, b: 0.3561527, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -28351,7 +28351,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 12
+  m_Priority: 11
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -35716,13 +35716,13 @@ MonoBehaviour:
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 797685666}
   <BossBlockSpawn>k__BackingField: {fileID: 1932378014}
-  nextLevelDataSo: {fileID: 11400000, guid: 72636b7cc832af1c6a6ab128c8c239f8, type: 2}
+  nextLevelDataSo: {fileID: 11400000, guid: f968e42ad621f1dd79d0a3eb4cc91534, type: 2}
   listOfSpawners:
   - {fileID: 1045813830}
   - {fileID: 1095905231}
   - {fileID: 2038331595}
   - {fileID: 964324984}
-  amuletSO: {fileID: 11400000, guid: 0244303ca2b2d2da085da58f64cf1f7d, type: 2}
+  amuletSO: {fileID: 11400000, guid: 8cf23f11fddee7f198923fe739925a54, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
@@ -38047,7 +38047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2062468998
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -98,7 +98,6 @@ namespace Enemies
         private bool canAttack()
         {
             //return (_rand.NextDouble() > 1 - attackRate);
-            throw new Exception("plz check avec Malo");
             return true;
         }
         
