@@ -38,6 +38,23 @@ public class TowerDefenseManager : NetworkBehaviour
     private bool gameWon = false;
     private IAManager _iaManager;
 
+    private bool _isFirstTurn = true;
+
+    public bool IsFirstTurn
+    {
+        get
+        {
+            if (_isFirstTurn)
+            {
+                var savedValue = _isFirstTurn;
+                _isFirstTurn = false;
+                return savedValue;
+            }
+
+            return _isFirstTurn;
+        }
+    }
+
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
     public static int TotalRounds;
 
@@ -59,8 +76,6 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private Transform playerRobotPrefab;
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
-    [FormerlySerializedAs("selector")] [Header("Amulet")] [SerializeField]
-    public AmuletSelector amuletSelector;
 
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
     
@@ -70,6 +85,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [SerializeField] private List<SpawnerBlock> listOfSpawners;
     private readonly NetworkVariable<State> _currentState = new();
 
+    [SerializeField] public AmuletSO amuletSO;
     private NetworkVariable<float> _currentTimer;
     private Dictionary<ulong, bool> _playerReadyToPassDictionary;
 
@@ -97,39 +113,37 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
         // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
-        amuletSelector.SetAmulet();
         SetAmuletFieldsToGameFields();
     }
 
     private void SetAmuletFieldsToGameFields()
     {
-        Ressource.SpawnRate = amuletSelector.AmuletToUse.ressourceSpawnRate;
-        TowerDefenseManager.TacticalPauseDuration = amuletSelector.AmuletToUse.turnTime;
-        TowerDefenseManager.TotalRounds = amuletSelector.AmuletToUse.numberOfTurns;
+        TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime;
+        TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns;
         
-        Player.Energy = amuletSelector.AmuletToUse.playerEnergy;
-        Player.Health = amuletSelector.AmuletToUse.playersHealth;
-
-        Enemy.Energy = amuletSelector.AmuletToUse.enemyEnergy;
+        Ressource.SpawnRate = amuletSO.ressourceSpawnRate;
         
-        EnvironmentTurnManager.EnemyEnergy = amuletSelector.AmuletToUse.enemyEnergy;
+        Player.Energy = amuletSO.playerEnergy;
+        Player.Health = amuletSO.playersHealth;
 
-        GoofyEnemy.GoofyHealth = amuletSelector.AmuletToUse.GoofyHealthPoints;
-        GoofyEnemy.GoofyMoveRation = amuletSelector.AmuletToUse.GoofyMoveRatio;
+        Enemy.Energy = amuletSO.enemyEnergy;
+        
+        GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints;
+        GoofyEnemy.GoofyMoveRation = amuletSO.GoofyMoveRatio;
 
-        PetiteMerdeEnemy.MerdeHealth = amuletSelector.AmuletToUse.MerdeHeathPoints;
-        PetiteMerdeEnemy.MerdeMoveRatio = amuletSelector.AmuletToUse.MerdeMoveRatio;
+        PetiteMerdeEnemy.MerdeHealth = amuletSO.MerdeHeathPoints;
+        PetiteMerdeEnemy.MerdeMoveRatio = amuletSO.MerdeMoveRatio;
 
-        BigGuyEnemy.BigGuyAttack = amuletSelector.AmuletToUse.BigGuyDamages;
-        BigGuyEnemy.BigGuyHealth = amuletSelector.AmuletToUse.BigGuyHealthPoints;
-        BigGuyEnemy.BigGuyMoveRatio = amuletSelector.AmuletToUse.BigGuyMoveRatio;
+        BigGuyEnemy.BigGuyAttack = amuletSO.BigGuyDamages;
+        BigGuyEnemy.BigGuyHealth = amuletSO.BigGuyHealthPoints;
+        BigGuyEnemy.BigGuyMoveRatio = amuletSO.BigGuyMoveRatio;
 
-        SniperEyeEnemy.SniperRange = amuletSelector.AmuletToUse.SniperRange;
-        SniperEyeEnemy.SniperMoveRatio = amuletSelector.AmuletToUse.SniperMoveRatio;
-        SniperEyeEnemy.SniperAttack = amuletSelector.AmuletToUse.SniperDamages;
-        SniperEyeEnemy.SniperHealth = amuletSelector.AmuletToUse.SniperHealthPoints;
+        SniperEyeEnemy.SniperRange = amuletSO.SniperRange;
+        SniperEyeEnemy.SniperMoveRatio = amuletSO.SniperMoveRatio;
+        SniperEyeEnemy.SniperAttack = amuletSO.SniperDamages;
+        SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints;
 
-        Obstacle.ObstacleHealth = amuletSelector.AmuletToUse.ObstaclesHealth;
+        Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth;
     }
 
     private void Start()
@@ -152,42 +166,6 @@ public class TowerDefenseManager : NetworkBehaviour
         if (e.newValue == State.EndOfGame)
         {
             EndLevelClientRpc(gameWon);
-        }
-    }
-
-    private void SaveProgress()
-    {
-        AmuletSaveLoad save = new AmuletSaveLoad();
-        List<AmuletSO> unlockedAmulets = save.GetAmuletsForScene(Loader.TargetScene, amuletSelector.amulets);
-        List<AmuletSO> unlockableAmulets = new List<AmuletSO>();
-
-        AddUnlockableAmulets(unlockedAmulets, unlockableAmulets);
-
-        if (unlockableAmulets.Count == 0)
-        {
-            foreach (var amulet in amuletSelector.amulets)
-            {
-                unlockableAmulets.Add(amulet);
-            }
-        }
-
-        if (unlockableAmulets.Count != 0)
-            unlockedAmulets.Add(unlockableAmulets[0]);
-
-        save.SaveSceneWithAmulets(Loader.TargetScene, unlockedAmulets.ToArray());
-    }
-
-    private void AddUnlockableAmulets(List<AmuletSO> unlockedAmulets, List<AmuletSO> unlockableAmulets)
-    {
-        foreach (var amulet in amuletSelector.amulets)
-        {
-            foreach (var unlockedAmulet in unlockedAmulets)
-            {
-                {
-                    if (unlockedAmulet.ID != amulet.ID)
-                        unlockableAmulets.Add(amulet);
-                }
-            }
         }
     }
 
