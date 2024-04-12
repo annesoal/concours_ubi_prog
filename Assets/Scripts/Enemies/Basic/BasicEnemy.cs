@@ -13,7 +13,7 @@ namespace Enemies.Basic
     {
         private Random _rand = new();
         protected float timeToMove = 0.3f;
-        
+
         public BasicEnemy()
         {
             ennemyType = EnnemyType.PetiteMerde;
