@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Grid.Interface;
-using Interfaces;
 using UnityEngine;
 using Utils;
 
@@ -13,7 +12,7 @@ using Utils;
  * Cette classe est destinée à être héritée par des tours plus spécifiques.
  * Elle contient tous les comportements communs aux tours.
  */
-public abstract class BaseTower : BuildableObject, IDamageable, ICanDamage
+public abstract class BaseTower : BuildableObject, IDamageable
 {
     private static List<BaseTower> _towersInGame = new();
 
