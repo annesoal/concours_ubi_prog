@@ -171,7 +171,7 @@ namespace Enemies.Basic
             return false;
         }
 
-        protected IEnumerator RotateThenMove(Vector3 direction)
+        protected override IEnumerator RotateThenMove(Vector3 direction)
         {
             RotationAnimation rotationAnimation = new RotationAnimation();
             StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, direction));

@@ -56,13 +56,15 @@ public class EnvironmentTurnManager : MonoBehaviour
             {
                 //Debug.Log("EVM Avant le spawn");
                 EnemySpawnerManager.Instance.Spawn(_turn);
-                
+                 
                 //Debug.Log("EVM avant play tower in game turn");
                 StartCoroutine(BaseTower.PlayTowersInGameTurn());
                 yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
                 
                 //Debug.Log("EVM avant move enemies");
-                StartCoroutine(IAManager.Instance.MoveEnemies(NPCEnergy));
+                IAManager.Instance.BackendMoveEnemies();
+                StartCoroutine(IAManager.Instance.MoveEnemies());
+               // StartCoroutine(IAManager.Instance.MoveEnemies(NPCEnergy));
                 yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
                 
                 //Debug.Log("Fin Iteration boucle EVM");

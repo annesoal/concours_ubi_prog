@@ -153,5 +153,18 @@ namespace Enemies
             bool hasObstacleOnTop = updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             return base.IsValidCell(toCheck) && !hasObstacleOnTop;
         }
+
+
+        public override IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
+        {
+            if (infos.hasAttacked)
+            {
+                yield return StartCoroutine(AttackAnimation());
+            }
+            else
+            {
+                yield return StartCoroutine(base.MoveCorroutine(infos));
+            }
+        }
     }
 }

@@ -238,27 +238,30 @@ namespace Enemies
             hasFinishedMoveAnimation = false; 
         }
 
+        protected abstract IEnumerator RotateThenMove(Vector3 destination);
         protected abstract (bool moved, bool attacked, Vector3 destination) BackendMove();
         
         public EnemyChoicesInfo CalculateChoices()
         {
             EnemyChoicesInfo infos = new EnemyChoicesInfo();
-            infos.origin = this.gameObject.transform.position;
             (bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
 
             infos.destination = recordedResult.destination;
             infos.hasMoved = recordedResult.moved;
             infos.hasAttacked = recordedResult.attacked;
-            
-            
-            throw new NotImplementedException();
-            return new EnemyChoicesInfo();
+            return infos;
         }
 
-        public IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
+        public virtual IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
         {
-            throw new NotImplementedException();
-           yield break;
+            hasFinishedMoveAnimation = false;
+            if (infos.hasMoved == false)
+            {
+                hasFinishedMoveAnimation = true; 
+                yield break;
+            }
+
+            yield return StartCoroutine(RotateThenMove(infos.destination));
         }
     }
 }

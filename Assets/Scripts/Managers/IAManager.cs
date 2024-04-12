@@ -23,7 +23,7 @@ namespace Managers
             Instance = this;
         }
 
-        public void BackendMoveEnemies(int totalEnergy)
+        public void BackendMoveEnemies()
         {
             EnemyChoices = new();
             foreach (var enemy in Enemy.GetEnemiesInGame())
@@ -38,6 +38,7 @@ namespace Managers
 
         public IEnumerator MoveEnemies()
         {
+            hasMovedEveryEnemies = false;
             List<Enemy> movingEnemies = new();
             foreach (var enemy in Enemy.GetEnemiesInGame())
             {
@@ -66,6 +67,8 @@ namespace Managers
             {
                 enemy.GetComponent<Enemy>().ResetAnimationStates();
             }
+
+            hasMovedEveryEnemies = true;
         }
         public IEnumerator MoveEnemies(int totalEnergy)
         {
