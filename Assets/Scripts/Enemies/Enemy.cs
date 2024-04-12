@@ -30,7 +30,6 @@ namespace Enemies
 
         [SerializeField] protected bool isStupefiedState = false; // Piege
 
-        [SerializeField] protected int ratioMovement = 1;
         private List<Cell> _destinationsCell;
 
         protected Cell cell;
@@ -41,6 +40,7 @@ namespace Enemies
         public bool hasFinishedToMove = false;
         public bool hasFinishedMoveAnimation = false;
         public  bool hasFinishedSpawnAnimation = false; 
+        
         // Deplacements 
         protected Vector2Int _gauche2d = new Vector2Int(-1, 0);
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
@@ -114,11 +114,7 @@ namespace Enemies
         }
 
 
-        public virtual int Health
-        {
-            get { return _health; }
-            set { _health = value; }
-        }
+        public abstract int Health { get; set; }
 
         public void Damage(int damage)
         {
@@ -200,16 +196,7 @@ namespace Enemies
             return GetClosestDestination();
         }
 
-        public static int baseHealth;
-        private int _health = baseHealth;
-        public static int baseAttack;
-        private int _attackDamage = baseAttack;
-
-        public int AttackDamage
-        {
-            get => _attackDamage;
-            set => value = _attackDamage;
-        }
+        protected abstract int AttackDamage { get; set; }
 
         public void SetAsStupefied()
         {
