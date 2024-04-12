@@ -25,7 +25,6 @@ namespace Utils
         [SerializeField] private List<TypeTopOfCell> blockingElementsType;
         [Header("What")] [SerializeField] private GameObject _objectToSpawn;
 
-        [Header("How")] [SerializeField] private double _spawnRate;
         [SerializeField] private CellsToCheck _cellsToCheck;
 
         [SerializeField] private List<Type> _BlockTypeToSpawnOn;
@@ -154,7 +153,7 @@ namespace Utils
 
         private bool RandomBool()
         {
-            return _rand.NextDouble() > 1 - _spawnRate;
+            return _rand.NextDouble() > 1 - Ressource.SpawnRate;
         }
 
         /// <summary>
