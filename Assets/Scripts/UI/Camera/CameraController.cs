@@ -9,12 +9,27 @@ public class CameraController : MonoBehaviour
     public static CameraController Instance { get; private set; }
     
     [SerializeField] private CinemachineVirtualCamera associatedCamera;
+    
+    [Header("Player Cameras")]
+    [SerializeField] private CinemachineVirtualCamera bonzoCamera;
+    [SerializeField] private CinemachineVirtualCamera zombotCamera;
 
     private void Awake()
     {
         Instance = this;
 
         _followOffset = associatedCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+    }
+
+    private const int MAIN_CAMERA_PRIORITY = 12;
+    public void SetBonzoCameraAsMain()
+    {
+        bonzoCamera.Priority = MAIN_CAMERA_PRIORITY;
+    }
+    
+    public void SetZombotCameraAsMain()
+    {
+        zombotCamera.Priority = MAIN_CAMERA_PRIORITY;
     }
 
     public void MoveCameraToPosition(Vector3 destination)

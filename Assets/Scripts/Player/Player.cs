@@ -127,29 +127,35 @@ public class Player : NetworkBehaviour, ITopOfCell
             InputManager.Player = this;
         }
 
-        Vector3 position; 
+        InitializePlayerBasedOnCharacterSelection();
+        
+        if (IsServer)
+        {
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
+        }
+    }
+
+    private void InitializePlayerBasedOnCharacterSelection()
+    {
+        
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
-            position = transform.position;
-            SetReachableCells(true,position); 
+            SetReachableCells(true, transform.position); 
+            
+            if (IsOwner) { CameraController.Instance.SetBonzoCameraAsMain(); }
         }
         else
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
-            
-            position = transform.position;
-            SetReachableCells(false, position); 
-        }
-        
-        if (IsServer)
-        {
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, position);
+            SetReachableCells(false, transform.position); 
+            if (IsOwner) { CameraController.Instance.SetZombotCameraAsMain(); }
         }
     }
+    
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
         bool hasComponent = spawnPoint.TryGetComponent(out BlockPlayerSpawn blockPlayerSpawn);
