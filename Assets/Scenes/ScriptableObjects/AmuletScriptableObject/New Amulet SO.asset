@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 
   turnTime: 60
-  numberOfTurns: 2
-  ressourceSpawnRate: 0.1
-  playersHealth: 5
-  playerEnergy: 6
+  numberOfTurns: 10
+  ressourceSpawnRate: 0.05
+  playersHealth: 3
+  playerEnergy: 10
   startingMoney: 3
-  enemyEnergy: 6
+  enemyEnergy: 12
   MerdeHeathPoints: 1
   MerdeMoveRatio: 1
   GoofyHealthPoints: 1
