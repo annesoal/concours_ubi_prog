@@ -28,9 +28,10 @@ namespace Enemies
                 yield break;
             }
                 
-            if (!IsTimeToMove(energy))
+            if (!IsTimeToMove())
             {
                 //Debug.Log("Early return IsTimeToMove dans attacking enemy");
+                timeSinceLastAction++;
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 yield break;

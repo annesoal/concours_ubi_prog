@@ -31,6 +31,7 @@ namespace Enemies
         [SerializeField] protected int isStupefiedState = 0; // Piege
 
         private List<Cell> _destinationsCell;
+        protected int timeSinceLastAction = 0;
 
         protected Cell cell;
         public bool hasPath = false;

@@ -28,8 +28,9 @@ namespace Enemies.Basic
                 yield break;
             }
 
-            if (!IsTimeToMove(energy))
+            if (!IsTimeToMove())
             {
+                timeSinceLastAction++;
                 hasFinishedToMove = true;
                 yield break;
             }
@@ -62,9 +63,9 @@ namespace Enemies.Basic
                    cellToCheck.HasNonWalkableBuilding();
         }
 
-        protected bool IsTimeToMove(int energy)
+        protected bool IsTimeToMove()
         {
-            return energy % MoveRatio == 0;
+            return timeSinceLastAction % MoveRatio == 0;
         }
 
 
