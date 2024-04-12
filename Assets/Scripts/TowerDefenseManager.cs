@@ -144,6 +144,7 @@ public class TowerDefenseManager : NetworkBehaviour
         SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints;
 
         Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth;
+        CentralizedInventory.StartingMoney = amuletSO.startingMoney;
     }
 
     private void Start()
@@ -228,11 +229,13 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void WaitForPlayerReadyToPlay()
     {
+        
         if (PlayersAreReadyToPlay()) GoToSpecifiedState(State.CountdownToStart);
     }
 
     private void ProgressCountDownToStartTimer()
     {
+        CentralizedInventory.Instance.Initialize();
         ProgressCountDownToStartTimerClientRpc(Time.deltaTime);
 
         CountDownToStartTimer -= Time.deltaTime;

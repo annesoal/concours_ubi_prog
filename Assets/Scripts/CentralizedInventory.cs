@@ -1,16 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Grid;
 using Grid.Interface;
 using Synchrone;
 using Unity.Netcode;
+using Unity.Networking.Transport;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CentralizedInventory : NetworkBehaviour
 {
     public static CentralizedInventory Instance { get; private set; }
 
+    public static int StartingMoney; 
     [SerializeField] private CentralizedInventoryUI correspondingUI;
 
     [SerializeField] private List<BuildingMaterialSO> allBuildingMaterialSO;
@@ -30,7 +34,13 @@ public class CentralizedInventory : NetworkBehaviour
         Instance = this;
     }
 
-    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
+    public void Initialize()
+    {
+        Debug.Log(StartingMoney); 
+        EmitResourceChangedEventClientRpc(StartingMoney, 0);
+    }
+
+    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>();
 
     /// <summary>
     /// throw new ITopOfCellNotAResourceException(); when element is not a resource.
