@@ -30,7 +30,7 @@ public class CentralizedInventory : NetworkBehaviour
         Instance = this;
     }
 
-    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
+    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(10);
 
     /// <summary>
     /// throw new ITopOfCellNotAResourceException(); when element is not a resource.
