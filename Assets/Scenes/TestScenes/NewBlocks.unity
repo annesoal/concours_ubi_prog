@@ -35716,13 +35716,13 @@ MonoBehaviour:
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 797685666}
   <BossBlockSpawn>k__BackingField: {fileID: 1932378014}
-  nextLevelDataSo: {fileID: 11400000, guid: 72636b7cc832af1c6a6ab128c8c239f8, type: 2}
+  nextLevelDataSo: {fileID: 11400000, guid: f968e42ad621f1dd79d0a3eb4cc91534, type: 2}
   listOfSpawners:
   - {fileID: 1045813830}
   - {fileID: 1095905231}
   - {fileID: 2038331595}
   - {fileID: 964324984}
-  amuletSO: {fileID: 11400000, guid: 0244303ca2b2d2da085da58f64cf1f7d, type: 2}
+  amuletSO: {fileID: 11400000, guid: a1968f6342417dfd5a1083bb6ca2ea5e, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
