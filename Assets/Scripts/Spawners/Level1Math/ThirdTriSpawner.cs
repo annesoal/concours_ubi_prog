@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Spawners
 {
+[CreateAssetMenu(menuName = "Math/ThirdTriSpawner")]
     public class ThirdTriSpawner : MathSpawnSO
     {
         public override int GetNumberMerdeToSpawn(int turn)

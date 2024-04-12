@@ -2,7 +2,7 @@ using System;
 using Spawners;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Math/SecondQuadraSpawnerMath")]
 public class SecondQuadraSpawnerMath :  MathSpawnSO
 {
     public override int GetNumberMerdeToSpawn(int turn)

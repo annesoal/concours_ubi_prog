@@ -1,7 +1,9 @@
 using System;
+using UnityEngine;
 
 namespace Spawners
 {
+[CreateAssetMenu(menuName = "Math/FirstTriSpawner")]
     public class FirstTriSpawner : MathSpawnSO
     {
         public override int GetNumberMerdeToSpawn(int turn)
