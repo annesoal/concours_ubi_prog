@@ -31,7 +31,6 @@ namespace Enemies
             if (!IsTimeToMove())
             {
                 //Debug.Log("Early return IsTimeToMove dans attacking enemy");
-                timeSinceLastAction++;
                 hasFinishedMoveAnimation = true;
                 hasFinishedToMove = true;
                 yield break;
