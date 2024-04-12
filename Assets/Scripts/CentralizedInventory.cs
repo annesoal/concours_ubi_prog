@@ -40,7 +40,7 @@ public class CentralizedInventory : NetworkBehaviour
         EmitResourceChangedEventClientRpc(StartingMoney, 0);
     }
 
-    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(10);
+    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
 
     /// <summary>
     /// throw new ITopOfCellNotAResourceException(); when element is not a resource.
