@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Enemies;
 using Grid;
 using Managers;
@@ -12,7 +11,7 @@ public class EnvironmentTurnManager : MonoBehaviour
     public static EnvironmentTurnManager Instance;
     public event EventHandler OnEnvironmentTurnEnded;
 
-    private static int _turn = 0;
+     private int _turn = 0;
     private void Awake()
     {
         Instance = this;
