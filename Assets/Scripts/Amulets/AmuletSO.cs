@@ -6,29 +6,57 @@ namespace Amulets
     [CreateAssetMenu(menuName = "AmuletteSO")]
     public class AmuletSO :  ScriptableObject
     {
-        [Header("Information")]
-        public string amuletName;
-        public Sprite amuletIcon;
-        public string description = "To Be Changed/Overwritten";
-        
         [Header("ID")]
         public int ID = 0;
         
-        [Header("Health related issues : ")]
-        public int playersHealth = 3;
-        public int enemyBaseHealth = 1;
-        public int towerBaseHealth = 5;
-        public int enemyBaseAttack = 1;
-        public int towerBaseAttack = 1;
-        
-        [Header("Mechanical hazards : ")]
-        public float tacticalPauseTime = 20.0f;
+        [Header("Game")]
+        public float turnTime = 20.0f;
         public int numberOfTurns = 10;
+        public float ressourceSpawnRate = 0.2f;
+        
+        [Header("Player")] 
+        public int playersHealth = 3;
         public int playerEnergy = 10;
-        public int enemiEnergy = 12;
-        public float resourcesSpawnRate = 0.2f;
-        public int towerBaseCost = 8;
-        public int trapBaseCost = 1;
-        public int towerRange = 3; 
+        public int startingMoney = 0;
+
+        [Header("Enemis")]
+        public int enemyEnergy = 12;
+
+        [Header("Merde")] 
+        public int MerdeHeathPoints = 1; 
+        public int MerdeMoveRatio = 1;
+
+        [Header("Goofy")]
+        public int GoofyHealthPoints = 1; 
+        public int GoofyMoveRatio = 1;
+
+        [Header("BigGuy")] 
+        public int BigGuyHealthPoints = 1;
+        public int BigGuyMoveRatio = 1;
+        public int BigGuyDamages = 1;
+        
+        [Header("Sniper")] 
+        public int SniperHealthPoints = 1;
+        public int SniperMoveRatio = 1;
+        public int SniperDamages = 1;
+        public int SniperRange = 1;
+
+        [Header("Trap")] 
+        public int TrapCost = 2;
+        public int StunDuration = 1;
+
+        [Header("Bomb")] 
+        public int BombCost = 2;
+        public int BombDamage = 1;
+
+        [Header("Obstacles")] 
+        public int ObstaclesHealth = 1;
+
+        [Header("Tower")] 
+        public int TowerCost = 4;
+        public int TowerRange = 3;
+        public int TowerHealth = 1;
+        public int TowerAttackRatio = 2;
+        public int numberOfProjectile = 1;
     }
 }
