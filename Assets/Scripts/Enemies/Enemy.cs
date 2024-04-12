@@ -22,6 +22,8 @@ namespace Enemies
 
     public abstract class Enemy : NetworkBehaviour, IDamageable, ITopOfCell //, ICanDamage
     {
+        public static int Energy;
+        
         protected EnnemyType ennemyType;
 
         public abstract int MoveRatio { get; set; }

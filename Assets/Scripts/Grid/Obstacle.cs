@@ -1,9 +1,7 @@
-using System;
 using Ennemies;
 using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
-using Interfaces;
 
 namespace Grid
 {
@@ -19,9 +17,15 @@ namespace Grid
         [SerializeField] protected Animator animator;
         [SerializeField] private float topOfCell = 0.72f;
 
-        [SerializeField] private int health = 1;
         [SerializeField] protected ObstacleType obstacleType = ObstacleType.Test;
-
+        public static int ObstacleHealth;
+        private int _health = ObstacleHealth;
+        public int Health
+        {
+            get { return _health; }
+            set => _health = value;
+        }
+        
         public void Initialize()
         {
             if (!IsServer) return;
@@ -37,14 +41,6 @@ namespace Grid
         {
             return this.gameObject;
         }
-
-        
-        public int Health
-        {
-            get { return health; }
-            set => health = value;
-        }
-
         public void Damage(int damage)
         {
             Health -= damage;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Amulets;
 using Enemies;
+using Enemies.Attack;
+using Enemies.Basic;
 using Grid;
 using Grid.Blocks;
 using Managers;
@@ -37,30 +39,20 @@ public class TowerDefenseManager : NetworkBehaviour
     private IAManager _iaManager;
 
     [field: Header("Information du jeu")] // Nombre de round du que le niveau détient. Arrive a 0, les joueurs ont gagne.
-    [field: SerializeField]
-    public int totalRounds { get; private set; }
+    public static int TotalRounds;
 
     // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
     [field: SerializeField] private int EnergyAvailable { get; set; }
     public int energyToUse;
 
-    private float tacticalPauseDuration;
+    private static float TacticalPauseDuration;
 
-
-    [Header("Utility")] [SerializeField] private GameObject obstacle;
-    [SerializeField] private GameObject _hightlighter;
-
-    private int _playersHealth;
-
-    [field: Header("Chrono de depart")]
-    [field: SerializeField]
     public float CountDownToStartTimer { get; private set; }
 
     public int currentRoundNumber;
 
     [Header("Player Spawn")] [SerializeField]
     private Transform playerMonkeyPrefab;
-
 
     [field: SerializeField] public Transform MonkeyBlockPlayerSpawn { get; private set; }
 
@@ -96,9 +88,8 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void Awake()
     {
-        highlighter = _hightlighter;
         Instance = this;
-        _currentTimer = new NetworkVariable<float>(tacticalPauseDuration);
+        _currentTimer = new NetworkVariable<float>(TacticalPauseDuration);
         _iaManager = gameObject.AddComponent<IAManager>();
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
@@ -112,17 +103,33 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void SetAmuletFieldsToGameFields()
     {
-        _playersHealth = amuletSelector.AmuletToUse.playersHealth;
-        tacticalPauseDuration = amuletSelector.AmuletToUse.tacticalPauseTime;
-        totalRounds = amuletSelector.AmuletToUse.numberOfTurns;
-        EnergyAvailable = amuletSelector.AmuletToUse.playerEnergy; 
-        EnvironmentTurnManager.EnemyEnergy = amuletSelector.AmuletToUse.enemiEnergy;
-        BaseTower.baseHealth = amuletSelector.AmuletToUse.towerBaseHealth;
-        BaseTower.baseAttack = amuletSelector.AmuletToUse.towerBaseAttack;
-        BaseTower.baseCost = amuletSelector.AmuletToUse.towerBaseCost;
-        BaseTrap.baseCost = amuletSelector.AmuletToUse.trapBaseCost;
-        Enemy.baseAttack = amuletSelector.AmuletToUse.enemyBaseAttack;
-        Enemy.baseHealth = amuletSelector.AmuletToUse.enemyBaseHealth;
+        Ressource.SpawnRate = amuletSelector.AmuletToUse.ressourceSpawnRate;
+        TowerDefenseManager.TacticalPauseDuration = amuletSelector.AmuletToUse.turnTime;
+        TowerDefenseManager.TotalRounds = amuletSelector.AmuletToUse.numberOfTurns;
+        
+        Player.Energy = amuletSelector.AmuletToUse.playerEnergy;
+        Player.Health = amuletSelector.AmuletToUse.playersHealth;
+
+        Enemy.Energy = amuletSelector.AmuletToUse.enemyEnergy;
+        
+        EnvironmentTurnManager.EnemyEnergy = amuletSelector.AmuletToUse.enemyEnergy;
+
+        GoofyEnemy.GoofyHealth = amuletSelector.AmuletToUse.GoofyHealthPoints;
+        GoofyEnemy.GoofyMoveRation = amuletSelector.AmuletToUse.GoofyMoveRatio;
+
+        PetiteMerdeEnemy.MerdeHealth = amuletSelector.AmuletToUse.MerdeHeathPoints;
+        PetiteMerdeEnemy.MerdeMoveRatio = amuletSelector.AmuletToUse.MerdeMoveRatio;
+
+        BigGuyEnemy.BigGuyAttack = amuletSelector.AmuletToUse.BigGuyDamages;
+        BigGuyEnemy.BigGuyHealth = amuletSelector.AmuletToUse.BigGuyHealthPoints;
+        BigGuyEnemy.BigGuyMoveRatio = amuletSelector.AmuletToUse.BigGuyMoveRatio;
+
+        SniperEyeEnemy.SniperRange = amuletSelector.AmuletToUse.SniperRange;
+        SniperEyeEnemy.SniperMoveRatio = amuletSelector.AmuletToUse.SniperMoveRatio;
+        SniperEyeEnemy.SniperAttack = amuletSelector.AmuletToUse.SniperDamages;
+        SniperEyeEnemy.SniperHealth = amuletSelector.AmuletToUse.SniperHealthPoints;
+
+        Obstacle.ObstacleHealth = amuletSelector.AmuletToUse.ObstaclesHealth;
     }
 
     private void Start()
@@ -228,7 +235,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
             if (IsServer)
             {
-                _currentTimer.Value = tacticalPauseDuration;
+                _currentTimer.Value = TacticalPauseDuration;
                 CentralizedInventory.Instance.CashBonus();
             }
         }
@@ -273,13 +280,13 @@ public class TowerDefenseManager : NetworkBehaviour
         CleanBonuses();
         TilingGrid.grid.SyncAllTopOfCells();
         
-        if (_playersHealth < 1)
+        if (Player.Health < 1)
         {
             gameWon = false;
             GoToSpecifiedState(State.EndOfGame);
         }
 
-        if (currentRoundNumber >= totalRounds)
+        if (currentRoundNumber >= TotalRounds)
         {
             gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
@@ -323,7 +330,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool AllRoundsAreDone()
     {
-        return currentRoundNumber == totalRounds;
+        return currentRoundNumber == TotalRounds;
     }
 
     public event EventHandler OnRoundNumberIncreased;
@@ -524,7 +531,7 @@ public class TowerDefenseManager : NetworkBehaviour
                     Destroy(enemy.ToGameObject());
                 }
 
-                Instance._playersHealth--;
+                Player.Health--;
             }
         }
     }

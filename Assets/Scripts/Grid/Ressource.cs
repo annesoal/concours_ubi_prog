@@ -6,7 +6,8 @@ namespace Grid
 {
     public class Ressource : NetworkBehaviour, ITopOfCell
     {
-        
+
+        public static float SpawnRate;
         [SerializeField] private float topOfCell = 0.72f;
 
         [field: SerializeField] public BuildingMaterialSO BuildingMaterialSO { get; private set; }

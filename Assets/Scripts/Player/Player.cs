@@ -28,6 +28,8 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
+    public static int Health;
+    public static int Energy;
 
     public int EnergyAvailable
     {

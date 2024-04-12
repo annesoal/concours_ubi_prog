@@ -66,7 +66,7 @@ public class GameStateUI : MonoBehaviour
     
     private void TowerDefenseManager_OnRoundNumberIncreased(object sender, EventArgs e)
     {
-        int roundsLeft = TowerDefenseManager.Instance.totalRounds - TowerDefenseManager.Instance.currentRoundNumber;
+        int roundsLeft = TowerDefenseManager.TotalRounds - TowerDefenseManager.Instance.currentRoundNumber;
         roundsLeftText.text ="Rounds : " + roundsLeft;
     }
 
