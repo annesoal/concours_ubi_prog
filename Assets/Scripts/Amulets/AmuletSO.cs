@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Amulets
 {
     [CreateAssetMenu(menuName = "AmuletteSO")]
     public class AmuletSO :  ScriptableObject
     {
-        [Header("ID")]
-        public int ID = 0;
+        [Header("Nom")]
+        public string ID;
         
         [Header("Game")]
         public float turnTime = 20.0f;
