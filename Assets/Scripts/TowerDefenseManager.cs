@@ -145,6 +145,16 @@ public class TowerDefenseManager : NetworkBehaviour
 
         Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth;
         CentralizedInventory.StartingMoney = amuletSO.startingMoney;
+
+        BasicTrap.SetCost = amuletSO.TrapCost;
+        BasicTrap.StunDuration = amuletSO.StunDuration;
+
+        BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile;
+        BasicTower.BasicTowerCost = amuletSO.TowerCost;
+        BasicTower.BasicTowerRange = amuletSO.TowerRange;
+        BasicTower.BasicTowerHealth = amuletSO.TowerHealth;
+        BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks;
+        BasicTower.BasicTowerDamage = amuletSO.TowerDamage;
     }
 
     private void Start()
