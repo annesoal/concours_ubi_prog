@@ -15257,16 +15257,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_table
       objectReference: {fileID: 0}
+    - target: {fileID: 1893494640400639233, guid: ea52eac844ffeda4189a1b94eccf7319,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: deb0f5da2b696464fa40cf31dad4851e, type: 2}
     - target: {fileID: 6074495491330804692, guid: ea52eac844ffeda4189a1b94eccf7319,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f2314d7e337f60347b3dd45531235655, type: 2}
+      objectReference: {fileID: 2100000, guid: ada0c00352b912942b31ff79eb9283ff, type: 2}
     - target: {fileID: 7894903364560506375, guid: ea52eac844ffeda4189a1b94eccf7319,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ada0c00352b912942b31ff79eb9283ff, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a21bf4be68ebb745a6b8d0e30f2c428, type: 2}
     - target: {fileID: 8211754507019129772, guid: ea52eac844ffeda4189a1b94eccf7319,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
