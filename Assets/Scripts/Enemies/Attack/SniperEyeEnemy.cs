@@ -32,7 +32,7 @@ namespace Enemies.Attack
         {
             ennemyType = EnnemyType.Flying;
         }
-
+        
         protected override bool IsValidCell(Cell toCheck)
         {
             Cell updatedCell = TilingGrid.grid.GetCell(toCheck.position);
@@ -61,7 +61,6 @@ namespace Enemies.Attack
             if (path == null || path.Count == 0)
             {
                 Debug.Log("Dans le early return de chose to attack");
-                hasFinishedMoveAnimation = true;
                 return true;
             }
             
