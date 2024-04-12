@@ -53,10 +53,7 @@ namespace Amulets
             {
                 foreach (AmuletSO amulet in referenceAmuletsList)
                 {
-                    if (amulet.ID == ID)
-                    {
-                        listOfAmulets.Add(amulet);
-                    }
+   
                 }
             }
 
@@ -111,7 +108,6 @@ namespace Amulets
             for (var i = 0; i < amulets.Length; i++)
             {
                 var amulet = amulets[i];
-                levelAmuletsPair.amulets[i] = amulet.ID;
                 Debug.Log(levelAmuletsPair.amulets[i]);
             }
 
