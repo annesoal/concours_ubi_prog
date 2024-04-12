@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Grid;
-using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,11 +7,24 @@ public class SynchronizeBuilding : NetworkBehaviour
 {
     public static SynchronizeBuilding Instance { get; private set; }
 
-    [SerializeField] private BuildableObjectsListSO allBuildableObjectSO;
+    [SerializeField] public BuildableObjectsListSO allBuildableObjectSO;
 
     private void Awake()
     {
         Instance = this;
+    }
+    
+    public void OverrideBuildingCosts()
+    {
+        Debug.Log(BasicTower.BasicTowerCost);
+        BuildableObjectsListSO  listSO = Instance.allBuildableObjectSO;
+        var pair = listSO.list[0].materialAndQuantityPairs[0];
+        pair.quantityOfMaterialRequired = BasicTower.BasicTowerCost;
+        listSO.list[0].materialAndQuantityPairs[0] = pair;
+        
+        pair = listSO.list[1].materialAndQuantityPairs[0];
+        pair.quantityOfMaterialRequired = BasicTrap.SetCost;
+        listSO.list[1].materialAndQuantityPairs[0] = pair;
     }
 
     public void SpawnBuildableObject(BuildableObjectSO toBuild, Cell buildableBlock)

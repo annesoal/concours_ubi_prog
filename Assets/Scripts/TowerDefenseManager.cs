@@ -59,7 +59,6 @@ public class TowerDefenseManager : NetworkBehaviour
     public static int TotalRounds;
 
     // Énergie des joueurs disponible pour leurs actions lors de la pause tactique.
-    [field: SerializeField] private int EnergyAvailable { get; set; }
     public int energyToUse;
 
     private static float TacticalPauseDuration;
@@ -154,7 +153,11 @@ public class TowerDefenseManager : NetworkBehaviour
         BasicTower.BasicTowerHealth = amuletSO.TowerHealth;
         BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks;
         BasicTower.BasicTowerDamage = amuletSO.TowerDamage;
+        
+        SynchronizeBuilding.Instance.OverrideBuildingCosts();
     }
+
+
 
     private void Start()
     {
@@ -217,8 +220,8 @@ public class TowerDefenseManager : NetworkBehaviour
         {
             IncreaseRoundNumber();
 
-            energyToUse = EnergyAvailable;
-            Player.LocalInstance.ResetPlayer(EnergyAvailable);
+            energyToUse = Player.Energy;
+            Player.LocalInstance.ResetPlayer(Player.Energy);
             _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
 
             if (IsServer)
