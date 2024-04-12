@@ -24,6 +24,8 @@ namespace Enemies
     {
         protected EnnemyType ennemyType;
 
+        public abstract int MoveRatio { get; set; }
+
         [SerializeField] protected bool isStupefiedState = false; // Piege
 
         [SerializeField] protected int ratioMovement = 1;

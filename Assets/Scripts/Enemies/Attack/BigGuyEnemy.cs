@@ -9,9 +9,12 @@ namespace Enemies.Attack
     {
         public static int BigGuyHealth;
         public static int BigGuyAttack;
+        public static int BigGuyMoveRatio;
 
         private int _attack = BigGuyAttack;
         private int _health = BigGuyHealth;
+        private int _moveRatio = BigGuyMoveRatio; 
+        public override int MoveRatio { get => _moveRatio; set => _moveRatio = value; }
         public override int Health { get => _health; set => _health =  value ; }
         
         public override int AttackDamage { get => _attack; set => _attack = value; }

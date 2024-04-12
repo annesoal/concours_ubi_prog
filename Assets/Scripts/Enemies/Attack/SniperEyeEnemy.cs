@@ -12,10 +12,14 @@ namespace Enemies.Attack
         public static int SniperHealth;
         public static int SniperAttack;
         public static int SniperRange;
+        public static int SniperMoveRatio;
 
         private int _attack = SniperAttack;
         private int _health = SniperHealth;
         private int _range = SniperRange;
+        private int _moveRation = SniperMoveRatio;
+        
+        public override int MoveRatio { get => _moveRation; set => _moveRation = value; }
         public override int Health { get => _health; set => _health =  value ; }
         public override int AttackDamage { get => _attack; set => _attack = value; }
         public int Range

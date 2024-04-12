@@ -9,7 +9,7 @@ using Random = System.Random;
 
 namespace Enemies.Basic
 {
-    public class BasicEnemy : Enemy
+    public abstract class BasicEnemy : Enemy
     {
         private Random _rand = new();
         protected float timeToMove = 0.3f;

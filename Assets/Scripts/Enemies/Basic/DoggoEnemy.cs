@@ -10,7 +10,7 @@ namespace Enemies.Basic
             ennemyType = EnnemyType.Doggo;
         }
 
-       
 
+        public override int MoveRatio { get; set; }
     }
 }
