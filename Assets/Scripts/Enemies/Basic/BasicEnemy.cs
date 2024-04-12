@@ -34,7 +34,7 @@ namespace Enemies.Basic
                 yield break;
             }
             
-			if (isStupefiedState)
+			if (isStupefiedState > 0)
 			{
 				hasFinishedToMove = true;
 				yield break; 

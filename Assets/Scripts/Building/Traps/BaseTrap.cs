@@ -8,9 +8,7 @@ using UnityEngine;
 
 public abstract class BaseTrap : BuildableObject
 {
-    static public int baseCost;
     [SerializeField] private BuildableObjectVisuals trapVisuals;
-    [SerializeField] private int damage;
     [SerializeField] protected Animator animator;
     private void Start()
     {
@@ -30,9 +28,6 @@ public abstract class BaseTrap : BuildableObject
     {
         return TypeTopOfCell.Building;
     }
-
-    private int _cost = baseCost;
-    public override int Cost { get => _cost; set => value=_cost; }
 
     private void Enemy_OnAnyEnemyMoved(object sender, EventArgs e)
     {
