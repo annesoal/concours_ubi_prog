@@ -36,7 +36,7 @@ namespace Enemies
                 yield break;
             }
 
-            if (isStupefiedState)
+            if (isStupefiedState > 0)
             {
                 //Debug.Log("Early return isStupefiedState dans attacking enemy");
                 hasFinishedMoveAnimation = true;

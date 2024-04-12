@@ -28,7 +28,7 @@ namespace Enemies
 
         public abstract int MoveRatio { get; set; }
 
-        [SerializeField] protected bool isStupefiedState = false; // Piege
+        [SerializeField] protected int isStupefiedState = 0; // Piege
 
         private List<Cell> _destinationsCell;
 
@@ -196,14 +196,14 @@ namespace Enemies
             return GetClosestDestination();
         }
 
-        public void SetAsStupefied()
+        public void SetAsStupefied(int stunDuration)
         {
-            isStupefiedState = true;
+            isStupefiedState = stunDuration;
         }
         
         public void ResetStupefiedState()
         {
-            isStupefiedState = false;
+            isStupefiedState = 0;
         }
         
         private void TowerDefenseManager_OnCurrentStateChanged
@@ -211,7 +211,7 @@ namespace Enemies
         {
             if (e.newValue != TowerDefenseManager.State.EnvironmentTurn)
             {
-                isStupefiedState = false;
+                isStupefiedState--;
             }
         }
         
