@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Enemies;
 using Grid;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -15,13 +16,57 @@ namespace Managers
     {
         public static IAManager Instance{ get; private set; }
 
-
         private bool hasMovedEveryEnemies = false;
+        private Dictionary<Enemy, EnemyChoicesInfo> EnemyChoices = new();
         private void Awake()
         {
             Instance = this;
         }
-    
+
+        public void BackendMoveEnemies(int totalEnergy)
+        {
+            EnemyChoices = new();
+            foreach (var enemy in Enemy.GetEnemiesInGame())
+            {
+                var e = enemy.GetComponent<Enemy>();
+                SetEnemyPath(e);
+                var enemyChoicesInfo = e.CalculateChoices();
+                EnemyChoices.Add(e, enemyChoicesInfo);
+            }
+
+        }
+
+        public IEnumerator MoveEnemies()
+        {
+            List<Enemy> movingEnemies = new();
+            foreach (var enemy in Enemy.GetEnemiesInGame())
+            {
+                Enemy e = enemy.GetComponent<Enemy>();
+                var info = EnemyChoices[e];
+                if (info.hasMoved || info.hasAttacked)
+                {
+                   movingEnemies.Add(e);
+                   StartCoroutine(e.MoveCorroutine(info));
+                }
+            }
+
+            while (movingEnemies.Count > 0)
+            {
+                foreach (var enemy in movingEnemies)
+                {
+                    if (enemy.hasFinishedMoveAnimation)
+                    {
+                        movingEnemies.Remove(enemy);
+                    }
+                }
+                yield return null;
+            }
+
+            foreach (var enemy in Enemy.GetEnemiesInGame())
+            {
+                enemy.GetComponent<Enemy>().ResetAnimationStates();
+            }
+        }
         public IEnumerator MoveEnemies(int totalEnergy)
         {
             hasMovedEveryEnemies = false;
@@ -75,5 +120,6 @@ namespace Managers
 
             Instance.hasMovedEveryEnemies = false;
         }
+  
     }
 }

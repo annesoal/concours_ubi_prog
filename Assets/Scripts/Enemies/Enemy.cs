@@ -237,5 +237,18 @@ namespace Enemies
             hasFinishedToMove = false; 
             hasFinishedMoveAnimation = false; 
         }
+
+        public EnemyChoicesInfo CalculateChoices()
+        {
+
+            throw new NotImplementedException();
+            return new EnemyChoicesInfo();
+        }
+
+        public IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
+        {
+            throw new NotImplementedException();
+           yield break;
+        }
     }
 }
