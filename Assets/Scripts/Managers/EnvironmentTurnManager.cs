@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using Grid;
 using Managers;
 using Unity.Netcode;
@@ -9,12 +10,9 @@ using UnityEngine;
 public class EnvironmentTurnManager : MonoBehaviour
 {
     public static EnvironmentTurnManager Instance;
-
-    public static int EnemyEnergy = 0;
     public event EventHandler OnEnvironmentTurnEnded;
-    public bool PlayerHasBeenMoved { private get; set; }
 
-    private static int _turn = -1;
+    private static int _turn = 0;
     private void Awake()
     {
         Instance = this;
@@ -33,48 +31,52 @@ public class EnvironmentTurnManager : MonoBehaviour
         if (e.newValue == TowerDefenseManager.State.EnvironmentTurn)
         {
             TilingGrid.grid.ClearAllClientTopOfCells();
-            IEnumerator coroutineEnvTurn = EnvironmentTurn(TowerDefenseManager.Instance.energyToUse);
+            IEnumerator coroutineEnvTurn = EnvironmentTurn(TowerDefenseManager.Instance.IsFirstTurn);
             StartCoroutine(coroutineEnvTurn);
         }
     }
 
-    private IEnumerator EnvironmentTurn(int totalEnergy)
+    private IEnumerator EnvironmentTurn(bool isFirstTurn)
     {
         PreparePlayers();
-        int totalEnergyPlayers = totalEnergy;
-        while (HasEnergyLeft(totalEnergyPlayers))
+        if (!isFirstTurn)
         {
-            MovePlayers();
-            yield return new WaitUntil(ReadyToMoveNPCs);
-            totalEnergyPlayers--;
-            ResetPlayerReadyCount();
-        }
-        // Discussion avec Malo pour decoupler l'energie des 2 groupes
-        int NPCEnegy = EnemyEnergy; 
+            int totalEnergyPlayers = Player.Energy;
+            
+            while (HasEnergyLeft(totalEnergyPlayers))
+            {
+                MovePlayers();
+                yield return new WaitUntil(ReadyToMoveNPCs);
+                totalEnergyPlayers--;
+                ResetPlayerReadyCount();
+            }
+            int NPCEnergy = Enemy.Energy; 
+            
+            EnemySpawnerManager.Instance.StartMathSpawners(_turn);
+            while (HasEnergyLeft(NPCEnergy))
+            {
+                //Debug.Log("EVM Avant le spawn");
+                EnemySpawnerManager.Instance.Spawn(_turn);
+                
+                //Debug.Log("EVM avant play tower in game turn");
+                StartCoroutine(BaseTower.PlayTowersInGameTurn());
+                yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
+                
+                //Debug.Log("EVM avant move enemies");
+                StartCoroutine(IAManager.Instance.MoveEnemies(NPCEnergy));
+                yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
+                
+                //Debug.Log("Fin Iteration boucle EVM");
+                NPCEnergy--;
+            }
+            //Debug.Log("Sortie de la boucle EVM");
         
-        EnemySpawnerManager.Instance.StartMathSpawners(_turn);
-        while (HasEnergyLeft(NPCEnegy))
-        {
-            //Debug.Log("EVM Avant le spawn");
-            EnemySpawnerManager.Instance.Spawn(_turn);
-            
-            //Debug.Log("EVM avant play tower in game turn");
-            StartCoroutine(BaseTower.PlayTowersInGameTurn());
-            yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
-            
-            //Debug.Log("EVM avant move enemies");
-            StartCoroutine(IAManager.Instance.MoveEnemies(totalEnergy));
-            yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
-            
-            //Debug.Log("Fin Iteration boucle EVM");
-            NPCEnegy--;
+            IAManager.ResetEnemies();
+        
+            _turn++;
         }
-        //Debug.Log("Sortie de la boucle EVM");
-
-        IAManager.ResetEnemies();
-
-        _turn++;
-        yield return new WaitForSeconds(0.01f);
+        
+        yield return new WaitForSeconds(0.05f);    
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }
 
