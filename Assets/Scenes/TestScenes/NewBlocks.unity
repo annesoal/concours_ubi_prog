@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2790998, g: 0.15266445, b: 0.3560565, a: 1}
+  m_IndirectSpecularColor: {r: 0.2791329, g: 0.15264997, b: 0.3561327, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -35707,12 +35707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb252143610737f0181785354309e0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <totalRounds>k__BackingField: 20
-  <EnergyAvailable>k__BackingField: 10
   energyToUse: 0
-  obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
-  _hightlighter: {fileID: 0}
-  <CountDownToStartTimer>k__BackingField: 3
   currentRoundNumber: 0
   playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
     type: 3}
@@ -35720,7 +35715,6 @@ MonoBehaviour:
   playerRobotPrefab: {fileID: 2868363114536855551, guid: 5691060b1c68ecd84ad714b4e706c7b4,
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 797685666}
-  amuletSelector: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b, type: 2}
   <BossBlockSpawn>k__BackingField: {fileID: 1932378014}
   nextLevelDataSo: {fileID: 11400000, guid: f968e42ad621f1dd79d0a3eb4cc91534, type: 2}
   listOfSpawners:
@@ -35728,6 +35722,7 @@ MonoBehaviour:
   - {fileID: 1095905231}
   - {fileID: 2038331595}
   - {fileID: 964324984}
+  amuletSO: {fileID: 11400000, guid: 0244303ca2b2d2da085da58f64cf1f7d, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
