@@ -36,8 +36,13 @@ public class CentralizedInventory : NetworkBehaviour
 
     public void Initialize()
     {
-        Debug.Log(StartingMoney); 
-        EmitResourceChangedEventClientRpc(StartingMoney, 0);
+        if (IsServer)
+        {
+            Debug.Log(StartingMoney);
+            NumberOfGreyResources.Value = StartingMoney;
+            // 0 est l'index des grey resources, qui sont, pour l'instant, les seules ressources disponibles pour le jeu.
+            EmitResourceChangedEventClientRpc(NumberOfGreyResources.Value, 0);
+        }
     }
 
     public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
