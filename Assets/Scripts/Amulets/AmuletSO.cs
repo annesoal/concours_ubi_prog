@@ -45,10 +45,6 @@ namespace Amulets
         public int TrapCost = 2;
         public int StunDuration = 1;
 
-        [Header("Bomb")] 
-        public int BombCost = 2;
-        public int BombDamage = 1;
-
         [Header("Obstacles")] 
         public int ObstaclesHealth = 1;
 
@@ -58,5 +54,10 @@ namespace Amulets
         public int TowerHealth = 1;
         public int TowerAttackRatio = 2;
         public int numberOfProjectile = 1;
+        
+        [Header("Bomb")] 
+        [Header("NonUtilisable")]
+        public int BombCost = 2;
+        public int BombDamage = 1;
     }
 }
