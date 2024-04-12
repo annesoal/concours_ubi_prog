@@ -112,7 +112,6 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
-        // On assume que AmuletSelector.AmuletSelection a ete choisit avant !
         SetAmuletFieldsToGameFields();
     }
 
