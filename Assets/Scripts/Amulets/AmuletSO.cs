@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Amulets
 {
@@ -51,8 +52,9 @@ namespace Amulets
         public int TowerCost = 4;
         public int TowerRange = 3;
         public int TowerHealth = 1;
-        public int TowerAttackRatio = 2;
+        public int TowerTimeBetweenAttacks = 2;
         public int numberOfProjectile = 1;
+        public int TowerDamage = 1;
         
         [Header("Bomb")] 
         [Header("NonUtilisable")]
