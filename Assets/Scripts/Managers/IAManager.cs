@@ -53,8 +53,9 @@ namespace Managers
 
             while (movingEnemies.Count > 0)
             {
-                foreach (var enemy in movingEnemies)
+                for (int i = 0; i < movingEnemies.Count; i++)
                 {
+                    var enemy = movingEnemies[i];
                     if (enemy.hasFinishedMoveAnimation)
                     {
                         movingEnemies.Remove(enemy);
@@ -70,25 +71,7 @@ namespace Managers
 
             hasMovedEveryEnemies = true;
         }
-        public IEnumerator MoveEnemies(int totalEnergy)
-        {
-            hasMovedEveryEnemies = false;
-            List<GameObject> enemies = Enemy.GetEnemiesInGame();
-            for (int i = enemies.Count - 1; i >= 0; i--)
-            {
-                var enemy = enemies[i].GetComponent<Enemy>();
-                
-                SetEnemyPath(enemy);
-                
-                //StartCoroutine(enemy.Move());
-                yield return new WaitUntil(enemy.hasFinishedMoving);
-                
-                enemy.ResetAnimationStates();
-            }
-
-            hasMovedEveryEnemies = true;
-        }
-
+        
         public bool hasMovedEnemies()
         {
             return hasMovedEveryEnemies;

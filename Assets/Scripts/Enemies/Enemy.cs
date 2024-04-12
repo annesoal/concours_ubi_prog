@@ -38,7 +38,6 @@ namespace Enemies
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
-        public bool hasFinishedToMove = false;
         public bool hasFinishedMoveAnimation = false;
         public  bool hasFinishedSpawnAnimation = false; 
         
@@ -137,10 +136,6 @@ namespace Enemies
         public static event EventHandler OnAnyEnemyMoved;
         //public abstract IEnumerator Move();
 
-        public bool hasFinishedMoving()
-        {
-            return hasFinishedToMove;
-        }
 
 
         protected void AddInGame(GameObject enemy)
@@ -234,7 +229,6 @@ namespace Enemies
 
         public void ResetAnimationStates()
         {
-            hasFinishedToMove = false; 
             hasFinishedMoveAnimation = false; 
         }
 

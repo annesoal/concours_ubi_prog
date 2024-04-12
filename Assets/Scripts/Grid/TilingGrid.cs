@@ -25,7 +25,7 @@ namespace Grid
         // A changer au besoin
         static public TilingGrid grid { get; private set; }
 
-        public const int Size = 100;
+        public const int Size = 50;
         private readonly Cell[,] _cells = new Cell[Size, Size];
 
         [SerializeField] private GameObject _ground;
@@ -430,7 +430,6 @@ namespace Grid
 
         public List<Cell> GetCellsInRadius(Vector2Int origin, int radius)
         {
-            Debug.Log("Dans get cells in radius");
             List<Cell> cells = new List<Cell>();
 
             int minX = Math.Max(origin.x - radius, 0);
