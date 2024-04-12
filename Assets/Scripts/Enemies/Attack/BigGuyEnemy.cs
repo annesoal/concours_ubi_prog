@@ -7,6 +7,15 @@ namespace Enemies.Attack
 {
     public class BigGuyEnemy : AttackingEnemy
     {
+        public static int BigGuyHealth;
+        public static int BigGuyAttack;
+
+        private int _attack = BigGuyAttack;
+        private int _health = BigGuyHealth;
+        public override int Health { get => _health; set => _health =  value ; }
+        
+        public override int AttackDamage { get => _attack; set => _attack = value; }
+
         public BigGuyEnemy()
         {
             ennemyType = EnnemyType.BigGuy;

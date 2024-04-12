@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
@@ -7,6 +8,22 @@ namespace Enemies.Attack
 {
     public class SniperEyeEnemy : AttackingEnemy
     {
+        
+        public static int SniperHealth;
+        public static int SniperAttack;
+        public static int SniperRange;
+
+        private int _attack = SniperAttack;
+        private int _health = SniperHealth;
+        private int _range = SniperRange;
+        public override int Health { get => _health; set => _health =  value ; }
+        public override int AttackDamage { get => _attack; set => _attack = value; }
+        public int Range
+        {
+            get => _range;
+            set => _range = value;
+        }
+
 
         public SniperEyeEnemy()
         {
@@ -34,6 +51,20 @@ namespace Enemies.Attack
             Vector2Int position = TilingGrid.LocalToGridPosition(direction);
             Cell cell = TilingGrid.grid.GetCell(position);
             return cell.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
+        }
+        
+        public override bool ChoseToAttack()
+        {
+            if (path == null || path.Count == 0)
+            {
+                Debug.Log("Dans le early return de chose to attack");
+                hasFinishedMoveAnimation = true;
+                return true;
+            }
+            
+            List<Cell> cellsInRadius =
+                TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), Range);
+            return (ChoseAttack(cellsInRadius));
         }
 
     }

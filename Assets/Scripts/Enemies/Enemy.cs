@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Grid.Interface;
-using Interfaces;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Type = Grid.Type;
 
 namespace Enemies

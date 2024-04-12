@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using Enemies.Basic;
 using Grid;
 using Grid.Interface;
-using Interfaces;
 using UnityEngine;
 using Random = System.Random;
 
 namespace Enemies
 {
-    public abstract class AttackingEnemy : BasicEnemy, ICanDamage
+    public abstract class AttackingEnemy : BasicEnemy
     {
+        public abstract int AttackDamage { get; set; }
+        
         private Random _rand = new();
-        private int enemyDamage = 1;
-        private int attackRate;
-        private int radiusAttack = 1;
         protected float timeToAttack = 0.5f;
         
         /**
@@ -73,20 +71,7 @@ namespace Enemies
             EmitOnAnyEnemyMoved();
         }
 
-        public virtual bool ChoseToAttack()
-        {
-            if (path == null || path.Count == 0)
-            {
-                Debug.Log("Dans le early return de chose to attack");
-                hasFinishedMoveAnimation = true;
-                return true;
-            }
-            
-            List<Cell> cellsInRadius =
-                TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), radiusAttack);
-            return (ChoseAttack(cellsInRadius));
-        }
-
+        public abstract bool ChoseToAttack();
         public bool ChoseAttack(List<Cell> cellsInRadius)
         {
             Debug.Log("Dans chose to attack avec cell in radius");
@@ -113,18 +98,19 @@ namespace Enemies
         // Choisit d'attaquer aleatoirement
         private bool canAttack()
         {
-            return (_rand.NextDouble() > 1 - attackRate);
+            //return (_rand.NextDouble() > 1 - attackRate);
+            return true;
         }
         
         protected void Attack(BaseTower toAttack)
         {
-            toAttack.Damage(enemyDamage);
+            toAttack.Damage(AttackDamage);
             StartCoroutine(AttackAnimation());
         }
         
         protected void Attack(Obstacle toAttack)
         {
-            toAttack.Damage(enemyDamage);
+            toAttack.Damage(AttackDamage);
             StartCoroutine(AttackAnimation());
         }
 
