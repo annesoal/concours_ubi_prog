@@ -135,7 +135,7 @@ namespace Enemies
         }
 
         public static event EventHandler OnAnyEnemyMoved;
-        public abstract IEnumerator Move(int energy);
+        //public abstract IEnumerator Move();
 
         public bool hasFinishedMoving()
         {
@@ -238,9 +238,19 @@ namespace Enemies
             hasFinishedMoveAnimation = false; 
         }
 
+        protected abstract (bool moved, bool attacked, Vector3 destination) BackendMove();
+        
         public EnemyChoicesInfo CalculateChoices()
         {
+            EnemyChoicesInfo infos = new EnemyChoicesInfo();
+            infos.origin = this.gameObject.transform.position;
+            (bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
 
+            infos.destination = recordedResult.destination;
+            infos.hasMoved = recordedResult.moved;
+            infos.hasAttacked = recordedResult.attacked;
+            
+            
             throw new NotImplementedException();
             return new EnemyChoicesInfo();
         }

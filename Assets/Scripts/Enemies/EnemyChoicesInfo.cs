@@ -8,5 +8,5 @@ namespace Enemies
            public bool hasMoved;
             public bool hasAttacked;
             public Vector3 origin;
-            public Vector3 direction;    }
+            public Vector3 destination;    }
 }

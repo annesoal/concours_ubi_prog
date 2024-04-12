@@ -18,7 +18,7 @@ namespace Enemies
          * - Attaquer un obstacle ou une tower
          * - Avancer (et eviter ?)
          */
-        public override IEnumerator Move(int energy)
+        public IEnumerator Move()
         {
             //Debug.Log("Dans move attacking enemy");
 

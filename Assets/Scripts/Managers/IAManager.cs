@@ -77,7 +77,7 @@ namespace Managers
                 
                 SetEnemyPath(enemy);
                 
-                StartCoroutine(enemy.Move(totalEnergy));
+                //StartCoroutine(enemy.Move());
                 yield return new WaitUntil(enemy.hasFinishedMoving);
                 
                 enemy.ResetAnimationStates();

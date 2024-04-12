@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Text;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.InputSystem.LowLevel;
 using Utils;
 using Random = System.Random;
@@ -20,41 +22,66 @@ namespace Enemies.Basic
         }
         
         
-        public override IEnumerator Move(int energy)
-        {
-            hasFinishedToMove = false;
-            if (!IsServer)
-            {
-                yield break;
-            }
+        //public override IEnumerator Move()
+        //{
+        //    hasFinishedToMove = false;
+        //    if (!IsServer)
+        //    {
+        //        yield break;
+        //    }
 
-            if (!IsTimeToMove())
+        //    if (!IsTimeToMove())
+        //    {
+        //        timeSinceLastAction++;
+        //        hasFinishedToMove = true;
+        //        yield break;
+        //    }
+        //    
+		//	if (isStupefiedState > 0)
+		//	{
+		//		hasFinishedToMove = true;
+		//		yield break; 
+		//	}
+        //    
+        //    yield return new WaitUntil(AnimationSpawnIsFinished);
+        //    
+        //    if (!TryMoveOnNextCell())
+        //    {
+        //        hasPath = false;
+        //        if (!MoveSides())
+        //        {
+        //            hasFinishedMoveAnimation = true;
+        //        }
+        //    }
+
+        //    yield return new WaitUntil(hasFinishedMovingAnimation);
+        //    hasFinishedToMove = true;
+        //    EmitOnAnyEnemyMoved();
+        //}
+
+        protected override (bool moved, bool attacked, Vector3 destination) BackendMove()
+        {
+            Assert.IsTrue(IsServer);
+            if (!IsTimeToMove() || isStupefiedState > 0)
             {
                 timeSinceLastAction++;
-                hasFinishedToMove = true;
-                yield break;
+                return (false, false, Vector3.zero);
             }
-            
-			if (isStupefiedState > 0)
-			{
-				hasFinishedToMove = true;
-				yield break; 
-			}
-            
-            yield return new WaitUntil(AnimationSpawnIsFinished);
-            
+
             if (!TryMoveOnNextCell())
             {
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    hasFinishedMoveAnimation = true;
+                    return (false, false, Vector3.zero);
+                }
+                else
+                {
+                    return (true, false, TilingGrid.GridPositionToLocal(cell.position));
                 }
             }
 
-            yield return new WaitUntil(hasFinishedMovingAnimation);
-            hasFinishedToMove = true;
-            EmitOnAnyEnemyMoved();
+            return (true, false, TilingGrid.GridPositionToLocal(cell.position));
         }
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
@@ -74,16 +101,15 @@ namespace Enemies.Basic
         {
             if (path == null || path.Count == 0)
             {
-                hasFinishedMoveAnimation = true;
                 return true;
             }
             Cell nextCell = path[0];
             path.RemoveAt(0);
             if (IsValidCell(nextCell))
             {
+                TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = nextCell;
-                StartCoroutine(RotateThenMove(
-                    TilingGrid.GridPositionToLocal(nextCell.position)));
+                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, cell.position);
                 return true;
             }
             return false;
@@ -118,11 +144,9 @@ namespace Enemies.Basic
 
             if (IsValidCell(nextCell))
             {
+                TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = TilingGrid.grid.GetCell(nextPosition);
-                StartCoroutine(
-                    MoveEnemy(
-                        TilingGrid.GridPositionToLocal(nextPosition)));
-
+                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, cell.position);
                 return true;
             }
 
@@ -139,12 +163,9 @@ namespace Enemies.Basic
             
             if (IsValidCell(nextCell))
             {
+                TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = TilingGrid.grid.GetCell(nextPosition);
-
-                
-                StartCoroutine(
-                    RotateThenMove(
-                        TilingGrid.GridPositionToLocal(nextCell.position)));
+                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, cell.position);
                 return true;
             }
             return false;
@@ -168,7 +189,6 @@ namespace Enemies.Basic
             if (!IsServer) yield break;
             hasFinishedMoveAnimation = false;
             animator.SetBool("Move", true);
-            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
             float currentTime = 0.0f;
             Vector3 origin = transform.position;
             while (timeToMove > currentTime)
@@ -179,7 +199,6 @@ namespace Enemies.Basic
                 yield return null;
             }
 
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, direction);
             animator.SetBool("Move", false);
             hasFinishedMoveAnimation = true;
         }
