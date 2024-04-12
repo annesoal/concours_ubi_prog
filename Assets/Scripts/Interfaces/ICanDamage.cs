@@ -4,15 +4,6 @@ namespace Interfaces
 {
  public interface ICanDamage
  {
-   public int AttackDamage
-   {
-       get;
-       set;
-   }
-
-   public void Attack(IDamageable damageable)
-   {
-      damageable.Damage(AttackDamage); 
-   }
+     public abstract int AttackDamage { get; set; }
  }  
 }

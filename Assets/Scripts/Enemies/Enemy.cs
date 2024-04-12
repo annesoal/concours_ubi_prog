@@ -112,7 +112,7 @@ namespace Enemies
         }
 
 
-        public int Health
+        public virtual int Health
         {
             get { return _health; }
             set { _health = value; }

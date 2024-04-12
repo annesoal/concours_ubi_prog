@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Enemies.Basic;
 using Grid;
 using Grid.Interface;
+using Interfaces;
 using UnityEngine;
 using Random = System.Random;
 
 namespace Enemies
 {
-    public class AttackingEnemy : BasicEnemy 
+    public abstract class AttackingEnemy : BasicEnemy, ICanDamage
     {
         private Random _rand = new();
         private int enemyDamage = 1;
