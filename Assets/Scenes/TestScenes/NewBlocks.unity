@@ -35722,7 +35722,7 @@ MonoBehaviour:
   - {fileID: 1095905231}
   - {fileID: 2038331595}
   - {fileID: 964324984}
-  amuletSO: {fileID: 11400000, guid: a1968f6342417dfd5a1083bb6ca2ea5e, type: 2}
+  amuletSO: {fileID: 11400000, guid: 8cf23f11fddee7f198923fe739925a54, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
