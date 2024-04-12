@@ -18,6 +18,7 @@ public static class Loader
         Blocks = 5,
         LevelSelection,
         NewBlocks,
+        Level1,
     }
 
     public static Scene TargetScene { private set; get; }

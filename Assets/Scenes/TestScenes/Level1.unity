@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 7472343039729643430, guid: e526c4caf8f47b6158e994c81b9c1341, type: 3}
   _ground: {fileID: 1264037788}
-  _obstaclesPlane: {fileID: 1022233706}
+  _obstaclePlane: {fileID: 0}
 --- !u!4 &176784284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1983669303560393747, guid: 5ed7c3fedfc1b17a08838ed1467f5619,
@@ -2617,6 +2617,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264037789}
     m_Modifications:
+    - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
+        type: 3}
+      propertyPath: mathSpawnSo
+      value: 
+      objectReference: {fileID: 11400000, guid: e9f8767607bf3fecf96c50bc9c085f67,
+        type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4546,7 +4552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 995726759
+  GlobalObjectIdHash: 3289512179
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -5970,6 +5976,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264037789}
     m_Modifications:
+    - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
+        type: 3}
+      propertyPath: mathSpawnSo
+      value: 
+      objectReference: {fileID: 11400000, guid: af2c806b41989af54ae62d3ee3cb5ba9,
+        type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6573,7 +6585,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 436985885
+      value: 3151814857
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -6667,7 +6679,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2591849274
+      value: 3977790141
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -7445,7 +7457,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4178439564
+      value: 3745826567
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -7980,7 +7992,7 @@ PrefabInstance:
     - target: {fileID: -2214247627351604879, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3688038371
+      value: 402184833
       objectReference: {fileID: 0}
     - target: {fileID: 355318480244300026, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -8296,6 +8308,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1264037789}
     m_Modifications:
+    - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
+        type: 3}
+      propertyPath: mathSpawnSo
+      value: 
+      objectReference: {fileID: 11400000, guid: 2d606b0a2167f8f199885e5d55376409,
+        type: 2}
     - target: {fileID: 1983669303560393747, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9265,7 +9283,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054340107}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9695,7 +9713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1149848056
+  GlobalObjectIdHash: 2261711557
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -13301,7 +13319,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 637247696
+      value: 2029530333
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -15772,9 +15790,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1645f5b7d1ee8d5396f03d9ed873fa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStateText: {fileID: 2002994799}
+  currentStateBorder: {fileID: 0}
+  enemyPlayerTurnText: {fileID: 0}
   roundsLeftText: {fileID: 2137229063}
+  timerGameObject: {fileID: 0}
   timerText: {fileID: 1252953984}
+  energyLeftText: {fileID: 0}
 --- !u!1 &1814571275
 GameObject:
   m_ObjectHideFlags: 0
@@ -16149,7 +16170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1952481805
+  GlobalObjectIdHash: 2891915023
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -16540,7 +16561,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1916267558
+      value: 762924789
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -16634,7 +16655,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1323215510
+      value: 2075066156
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -16796,7 +16817,7 @@ PrefabInstance:
     - target: {fileID: -5752318590631316489, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1549709915
+      value: 502389770
       objectReference: {fileID: 0}
     - target: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d,
         type: 3}
@@ -16977,7 +16998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1786420132
+  GlobalObjectIdHash: 3043903721
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -16997,12 +17018,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb252143610737f0181785354309e0e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <totalRounds>k__BackingField: 20
   <EnergyAvailable>k__BackingField: 10
   energyToUse: 0
-  obstacle: {fileID: 926555442791790243, guid: 8591a6cdd9edd32b8b92911156ceb63d, type: 3}
-  _hightlighter: {fileID: 0}
-  <CountDownToStartTimer>k__BackingField: 3
   currentRoundNumber: 0
   playerMonkeyPrefab: {fileID: 7499861604099126351, guid: 087e12aaed516f8a8b11755c04994ca3,
     type: 3}
@@ -17010,7 +17027,10 @@ MonoBehaviour:
   playerRobotPrefab: {fileID: 2868363114536855551, guid: 5691060b1c68ecd84ad714b4e706c7b4,
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 1719974530}
-  amuletSelector: {fileID: 11400000, guid: a9f47ee2097b1c9c780479065520905b, type: 2}
+  <BossBlockSpawn>k__BackingField: {fileID: 0}
+  nextLevelDataSo: {fileID: 0}
+  listOfSpawners: []
+  amuletSO: {fileID: 0}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0
@@ -18266,7 +18286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.30398348, y: -5.1609463e-15, z: 1.0799663e-15, w: 0.9526773}
+  m_LocalRotation: {x: 0.3039835, y: 0.000000028391995, z: -0.000000009059414, w: 0.9526773}
   m_LocalPosition: {x: 0, y: 9.4, z: -13.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
