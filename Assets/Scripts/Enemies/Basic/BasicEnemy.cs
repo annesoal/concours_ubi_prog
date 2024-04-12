@@ -14,51 +14,12 @@ namespace Enemies.Basic
     public abstract class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        protected float timeToMove = 0.3f;
+        protected float timeToMove = 1.0f;
 
         public BasicEnemy()
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-        
-        
-        //public override IEnumerator Move()
-        //{
-        //    hasFinishedToMove = false;
-        //    if (!IsServer)
-        //    {
-        //        yield break;
-        //    }
-
-        //    if (!IsTimeToMove())
-        //    {
-        //        timeSinceLastAction++;
-        //        hasFinishedToMove = true;
-        //        yield break;
-        //    }
-        //    
-		//	if (isStupefiedState > 0)
-		//	{
-		//		hasFinishedToMove = true;
-		//		yield break; 
-		//	}
-        //    
-        //    yield return new WaitUntil(AnimationSpawnIsFinished);
-        //    
-        //    if (!TryMoveOnNextCell())
-        //    {
-        //        hasPath = false;
-        //        if (!MoveSides())
-        //        {
-        //            hasFinishedMoveAnimation = true;
-        //        }
-        //    }
-
-        //    yield return new WaitUntil(hasFinishedMovingAnimation);
-        //    hasFinishedToMove = true;
-        //    EmitOnAnyEnemyMoved();
-        //}
-
         protected override (bool moved, bool attacked, Vector3 destination) BackendMove()
         {
             Assert.IsTrue(IsServer);
@@ -109,7 +70,7 @@ namespace Enemies.Basic
             {
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = nextCell;
-                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, cell.position);
+                TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }
             return false;
@@ -165,7 +126,7 @@ namespace Enemies.Basic
             {
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = TilingGrid.grid.GetCell(nextPosition);
-                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, cell.position);
+                TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }
             return false;
@@ -173,10 +134,14 @@ namespace Enemies.Basic
 
         protected override IEnumerator RotateThenMove(Vector3 direction)
         {
+            Debug.LogError(hasFinishedMovingAnimation());
             RotationAnimation rotationAnimation = new RotationAnimation();
+            Debug.LogError(hasFinishedMovingAnimation());
             StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, direction));
             yield return new WaitUntil(rotationAnimation.HasMoved);
+            Debug.LogError(hasFinishedMovingAnimation() + " before MoveEnemy");
             StartCoroutine(MoveEnemy(direction));
+            Debug.LogError(hasFinishedMovingAnimation() + " after MoveEnemy");
             yield return new WaitUntil(hasFinishedMovingAnimation);
         }
 

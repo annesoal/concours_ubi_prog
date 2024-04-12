@@ -12,63 +12,6 @@ namespace Enemies
     public abstract class AttackingEnemy : BasicEnemy
     {
         public abstract int AttackDamage { get; set; }
-        
-        /**
-         * Bouge aleatoirement selon les cells autour de l'ennemi.
-         * - Attaquer un obstacle ou une tower
-         * - Avancer (et eviter ?)
-         */
-        //public IEnumerator Move()
-        //{
-        //    //Debug.Log("Dans move attacking enemy");
-
-        //    if (!IsServer)
-        //    {
-        //        //Debug.Log("Dans early return IsServer");
-        //        yield break;
-        //    }
-        //        
-        //    if (!IsTimeToMove())
-        //    {
-        //        //Debug.Log("Early return IsTimeToMove dans attacking enemy");
-        //        timeSinceLastAction++;
-        //        hasFinishedMoveAnimation = true;
-        //        hasFinishedToMove = true;
-        //        yield break;
-        //    }
-
-        //    if (isStupefiedState > 0)
-        //    {
-        //        //Debug.Log("Early return isStupefiedState dans attacking enemy");
-        //        hasFinishedMoveAnimation = true;
-        //        hasFinishedToMove = true;
-        //        yield break;
-        //    }
-        //        
-        //    hasFinishedToMove = false;
-        //    if (!ChoseToAttack())
-        //    {
-        //        //Debug.Log("Apres chose to attack");
-        //        if (!TryMoveOnNextCell())
-        //        {
-        //            //Debug.Log("Apres try move on next cell");
-        //            hasPath = false;
-        //            if (!MoveSides())
-        //            {
-        //                //Debug.Log("Apres move sides");
-        //                hasFinishedMoveAnimation = true;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        hasFinishedMoveAnimation = true;
-        //    }
-        //    
-        //    yield return new WaitUntil(hasFinishedMovingAnimation);
-        //    hasFinishedToMove = true;
-        //    EmitOnAnyEnemyMoved();
-        //}
 
         protected override (bool moved, bool attacked, Vector3 destination) BackendMove()
         {
@@ -155,15 +98,15 @@ namespace Enemies
         }
 
 
-        public override IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
+        public override void MoveCorroutine(EnemyChoicesInfo infos)
         {
             if (infos.hasAttacked)
             {
-                yield return StartCoroutine(AttackAnimation());
+                StartCoroutine(AttackAnimation());
             }
             else
             {
-                yield return StartCoroutine(base.MoveCorroutine(infos));
+                base.MoveCorroutine(infos);
             }
         }
     }

@@ -162,22 +162,6 @@ namespace Enemies
             return TypeTopOfCell.Enemy;
         }
         
-        public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
-        {
-            List<Enemy> enemies = new List<Enemy>();
-            foreach (Cell cell in cells)
-            {
-                if (cell.ContainsEnemy())
-                {
-                    Enemy enemy = cell.GetEnemy();
-                    if (enemy != null)
-                        enemies.Add(enemy);
-                }
-            }
-
-            return enemies;
-        }
-
         public abstract bool PathfindingInvalidCell(Cell cell);
 
         public Cell GetCurrentPosition()
@@ -231,7 +215,7 @@ namespace Enemies
         {
             hasFinishedMoveAnimation = false; 
         }
-
+       
         protected abstract IEnumerator RotateThenMove(Vector3 destination);
         protected abstract (bool moved, bool attacked, Vector3 destination) BackendMove();
         
@@ -240,22 +224,26 @@ namespace Enemies
             EnemyChoicesInfo infos = new EnemyChoicesInfo();
             (bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
 
+            Debug.LogError("position " + this.transform.position);
+            Debug.LogError("destination " + recordedResult.destination);
+            
             infos.destination = recordedResult.destination;
             infos.hasMoved = recordedResult.moved;
             infos.hasAttacked = recordedResult.attacked;
             return infos;
         }
 
-        public virtual IEnumerator MoveCorroutine(EnemyChoicesInfo infos)
+        public virtual void MoveCorroutine(EnemyChoicesInfo infos)
         {
             hasFinishedMoveAnimation = false;
+            Debug.Log( "has moved infos " + infos.hasMoved);
+            Debug.Log("hasAttacked " + infos.hasAttacked);
             if (infos.hasMoved == false)
             {
-                hasFinishedMoveAnimation = true; 
-                yield break;
+                hasFinishedMoveAnimation = true;
+                return;
             }
-
-            yield return StartCoroutine(RotateThenMove(infos.destination));
+            StartCoroutine(RotateThenMove(infos.destination));
         }
     }
 }

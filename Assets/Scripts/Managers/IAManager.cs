@@ -47,7 +47,7 @@ namespace Managers
                 if (info.hasMoved || info.hasAttacked)
                 {
                    movingEnemies.Add(e);
-                   StartCoroutine(e.MoveCorroutine(info));
+                   e.MoveCorroutine(info);
                 }
             }
 
@@ -56,6 +56,7 @@ namespace Managers
                 for (int i = 0; i < movingEnemies.Count; i++)
                 {
                     var enemy = movingEnemies[i];
+                    Debug.Log(movingEnemies.Count);
                     if (enemy.hasFinishedMoveAnimation)
                     {
                         movingEnemies.Remove(enemy);
@@ -67,6 +68,7 @@ namespace Managers
             foreach (var enemy in Enemy.GetEnemiesInGame())
             {
                 enemy.GetComponent<Enemy>().ResetAnimationStates();
+                Debug.Log(enemy.GetComponent<Enemy>().hasFinishedMoveAnimation);
             }
 
             hasMovedEveryEnemies = true;
