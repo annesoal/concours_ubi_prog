@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid.Interface;
@@ -8,7 +9,14 @@ public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
     public abstract int Cost { get; set; }
     [field: Header("Buildable Object")]
     [SerializeField] protected BuildableObjectSO buildableObjectSO;
-    
+
+    public void Awake()
+    {
+        var pair = buildableObjectSO.materialAndQuantityPairs[0];
+        pair.quantityOfMaterialRequired = Cost;
+        buildableObjectSO.materialAndQuantityPairs[0] = pair;
+    }
+
     public abstract void Build(Vector2Int positionToBuild);
 
     public  BuildableObjectSO GetBuildableObjectSO()

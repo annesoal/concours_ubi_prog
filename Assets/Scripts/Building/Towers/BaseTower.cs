@@ -16,20 +16,12 @@ public abstract class BaseTower : BuildableObject, IDamageable
 {
     private static List<BaseTower> _towersInGame = new();
 
-    public static int baseHealth;
-    public static int baseAttack;
-
-
     private static bool _hasFinishedTowersTurn;
-    public static int baseCost;
     [SerializeField] protected Animator animator;
     [Header("Tower specifics")] [SerializeField]
     protected Transform shootingPoint;
 
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
-
-    [Header("Projectiles setting")] [SerializeField]
-    protected int numberOfProjectilesToShootInTurn;
 
     [SerializeField] protected EnemyDirection enemyDirection;
     [SerializeField] private float timeToFly;
@@ -37,36 +29,27 @@ public abstract class BaseTower : BuildableObject, IDamageable
     /// En radiant
     [SerializeField] private float firingAngle;
 
-    [SerializeField] private int timeBetweenShots = 1;
-
     [Header("BulletToFire")] [SerializeField]
     protected GameObject _bullet;
 
-    private readonly int _attackDamage = baseAttack;
-    private readonly int _cost = baseCost;
     private bool _hasPlayed = true;
 
     private ShootingUtility _shooter;
     private int _timeSinceLastShot;
 
-    public override int Cost
-    {
-        get => _cost;
-        set => value = _cost;
-    }
+    public abstract override int Cost { get; set; }
 
     public void Start()
     {
         SetShooter();
     }
 
-    public int AttackDamage
-    {
-        get => _attackDamage;
-        set => value = _attackDamage;
-    }
+    public abstract int AttackDamage { get; set; }
 
-    public int Health { get; set; } = baseHealth;
+    public abstract int Health { get; set; }
+    public abstract int TimeBetweenShots { get; set; }
+    public abstract int Range { get; set; }
+    public abstract int TotalOfProjectile { get; set; }
 
     public void Damage(int damage)
     {
@@ -121,7 +104,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     public bool CanPlay()
     {
-        return _timeSinceLastShot++ >= timeBetweenShots;
+        return _timeSinceLastShot++ >= TimeBetweenShots;
     }
 
     public static bool HasFinishedTowersTurn()

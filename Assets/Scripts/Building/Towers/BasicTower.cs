@@ -13,8 +13,28 @@ using Unity.VisualScripting;
  */
 public class BasicTower : BaseTower
 {
-    [SerializeField] private int shootingRange;
-    protected int EnergyBetweenShots;
+    public static int BasicTowerRange; 
+    public static int BasicTowerDamage; 
+    public static int BasicTowerTimeBetweenShots; 
+    public static int BasicTowerHealth; 
+    public static int BasicTowerProjectilesNumber;
+    public static int BasicTowerCost;
+
+    private int _range = BasicTowerRange;
+    private int _damage = BasicTowerDamage;
+    private int _timeBetweenShots = BasicTowerTimeBetweenShots;
+    private int _health = BasicTowerHealth;
+    private int _projectileNumber = BasicTowerProjectilesNumber;
+    private int _cost = BasicTowerCost;
+    
+    
+    public override int Cost { get => _cost; set => _cost = value ; }
+    public override int AttackDamage { get => _damage; set => _damage = value; }
+    public override int Health { get => _health; set => _health = value; }
+    public override int TimeBetweenShots { get => _timeBetweenShots; set => _timeBetweenShots = value; }
+    public override int Range { get => _range; set => _range = value; }
+    public override int TotalOfProjectile { get => _projectileNumber; set => _projectileNumber = value; }
+
     protected override List<Cell> TargetEnemies()
     {
         List<Cell> cellsInShootingRange = GetCellsInShootingRange();
@@ -28,7 +48,7 @@ public class BasicTower : BaseTower
         List<Cell> cellsInShootingRange = new List<Cell>();
         Vector2Int thisGridPosition = TilingGrid.LocalToGridPosition(transform.position);
         
-        for (int i = MINIMUM_RANGE_OF_TOWER; i <= shootingRange; i++)
+        for (int i = MINIMUM_RANGE_OF_TOWER; i <= Range; i++)
         {
             AddCrossCellsToList(i, thisGridPosition, ref cellsInShootingRange);
             
@@ -56,7 +76,7 @@ public class BasicTower : BaseTower
         int numberOfTargetSet = INITIAL_NUMBER_OF_TARGET_SET;
         List<Cell> targetedCells = new List<Cell>();
 
-        while (numberOfTargetSet != numberOfProjectilesToShootInTurn)
+        while (numberOfTargetSet != TotalOfProjectile)
         {
             int indexOfFarthestEnemyCell = SearchIndexOfFarthestEnemyCell(cellsInShootingRange);
 
