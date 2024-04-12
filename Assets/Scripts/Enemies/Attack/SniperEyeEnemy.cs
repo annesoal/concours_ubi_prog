@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
-using Random = System.Random;
 namespace Enemies.Attack
 {
     public class SniperEyeEnemy : AttackingEnemy
@@ -17,9 +16,9 @@ namespace Enemies.Attack
         private int _attack = SniperAttack;
         private int _health = SniperHealth;
         private int _range = SniperRange;
-        private int _moveRation = SniperMoveRatio;
+        private int _moveRatio = SniperMoveRatio;
         
-        public override int MoveRatio { get => _moveRation; set => _moveRation = value; }
+        public override int MoveRatio { get => _moveRatio; set => _moveRatio = value; }
         public override int Health { get => _health; set => _health =  value ; }
         public override int AttackDamage { get => _attack; set => _attack = value; }
         public int Range
@@ -45,7 +44,7 @@ namespace Enemies.Attack
         protected override IEnumerator MoveEnemy(Vector3 direction)
         {
             if (CellHasObstacle(direction))
-                direction += new Vector3(0.0f, 0.5f, 0.0f);
+                direction += new Vector3(0.0f, 0.7f, 0.0f);
             
             yield return StartCoroutine(base.MoveEnemy(direction));
         }

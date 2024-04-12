@@ -13,9 +13,6 @@ namespace Enemies
     {
         public abstract int AttackDamage { get; set; }
         
-        private Random _rand = new();
-        protected float timeToAttack = 0.5f;
-        
         /**
          * Bouge aleatoirement selon les cells autour de l'ennemi.
          * - Attaquer un obstacle ou une tower
@@ -135,13 +132,11 @@ namespace Enemies
             
         }
 
-
         // Peut detruire obstacle et tower, tous les cells avec obstacles `solides` sont valides 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
         {
             return false;
         }
-
 
         protected override bool IsValidCell(Cell toCheck)
         {
