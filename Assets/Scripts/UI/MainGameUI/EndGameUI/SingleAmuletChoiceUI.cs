@@ -19,8 +19,6 @@ public class SingleAmuletChoiceUI : MonoBehaviour
     
     public void SetVisuals(AmuletSO amuletSo)
     {
-        amuletIcon.sprite = amuletSo.amuletIcon;
-        amuletDescriptionText.text = amuletSo.description;
         _associatedAmuletSo = amuletSo;
         
         selectAmuletButton.onClick.AddListener(() =>

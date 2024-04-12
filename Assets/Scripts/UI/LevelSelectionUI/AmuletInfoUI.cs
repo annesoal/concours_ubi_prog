@@ -21,7 +21,6 @@ public class AmuletInfoUI : MonoBehaviour
         (object sender, AmuletSelectionButton.OnAmuletButtonSelectedEventArgs e)
     {
         descriptionText.color = Color.white;
-        descriptionText.text = e.AmuletSo.description;
 
         _currentShowcaseAmulet = e.AmuletSo;
     }
