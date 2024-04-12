@@ -12,5 +12,6 @@ namespace Enemies.Basic
 
 
         public override int MoveRatio { get; set; }
+        public override int Health { get; set; }
     }
 }

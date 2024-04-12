@@ -196,8 +196,6 @@ namespace Enemies
             return GetClosestDestination();
         }
 
-        protected abstract int AttackDamage { get; set; }
-
         public void SetAsStupefied()
         {
             isStupefiedState = true;

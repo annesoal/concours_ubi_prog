@@ -20,6 +20,8 @@ namespace Enemies.Basic
             get => _health;
             set => _health = value;
         }
+
+
         public GoofyEnemy()
         {
             ennemyType = EnnemyType.Goofy;

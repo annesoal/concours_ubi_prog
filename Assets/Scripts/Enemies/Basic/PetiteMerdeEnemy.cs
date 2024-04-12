@@ -17,6 +17,7 @@ namespace Enemies.Basic
             set => _health = value;
         }
 
+
         public PetiteMerdeEnemy()
         {
             ennemyType = EnnemyType.PetiteMerde;

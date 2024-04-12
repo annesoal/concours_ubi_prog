@@ -64,7 +64,7 @@ namespace Enemies.Basic
 
         protected bool IsTimeToMove(int energy)
         {
-            return energy % ratioMovement == 0;
+            return energy % MoveRatio == 0;
         }
 
 

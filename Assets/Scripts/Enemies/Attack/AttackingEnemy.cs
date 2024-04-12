@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Enemies.Basic;
@@ -99,6 +100,7 @@ namespace Enemies
         private bool canAttack()
         {
             //return (_rand.NextDouble() > 1 - attackRate);
+            throw new Exception("plz check avec Malo");
             return true;
         }
         
