@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4402a2f903450fcf0857137f027b947a, type: 3}
+  m_Name: Level1NextLevelDataSO
+  m_EditorClassIdentifier: 
+  AmuletChoiceAtEnd:
+  - {fileID: 11400000, guid: 8cf23f11fddee7f198923fe739925a54, type: 2}
+  - {fileID: 11400000, guid: ba6b9bb0c178f99d78df171bc6f71450, type: 2}
+  - {fileID: 11400000, guid: a1968f6342417dfd5a1083bb6ca2ea5e, type: 2}
+  nextLevelScene: 8

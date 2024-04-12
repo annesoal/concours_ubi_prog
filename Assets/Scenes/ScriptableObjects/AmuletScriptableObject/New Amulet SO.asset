@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
+  m_Name: New Amulet SO
+  m_EditorClassIdentifier: 
+  ID: 
+  turnTime: 60
+  numberOfTurns: 2
+  ressourceSpawnRate: 0.1
+  playersHealth: 5
+  playerEnergy: 6
+  startingMoney: 3
+  enemyEnergy: 6
+  MerdeHeathPoints: 1
+  MerdeMoveRatio: 1
+  GoofyHealthPoints: 1
+  GoofyMoveRatio: 1
+  BigGuyHealthPoints: 1
+  BigGuyMoveRatio: 1
+  BigGuyDamages: 1
+  SniperHealthPoints: 1
+  SniperMoveRatio: 1
+  SniperDamages: 1
+  SniperRange: 1
+  TrapCost: 2
+  StunDuration: 1
+  ObstaclesHealth: 1
+  TowerCost: 4
+  TowerRange: 3
+  TowerHealth: 1
+  TowerTimeBetweenAttacks: 2
+  numberOfProjectile: 1
+  TowerDamage: 1
+  BombCost: 2
+  BombDamage: 1
