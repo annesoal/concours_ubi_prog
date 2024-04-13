@@ -118,6 +118,11 @@ namespace Grid
             return gridPosition;
         }
 
+        public Cell GetCell(Vector3 position)
+        {
+            Vector2Int position2D = TilingGrid.LocalToGridPosition(position);
+            return GetCell(position);
+        }
 
         // Donne la Cellule a la position donnee.
         public Cell GetCell(Vector2Int position)
