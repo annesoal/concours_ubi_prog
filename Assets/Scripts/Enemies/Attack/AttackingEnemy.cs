@@ -14,24 +14,25 @@ namespace Enemies
     {
         public abstract int AttackDamage { get; set; }
 
-        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override (bool hasReachedEnd, bool moved, bool attacked, bool shouldKill, Vector3 destination) BackendMove()
         {
              Assert.IsTrue(IsServer);
                         
             if (HasReachedTheEnd())
             {
                 Debug.Log("reched end at " + transform.position + " cell pos "  + cell.position);
-                return (true, false, false, Vector3.zero);
+                return (true, false, false,false, Vector3.zero);
             }
 
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, false, Vector3.zero);
+                return (false, false, false,false, Vector3.zero);
             }
-            
-            if (ChoseToAttack())
+
+            var attackInfo = ChoseToAttack();
+            if ( attackInfo.Item1)
             {
-                return (false, false, true, Vector3.zero);
+                return (false, false, true,attackInfo.Item2, Vector3.zero);
             }
             
             if (!TryMoveOnNextCell())
@@ -39,30 +40,29 @@ namespace Enemies
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, false, Vector3.zero);
+                    return (false, false, false,false, Vector3.zero);
                 }
                 else
                 {
-                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+                    return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
                 }
             }
-            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+            return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
         }
 
-        public abstract bool ChoseToAttack();
-        public bool ChoseAttack(List<Cell> cellsInRadius)
+        public abstract (bool, bool) ChoseToAttack();
+        public (bool hasAttacked, bool shouldKill) ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
                 if (TowerIsAtRange(aCell) &&
                     canAttack())
                 {
-                    Attack(aCell.GetTower());
                     hasPath = false;
-                    return true;
+                    return (true, Attack(aCell.GetTower()));
                 }
             }
-            return false;
+            return (false, false);
         }
 
         private bool TowerIsAtRange(Cell aCell)
@@ -77,16 +77,15 @@ namespace Enemies
             return true;
         }
         
-        protected void Attack(BaseTower toAttack)
+        protected bool Attack(BaseTower toAttack)
         {
-            toAttack.Damage(AttackDamage);
-            StartCoroutine(AttackAnimation());
+            int remainingHP = toAttack.Damage(AttackDamage);
+            return remainingHP <= 0;
         }
         
-        protected void Attack(Obstacle toAttack)
+        protected bool Attack(Obstacle toAttack)
         {
-            toAttack.Damage(AttackDamage);
-            StartCoroutine(AttackAnimation());
+            return toAttack.Damage(AttackDamage) <= 0;
         }
 
         private IEnumerator AttackAnimation()

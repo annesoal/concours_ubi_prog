@@ -7,7 +7,8 @@ namespace Enemies
         
            public bool hasMoved;
            public bool hasReachedEnd;
-            public bool hasAttacked;
-            public Vector3 destination;    
+           public bool hasAttacked;
+           public bool shouldKill;
+           public Vector3 destination;    
     }
 }

@@ -210,18 +210,19 @@ namespace Enemies
         }
        
         protected abstract IEnumerator RotateThenMove(Vector3 destination);
-        protected abstract (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove();
+        protected abstract (bool hasReachedEnd, bool moved, bool attacked, bool shouldKill, Vector3 destination) BackendMove();
         
         public EnemyChoicesInfo CalculateChoices()
         {
             EnemyChoicesInfo infos = new EnemyChoicesInfo();
-            (bool hasReachedEnd,bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
+            (bool hasReachedEnd,bool moved, bool attacked, bool shouldKill, Vector3 destination) recordedResult = BackendMove();
 
 
             infos.hasReachedEnd = recordedResult.hasReachedEnd;
             infos.destination = recordedResult.destination;
             infos.hasMoved = recordedResult.moved;
             infos.hasAttacked = recordedResult.attacked;
+            infos.shouldKill = recordedResult.shouldKill;
             return infos;
         }
 

@@ -17,16 +17,16 @@ namespace Enemies.Basic
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override (bool hasReachedEnd, bool moved, bool attacked, bool shouldKill, Vector3 destination) BackendMove()
         {
             Assert.IsTrue(IsServer);
             if (HasReachedTheEnd())
             {
-                return (true, false, false, Vector3.zero);
+                return (true, false, false, false, Vector3.zero);
             }
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, false, Vector3.zero);
+                return (false, false, false,false, Vector3.zero);
             }
 
             if (!TryMoveOnNextCell())
@@ -34,15 +34,15 @@ namespace Enemies.Basic
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, false, Vector3.zero);
+                    return (false, false, false,false, Vector3.zero);
                 }
                 else
                 {
-                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+                    return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
                 }
             }
 
-            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+            return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
         }
 
         public bool HasReachedTheEnd()
