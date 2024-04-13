@@ -186,9 +186,9 @@ public class TowerDefenseManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void EndLevelClientRpc(bool won)
+    private void EndLevelClientRpc(bool victory)
     {
-        ShowEndGameScreen();
+        ShowEndGameScreen(victory);
     }
 
     private void Update()
@@ -306,7 +306,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public event EventHandler OnVictory;
     public event EventHandler OnDefeat;
-    private void ShowEndGameScreen()
+    private void ShowEndGameScreen(bool victory)
     {
         InputManager.Instance.DisablePlayerInputAction();
         if (!NetworkManager.Singleton.IsServer)
@@ -314,7 +314,7 @@ public class TowerDefenseManager : NetworkBehaviour
             EventSystem.current.sendNavigationEvents = false;
         }
         
-        if (gameWon)
+        if (victory)
         {
             OnVictory?.Invoke(this, EventArgs.Empty);
         }
