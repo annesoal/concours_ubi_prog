@@ -53,7 +53,12 @@ namespace Enemies.Basic
 
         protected bool IsTimeToMove()
         {
-            return timeSinceLastAction % MoveRatio == 0;
+            Debug.Log("ttm" + _actionTimer);
+            Debug.Log("MoveRa" + MoveRatio);
+            if (_actionTimer-- != 0) return false;
+            
+            _actionTimer = MoveRatio;
+            return true;
         }
 
 

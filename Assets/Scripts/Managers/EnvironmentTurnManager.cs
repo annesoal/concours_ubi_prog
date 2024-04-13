@@ -10,8 +10,12 @@ public class EnvironmentTurnManager : MonoBehaviour
 {
     public static EnvironmentTurnManager Instance;
     public event EventHandler OnEnvironmentTurnEnded;
-
-     private int _turn = 0;
+    public int Turn
+    {
+        get => _turn;
+        set => _turn = value;
+    }
+    private int _turn; 
     private void Awake()
     {
         Instance = this;
