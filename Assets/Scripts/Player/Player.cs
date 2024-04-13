@@ -25,7 +25,8 @@ public class Player : NetworkBehaviour, ITopOfCell
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
     [SerializeField] private float _timeToMove = 0.5f;
-
+    [SerializeField] protected Animator animator;
+    
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
     public static int Health;
@@ -240,10 +241,10 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     public IEnumerator Move()
     {
-        Vector2Int oldPosition = _selector.GetCurrentPosition();
+        Vector2Int? oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
-        if (nextPosition == null)
+        if (nextPosition == null || oldPosition == null)
         { 
             IsReadyServerRpc();
             yield break;
@@ -253,7 +254,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, (Vector2Int)nextPosition);
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, (Vector2Int)oldPosition, (Vector2Int)nextPosition);
         IsReadyServerRpc();
     }
 
