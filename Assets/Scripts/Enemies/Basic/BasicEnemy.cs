@@ -25,7 +25,6 @@ namespace Enemies.Basic
             Assert.IsTrue(IsServer);
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                timeSinceLastAction++;
                 return (false, false, Vector3.zero);
             }
 
@@ -53,8 +52,6 @@ namespace Enemies.Basic
 
         protected bool IsTimeToMove()
         {
-            Debug.Log("ttm" + _actionTimer);
-            Debug.Log("MoveRa" + MoveRatio);
             if (_actionTimer-- != 0) return false;
             
             _actionTimer = MoveRatio;
