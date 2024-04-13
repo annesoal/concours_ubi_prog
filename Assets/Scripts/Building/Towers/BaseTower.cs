@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Building.Towers;
 using Ennemies;
 using Grid;
 using Grid.Interface;
@@ -37,7 +38,10 @@ public abstract class BaseTower : BuildableObject, IDamageable
     private ShootingUtility _shooter;
     private int _timeSinceLastShot;
 
+    private Dictionary<BaseTower, TowerPlayInfo> listOfPlays = new();
+
     public abstract override int Cost { get; set; }
+
 
     public void Start()
     {
