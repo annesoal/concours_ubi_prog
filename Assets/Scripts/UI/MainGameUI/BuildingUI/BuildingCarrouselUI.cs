@@ -141,7 +141,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         }
         else
         {
-            selectedBuildingText.color = Color.red;
+            selectedBuildingText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
             selectedBuildingText.text = MISSING_RESOURCE_ERROR;
         }
         
