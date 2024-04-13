@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using Building.Towers;
+using Building.Traps;
 using Enemies;
 using Grid;
 using Managers;
@@ -62,13 +64,13 @@ public class EnvironmentTurnManager : MonoBehaviour
                 EnemySpawnerManager.Instance.Spawn(_turn);
                  
                 //Debug.Log("EVM avant play tower in game turn");
-                BaseTower.PlayBackEnd();
-                StartCoroutine(BaseTower.PlayTowersInGameTurn());
-                yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
+                TowerManager.Instance.PlayBackEnd();
+                TowerManager.Instance.AnimateTowers();
+                yield return new WaitUntil(() => TowerManager.Instance.HasFinishedAnimations);
                 
                 //Debug.Log("EVM avant move enemies");
                 IAManager.Instance.BackendMoveEnemies();
-                BaseTrap.PlayBackEnd();
+                TrapManager.Instance.PlayBackEnd();
                 StartCoroutine(IAManager.Instance.MoveEnemies());
                 yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
                 

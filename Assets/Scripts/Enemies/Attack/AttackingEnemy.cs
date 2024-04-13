@@ -105,7 +105,6 @@ namespace Enemies
             
             animator.SetBool("Attack", false);
             hasFinishedMoveAnimation = true;
-            
         }
 
         // Peut detruire obstacle et tower, tous les cells avec obstacles `solides` sont valides 
