@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   turnTime: 20
+  startingTurn: 1
   numberOfTurns: 10
   ressourceSpawnRate: 0.2
   playersHealth: 3

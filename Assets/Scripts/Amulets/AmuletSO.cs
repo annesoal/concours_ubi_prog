@@ -11,6 +11,7 @@ namespace Amulets
         
         [Header("Game")]
         public float turnTime = 20.0f;
+        public int startingTurn = 0;
         public int numberOfTurns = 10;
         public float ressourceSpawnRate = 0.2f;
         
