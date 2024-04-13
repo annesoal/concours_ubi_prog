@@ -14,25 +14,31 @@ namespace Enemies
     {
         public abstract int AttackDamage { get; set; }
 
-        protected override (bool hasReachedEnd, bool moved, bool attacked, bool shouldKill, Vector3 destination) BackendMove()
+        protected override EnemyChoicesInfo BackendMove()
         {
              Assert.IsTrue(IsServer);
                         
             if (HasReachedTheEnd())
             {
-                Debug.Log("reched end at " + transform.position + " cell pos "  + cell.position);
-                return (true, false, false,false, Vector3.zero);
+                return new EnemyChoicesInfo()
+                {
+                    hasReachedEnd = true,
+                };
             }
 
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, false,false, Vector3.zero);
+                return new EnemyChoicesInfo() { hasMoved = false };
             }
 
             var attackInfo = ChoseToAttack();
-            if ( attackInfo.Item1)
+            if ( attackInfo.hasAttacked )
             {
-                return (false, false, true,attackInfo.Item2, Vector3.zero);
+                return new EnemyChoicesInfo()
+                {
+                    attack = attackInfo,
+                };
+
             }
             
             if (!TryMoveOnNextCell())
@@ -40,18 +46,26 @@ namespace Enemies
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, false,false, Vector3.zero);
+                    return new EnemyChoicesInfo();
                 }
                 else
                 {
-                    return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
+                    return new EnemyChoicesInfo()
+                    {
+                        hasMoved = true, 
+                        destination = TilingGrid.GridPositionToLocal(cell.position),
+                    };
                 }
             }
-            return (false, true, false,false, TilingGrid.GridPositionToLocal(cell.position));
+            return new EnemyChoicesInfo()
+            {
+                hasMoved = true,
+                destination = TilingGrid.GridPositionToLocal(cell.position),
+            };
         }
 
-        public abstract (bool, bool) ChoseToAttack();
-        public (bool hasAttacked, bool shouldKill) ChoseAttack(List<Cell> cellsInRadius)
+        public abstract AttackingInfo ChoseToAttack();
+        public AttackingInfo ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
@@ -59,10 +73,17 @@ namespace Enemies
                     canAttack())
                 {
                     hasPath = false;
-                    return (true, Attack(aCell.GetTower()));
+                    var attackedObjectInfo = Attack(aCell.GetTower());
+                    return new AttackingInfo()
+                    {
+                        hasAttacked = true,
+                        toKill = attackedObjectInfo.Item2,
+                        isTower = attackedObjectInfo.Item1,
+                    };
                 }
             }
-            return (false, false);
+
+            return new AttackingInfo();
         }
 
         private bool TowerIsAtRange(Cell aCell)
@@ -77,20 +98,23 @@ namespace Enemies
             return true;
         }
         
-        protected bool Attack(BaseTower toAttack)
+        protected (bool, GameObject) Attack(BaseTower toAttack)
         {
             int remainingHP = toAttack.Damage(AttackDamage);
-            return remainingHP <= 0;
+            return (remainingHP <= 0, toAttack.gameObject);
+
         }
         
-        protected bool Attack(Obstacle toAttack)
+        protected (bool, GameObject) Attack(Obstacle toAttack)
         {
-            return toAttack.Damage(AttackDamage) <= 0;
+            int remainingHP = toAttack.Damage(AttackDamage);
+            return (remainingHP <= 0, toAttack.gameObject);
         }
 
-        private IEnumerator AttackAnimation()
+        private IEnumerator AttackAnimation(AttackingInfo infos)
         {
             if (!IsServer) yield break;
+            
             hasFinishedMoveAnimation = false;
             animator.SetBool("Attack", true);
             float currentTime = 0.0f;
@@ -103,6 +127,10 @@ namespace Enemies
             }
             
             animator.SetBool("Attack", false);
+            if (infos.shouldKill)
+            {
+                
+            }
             hasFinishedMoveAnimation = true;
         }
 
@@ -122,10 +150,9 @@ namespace Enemies
 
         public override void MoveCorroutine(EnemyChoicesInfo infos)
         {
-            if (infos.hasAttacked)
+            if (infos.attack.hasAttacked)
             {
-                StartCoroutine(AttackAnimation());
-                return;
+                StartCoroutine(AttackAnimation(infos.attack));
             }
             else
             {
