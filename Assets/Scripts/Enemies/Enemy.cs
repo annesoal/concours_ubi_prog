@@ -133,10 +133,6 @@ namespace Enemies
             TilingGrid.RemoveElement(this.gameObject, transform.position);
         }
 
-        public static event EventHandler OnAnyEnemyMoved;
-        //public abstract IEnumerator Move();
-
-
 
         protected void AddInGame(GameObject enemy)
         {
@@ -200,10 +196,7 @@ namespace Enemies
             }
         }
         
-        protected void EmitOnAnyEnemyMoved()
-        {
-            OnAnyEnemyMoved?.Invoke(this, EventArgs.Empty);
-        }
+
         
         public GameObject ToGameObject()
         {
@@ -213,7 +206,6 @@ namespace Enemies
         public static void ResetSaticData()
         {
             enemiesInGame = new List<GameObject>();
-            OnAnyEnemyMoved = null;
         }
 
         public void ResetAnimationStates()

@@ -12,7 +12,7 @@ public abstract class BaseTrap : BuildableObject
     [SerializeField] protected Animator animator;
     private void Start()
     {
-        Enemy.OnAnyEnemyMoved += Enemy_OnAnyEnemyMoved;
+        
     }
 
     protected abstract void ActivateTrapBehaviour(Enemy enemy);
@@ -48,8 +48,4 @@ public abstract class BaseTrap : BuildableObject
         }
     }
 
-    protected virtual void OnDestroy()
-    {
-        Enemy.OnAnyEnemyMoved -= Enemy_OnAnyEnemyMoved;
-    }
 }
