@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Building.Towers;
+using Enemies;
 using Ennemies;
 using Grid;
 using Grid.Interface;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using Utils;
 
@@ -15,9 +18,7 @@ using Utils;
  */
 public abstract class BaseTower : BuildableObject, IDamageable
 {
-    private static List<BaseTower> _towersInGame = new();
 
-    private static bool _hasFinishedTowersTurn;
     [SerializeField] protected Animator animator;
     [Header("Tower specifics")] [SerializeField]
     protected Transform shootingPoint;
@@ -42,6 +43,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     public abstract override int Cost { get; set; }
 
+    public bool HasFinishedAnimation;
 
     public void Start()
     {
@@ -55,13 +57,9 @@ public abstract class BaseTower : BuildableObject, IDamageable
     public abstract int Range { get; set; }
     public abstract int TotalOfProjectile { get; set; }
 
-    public void Damage(int damage)
-    {
-        Health -= damage;
-        if (Health < 1)
-        {
-            Die();
-        }
+    public int  Damage(int damage)
+    { 
+        return Health -= damage;
     }
 
     private void Die()
@@ -85,7 +83,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     protected void RegisterTower(BaseTower toAdd)
     {
-        _towersInGame.Add(toAdd);
+        TowerManager.Instance.towersInGame.Add(toAdd);
     }
 
     public override TypeTopOfCell GetType()
@@ -93,88 +91,23 @@ public abstract class BaseTower : BuildableObject, IDamageable
         return TypeTopOfCell.Building;
     }
 
-    public static IEnumerator PlayTowersInGameTurn()
-    {
-        _hasFinishedTowersTurn = false;
-        foreach (var tower in _towersInGame)
-            if (tower.CanPlay())
-            {
-                tower._hasPlayed = false;
-                tower.PlayTurn();
-                yield return new WaitUntil(tower.HasPlayed);
-            }
-
-        _hasFinishedTowersTurn = true;
-    }
-
     public bool CanPlay()
     {
         return _timeSinceLastShot++ >= TimeBetweenShots;
     }
 
-    public static bool HasFinishedTowersTurn()
-    {
-        return _hasFinishedTowersTurn;
-    }
 
     public void UnregisterTower(BaseTower toDelete)
     {
-        _towersInGame.Remove(toDelete);
+        TowerManager.Instance.towersInGame.Remove(toDelete);
     }
-
-    public static void ResetStaticData()
+    private IEnumerator ShootAt(Vector3 position)
     {
-        _towersInGame = new List<BaseTower>();
-    }
-
-    public void PlayTurn()
-    {
-        StartCoroutine(PlayTurnCoroutine());
-        _timeSinceLastShot = 0;
-    }
-
-    private IEnumerator PlayTurnCoroutine()
-    {
-        var cellsWithEnemies = TargetEnemies();
-
-        if (!HasEnemyInRadius(cellsWithEnemies))
-        {
-            _hasPlayed = true;
-            yield break;
-        }
-
-        for (var i = 0; i < cellsWithEnemies.Count; i++)
-        {
-            var cellToFireTo = cellsWithEnemies[i];
-            StartCoroutine(FireOnCellWithEnemy(cellToFireTo));
-            yield return new WaitUntil(HasPlayed);
-        }
-    }
-
-    private static bool HasEnemyInRadius(List<Cell> cellsWithEnemies)
-    {
-        return cellsWithEnemies.Count > 0;
-    }
-
-    private IEnumerator FireOnCellWithEnemy(Cell cellWithEnemy)
-    {
-        var enemyPosition = TilingGrid.CellPositionToLocal(cellWithEnemy);
-        _shooter.FireBetween(shootingPoint.position, enemyPosition);
+        _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
-        DamageEnemy(cellWithEnemy);
         _hasPlayed = true;
     }
 
-    private bool HasPlayed()
-    {
-        return _hasPlayed;
-    }
-
-    private void DamageEnemy(Cell cellWithEnemy)
-    {
-        var enemy = cellWithEnemy.GetEnemy();
-        enemy.Damage(AttackDamage);
-    }
 
     private void SetShooter()
     {
@@ -192,5 +125,78 @@ public abstract class BaseTower : BuildableObject, IDamageable
         YNegative,
         XPositive,
         XNegative
+    }
+
+    public TowerPlayInfo GetPlay()
+    {
+        TowerPlayInfo towerPlayInfo = new TowerPlayInfo();
+        if (!CanPlay())
+        {
+            return towerPlayInfo;
+        }
+
+        List<Cell> cellsToShoot = TargetEnemies();
+        if (cellsToShoot.Count == 0)
+        {
+            return towerPlayInfo;
+        }
+
+        towerPlayInfo = FillListToShoot(cellsToShoot);
+        return towerPlayInfo;
+    }
+
+    private TowerPlayInfo FillListToShoot(List<Cell> cellsToShoot)
+    {
+        TowerPlayInfo towerPlayInfo = new TowerPlayInfo()
+        {
+            hasFired = true,
+        };
+        towerPlayInfo.listEnemiesToShoot = new List<EnemyInfoToShoot>();
+        foreach (Cell cell in cellsToShoot)
+        {
+            EnemyInfoToShoot enemyInfoToShoot = new();
+            Enemy enemy = cell.GetEnemy();
+            int remainingHP = enemy.Damage(AttackDamage);
+            if (remainingHP < 0)
+            {
+                enemyInfoToShoot.enemy = enemy;
+                enemyInfoToShoot.shouldKill = true;
+                enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
+            }
+            else
+            {
+                enemyInfoToShoot.enemy = enemy;
+                enemyInfoToShoot.shouldKill = false;
+                enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
+            }
+        }
+
+        return towerPlayInfo;
+    }
+
+
+    public IEnumerator PlayAnimation(TowerPlayInfo playInfo)
+    {
+        HasFinishedAnimation = false;
+        if (!playInfo.hasFired)
+        {
+            HasFinishedAnimation = true;
+            yield break;
+        }
+
+        var list = playInfo.listEnemiesToShoot;
+        foreach (var shotInfo in list)
+        {
+            yield return ShootAt(shotInfo.position);
+            Vector3 originToPush = this.gameObject.transform.position;
+            originToPush.y = TilingGrid.TopOfCell;
+            yield return shotInfo.enemy.PushBackAnimation(originToPush);
+            if (shotInfo.shouldKill)
+            {
+                shotInfo.enemy.CleanUpAndKill();
+            }
+        }
+
+        HasFinishedAnimation = true;
     }
 }

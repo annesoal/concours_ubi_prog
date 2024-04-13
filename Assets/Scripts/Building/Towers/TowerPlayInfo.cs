@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
 namespace Building.Towers
@@ -5,8 +7,13 @@ namespace Building.Towers
     public struct TowerPlayInfo
     {
         public bool hasFired;
-        public Vector3 enemyPostion;
+        public List<EnemyInfoToShoot> listEnemiesToShoot;
+    }
 
-        public bool shouldKillEnemy;
+    public struct EnemyInfoToShoot
+    {
+        public Vector3 position;
+        public Enemy enemy;
+        public bool shouldKill;
     }
 }
