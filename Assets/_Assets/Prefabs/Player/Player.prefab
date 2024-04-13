@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 274838020
+  GlobalObjectIdHash: 2343617963
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -179,6 +179,7 @@ MonoBehaviour:
   _selector: {fileID: 6851856790170113824}
   _highlighter: {fileID: 7650414445784578766, guid: 9cf38b3f9b697740f98e99e9ab6485ec,
     type: 3}
+  _timeToMove: 0.5
 --- !u!114 &4833543920865548287
 MonoBehaviour:
   m_ObjectHideFlags: 0
