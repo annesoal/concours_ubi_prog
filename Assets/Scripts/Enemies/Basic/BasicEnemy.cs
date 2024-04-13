@@ -14,7 +14,7 @@ namespace Enemies.Basic
     public abstract class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        protected float timeToMove = 1.0f;
+        protected float timeToMove = 0.1f;
 
         public BasicEnemy()
         {
@@ -51,9 +51,7 @@ namespace Enemies.Basic
         public bool HasReachedTheEnd()
         {
             Cell updateCell = TilingGrid.grid.GetCell(cell.position);
-            if (updateCell.IsOf(BlockType.EnemyDestination))
-                Debug.LogWarning("is truuuue");
-            return updateCell.IsOf(BlockType.EnemyDestination);
+            return updateCell.Has(BlockType.EnemyDestination);
         }
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
@@ -84,6 +82,7 @@ namespace Enemies.Basic
             {
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = nextCell;
+                
                 TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }
@@ -133,13 +132,16 @@ namespace Enemies.Basic
         //Essayer de bouger vers direction
         private bool TryMoveOnNextCell(Vector2Int direction)
         {
-            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y);
+            Vector2Int nextPosition = new Vector2Int(cell.position.x + direction.x, cell.position.y + direction.y);
             Cell nextCell = TilingGrid.grid.GetCell(nextPosition);
             
             if (IsValidCell(nextCell))
             {
+                Debug.LogWarning("prev cell : " + cell.position);
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
-                cell = TilingGrid.grid.GetCell(nextPosition);
+                cell = nextCell;
+                
+                Debug.LogWarning("new cell : " + cell.position);
                 TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }
