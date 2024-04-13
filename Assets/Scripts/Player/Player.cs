@@ -25,7 +25,8 @@ public class Player : NetworkBehaviour, ITopOfCell
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
     [SerializeField] private float _timeToMove = 0.5f;
-
+    [SerializeField] protected Animator animator;
+    
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
     public static int Health;
