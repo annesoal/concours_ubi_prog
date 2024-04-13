@@ -25,9 +25,10 @@ namespace Enemies
         public static int Energy;
         
         protected EnnemyType ennemyType;
+        protected float timeToDie = 0.2f;
 
         public abstract int MoveRatio { get; set; }
-
+        
         [SerializeField] protected int isStupefiedState = 0; // Piege
 
         private List<Cell> _destinationsCell;
@@ -127,7 +128,6 @@ namespace Enemies
 
         protected void Die()
         {
-            Debug.Log("Should Die");
             enemiesInGame.Remove(this.gameObject);
             animator.SetBool("Die", true);
             TilingGrid.RemoveElement(this.gameObject, transform.position);
@@ -154,6 +154,11 @@ namespace Enemies
         {
 
             return enemiesInGame;
+        }
+
+        public static List<GameObject> GetEnemiesInGameCopy()
+        {
+            return new List<GameObject>(enemiesInGame);
         }
         
 
@@ -234,25 +239,47 @@ namespace Enemies
 
         private void FinishingMoveAnimation()
         {
-            Debug.LogWarning("Fun");
-           animator.SetBool("Die", true); 
+            if (IsServer) 
+            { 
+                TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            }
+            animator.SetBool("Die", true); 
+            StartCoroutine(Dying());
+
+        }
+
+        private IEnumerator Dying()
+        {
+            var timeNow = 0.0f;
+            while (timeNow < timeToDie)
+            {
+                timeNow += Time.deltaTime;
+                yield return null;
+            }
+
+            if (IsServer)
+            {
+                GameObject.Destroy(this);
+            }
+     
         }
 
         public virtual void MoveCorroutine(EnemyChoicesInfo infos)
         {
             hasFinishedMoveAnimation = false;
-            if (infos.hasMoved == false)
-            {
-                hasFinishedMoveAnimation = true;
-                return;
-            }
-
             if (infos.hasReachedEnd)
             {
                 FinishingMoveAnimation();
                 hasFinishedMoveAnimation = true;
                 return;
             }
+            if (infos.hasMoved == false)
+            {
+                hasFinishedMoveAnimation = true;
+                return;
+            }
+
+      
             
             StartCoroutine(RotateThenMove(infos.destination));
         }
