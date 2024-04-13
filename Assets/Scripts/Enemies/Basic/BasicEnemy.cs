@@ -14,7 +14,7 @@ namespace Enemies.Basic
     public abstract class BasicEnemy : Enemy
     {
         private Random _rand = new();
-        protected float timeToMove = 0.1f;
+        protected float timeToMove = 0.4f;
 
         public BasicEnemy()
         {
