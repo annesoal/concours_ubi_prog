@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Enemies;
 using Grid;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Utils;
@@ -15,32 +16,64 @@ namespace Managers
     {
         public static IAManager Instance{ get; private set; }
 
-
         private bool hasMovedEveryEnemies = false;
+        private Dictionary<Enemy, EnemyChoicesInfo> EnemyChoices = new();
         private void Awake()
         {
             Instance = this;
         }
-    
-        public IEnumerator MoveEnemies(int totalEnergy)
+
+        public void BackendMoveEnemies()
+        {
+            EnemyChoices = new();
+            foreach (var enemy in Enemy.GetEnemiesInGame())
+            {
+                var e = enemy.GetComponent<Enemy>();
+                SetEnemyPath(e);
+                var enemyChoicesInfo = e.CalculateChoices();
+                EnemyChoices.Add(e, enemyChoicesInfo);
+            }
+
+        }
+
+        public IEnumerator MoveEnemies()
         {
             hasMovedEveryEnemies = false;
-            List<GameObject> enemies = Enemy.GetEnemiesInGame();
-            for (int i = enemies.Count - 1; i >= 0; i--)
+            List<Enemy> movingEnemies = new();
+            foreach (var enemy in Enemy.GetEnemiesInGame())
             {
-                var enemy = enemies[i].GetComponent<Enemy>();
-                
-                SetEnemyPath(enemy);
-                
-                StartCoroutine(enemy.Move(totalEnergy));
-                yield return new WaitUntil(enemy.hasFinishedMoving);
-                
-                enemy.ResetAnimationStates();
+                Enemy e = enemy.GetComponent<Enemy>();
+                var info = EnemyChoices[e];
+                if (info.hasMoved || info.hasAttacked)
+                {
+                   movingEnemies.Add(e);
+                   e.MoveCorroutine(info);
+                }
+            }
+
+            while (movingEnemies.Count > 0)
+            {
+                for (int i = 0; i < movingEnemies.Count; i++)
+                {
+                    var enemy = movingEnemies[i];
+                    Debug.Log(movingEnemies.Count);
+                    if (enemy.hasFinishedMoveAnimation)
+                    {
+                        movingEnemies.Remove(enemy);
+                    }
+                }
+                yield return null;
+            }
+
+            foreach (var enemy in Enemy.GetEnemiesInGame())
+            {
+                enemy.GetComponent<Enemy>().ResetAnimationStates();
+                Debug.Log(enemy.GetComponent<Enemy>().hasFinishedMoveAnimation);
             }
 
             hasMovedEveryEnemies = true;
         }
-
+        
         public bool hasMovedEnemies()
         {
             return hasMovedEveryEnemies;
@@ -75,5 +108,6 @@ namespace Managers
 
             Instance.hasMovedEveryEnemies = false;
         }
+  
     }
 }

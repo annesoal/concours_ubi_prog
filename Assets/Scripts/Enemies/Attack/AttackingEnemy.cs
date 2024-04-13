@@ -12,62 +12,15 @@ namespace Enemies
     public abstract class AttackingEnemy : BasicEnemy
     {
         public abstract int AttackDamage { get; set; }
-        
-        /**
-         * Bouge aleatoirement selon les cells autour de l'ennemi.
-         * - Attaquer un obstacle ou une tower
-         * - Avancer (et eviter ?)
-         */
-        public override IEnumerator Move(int energy)
+
+        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
         {
-            //Debug.Log("Dans move attacking enemy");
-
-            if (!IsServer)
+            if (ChoseToAttack())
             {
-                //Debug.Log("Dans early return IsServer");
-                yield break;
-            }
-                
-            if (!IsTimeToMove())
-            {
-                //Debug.Log("Early return IsTimeToMove dans attacking enemy");
-                timeSinceLastAction++;
-                hasFinishedMoveAnimation = true;
-                hasFinishedToMove = true;
-                yield break;
+                return (false, false, true, new Vector3());
             }
 
-            if (isStupefiedState > 0)
-            {
-                //Debug.Log("Early return isStupefiedState dans attacking enemy");
-                hasFinishedMoveAnimation = true;
-                hasFinishedToMove = true;
-                yield break;
-            }
-                
-            hasFinishedToMove = false;
-            if (!ChoseToAttack())
-            {
-                //Debug.Log("Apres chose to attack");
-                if (!TryMoveOnNextCell())
-                {
-                    //Debug.Log("Apres try move on next cell");
-                    hasPath = false;
-                    if (!MoveSides())
-                    {
-                        //Debug.Log("Apres move sides");
-                        hasFinishedMoveAnimation = true;
-                    }
-                }
-            }
-            else
-            {
-                hasFinishedMoveAnimation = true;
-            }
-            
-            yield return new WaitUntil(hasFinishedMovingAnimation);
-            hasFinishedToMove = true;
-            EmitOnAnyEnemyMoved();
+            return base.BackendMove();
         }
 
         public abstract bool ChoseToAttack();
@@ -97,7 +50,6 @@ namespace Enemies
         // Choisit d'attaquer aleatoirement
         private bool canAttack()
         {
-            //return (_rand.NextDouble() > 1 - attackRate);
             return true;
         }
         
@@ -143,6 +95,19 @@ namespace Enemies
             Cell updatedCell = TilingGrid.grid.GetCell(toCheck.position);
             bool hasObstacleOnTop = updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle);
             return base.IsValidCell(toCheck) && !hasObstacleOnTop;
+        }
+
+
+        public override void MoveCorroutine(EnemyChoicesInfo infos)
+        {
+            if (infos.hasAttacked)
+            {
+                StartCoroutine(AttackAnimation());
+            }
+            else
+            {
+                base.MoveCorroutine(infos);
+            }
         }
     }
 }

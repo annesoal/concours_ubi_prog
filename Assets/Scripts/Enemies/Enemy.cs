@@ -31,14 +31,13 @@ namespace Enemies
         [SerializeField] protected int isStupefiedState = 0; // Piege
 
         private List<Cell> _destinationsCell;
-        protected int timeSinceLastAction = 0;
+        protected int _actionTimer = 0;
 
         protected Cell cell;
         public bool hasPath = false;
         public List<Cell> path;
         public static List<GameObject> enemiesInGame = new List<GameObject>();
 
-        public bool hasFinishedToMove = false;
         public bool hasFinishedMoveAnimation = false;
         public  bool hasFinishedSpawnAnimation = false; 
         
@@ -135,12 +134,8 @@ namespace Enemies
         }
 
         public static event EventHandler OnAnyEnemyMoved;
-        public abstract IEnumerator Move(int energy);
+        //public abstract IEnumerator Move();
 
-        public bool hasFinishedMoving()
-        {
-            return hasFinishedToMove;
-        }
 
 
         protected void AddInGame(GameObject enemy)
@@ -167,22 +162,6 @@ namespace Enemies
             return TypeTopOfCell.Enemy;
         }
         
-        public static List<Enemy> GetEnemiesInCells(List<Cell> cells)
-        {
-            List<Enemy> enemies = new List<Enemy>();
-            foreach (Cell cell in cells)
-            {
-                if (cell.ContainsEnemy())
-                {
-                    Enemy enemy = cell.GetEnemy();
-                    if (enemy != null)
-                        enemies.Add(enemy);
-                }
-            }
-
-            return enemies;
-        }
-
         public abstract bool PathfindingInvalidCell(Cell cell);
 
         public Cell GetCurrentPosition()
@@ -234,8 +213,48 @@ namespace Enemies
 
         public void ResetAnimationStates()
         {
-            hasFinishedToMove = false; 
             hasFinishedMoveAnimation = false; 
+        }
+       
+        protected abstract IEnumerator RotateThenMove(Vector3 destination);
+        protected abstract (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove();
+        
+        public EnemyChoicesInfo CalculateChoices()
+        {
+            EnemyChoicesInfo infos = new EnemyChoicesInfo();
+            (bool hasReachedEnd,bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
+
+
+            infos.hasReachedEnd = recordedResult.hasReachedEnd;
+            infos.destination = recordedResult.destination;
+            infos.hasMoved = recordedResult.moved;
+            infos.hasAttacked = recordedResult.attacked;
+            return infos;
+        }
+
+        private void FinishingMoveAnimation()
+        {
+            Debug.LogWarning("Fun");
+           animator.SetBool("Die", true); 
+        }
+
+        public virtual void MoveCorroutine(EnemyChoicesInfo infos)
+        {
+            hasFinishedMoveAnimation = false;
+            if (infos.hasMoved == false)
+            {
+                hasFinishedMoveAnimation = true;
+                return;
+            }
+
+            if (infos.hasReachedEnd)
+            {
+                FinishingMoveAnimation();
+                hasFinishedMoveAnimation = true;
+                return;
+            }
+            
+            StartCoroutine(RotateThenMove(infos.destination));
         }
     }
 }

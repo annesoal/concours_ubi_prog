@@ -64,6 +64,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private static float TacticalPauseDuration;
 
     public float CountDownToStartTimer { get; private set; }
+    public static int StartingBackEndTurn;
 
     public int currentRoundNumber;
 
@@ -118,6 +119,8 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime;
         TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns;
+
+        EnvironmentTurnManager.Instance.Turn = amuletSO.startingTurn;
         
         Ressource.SpawnRate = amuletSO.ressourceSpawnRate;
         
