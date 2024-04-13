@@ -117,13 +117,9 @@ namespace Enemies
 
         public abstract int Health { get; set; }
 
-        public void Damage(int damage)
+        public int Damage(int damage)
         {
-            Health -= damage;
-            if (Health < 1)
-            {
-                Die();
-            }
+             return Health -= damage;
         }
 
         protected void Die()
@@ -274,6 +270,39 @@ namespace Enemies
       
             
             StartCoroutine(RotateThenMove(infos.destination));
+        }
+
+        public IEnumerator PushBackAnimation(Vector3 pushedFrom)
+        {
+            Vector3 origin = this.gameObject.transform.position;
+            Vector3 directionToGo = origin - pushedFrom;
+            float intensity = 0.2f;
+            float timeNow = 0.0f;
+            float timeToPush = 0.1f;
+            while (timeNow < timeToPush)
+            {
+                this.transform.position = Vector3.Lerp(origin, directionToGo + origin, intensity * timeNow/timeToPush);
+                yield return null;
+                
+                timeNow += Time.deltaTime;
+            }
+            
+            timeNow = 0;
+            Vector3 newPos = this.gameObject.transform.position;
+            while (timeNow < timeToPush)
+            {
+                this.transform.position = Vector3.Lerp(newPos,origin, timeNow/timeToPush);
+                yield return null;
+                timeNow += Time.deltaTime;
+            }
+        }
+
+
+        public void CleanUpAndKill()
+        {
+            enemiesInGame.Remove(this.gameObject);
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            StartCoroutine(Dying());
         }
     }
 }

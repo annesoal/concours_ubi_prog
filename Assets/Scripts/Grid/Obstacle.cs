@@ -41,9 +41,14 @@ namespace Grid
         {
             return this.gameObject;
         }
-        public void Damage(int damage)
+        public int Damage(int damage)
         {
-            Health -= damage;
+            return Health -= damage;
+
+        }
+
+        public void DestroyThis()
+        {
             if (Health < 1 && IsServer)
             {
                 TilingGrid.RemoveElement(gameObject, transform.position); 
