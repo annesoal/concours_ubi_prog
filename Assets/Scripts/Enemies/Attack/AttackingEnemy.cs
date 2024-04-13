@@ -73,7 +73,7 @@ namespace Enemies
                     canAttack())
                 {
                     hasPath = false;
-                    var attackedObjectInfo = Attack(aCell.GetTower());
+                    var attackedObjectInfo = AttackTower(aCell.GetTower());
                     return new AttackingInfo()
                     {
                         hasAttacked = true,
@@ -98,19 +98,12 @@ namespace Enemies
             return true;
         }
         
-        protected (bool, GameObject) Attack(BaseTower toAttack)
+        protected (bool, GameObject) AttackTower(BaseTower toAttack)
         {
             int remainingHP = toAttack.Damage(AttackDamage);
             return (remainingHP <= 0, toAttack.gameObject);
 
         }
-        
-        protected (bool, GameObject) Attack(Obstacle toAttack)
-        {
-            int remainingHP = toAttack.Damage(AttackDamage);
-            return (remainingHP <= 0, toAttack.gameObject);
-        }
-
         private IEnumerator AttackAnimation(AttackingInfo infos)
         {
             if (!IsServer) yield break;
