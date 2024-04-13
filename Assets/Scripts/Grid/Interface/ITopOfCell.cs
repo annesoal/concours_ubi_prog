@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Grid.Interface
 {
-    public interface ITopOfCell
+    public interface ITopOfCell 
     {
         public TypeTopOfCell GetType();
         public GameObject ToGameObject();

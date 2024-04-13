@@ -65,7 +65,7 @@ public class EnvironmentTurnManager : MonoBehaviour
                 StartCoroutine(BaseTower.PlayTowersInGameTurn());
                 yield return new WaitUntil(BaseTower.HasFinishedTowersTurn);
                 
-                Debug.Log("EVM avant move enemies");
+                //Debug.Log("EVM avant move enemies");
                 IAManager.Instance.BackendMoveEnemies();
                 StartCoroutine(IAManager.Instance.MoveEnemies());
                 yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
