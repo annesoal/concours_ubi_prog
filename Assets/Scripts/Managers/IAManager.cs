@@ -54,6 +54,7 @@ namespace Managers
                 {
                     TilingGrid.grid.RemoveObjectFromCurrentCell(enemyGO); 
                     e.RemoveInGame();
+                    Player.Health--;
                 }
                 e.MoveCorroutine(info);
             }
