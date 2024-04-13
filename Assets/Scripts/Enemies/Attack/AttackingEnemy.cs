@@ -13,11 +13,11 @@ namespace Enemies
     {
         public abstract int AttackDamage { get; set; }
 
-        protected override (bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
         {
             if (ChoseToAttack())
             {
-                return (false, true, new Vector3());
+                return (false, false, true, new Vector3());
             }
 
             return base.BackendMove();

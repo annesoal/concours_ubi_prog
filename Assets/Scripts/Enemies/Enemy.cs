@@ -217,32 +217,43 @@ namespace Enemies
         }
        
         protected abstract IEnumerator RotateThenMove(Vector3 destination);
-        protected abstract (bool moved, bool attacked, Vector3 destination) BackendMove();
+        protected abstract (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove();
         
         public EnemyChoicesInfo CalculateChoices()
         {
             EnemyChoicesInfo infos = new EnemyChoicesInfo();
-            (bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
+            (bool hasReachedEnd,bool moved, bool attacked, Vector3 destination) recordedResult = BackendMove();
 
-            Debug.LogError("position " + this.transform.position);
-            Debug.LogError("destination " + recordedResult.destination);
-            
+
+            infos.hasReachedEnd = recordedResult.hasReachedEnd;
             infos.destination = recordedResult.destination;
             infos.hasMoved = recordedResult.moved;
             infos.hasAttacked = recordedResult.attacked;
             return infos;
         }
 
+        private void FinishingMoveAnimation()
+        {
+            Debug.LogWarning("Fun");
+           animator.SetBool("Die", true); 
+        }
+
         public virtual void MoveCorroutine(EnemyChoicesInfo infos)
         {
             hasFinishedMoveAnimation = false;
-            Debug.Log( "has moved infos " + infos.hasMoved);
-            Debug.Log("hasAttacked " + infos.hasAttacked);
             if (infos.hasMoved == false)
             {
                 hasFinishedMoveAnimation = true;
                 return;
             }
+
+            if (infos.hasReachedEnd)
+            {
+                FinishingMoveAnimation();
+                hasFinishedMoveAnimation = true;
+                return;
+            }
+            
             StartCoroutine(RotateThenMove(infos.destination));
         }
     }

@@ -20,12 +20,16 @@ namespace Enemies.Basic
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-        protected override (bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
         {
             Assert.IsTrue(IsServer);
+            if (HasReachedTheEnd())
+            {
+                return (true, false, false, Vector3.zero);
+            }
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, Vector3.zero);
+                return (false, false, false, Vector3.zero);
             }
 
             if (!TryMoveOnNextCell())
@@ -33,15 +37,23 @@ namespace Enemies.Basic
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, Vector3.zero);
+                    return (false, false, false, Vector3.zero);
                 }
                 else
                 {
-                    return (true, false, TilingGrid.GridPositionToLocal(cell.position));
+                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
                 }
             }
 
-            return (true, false, TilingGrid.GridPositionToLocal(cell.position));
+            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+        }
+
+        public bool HasReachedTheEnd()
+        {
+            Cell updateCell = TilingGrid.grid.GetCell(cell.position);
+            if (updateCell.IsOf(BlockType.EnemyDestination))
+                Debug.LogWarning("is truuuue");
+            return updateCell.IsOf(BlockType.EnemyDestination);
         }
 
         public override bool PathfindingInvalidCell(Cell cellToCheck)
@@ -136,14 +148,10 @@ namespace Enemies.Basic
 
         protected override IEnumerator RotateThenMove(Vector3 direction)
         {
-            Debug.LogError(hasFinishedMovingAnimation());
             RotationAnimation rotationAnimation = new RotationAnimation();
-            Debug.LogError(hasFinishedMovingAnimation());
             StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, direction));
             yield return new WaitUntil(rotationAnimation.HasMoved);
-            Debug.LogError(hasFinishedMovingAnimation() + " before MoveEnemy");
             StartCoroutine(MoveEnemy(direction));
-            Debug.LogError(hasFinishedMovingAnimation() + " after MoveEnemy");
             yield return new WaitUntil(hasFinishedMovingAnimation);
         }
 

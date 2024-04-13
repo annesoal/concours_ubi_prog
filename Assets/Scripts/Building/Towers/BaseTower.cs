@@ -63,6 +63,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
     private void Die()
     {
         TilingGrid.RemoveElement(gameObject, transform.position);
+        UnregisterTower(this);
         Destroy(this.gameObject);
     }
 
