@@ -97,7 +97,8 @@ public class BuildingCarrouselUI : MonoBehaviour
 
         if (_selectedBuilding.Previous == null)
         {
-            leftImage.sprite = _selectedBuilding.Next.Value.icon;
+
+            leftImage.sprite = _buildableObjectsSO.Last.Value.icon;
             rightImage.sprite = _selectedBuilding.Next.Value.icon;
 
             centerImage.sprite = _selectedBuilding.Value.icon;
@@ -107,7 +108,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         if (_selectedBuilding.Next == null)
         {
             leftImage.sprite = _selectedBuilding.Previous.Value.icon;
-            rightImage.sprite = _selectedBuilding.Previous.Value.icon;
+            rightImage.sprite = _buildableObjectsSO.First.Value.icon;
 
             centerImage.sprite = _selectedBuilding.Value.icon;
             return;
