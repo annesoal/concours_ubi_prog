@@ -272,7 +272,6 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
-        CheckEnemiesAtDestinationCells();
         CleanBonuses();
         TilingGrid.grid.SyncAllTopOfCells();
         
@@ -510,26 +509,6 @@ public class TowerDefenseManager : NetworkBehaviour
     {
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
-    }
-
-    private static void CheckEnemiesAtDestinationCells()
-    {
-        DestinationCells = TilingGrid.grid.GetCellsOfType(Type.EnemyDestination);
-        foreach (var cell in DestinationCells)
-        {
-            if (cell.ContainsEnemy())
-            {
-                var enemies = cell.GetEnemies();
-                foreach (var enemy in enemies)
-                {
-                    enemy.RemoveInGame();
-                    TilingGrid.RemoveElement(enemy.ToGameObject(), cell.position);
-                    Destroy(enemy.ToGameObject());
-                }
-
-                Player.Health--;
-            }
-        }
     }
 
     public static void ResetStaticData()

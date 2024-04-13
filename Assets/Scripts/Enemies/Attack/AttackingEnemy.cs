@@ -5,6 +5,7 @@ using Enemies.Basic;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Random = System.Random;
 
 namespace Enemies
@@ -15,18 +16,42 @@ namespace Enemies
 
         protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
         {
-            if (ChoseToAttack())
+             Assert.IsTrue(IsServer);
+                        
+            if (HasReachedTheEnd())
             {
-                return (false, false, true, new Vector3());
+                Debug.Log("reched end at " + transform.position + " cell pos "  + cell.position);
+                return (true, false, false, Vector3.zero);
             }
 
-            return base.BackendMove();
+            if (!IsTimeToMove() || isStupefiedState > 0)
+            {
+                return (false, false, false, Vector3.zero);
+            }
+            
+            if (ChoseToAttack())
+            {
+                return (false, false, true, Vector3.zero);
+            }
+            
+            if (!TryMoveOnNextCell())
+            {
+                hasPath = false;
+                if (!MoveSides())
+                {
+                    return (false, false, false, Vector3.zero);
+                }
+                else
+                {
+                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+                }
+            }
+            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
         }
 
         public abstract bool ChoseToAttack();
         public bool ChoseAttack(List<Cell> cellsInRadius)
         {
-            Debug.Log("Dans chose to attack avec cell in radius");
             foreach (var aCell in cellsInRadius)
             {
                 if (TowerIsAtRange(aCell) &&
@@ -47,7 +72,6 @@ namespace Enemies
                    cell.HasNonWalkableBuilding();
         }
         
-        // Choisit d'attaquer aleatoirement
         private bool canAttack()
         {
             return true;
@@ -103,6 +127,7 @@ namespace Enemies
             if (infos.hasAttacked)
             {
                 StartCoroutine(AttackAnimation());
+                return;
             }
             else
             {
