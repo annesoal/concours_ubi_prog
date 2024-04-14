@@ -9,7 +9,7 @@ public class LevelSelectionSynchronizer : NetworkBehaviour
 {
     public static LevelSelectionSynchronizer Instance { get; private set; }
 
-    [field: SerializeField] public AmuletSelector AmuletSelector { get; private set; }
+    //[field: SerializeField] public AmuletSelector AmuletSelector { get; private set; }
 
     private Dictionary<Loader.Scene, int[]> _amuletsIdsForScene;
     
