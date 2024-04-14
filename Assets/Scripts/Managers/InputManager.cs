@@ -15,6 +15,9 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private bool enableUserInterfaceInput;
     
+    [Header("Bindings")]
+    [SerializeField] private PairInputPathAndSpriteSO pairInputPathAndSpriteSo;
+    
     private PlayerInputActions _playerInputActions;
 
     private static Player _player;
@@ -361,6 +364,22 @@ public class InputManager : MonoBehaviour
 		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
 		
 		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].ToDisplayString();
+	}
+	
+	/// <returns>Returns null when no matching path found</returns>
+	public Sprite GetBindingSprite(Binding binding)
+	{
+		string bindingOverridePath = GetBindingOverridePath(binding);
+
+		foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
+		{
+			if (pair.path == bindingOverridePath)
+			{
+				return pair.sprite;
+			}
+		}
+
+		return null;
 	}
 	
 	public string GetBindingOverridePath(Binding binding)
