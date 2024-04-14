@@ -1,13 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
+using Utils;
+
 namespace Enemies.Attack
 {
     public class SniperEyeEnemy : AttackingEnemy
     {
+
+        [SerializeField] public  GameObject _bullet;
+        [SerializeField] public Transform _bulletStartPosition;
         
+        ShootingUtility shootingUtility;
+         
         public static int SniperHealth;
         public static int SniperAttack;
         public static int SniperRange;
@@ -27,6 +35,19 @@ namespace Enemies.Attack
             set => _range = value;
         }
 
+        public new void Start()
+        {
+            base.Start();
+
+            if (IsServer)
+            {
+                 shootingUtility = gameObject.AddComponent<ShootingUtility>();
+                            shootingUtility.ObjectToFire = _bullet;
+                            shootingUtility.TimeToFly = 0.1f;
+                            shootingUtility.Angle = 0.9f;
+            }
+           
+        }
 
         public SniperEyeEnemy()
         {
@@ -65,5 +86,48 @@ namespace Enemies.Attack
             return ChoseAttack(cellsInRadius);
         }
 
+        protected override IEnumerator AttackAnimation(AttackingInfo infos)
+        {
+             if (!IsServer) yield break;
+
+             RotationAnimation rotationAnimation = new();
+             hasFinishedMoveAnimation = false;
+             StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject,
+                 infos.toKill.gameObject.transform.position));
+             yield return new WaitUntil(rotationAnimation.HasMoved);
+             animator.SetBool("Attack", true);
+             float currentTime = 0.0f;
+             float timeToSoot = 0.2f;
+             bool hasShot = false;
+             while (timeToMove > currentTime)
+             {
+                 currentTime += Time.deltaTime;
+                 if (timeToMove >= timeToSoot && !hasShot)
+                 {
+                     if (IsServer)
+                     {
+                         hasShot = true;
+                         shootingUtility.FireBetween(_bulletStartPosition.position,
+                         infos.toKill.gameObject.transform.position);
+                         
+                     }
+                 }
+                 yield return null;
+             }
+             
+             animator.SetBool("Attack", false);
+             if (infos.shouldKill)
+             {
+                 if (infos.isTower)
+                 {
+                     infos.toKill.gameObject.GetComponent<BaseTower>().DestroyThis();
+                 }
+                 else
+                 {
+                     infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
+                 }
+             }
+             hasFinishedMoveAnimation = true;
+        }
     }
 }

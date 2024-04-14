@@ -196,7 +196,6 @@ namespace Grid
                         buildableCells.AddLast(cell);
                 }
             }
-            Debug.LogError(buildableCells.Count);
             return buildableCells;
         }
 

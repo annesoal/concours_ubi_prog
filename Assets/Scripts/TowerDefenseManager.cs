@@ -141,7 +141,7 @@ public class TowerDefenseManager : NetworkBehaviour
         }
 
         //OnCurrentStateChanged += DebugStateChange;
-        energyToUse = 0;
+        energyToUse = 0; 
         this.gameObject.AddComponent<EnemySpawnerManager>().SetSpawners(listOfSpawners);
     }
 

@@ -114,7 +114,7 @@ namespace Enemies
             return (true, toAttack.gameObject);
 
         }
-        private IEnumerator AttackAnimation(AttackingInfo infos)
+        protected virtual IEnumerator AttackAnimation(AttackingInfo infos)
         {
             if (!IsServer) yield break;
             
