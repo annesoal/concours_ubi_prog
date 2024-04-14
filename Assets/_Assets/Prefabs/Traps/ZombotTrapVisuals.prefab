@@ -41,6 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7184054422717668317}
+  - component: {fileID: 1905812315781225424}
   m_Layer: 0
   m_Name: ZombotTrapVisuals
   m_TagString: Untagged
@@ -65,6 +66,19 @@ Transform:
   - {fileID: 1715431592857711927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1905812315781225424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5887437798432054152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93656fa851986d066968b2dc013a52c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildableObjectPreview: {fileID: 3630459311968996080}
 --- !u!1001 &4673012046321447487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76,17 +90,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 25
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 25
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
@@ -170,17 +184,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 25
+      value: 7.0000005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 25
+      value: 7.0000005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 7.0000005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9db5ea479e7f27f46804c6ad594a9af7,
         type: 3}

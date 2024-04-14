@@ -40,15 +40,23 @@ namespace Managers
         {
             hasMovedEveryEnemies = false;
             List<Enemy> movingEnemies = new();
-            foreach (var enemy in Enemy.GetEnemiesInGame())
+            List<GameObject> allEnemies = Enemy.GetEnemiesInGameCopy();
+            while(allEnemies.Count > 0) 
             {
-                Enemy e = enemy.GetComponent<Enemy>();
+                GameObject enemyGO = allEnemies[0];
+                allEnemies.RemoveAt(0);
+                Enemy e = enemyGO.GetComponent<Enemy>();
+                
                 var info = EnemyChoices[e];
-                if (info.hasMoved || info.hasAttacked)
+                if (!info.hasReachedEnd) 
+                    movingEnemies.Add(e);
+                else
                 {
-                   movingEnemies.Add(e);
-                   e.MoveCorroutine(info);
+                    TilingGrid.grid.RemoveObjectFromCurrentCell(enemyGO); 
+                    e.RemoveInGame();
+                    Player.Health--;
                 }
+                e.MoveCorroutine(info);
             }
 
             while (movingEnemies.Count > 0)
@@ -56,7 +64,6 @@ namespace Managers
                 for (int i = 0; i < movingEnemies.Count; i++)
                 {
                     var enemy = movingEnemies[i];
-                    Debug.Log(movingEnemies.Count);
                     if (enemy.hasFinishedMoveAnimation)
                     {
                         movingEnemies.Remove(enemy);
@@ -68,7 +75,6 @@ namespace Managers
             foreach (var enemy in Enemy.GetEnemiesInGame())
             {
                 enemy.GetComponent<Enemy>().ResetAnimationStates();
-                Debug.Log(enemy.GetComponent<Enemy>().hasFinishedMoveAnimation);
             }
 
             hasMovedEveryEnemies = true;

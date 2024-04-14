@@ -124,9 +124,9 @@ public class PlayerTileSelector : MonoBehaviour
         return _recorder.RemoveLast().position;
     }
 
-    public Vector2Int GetCurrentPosition()
+    public Vector2Int? GetCurrentPosition()
     {
-        return _helper.Cell.position;
+        return _helper?.Cell.position;
     }
 
     public void Confirm()
