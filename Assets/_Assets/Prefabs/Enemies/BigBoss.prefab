@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 590323203
+  GlobalObjectIdHash: 489280247
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -102,6 +102,10 @@ MonoBehaviour:
   nbMalus: 1
   ratioMovement: 1
   malus: {fileID: 7650414445784578766, guid: 0364adeba09f7ea7e8aeba1c33966510, type: 3}
+  animator: {fileID: 5866666021909216657, guid: 658f29ea1fe1524479614b6b9ee73c51,
+    type: 3}
+  hasFinishedMoveAnimation: 0
+  hasFinishedSpawnAnimation: 0
 --- !u!114 &-7006683443239023634
 MonoBehaviour:
   m_ObjectHideFlags: 0

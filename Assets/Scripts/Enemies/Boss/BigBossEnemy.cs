@@ -1,3 +1,4 @@
+using System.Collections;
 using Grid;
 using Grid.Blocks;
 using Unity.Netcode;
@@ -12,34 +13,47 @@ namespace Enemies.Boss
         [SerializeField] private int nbMalus = 1;
         [SerializeField] private int ratioMovement = 8;
         [SerializeField] private GameObject malus;
+        [SerializeField] protected Animator animator;
         
         private const string SPAWN_POINT_COMPONENT_ERROR =
             "Boss doit avoir le component `BlockBossSpawn`";
         
-        
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
-                Instance = this;
-            }
+        public bool hasFinishedMoveAnimation = false;
+        public  bool hasFinishedSpawnAnimation = false;
 
-            InitializeBoss();
-        
-            if (IsServer)
-            {
-                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
-               // Cell onCell = TilingGrid.
-            }
+
+        public void SpawnMalusOnGrid()
+        {
+            Debug.Log("BIGBOSS SparnMalus");
+            SpawnMalus.SpawnMalusOnGridPlayers(malus);
         }
+        
         
         
         private void InitializeBoss()
         {
-                MoveBossOnSpawnPoint(TowerDefenseManager.Instance.BossBlockSpawn);
-                
+                //RunSpawnAnimation();
         }
         
+        private void RunSpawnAnimation()
+        {
+            StartCoroutine(AnimationSpawn());
+        }
+        
+        private IEnumerator AnimationSpawn()
+        {
+            float timeToAnimate = 0.3f;
+            float currentTime = 0.0f;
+            hasFinishedSpawnAnimation = false;
+            animator.SetBool("Spawn", true);
+            while (currentTime < timeToAnimate)
+            {
+                yield return null;
+                currentTime += Time.deltaTime;
+            }
+            animator.SetBool("Spawn", false);
+            hasFinishedSpawnAnimation = true;
+        }
         
         private void MoveBossOnSpawnPoint(Transform spawnPoint)
         {

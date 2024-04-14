@@ -249,7 +249,7 @@ public class Player : NetworkBehaviour, ITopOfCell
             IsReadyServerRpc();
             yield break;
         }
-
+        
         RemoveNextHighlighter();
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);

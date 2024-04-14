@@ -5,6 +5,7 @@ using Amulets;
 using Enemies;
 using Enemies.Attack;
 using Enemies.Basic;
+using Enemies.Boss;
 using Grid;
 using Grid.Blocks;
 using Managers;
@@ -77,7 +78,6 @@ public class TowerDefenseManager : NetworkBehaviour
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
 
-    [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
     [field: SerializeField] public Transform BossPrefab { get; private set; }
     
     [Header("Next level data")]
@@ -233,6 +233,7 @@ public class TowerDefenseManager : NetworkBehaviour
             {
                 _currentTimer.Value = TacticalPauseDuration;
                 CentralizedInventory.Instance.CashBonus();
+                BigBossEnemy.Instance.SpawnMalusOnGrid();
             }
         }
     }
@@ -390,7 +391,6 @@ public class TowerDefenseManager : NetworkBehaviour
         (string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
         CarryOutSpawnPlayersProcedure();
-        CarryOutSpawnBossProcedure();
     }
 
     public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
@@ -416,17 +416,6 @@ public class TowerDefenseManager : NetworkBehaviour
         }
     }
     
-    private void CarryOutSpawnBossProcedure()
-    {
-        try
-        {
-            SpawnBoss();
-        }
-        catch (NoMatchingClientIdFoundException e)
-        {
-            Debug.LogError(e);
-        }
-    }
 
     private void InitializeSpawnPlayerMethods()
     {
@@ -438,16 +427,7 @@ public class TowerDefenseManager : NetworkBehaviour
         };
     }
 
-    
-    private void SpawnBoss()
-    {
-        var instance = Instantiate(BossPrefab);
-        var instanceNetworkObject = instance.GetComponent<NetworkObject>();
-        instanceNetworkObject.Spawn(); //true ou false ?
-        
-    }
 
-    
 
     /**
      * Throws NoMatchingClientIdFoundException.

@@ -11,15 +11,13 @@ using UnityEngine;
 public class SpawnMalus : NetworkBehaviour
 {
     private static float _overTheTiles = 0.5f;
-    private static Dictionary<Vector2Int, int> positionsPlayerRegister;
+    private static Dictionary<Vector2Int, int> positionsPlayerRegister = new Dictionary<Vector2Int, int>();
     public static SpawnMalus Instance { get; private set; }
 
 
     //compte le nombre de deplacementa des joueurs par position de Cell
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
-        
- 
         Debug.Log("Regsiter position player " + positionCellPlayer);
         
         {
@@ -48,8 +46,9 @@ public class SpawnMalus : NetworkBehaviour
             var mostUsedCells = GetMostUsedCells();
 
             //Si une ou plusieurs used cells trouve, faire spawner
-            if (mostUsedCells != null || mostUsedCells.Count > 0)
+            if (mostUsedCells != null && mostUsedCells.Count > 0)
             {
+                Debug.Log("SPawnMAlus avant placemalus");
                 PlaceMalus(mostUsedCells.ToArray(), malus, IsInvalidCell);
             }
         }
@@ -85,7 +84,7 @@ public class SpawnMalus : NetworkBehaviour
         return TilingGrid.GetRobotReachableCells();
     }
 
-    private static Vector2Int MostUsedCell(List<Cell> cells)
+    private static Vector2Int MostUsedCell(List<Cell> cellsReachable)
     {
         int maxOccurence = 0;
         Vector2Int mostUsedCellTemp = Vector2Int.zero;
@@ -96,13 +95,14 @@ public class SpawnMalus : NetworkBehaviour
         {
             Cell toCheck = TilingGrid.grid.GetCell(keyValue.Key);
             
-            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, cells) &&
+            if (keyValue.Value > maxOccurence && IsPlayerCell(keyValue.Key, cellsReachable) &&
                 isValidCell(toCheck))
             {
                 mostUsedCellTemp = keyValue.Key;
             }
         }
 
+        Debug.Log("SpawnMalus mosUsedcell " + mostUsedCellTemp);
         return mostUsedCellTemp;
     }
 
@@ -112,9 +112,12 @@ public class SpawnMalus : NetworkBehaviour
     {
         foreach (Vector2Int positionOfSpawn in positionToObstacles)
         {
+            Debug.Log("Spawnmalus placemalus");
             Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-            if (isInvalidCell.Invoke(cell))
-                continue;
+            
+            //if (isInvalidCell.Invoke(cell))
+               // continue;
+            
             GameObject instance = Instantiate(gameObjectsToSpawn);
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
             instance.GetComponent<NetworkObject>().Spawn(true);
@@ -156,7 +159,6 @@ public class SpawnMalus : NetworkBehaviour
             }
         }
         
-        //has player ?
      
         return true;
     }
