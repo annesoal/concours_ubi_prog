@@ -24,7 +24,7 @@ namespace Spawners
 
         public override int GetSnipperToSpawn(int turn)
         {
-            return (int)Math.Ceiling((turn * 0.5) / 3);
+            return (int)Math.Ceiling((turn * 0.65) / 2);
         }
     }
 }
