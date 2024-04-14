@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2790998, g: 0.15266445, b: 0.3560565, a: 1}
+  m_IndirectSpecularColor: {r: 0.2791329, g: 0.15264997, b: 0.3561327, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2554,10 +2554,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Ennemi-6_BigBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 658f29ea1fe1524479614b6b9ee73c51,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e90dac18e2d33ae1ba0fa49bbabe415e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 658f29ea1fe1524479614b6b9ee73c51,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 123317914}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 658f29ea1fe1524479614b6b9ee73c51,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 123317915}
   m_SourcePrefab: {fileID: 100100000, guid: 658f29ea1fe1524479614b6b9ee73c51, type: 3}
 --- !u!4 &123317912 stripped
 Transform:
@@ -2565,6 +2578,55 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 123317911}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &123317913 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 658f29ea1fe1524479614b6b9ee73c51,
+    type: 3}
+  m_PrefabInstance: {fileID: 123317911}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &123317914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123317913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1508607041
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &123317915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123317913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9adb83383f49f0931fc3aab7e37df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nbMalus: 1
+  ratioMovement: 8
+  malusMinus1: {fileID: 7650414445784578766, guid: 0364adeba09f7ea7e8aeba1c33966510,
+    type: 3}
+  malusMinus2: {fileID: 7650414445784578766, guid: 9a31eb3c3bd8b669b990c76f4bf01956,
+    type: 3}
+  malusMinus2SpawnReate: 1
+  animator: {fileID: 5866666021909216657, guid: 658f29ea1fe1524479614b6b9ee73c51,
+    type: 3}
+  hasFinishedMoveAnimation: 0
+  hasFinishedSpawnAnimation: 0
 --- !u!1001 &123690741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31164,7 +31226,8 @@ MonoBehaviour:
   playerRobotPrefab: {fileID: 2868363114536855551, guid: 5691060b1c68ecd84ad714b4e706c7b4,
     type: 3}
   <RobotBlockPlayerSpawn>k__BackingField: {fileID: 797685666}
-  <BossBlockSpawn>k__BackingField: {fileID: 1932378014}
+  <BossPrefab>k__BackingField: {fileID: -8679921383154817045, guid: 658f29ea1fe1524479614b6b9ee73c51,
+    type: 3}
   nextLevelDataSo: {fileID: 11400000, guid: f968e42ad621f1dd79d0a3eb4cc91534, type: 2}
   listOfSpawners:
   - {fileID: 1045813830}
