@@ -86,7 +86,7 @@ public class ZombotTrap : BaseTrap
 
         foreach (var enemyAffectedInfo in trapPlayInfo.enemiesAffectedInfo)
         {
-            yield return StartCoroutine(enemyAffectedInfo.enemy.PushBackAnimation(transform.position));
+            StartCoroutine(enemyAffectedInfo.enemy.PushBackAnimation(transform.position));
             if (enemyAffectedInfo.shouldKill)
             {
                 enemyAffectedInfo.enemy.Kill();

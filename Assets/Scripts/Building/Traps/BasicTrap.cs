@@ -76,7 +76,7 @@ public class BasicTrap : BaseTrap
 
         foreach (var enemyAffectedInfo in trapPlayInfo.enemiesAffectedInfo)
         {
-            yield return StartCoroutine(enemyAffectedInfo.enemy.PushBackAnimation(transform.position));
+            StartCoroutine(enemyAffectedInfo.enemy.PushBackAnimation(transform.position));
         }
         HasFinishedAnimation = true;
         Destroy(this.gameObject);
