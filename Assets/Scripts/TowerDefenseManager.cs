@@ -7,6 +7,7 @@ using Building.Traps;
 using Enemies;
 using Enemies.Attack;
 using Enemies.Basic;
+using Enemies.Boss;
 using Grid;
 using Grid.Blocks;
 using Managers;
@@ -37,6 +38,7 @@ public class TowerDefenseManager : NetworkBehaviour
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
     private List<GameObject> bonuses = new List<GameObject>();
+    private List<GameObject> maluses = new List<GameObject>();
     private bool gameWon = false;
     private IAManager _iaManager;
 
@@ -79,10 +81,17 @@ public class TowerDefenseManager : NetworkBehaviour
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
 
-    [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
+    [field: SerializeField] public Transform BossPrefab { get; private set; }
     
     [Header("Next level data")]
     public NextLevelDataSO nextLevelDataSo;
+    
+    
+    [Header("AdditionAmulet")]
+    [SerializeField] private AdditionAmuletSO defaultAmulet;
+    
+    /// Reset manually.
+    public static AdditionAmuletSO PlayerAmuletSelection;
 
     [SerializeField] private List<SpawnerBlock> listOfSpawners;
     private readonly NetworkVariable<State> _currentState = new();
@@ -120,58 +129,6 @@ public class TowerDefenseManager : NetworkBehaviour
         currentRoundNumber = 0;
         SetAmuletFieldsToGameFields();
     }
-
-    private void SetAmuletFieldsToGameFields()
-    {
-        TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime;
-        TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns;
-
-        EnvironmentTurnManager.Instance.Turn = amuletSO.startingTurn;
-        
-        Ressource.SpawnRate = amuletSO.ressourceSpawnRate;
-        
-        Player.Energy = amuletSO.playerEnergy;
-        Player.Health = amuletSO.playersHealth;
-
-        Enemy.Energy = amuletSO.enemyEnergy;
-        
-        GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints;
-        GoofyEnemy.GoofyMoveRation = amuletSO.GoofyMoveRatio;
-
-        PetiteMerdeEnemy.MerdeHealth = amuletSO.MerdeHeathPoints;
-        PetiteMerdeEnemy.MerdeMoveRatio = amuletSO.MerdeMoveRatio;
-
-        BigGuyEnemy.BigGuyAttack = amuletSO.BigGuyDamages;
-        BigGuyEnemy.BigGuyHealth = amuletSO.BigGuyHealthPoints;
-        BigGuyEnemy.BigGuyMoveRatio = amuletSO.BigGuyMoveRatio;
-
-        SniperEyeEnemy.SniperRange = amuletSO.SniperRange;
-        SniperEyeEnemy.SniperMoveRatio = amuletSO.SniperMoveRatio;
-        SniperEyeEnemy.SniperAttack = amuletSO.SniperDamages;
-        SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints;
-
-        Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth;
-        CentralizedInventory.StartingMoney = amuletSO.startingMoney;
-
-        BasicTrap.SetCost = amuletSO.TrapCost;
-        BasicTrap.StunDuration = amuletSO.StunDuration;
-        BasicTrap.TrapRange = amuletSO.TrapRange;
-
-        ZombotTrap.SetCost = amuletSO.BombCost;
-        ZombotTrap.Damage = amuletSO.BombDamage;
-        ZombotTrap.BombRange = amuletSO.BombRange;
-
-        BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile;
-        BasicTower.BasicTowerCost = amuletSO.TowerCost;
-        BasicTower.BasicTowerRange = amuletSO.TowerRange;
-        BasicTower.BasicTowerHealth = amuletSO.TowerHealth;
-        BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks;
-        BasicTower.BasicTowerDamage = amuletSO.TowerDamage;
-        
-        SynchronizeBuilding.Instance.OverrideBuildingCosts();
-    }
-
-
 
     private void Start()
     {
@@ -242,6 +199,7 @@ public class TowerDefenseManager : NetworkBehaviour
             {
                 _currentTimer.Value = TacticalPauseDuration;
                 CentralizedInventory.Instance.CashBonus();
+                BigBossEnemy.Instance.SpawnMalusOnGrid();
             }
         }
     }
@@ -284,6 +242,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CleanBonuses();
+        CleanMaluses();
         TilingGrid.grid.SyncAllTopOfCells();
         
         if (Player.Health < 1)
@@ -423,6 +382,7 @@ public class TowerDefenseManager : NetworkBehaviour
             Debug.LogError(e);
         }
     }
+    
 
     private void InitializeSpawnPlayerMethods()
     {
@@ -433,6 +393,7 @@ public class TowerDefenseManager : NetworkBehaviour
             DebugPlayerSpawnError
         };
     }
+
 
 
     /**
@@ -521,9 +482,69 @@ public class TowerDefenseManager : NetworkBehaviour
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
+    
+    private void SetAmuletFieldsToGameFields()
+    {
+        if (PlayerAmuletSelection == null)
+        {
+            PlayerAmuletSelection = defaultAmulet;
+        }
+        
+        TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime + PlayerAmuletSelection.turnTime;
+        TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns + PlayerAmuletSelection.numberOfTurns;;
+
+        EnvironmentTurnManager.Instance.Turn = amuletSO.startingTurn + PlayerAmuletSelection.startingTurn;
+        
+        Ressource.SpawnRate = amuletSO.ressourceSpawnRate + PlayerAmuletSelection.ressourceSpawnRate;
+        
+        Player.Energy = amuletSO.playerEnergy + PlayerAmuletSelection.playerEnergy;
+        Player.Health = amuletSO.playersHealth + PlayerAmuletSelection.playersHealth;
+
+        Enemy.Energy = amuletSO.enemyEnergy + PlayerAmuletSelection.enemyEnergy;
+        
+        GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints + PlayerAmuletSelection.GoofyHealthPoints;
+        GoofyEnemy.GoofyMoveRation = amuletSO.GoofyMoveRatio + PlayerAmuletSelection.GoofyMoveRatio;
+
+        PetiteMerdeEnemy.MerdeHealth = amuletSO.MerdeHeathPoints + PlayerAmuletSelection.MerdeHeathPoints;
+        PetiteMerdeEnemy.MerdeMoveRatio = amuletSO.MerdeMoveRatio + PlayerAmuletSelection.MerdeMoveRatio;
+
+        BigGuyEnemy.BigGuyAttack = amuletSO.BigGuyDamages + PlayerAmuletSelection.BigGuyDamages;
+        BigGuyEnemy.BigGuyHealth = amuletSO.BigGuyHealthPoints + PlayerAmuletSelection.BigGuyHealthPoints;
+        BigGuyEnemy.BigGuyMoveRatio = amuletSO.BigGuyMoveRatio + PlayerAmuletSelection.BigGuyMoveRatio;
+
+        SniperEyeEnemy.SniperRange = amuletSO.SniperRange + PlayerAmuletSelection.SniperRange;
+        SniperEyeEnemy.SniperMoveRatio = amuletSO.SniperMoveRatio + PlayerAmuletSelection.SniperMoveRatio;
+        SniperEyeEnemy.SniperAttack = amuletSO.SniperDamages + PlayerAmuletSelection.SniperDamages;
+        SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints + PlayerAmuletSelection.SniperHealthPoints;
+
+        Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth + PlayerAmuletSelection.ObstaclesHealth;
+        CentralizedInventory.StartingMoney = amuletSO.startingMoney + PlayerAmuletSelection.startingMoney;
+
+        BasicTrap.SetCost = amuletSO.TrapCost + PlayerAmuletSelection.TrapCost;
+        BasicTrap.StunDuration = amuletSO.StunDuration + PlayerAmuletSelection.StunDuration;
+        BasicTrap.TrapRange = amuletSO.TrapRange + PlayerAmuletSelection.TrapRange;
+
+        ZombotTrap.SetCost = amuletSO.BombCost + PlayerAmuletSelection.BombCost;
+        ZombotTrap.Damage = amuletSO.BombDamage + PlayerAmuletSelection.BombDamage;
+        ZombotTrap.BombRange = amuletSO.BombRange + PlayerAmuletSelection.BombRange;
+
+        BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile + PlayerAmuletSelection.numberOfProjectile;
+        BasicTower.BasicTowerCost = amuletSO.TowerCost + PlayerAmuletSelection.TowerCost;
+        BasicTower.BasicTowerRange = amuletSO.TowerRange + PlayerAmuletSelection.TowerRange;
+        BasicTower.BasicTowerHealth = amuletSO.TowerHealth + PlayerAmuletSelection.TowerHealth;
+        BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks + PlayerAmuletSelection.TowerTimeBetweenAttacks;
+        BasicTower.BasicTowerDamage = amuletSO.TowerDamage + PlayerAmuletSelection.TowerDamage;
+        
+        SynchronizeBuilding.Instance.OverrideBuildingCosts();
+    }
 
     public static void ResetStaticData()
     {
+        if (SceneManager.GetActiveScene().name == Loader.Scene.MainMenuScene.ToString())
+        {
+            PlayerAmuletSelection = null;
+        }
+        
         DestinationCells = null;
     }
 
@@ -543,6 +564,17 @@ public class TowerDefenseManager : NetworkBehaviour
         this.bonuses.Remove(bonus);
     }
 
+    
+    public void AddMalus(GameObject malus)
+    {
+        this.bonuses.Add(malus);
+    }
+
+    public void RemoveMalus(GameObject malus)
+    {
+        this.maluses.Remove(malus);
+    }
+
     private void CleanBonuses()
     {
         foreach (var bonus in bonuses)
@@ -551,9 +583,23 @@ public class TowerDefenseManager : NetworkBehaviour
         }
     }
 
+
+    private void CleanMaluses()
+    {
+        foreach (var malus in maluses)
+        {
+            Destroy(malus);
+        }
+    }
+    public static void ResetPlayerAmuletSelection()
+    {
+        PlayerAmuletSelection = null;
+    }
+        
     public override void OnDestroy()
     {
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= NetworkManager_OnLoadEventCompleted;
         base.OnDestroy();
     }
+    
 }

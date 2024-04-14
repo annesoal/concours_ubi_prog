@@ -17,7 +17,7 @@ public class AmuletChoicesUI : MonoBehaviour
         rightAmuletChoice.OnAmuletSelectButtonClicked += RightAmuletChoice_OnAmuletSelectButtonClicked;
     }
 
-    public void SetVisuals(List<AmuletSO> amuletChoiceAtEnd)
+    public void SetVisuals(List<AdditionAmuletSO> amuletChoiceAtEnd)
     {
         Debug.Assert(amuletChoiceAtEnd.Count == 3);
         
@@ -32,7 +32,7 @@ public class AmuletChoicesUI : MonoBehaviour
     }
 
     public event EventHandler<OnAmuletChosenEventArgs> OnAmuletChosen;
-    public class OnAmuletChosenEventArgs : EventArgs { public AmuletSO AmuletChosen; }
+    public class OnAmuletChosenEventArgs : EventArgs { public AdditionAmuletSO AmuletChosen; }
     
     private void LeftAmuletChoice_OnAmuletSelectButtonClicked
         (object sender, SingleAmuletChoiceUI.OnAmuletSelectButtonClickedEventArgs e)
