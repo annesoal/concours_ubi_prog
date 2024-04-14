@@ -21,6 +21,9 @@ public class BuildingCarrouselUI : MonoBehaviour
     [Header("Tweening")]
     [SerializeField] private float endScale;
     [SerializeField] private float tweeningTime;
+
+    [Header("Error UI")]
+    [SerializeField] private NoBuildingTableErrorUI noBuildingTableErrorUI;
     
     private LinkedList<BuildableObjectSO> _buildableObjectsSO;
     private LinkedListNode<BuildableObjectSO> _selectedBuilding;
@@ -236,13 +239,22 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         if (!gameObject.activeSelf)
         {
-            // TODO show not at range error
+            TryShowErrorUI();
+            
             return;
         }
 
         if (HasResourceForBuilding())
         {
             EmitOnBuildingSelected();
+        }
+    }
+
+    private void TryShowErrorUI()
+    {
+        if (TowerDefenseManager.Instance.CurrentState == TowerDefenseManager.State.TacticalPause)
+        {
+            noBuildingTableErrorUI.Show();
         }
     }
     

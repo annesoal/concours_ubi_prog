@@ -84,6 +84,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
     [SerializeField] private List<SpawnerBlock> listOfSpawners;
     private readonly NetworkVariable<State> _currentState = new();
+    public State CurrentState => _currentState.Value;
 
     [SerializeField] public AmuletSO amuletSO;
     private NetworkVariable<float> _currentTimer;

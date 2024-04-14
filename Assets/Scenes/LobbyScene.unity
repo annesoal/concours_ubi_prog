@@ -3860,6 +3860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableUserInterfaceInput: 1
+  pairInputPathAndSpriteSo: {fileID: 0}
 --- !u!1 &1640632400
 GameObject:
   m_ObjectHideFlags: 0
