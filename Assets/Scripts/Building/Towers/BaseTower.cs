@@ -137,14 +137,14 @@ public abstract class BaseTower : BuildableObject, IDamageable
         TowerPlayInfo towerPlayInfo = new TowerPlayInfo();
         if (!CanPlay())
         {
-            Debug.LogWarning(("Cant play"));
+            //Debug.LogWarning(("Cant play"));
             return towerPlayInfo;
         }
 
         List<Cell> cellsToShoot = TargetEnemies();
         if (cellsToShoot.Count == 0)
         {
-            Debug.LogWarning("no enemies around");
+            //Debug.LogWarning("no enemies around");
             return towerPlayInfo;
         }
 
@@ -169,6 +169,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
                 enemyInfoToShoot.enemy = enemy;
                 enemyInfoToShoot.shouldKill = true;
                 enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
+                enemy.CleanUp();
             }
             else
             {
@@ -201,7 +202,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
             yield return shotInfo.enemy.PushBackAnimation(originToPush);
             if (shotInfo.shouldKill)
             {
-                shotInfo.enemy.CleanUpAndKill();
+                shotInfo.enemy.Kill();
             }
         }
 
@@ -210,17 +211,18 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     public void DestroyThis()
     {
-        if (!GameMultiplayerManager.Instance.IsServer)
-            return;
-        
-        UnregisterTower(this);
-        TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
         DestroyClientRpc();
     }
 
     [ClientRpc]
-    public void DestroyClientRpc()
+    private void DestroyClientRpc()
     {
-       Destroy(this); 
+       Destroy(this.gameObject); 
+    }
+
+    public void Clean()
+    {
+        UnregisterTower(this);
+        TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
     }
 }

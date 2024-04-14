@@ -121,7 +121,6 @@ namespace Enemies
             animator.SetBool("Attack", true);
             float currentTime = 0.0f;
 
-            //TODO time to attack? et regarder avec anim tour
             while (timeToMove > currentTime)
             {
                 currentTime += Time.deltaTime;

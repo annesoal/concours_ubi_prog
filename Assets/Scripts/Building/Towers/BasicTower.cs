@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Grid;
 using Grid.Interface;
 using UnityEngine;
-using Enemies;
-using Unity.VisualScripting;
+
 
 /**
  * Tour tirant les ennemis les plus loins d'elle sur un axe particulier.
@@ -88,7 +86,7 @@ public class BasicTower : BaseTower
             targetedCells.Add(cellsInShootingRange[indexOfFarthestEnemyCell]);
             
             numberOfTargetSet++;
-            Debug.Log("number of targets " + numberOfTargetSet);
+            //Debug.Log("number of targets " + numberOfTargetSet);
         }
 
         return targetedCells;
@@ -164,7 +162,7 @@ public class BasicTower : BaseTower
     {
         if (EarlyReturnBasedOnDirection(contender, farthestEnemyPosition))
         {
-            Debug.Log("EarlyReturn!");
+            //Debug.Log("EarlyReturn!");
             return false;
         }
         
@@ -175,12 +173,12 @@ public class BasicTower : BaseTower
         
         if (contenderDistance > lastMaxDistance)
         {
-            Debug.Log("contender >  lasMax");
+            //Debug.Log("contender >  lasMax");
             return true;
         }
         else
         {
-            Debug.Log("lastMax > contender");
+            //Debug.Log("lastMax > contender");
             return false;
         }
     }
@@ -225,5 +223,9 @@ public class BasicTower : BaseTower
 
         return null;
     }
-    
+
+    public override bool IsWalkable()
+    {
+        return false;
+    }
 }
