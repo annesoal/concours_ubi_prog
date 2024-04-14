@@ -67,13 +67,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
         return Health -= damage;
     }
 
-    private void Die()
-    {
-        TilingGrid.RemoveElement(gameObject, transform.position);
-        UnregisterTower(this);
-        Destroy(this.gameObject);
-    }
-
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
@@ -112,6 +105,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
         StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, position));
         yield return rotationAnimation.HasMoved();
         
+        // TODO : modifier le time tofly en fonction de la vitesse 
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;

@@ -239,7 +239,7 @@ namespace Enemies
 
             if (IsServer)
             {
-                GameObject.Destroy(this);
+                GameObject.Destroy(this.gameObject);
             }
      
         }
