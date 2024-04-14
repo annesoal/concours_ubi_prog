@@ -16,6 +16,48 @@ namespace Enemies.Boss
         private const string SPAWN_POINT_COMPONENT_ERROR =
             "Boss doit avoir le component `BlockBossSpawn`";
         
+        
+        public override void OnNetworkSpawn()
+        {
+            if (IsOwner)
+            {
+                Instance = this;
+            }
+
+            InitializeBoss();
+        
+            if (IsServer)
+            {
+                TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
+               // Cell onCell = TilingGrid.
+            }
+        }
+        
+        
+        private void InitializeBoss()
+        {
+                MoveBossOnSpawnPoint(TowerDefenseManager.Instance.BossBlockSpawn);
+                
+        }
+        
+        
+        private void MoveBossOnSpawnPoint(Transform spawnPoint)
+        {
+            bool hasComponent = spawnPoint.TryGetComponent(out BlockBossSpawn blockBossSpawn);
+        
+            if (hasComponent)
+            {
+                blockBossSpawn.SetBossOnBlock(transform);
+              //  Vector3 position = this.gameObject.transform.position;
+               // TilingGrid.grid.AddObjectToCellAtPosition(this.gameObject, TilingGrid.LocalToGridPosition(position));
+            }
+            else
+            {
+                Debug.LogError(SPAWN_POINT_COMPONENT_ERROR);
+            }
+            
+        }
+        
         private void Awake()
         {
             Instance = this;

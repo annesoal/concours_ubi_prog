@@ -78,6 +78,7 @@ public class TowerDefenseManager : NetworkBehaviour
 
 
     [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
+    [field: SerializeField] public Transform BossPrefab { get; private set; }
     
     [Header("Next level data")]
     public NextLevelDataSO nextLevelDataSo;
@@ -389,6 +390,7 @@ public class TowerDefenseManager : NetworkBehaviour
         (string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedout)
     {
         CarryOutSpawnPlayersProcedure();
+        CarryOutSpawnBossProcedure();
     }
 
     public event EventHandler<OnCurrentStateChangedEventArgs> OnCurrentStateChanged;
@@ -413,6 +415,18 @@ public class TowerDefenseManager : NetworkBehaviour
             Debug.LogError(e);
         }
     }
+    
+    private void CarryOutSpawnBossProcedure()
+    {
+        try
+        {
+            SpawnBoss();
+        }
+        catch (NoMatchingClientIdFoundException e)
+        {
+            Debug.LogError(e);
+        }
+    }
 
     private void InitializeSpawnPlayerMethods()
     {
@@ -424,6 +438,16 @@ public class TowerDefenseManager : NetworkBehaviour
         };
     }
 
+    
+    private void SpawnBoss()
+    {
+        var instance = Instantiate(BossPrefab);
+        var instanceNetworkObject = instance.GetComponent<NetworkObject>();
+        instanceNetworkObject.Spawn(); //true ou false ?
+        
+    }
+
+    
 
     /**
      * Throws NoMatchingClientIdFoundException.
