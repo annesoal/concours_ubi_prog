@@ -259,8 +259,6 @@ namespace Enemies
                 return;
             }
 
-      
-            
             StartCoroutine(RotateThenMove(infos.destination));
         }
 
@@ -288,7 +286,6 @@ namespace Enemies
                 timeNow += Time.deltaTime;
             }
         }
-
 
         public void CleanUpAndKill()
         {

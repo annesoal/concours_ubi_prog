@@ -144,11 +144,9 @@ namespace Enemies.Basic
             
             if (IsValidCell(nextCell))
             {
-                Debug.LogWarning("prev cell : " + cell.position);
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = nextCell;
                 
-                Debug.LogWarning("new cell : " + cell.position);
                 TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }

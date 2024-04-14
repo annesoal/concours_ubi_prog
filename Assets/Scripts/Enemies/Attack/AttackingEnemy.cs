@@ -122,7 +122,14 @@ namespace Enemies
             animator.SetBool("Attack", false);
             if (infos.shouldKill)
             {
-                
+                if (infos.isTower)
+                {
+                    infos.toKill.gameObject.GetComponent<BaseTower>().DestroyThis();
+                }
+                else
+                {
+                    infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
+                }
             }
             hasFinishedMoveAnimation = true;
         }
