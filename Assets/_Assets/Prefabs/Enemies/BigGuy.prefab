@@ -10,18 +10,33 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1326
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1326
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1326
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0.00000211
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.046576
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0039559
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cd3577d645fb96e47b06111296763735,
         type: 3}
@@ -247,11 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b1828bb35b4292b0ccaec703d64c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ennemyType: 2
   isStupefiedState: 0
-  ratioMovement: 2
   hasPath: 0
+  hasFinishedMoveAnimation: 0
+  hasFinishedSpawnAnimation: 0
   animator: {fileID: 5814351646530095030}
-  enemyDomage: 1
-  attackRate: 1
-  radiusAttack: 1
