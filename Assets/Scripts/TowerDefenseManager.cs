@@ -123,50 +123,50 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void SetAmuletFieldsToGameFields()
     {
-        TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime;
-        TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns;
+        TowerDefenseManager.TacticalPauseDuration = amuletSO.turnTime + AmuletSelector.PlayerAmuletSelection.turnTime;
+        TowerDefenseManager.TotalRounds = amuletSO.numberOfTurns + AmuletSelector.PlayerAmuletSelection.numberOfTurns;;
 
-        EnvironmentTurnManager.Instance.Turn = amuletSO.startingTurn;
+        EnvironmentTurnManager.Instance.Turn = amuletSO.startingTurn + AmuletSelector.PlayerAmuletSelection.startingTurn;
         
-        Ressource.SpawnRate = amuletSO.ressourceSpawnRate;
+        Ressource.SpawnRate = amuletSO.ressourceSpawnRate + AmuletSelector.PlayerAmuletSelection.ressourceSpawnRate;
         
-        Player.Energy = amuletSO.playerEnergy;
-        Player.Health = amuletSO.playersHealth;
+        Player.Energy = amuletSO.playerEnergy + AmuletSelector.PlayerAmuletSelection.playerEnergy;
+        Player.Health = amuletSO.playersHealth + AmuletSelector.PlayerAmuletSelection.playersHealth;
 
-        Enemy.Energy = amuletSO.enemyEnergy;
+        Enemy.Energy = amuletSO.enemyEnergy + AmuletSelector.PlayerAmuletSelection.enemyEnergy;
         
-        GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints;
-        GoofyEnemy.GoofyMoveRation = amuletSO.GoofyMoveRatio;
+        GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints + AmuletSelector.PlayerAmuletSelection.GoofyHealthPoints;
+        GoofyEnemy.GoofyMoveRation = amuletSO.GoofyMoveRatio + AmuletSelector.PlayerAmuletSelection.GoofyMoveRatio;
 
-        PetiteMerdeEnemy.MerdeHealth = amuletSO.MerdeHeathPoints;
-        PetiteMerdeEnemy.MerdeMoveRatio = amuletSO.MerdeMoveRatio;
+        PetiteMerdeEnemy.MerdeHealth = amuletSO.MerdeHeathPoints + AmuletSelector.PlayerAmuletSelection.MerdeHeathPoints;
+        PetiteMerdeEnemy.MerdeMoveRatio = amuletSO.MerdeMoveRatio + AmuletSelector.PlayerAmuletSelection.MerdeMoveRatio;
 
-        BigGuyEnemy.BigGuyAttack = amuletSO.BigGuyDamages;
-        BigGuyEnemy.BigGuyHealth = amuletSO.BigGuyHealthPoints;
-        BigGuyEnemy.BigGuyMoveRatio = amuletSO.BigGuyMoveRatio;
+        BigGuyEnemy.BigGuyAttack = amuletSO.BigGuyDamages + AmuletSelector.PlayerAmuletSelection.BigGuyDamages;
+        BigGuyEnemy.BigGuyHealth = amuletSO.BigGuyHealthPoints + AmuletSelector.PlayerAmuletSelection.BigGuyHealthPoints;
+        BigGuyEnemy.BigGuyMoveRatio = amuletSO.BigGuyMoveRatio + AmuletSelector.PlayerAmuletSelection.BigGuyMoveRatio;
 
-        SniperEyeEnemy.SniperRange = amuletSO.SniperRange;
-        SniperEyeEnemy.SniperMoveRatio = amuletSO.SniperMoveRatio;
-        SniperEyeEnemy.SniperAttack = amuletSO.SniperDamages;
-        SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints;
+        SniperEyeEnemy.SniperRange = amuletSO.SniperRange + AmuletSelector.PlayerAmuletSelection.SniperRange;
+        SniperEyeEnemy.SniperMoveRatio = amuletSO.SniperMoveRatio + AmuletSelector.PlayerAmuletSelection.SniperMoveRatio;
+        SniperEyeEnemy.SniperAttack = amuletSO.SniperDamages + AmuletSelector.PlayerAmuletSelection.SniperDamages;
+        SniperEyeEnemy.SniperHealth = amuletSO.SniperHealthPoints + AmuletSelector.PlayerAmuletSelection.SniperHealthPoints;
 
-        Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth;
-        CentralizedInventory.StartingMoney = amuletSO.startingMoney;
+        Obstacle.ObstacleHealth = amuletSO.ObstaclesHealth + AmuletSelector.PlayerAmuletSelection.ObstaclesHealth;
+        CentralizedInventory.StartingMoney = amuletSO.startingMoney + AmuletSelector.PlayerAmuletSelection.startingMoney;
 
-        BasicTrap.SetCost = amuletSO.TrapCost;
-        BasicTrap.StunDuration = amuletSO.StunDuration;
-        BasicTrap.TrapRange = amuletSO.TrapRange;
+        BasicTrap.SetCost = amuletSO.TrapCost + AmuletSelector.PlayerAmuletSelection.TrapCost;
+        BasicTrap.StunDuration = amuletSO.StunDuration + AmuletSelector.PlayerAmuletSelection.StunDuration;
+        BasicTrap.TrapRange = amuletSO.TrapRange + AmuletSelector.PlayerAmuletSelection.TrapRange;
 
-        ZombotTrap.SetCost = amuletSO.BombCost;
-        ZombotTrap.Damage = amuletSO.BombDamage;
-        ZombotTrap.BombRange = amuletSO.BombRange;
+        ZombotTrap.SetCost = amuletSO.BombCost + AmuletSelector.PlayerAmuletSelection.BombCost;
+        ZombotTrap.Damage = amuletSO.BombDamage + AmuletSelector.PlayerAmuletSelection.BombDamage;
+        ZombotTrap.BombRange = amuletSO.BombRange + AmuletSelector.PlayerAmuletSelection.BombRange;
 
-        BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile;
-        BasicTower.BasicTowerCost = amuletSO.TowerCost;
-        BasicTower.BasicTowerRange = amuletSO.TowerRange;
-        BasicTower.BasicTowerHealth = amuletSO.TowerHealth;
-        BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks;
-        BasicTower.BasicTowerDamage = amuletSO.TowerDamage;
+        BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile + AmuletSelector.PlayerAmuletSelection.numberOfProjectile;
+        BasicTower.BasicTowerCost = amuletSO.TowerCost + AmuletSelector.PlayerAmuletSelection.TowerCost;
+        BasicTower.BasicTowerRange = amuletSO.TowerRange + AmuletSelector.PlayerAmuletSelection.TowerRange;
+        BasicTower.BasicTowerHealth = amuletSO.TowerHealth + AmuletSelector.PlayerAmuletSelection.TowerHealth;
+        BasicTower.BasicTowerTimeBetweenShots = amuletSO.TowerTimeBetweenAttacks + AmuletSelector.PlayerAmuletSelection.TowerTimeBetweenAttacks;
+        BasicTower.BasicTowerDamage = amuletSO.TowerDamage + AmuletSelector.PlayerAmuletSelection.TowerDamage;
         
         SynchronizeBuilding.Instance.OverrideBuildingCosts();
     }

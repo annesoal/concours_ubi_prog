@@ -4,13 +4,19 @@ using UnityEngine.SceneManagement;
 
 namespace Amulets
 {
-    
-    //[CreateAssetMenu(menuName = "AmuletSelector")]
-    public class AmuletSelector : ScriptableObject
+    public class AmuletSelector : MonoBehaviour
     {
+        [SerializeField] private AdditionAmuletSO defaultAmulet;
+        
         public static AdditionAmuletSO PlayerAmuletSelection;
 
-        [SerializeField] private AdditionAmuletSO defaultAmulet;
+        private void Awake()
+        {
+            if (PlayerAmuletSelection == null)
+            {
+                PlayerAmuletSelection = defaultAmulet;
+            }
+        }
 
         public static void ResetPlayerAmuletSelection()
         {
