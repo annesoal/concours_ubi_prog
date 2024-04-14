@@ -44,6 +44,7 @@ public class BasicTrap : BaseTrap
         CleanUp();
 
         List<Cell> cells = TilingGrid.grid.GetCellsInRadius(currentCell, Range);
+        trapPlayInfo.enemiesAffectedInfo = new();
         foreach (var cell in cells)
         {
             Enemy enemyToStun = cell.GetEnemy();
@@ -63,6 +64,22 @@ public class BasicTrap : BaseTrap
 
     public override IEnumerator PlayAnimation(TrapPlayInfo trapPlayInfo)
     {
-        throw new NotImplementedException();
+        
+        HasFinishedAnimation = false;
+
+        if (trapPlayInfo.isTrigger == false)
+        {
+            HasFinishedAnimation = true;
+            yield break;
+        }
+        visuals.SetActive(false); 
+
+        foreach (var enemyAffectedInfo in trapPlayInfo.enemiesAffectedInfo)
+        {
+            yield return StartCoroutine(enemyAffectedInfo.enemy.PushBackAnimation(transform.position));
+        }
+        HasFinishedAnimation = true;
+        Destroy(this.gameObject);
+
     }
 }

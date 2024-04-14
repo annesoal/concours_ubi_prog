@@ -11,6 +11,7 @@ public abstract class BaseTrap : BuildableObject
 {
     [SerializeField] private BuildableObjectVisuals trapVisuals;
     [SerializeField] protected Animator animator;
+    [SerializeField] protected GameObject visuals;
     public bool HasFinishedAnimation;
 
     public abstract int Range { get; set; }

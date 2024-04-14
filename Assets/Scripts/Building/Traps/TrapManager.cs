@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
 namespace Building.Traps
@@ -20,10 +21,14 @@ namespace Building.Traps
 
         public void PlayBackEnd()
         {
-            foreach (var trap in trapsInGame)
+            var copy = new List<BaseTrap>(trapsInGame);
+            while (copy.Count > 0)
             {
+                BaseTrap trap = copy[0]; 
+                copy.RemoveAt(0);
                 TrapPlayInfo trapPlayInfo = trap.GetPlay();
                 listPlays.Add(trap, trapPlayInfo);
+        
             }
         }
         public  IEnumerator AnimateTraps()
@@ -47,6 +52,17 @@ namespace Building.Traps
                 yield return null;
             }
             HasFinishedAnimations = true;
+        }
+
+        public void ResetAnimations()
+        {
+            this.listPlays = new();
+            foreach (var trap in trapsInGame)
+            {
+                trap.HasFinishedAnimation = false;
+            }
+
+            this.HasFinishedAnimations = false;
         }
       }
 }

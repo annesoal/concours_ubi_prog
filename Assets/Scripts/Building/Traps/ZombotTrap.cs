@@ -49,6 +49,7 @@ public class ZombotTrap : BaseTrap
         
 
         List<Cell> cells = TilingGrid.grid.GetCellsInRadius(currentCell, Range);
+        trapPlayInfo.enemiesAffectedInfo = new List<EnemyAffectedInfo>();
         foreach (var cell in cells)
         {
             Enemy enemyToDamage = cell.GetEnemy();
@@ -81,7 +82,7 @@ public class ZombotTrap : BaseTrap
             HasFinishedAnimation = true;
             yield break;
         }
-        this.gameObject.SetActive(false); 
+        visuals.SetActive(false); 
 
         foreach (var enemyAffectedInfo in trapPlayInfo.enemiesAffectedInfo)
         {

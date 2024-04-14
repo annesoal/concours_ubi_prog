@@ -66,7 +66,7 @@ PrefabInstance:
     - target: {fileID: 5244632754030468581, guid: da39d146b9f83bde3bf57266c645c0a3,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1439266679
+      value: 2973939171
       objectReference: {fileID: 0}
     - target: {fileID: 5965543063089628608, guid: da39d146b9f83bde3bf57266c645c0a3,
         type: 3}
@@ -117,8 +117,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: b02ef03f745b9e60f8e8e734d46303be, type: 2}
   trapVisuals: {fileID: 3096759686336655984}
-  damage: 1
-  crossRange: 1
+  animator: {fileID: 0}
+  visuals: {fileID: 6139265022846678380}
+  HasFinishedAnimation: 0
+--- !u!1 &6139265022846678380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6891119178971100569, guid: da39d146b9f83bde3bf57266c645c0a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 761426522089554165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8768715130615505864
 PrefabInstance:
   m_ObjectHideFlags: 0

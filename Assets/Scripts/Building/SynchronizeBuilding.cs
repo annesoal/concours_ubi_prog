@@ -16,7 +16,6 @@ public class SynchronizeBuilding : NetworkBehaviour
     
     public void OverrideBuildingCosts()
     {
-        Debug.Log(BasicTower.BasicTowerCost);
         BuildableObjectsListSO  listSO = Instance.allBuildableObjectSO;
         var pair = listSO.list[0].materialAndQuantityPairs[0];
         pair.quantityOfMaterialRequired = BasicTower.BasicTowerCost;
@@ -25,6 +24,11 @@ public class SynchronizeBuilding : NetworkBehaviour
         pair = listSO.list[1].materialAndQuantityPairs[0];
         pair.quantityOfMaterialRequired = BasicTrap.SetCost;
         listSO.list[1].materialAndQuantityPairs[0] = pair;
+        
+        pair = listSO.list[2].materialAndQuantityPairs[0];
+        pair.quantityOfMaterialRequired = ZombotTrap.SetCost;
+        listSO.list[2].materialAndQuantityPairs[0] = pair;
+        
     }
 
     public void SpawnBuildableObject(BuildableObjectSO toBuild, Cell buildableBlock)

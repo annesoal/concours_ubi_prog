@@ -71,9 +71,13 @@ public class EnvironmentTurnManager : MonoBehaviour
                 
                 //Debug.Log("EVM avant move enemies");
                 IAManager.Instance.BackendMoveEnemies();
-                TrapManager.Instance.PlayBackEnd();
                 StartCoroutine(IAManager.Instance.MoveEnemies());
                 yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
+
+                TrapManager.Instance.PlayBackEnd();
+                StartCoroutine(TrapManager.Instance.AnimateTraps());
+                yield return new WaitUntil(() => TrapManager.Instance.HasFinishedAnimations);
+                TrapManager.Instance.ResetAnimations();
                 
                 //Debug.Log("Fin Iteration boucle EVM");
                 NPCEnergy--;
