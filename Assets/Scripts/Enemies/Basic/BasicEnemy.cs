@@ -17,16 +17,20 @@ namespace Enemies.Basic
         {
             ennemyType = EnnemyType.PetiteMerde;
         }
-        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override EnemyChoicesInfo BackendMove()
         {
             Assert.IsTrue(IsServer);
             if (HasReachedTheEnd())
             {
-                return (true, false, false, Vector3.zero);
+                CleanUp();
+                return new EnemyChoicesInfo()
+                {
+                    hasReachedEnd = true,
+                };
             }
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, false, Vector3.zero);
+                return new EnemyChoicesInfo();
             }
 
             if (!TryMoveOnNextCell())
@@ -34,15 +38,22 @@ namespace Enemies.Basic
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, false, Vector3.zero);
+                    return new EnemyChoicesInfo();
                 }
                 else
                 {
-                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+                    return new EnemyChoicesInfo()
+                    {
+                        hasMoved = true,
+                        destination = TilingGrid.GridPositionToLocal(cell.position),
+                    };
                 }
             }
-
-            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+            return new EnemyChoicesInfo()
+            {
+                hasMoved = true,
+                destination = TilingGrid.GridPositionToLocal(cell.position)
+            };
         }
 
         public bool HasReachedTheEnd()
@@ -134,11 +145,9 @@ namespace Enemies.Basic
             
             if (IsValidCell(nextCell))
             {
-                Debug.LogWarning("prev cell : " + cell.position);
                 TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
                 cell = nextCell;
                 
-                Debug.LogWarning("new cell : " + cell.position);
                 TilingGrid.grid.AddObjectToCellAtPositionInit(gameObject, cell.position);
                 return true;
             }

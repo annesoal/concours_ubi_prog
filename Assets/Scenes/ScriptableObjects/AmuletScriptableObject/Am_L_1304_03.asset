@@ -10,38 +10,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
-  m_Name: stressTest
+  m_Name: Am_L_1304_03
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 1000
-  startingTurn: 40
-  numberOfTurns: 10000
-  ressourceSpawnRate: 0.2
-  playersHealth: 2000000
+  turnTime: 90
+  startingTurn: 0
+  numberOfTurns: 8
+  ressourceSpawnRate: 0.05
+  playersHealth: 3
   playerEnergy: 10
   startingMoney: 0
   enemyEnergy: 24
   MerdeHeathPoints: 1
-  MerdeMoveRatio: 2
-  GoofyHealthPoints: 1
-  GoofyMoveRatio: 1
-  BigGuyHealthPoints: 1
-  BigGuyMoveRatio: 1
+  MerdeMoveRatio: 4
+  GoofyHealthPoints: 2
+  GoofyMoveRatio: 2
+  BigGuyHealthPoints: 3
+  BigGuyMoveRatio: 4
   BigGuyDamages: 1
   SniperHealthPoints: 1
-  SniperMoveRatio: 1
+  SniperMoveRatio: 12
   SniperDamages: 1
-  SniperRange: 1
-  TrapCost: 0
+  SniperRange: 8
+  TrapCost: 1
   StunDuration: 1
-  TrapRange: 2
   ObstaclesHealth: 1
-  TowerCost: 0
-  TowerRange: 3
+  TowerCost: 6
+  TowerRange: 2
   TowerHealth: 1
-  TowerTimeBetweenAttacks: 2
-  numberOfProjectile: 2
+  TowerTimeBetweenAttacks: 3
+  numberOfProjectile: 1
   TowerDamage: 1
-  BombCost: 0
+  BombCost: 2
   BombDamage: 1
-  BombRange: 2

@@ -26,12 +26,15 @@ namespace Managers
         public void BackendMoveEnemies()
         {
             EnemyChoices = new();
-            foreach (var enemy in Enemy.GetEnemiesInGame())
+            var copy = new List<GameObject>(Enemy.GetEnemiesInGame());
+            while(copy.Count > 0)
             {
-                var e = enemy.GetComponent<Enemy>();
-                SetEnemyPath(e);
-                var enemyChoicesInfo = e.CalculateChoices();
-                EnemyChoices.Add(e, enemyChoicesInfo);
+                var enemyGO = copy[0];
+                copy.RemoveAt(0);
+                var enemy = enemyGO.GetComponent<Enemy>();
+                SetEnemyPath(enemy);
+                var enemyChoicesInfo = enemy.CalculateChoices();
+                EnemyChoices.Add(enemy, enemyChoicesInfo);
             }
 
         }
@@ -40,24 +43,13 @@ namespace Managers
         {
             hasMovedEveryEnemies = false;
             List<Enemy> movingEnemies = new();
-            List<GameObject> allEnemies = Enemy.GetEnemiesInGameCopy();
-            while(allEnemies.Count > 0) 
+
+            foreach (var enemyChoice in EnemyChoices)
             {
-                GameObject enemyGO = allEnemies[0];
-                allEnemies.RemoveAt(0);
-                Enemy e = enemyGO.GetComponent<Enemy>();
-                
-                var info = EnemyChoices[e];
-                if (!info.hasReachedEnd) 
-                    movingEnemies.Add(e);
-                else
-                {
-                    TilingGrid.grid.RemoveObjectFromCurrentCell(enemyGO); 
-                    e.RemoveInGame();
-                    Player.Health--;
-                }
-                e.MoveCorroutine(info);
+               enemyChoice.Key.MoveCorroutine(enemyChoice.Value); 
+               movingEnemies.Add(enemyChoice.Key);
             }
+            
 
             while (movingEnemies.Count > 0)
             {

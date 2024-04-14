@@ -178,13 +178,10 @@ namespace Grid
             if (objectOnTop.GetType() == TypeTopOfCell.Building)
             {
                 BuildableObject buildableObject = objectOnTop.ToGameObject().GetComponent<BuildableObject>();
-                
                 return ! buildableObject.IsWalkable();
             }
-            else
-            {
-                return false;
-            }
+            return false;
+            
         }
 
         public bool HasObjectOfTypeOnTop(TypeTopOfCell type)
