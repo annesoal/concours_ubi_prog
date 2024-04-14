@@ -56,16 +56,13 @@ namespace Enemies.Attack
             return updatedCell.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
         }
         
-        public override bool ChoseToAttack()
+        public override AttackingInfo ChoseToAttack()
         {
-            if (path == null || path.Count == 0)
-            {
-                return true;
-            }
-            
+            Vector2Int v = TilingGrid.LocalToGridPosition(transform.position);
             List<Cell> cellsInRadius =
-                TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), Range);
-            return (ChoseAttack(cellsInRadius));
+                TilingGrid.grid.GetCellsInRadius(v, Range);
+
+            return ChoseAttack(cellsInRadius);
         }
 
     }

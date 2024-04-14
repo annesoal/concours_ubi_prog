@@ -3,6 +3,6 @@ namespace Ennemies
     public interface IDamageable
     {
         int Health { get; set; }
-        void Damage(int damage);
+        int Damage(int damage);
     }
 }

@@ -24,7 +24,7 @@ public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
         return gameObject;
     }
 
-    public bool IsWalkable()
+    public virtual bool IsWalkable()
     {
         return buildableObjectSO.type == BuildableObjectSO.TypeOfBuildableObject.Trap;
     }

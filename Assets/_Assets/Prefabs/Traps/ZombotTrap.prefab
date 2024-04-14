@@ -123,18 +123,26 @@ MonoBehaviour:
   buildableObjectSO: {fileID: 11400000, guid: 736d4018326300620b31dfd34fa1e0ec, type: 2}
   trapVisuals: {fileID: 3171833912690472013}
   animator: {fileID: 0}
+  visuals: {fileID: 6139265022846678380}
+  HasFinishedAnimation: 0
 --- !u!114 &3171833912690472013 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2780338627908367544, guid: da39d146b9f83bde3bf57266c645c0a3,
     type: 3}
   m_PrefabInstance: {fileID: 761426522089554165}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6139265022846678380}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93656fa851986d066968b2dc013a52c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6139265022846678380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6891119178971100569, guid: da39d146b9f83bde3bf57266c645c0a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 761426522089554165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4315622743718259882
 PrefabInstance:
   m_ObjectHideFlags: 0

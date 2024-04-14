@@ -14,24 +14,32 @@ namespace Enemies
     {
         public abstract int AttackDamage { get; set; }
 
-        protected override (bool hasReachedEnd, bool moved, bool attacked, Vector3 destination) BackendMove()
+        protected override EnemyChoicesInfo BackendMove()
         {
              Assert.IsTrue(IsServer);
                         
             if (HasReachedTheEnd())
             {
-                Debug.Log("reched end at " + transform.position + " cell pos "  + cell.position);
-                return (true, false, false, Vector3.zero);
+                CleanUp();
+                return new EnemyChoicesInfo()
+                {
+                    hasReachedEnd = true,
+                };
             }
 
             if (!IsTimeToMove() || isStupefiedState > 0)
             {
-                return (false, false, false, Vector3.zero);
+                return new EnemyChoicesInfo() { hasMoved = false };
             }
-            
-            if (ChoseToAttack())
+
+            var attackInfo = ChoseToAttack();
+            if ( attackInfo.hasAttacked )
             {
-                return (false, false, true, Vector3.zero);
+                return new EnemyChoicesInfo()
+                {
+                    attack = attackInfo,
+                };
+
             }
             
             if (!TryMoveOnNextCell())
@@ -39,64 +47,80 @@ namespace Enemies
                 hasPath = false;
                 if (!MoveSides())
                 {
-                    return (false, false, false, Vector3.zero);
+                    return new EnemyChoicesInfo();
                 }
                 else
                 {
-                    return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+                    return new EnemyChoicesInfo()
+                    {
+                        hasMoved = true, 
+                        destination = TilingGrid.GridPositionToLocal(cell.position),
+                    };
                 }
             }
-            return (false, true, false, TilingGrid.GridPositionToLocal(cell.position));
+            return new EnemyChoicesInfo()
+            {
+                hasMoved = true,
+                destination = TilingGrid.GridPositionToLocal(cell.position),
+            };
         }
 
-        public abstract bool ChoseToAttack();
-        public bool ChoseAttack(List<Cell> cellsInRadius)
+        public abstract AttackingInfo ChoseToAttack();
+        public AttackingInfo ChoseAttack(List<Cell> cellsInRadius)
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TowerIsAtRange(aCell) &&
-                    canAttack())
+     
+                if (TowerIsAtRange(aCell))
                 {
-                    Attack(aCell.GetTower());
                     hasPath = false;
-                    return true;
+                    var attackedObjectInfo = AttackTower(aCell.GetTower());
+                    var tower = attackedObjectInfo.Item2.GetComponent<BaseTower>();
+                    int remainingHealth = tower.Damage(AttackDamage);
+                    bool hasKilled = remainingHealth <= 0;
+                    if (hasKilled)
+                    {
+                        tower.Clean();
+                    }
+                    return new AttackingInfo()
+                    {
+                        shouldKill = hasKilled,
+                        hasAttacked = true,
+                        toKill = attackedObjectInfo.Item2,
+                        isTower = attackedObjectInfo.Item1,
+                    };
                 }
             }
-            return false;
+
+            return new AttackingInfo();
         }
 
         private bool TowerIsAtRange(Cell aCell)
         {
-            // non walkable building are towers or obstacle.
-            return TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
-                   cell.HasNonWalkableBuilding();
-        }
-        
-        private bool canAttack()
-        {
-            return true;
-        }
-        
-        protected void Attack(BaseTower toAttack)
-        {
-            toAttack.Damage(AttackDamage);
-            StartCoroutine(AttackAnimation());
-        }
-        
-        protected void Attack(Obstacle toAttack)
-        {
-            toAttack.Damage(AttackDamage);
-            StartCoroutine(AttackAnimation());
-        }
 
-        private IEnumerator AttackAnimation()
+            Cell updatedCell = TilingGrid.grid.GetCell(aCell.position);
+      
+            // non walkable building are towers or obstacle.
+            return TilingGrid.grid.HasTopOfCellOfType(updatedCell, TypeTopOfCell.Building) &&
+                   updatedCell.HasNonWalkableBuilding();
+        }
+        
+
+        
+        protected (bool, GameObject) AttackTower(BaseTower toAttack)
+        {
+            int remainingHP = toAttack.Damage(AttackDamage);
+            return (remainingHP <= 0, toAttack.gameObject);
+
+        }
+        private IEnumerator AttackAnimation(AttackingInfo infos)
         {
             if (!IsServer) yield break;
+            
             hasFinishedMoveAnimation = false;
             animator.SetBool("Attack", true);
             float currentTime = 0.0f;
 
-            //TODO time to attack? et regarder avec anim tour
             while (timeToMove > currentTime)
             {
                 currentTime += Time.deltaTime;
@@ -104,8 +128,18 @@ namespace Enemies
             }
             
             animator.SetBool("Attack", false);
+            if (infos.shouldKill)
+            {
+                if (infos.isTower)
+                {
+                    infos.toKill.gameObject.GetComponent<BaseTower>().DestroyThis();
+                }
+                else
+                {
+                    infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
+                }
+            }
             hasFinishedMoveAnimation = true;
-            
         }
 
         // Peut detruire obstacle et tower, tous les cells avec obstacles `solides` sont valides 
@@ -124,10 +158,9 @@ namespace Enemies
 
         public override void MoveCorroutine(EnemyChoicesInfo infos)
         {
-            if (infos.hasAttacked)
+            if (infos.attack.hasAttacked)
             {
-                StartCoroutine(AttackAnimation());
-                return;
+                StartCoroutine(AttackAnimation(infos.attack));
             }
             else
             {

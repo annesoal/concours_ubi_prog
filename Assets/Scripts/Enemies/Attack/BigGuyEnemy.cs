@@ -24,10 +24,8 @@ namespace Enemies.Attack
             ennemyType = EnnemyType.BigGuy;
         }
 
-        public override bool ChoseToAttack()
+        public override AttackingInfo ChoseToAttack()
         {
-            if (path == null || path.Count == 0)
-                return true;
             Vector2Int positionInFront = cell.position + new Vector2Int(0, -1);
             Cell updatedCell;
             try
@@ -36,21 +34,33 @@ namespace Enemies.Attack
             }
             catch (ArgumentException)
             {
-                return false;
+                return new AttackingInfo();
             }
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
-                base.Attack(updatedCell.GetObstacle());
-                return true;
+                int remainingHP = updatedCell.GetObstacle().Damage(AttackDamage);
+                return new AttackingInfo()
+                {
+                    shouldKill = remainingHP <= 0,
+                    hasAttacked = true,
+                    isTower = false,
+                    toKill = updatedCell.GetObstacle().ToGameObject(),
+                };
             }
 
-            if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+            if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Building))
             {
-                base.Attack(updatedCell.GetTower());
-                return true;
+                int remainingHP = updatedCell.GetTower().Damage(AttackDamage);
+                return new AttackingInfo()
+                { 
+                    shouldKill = remainingHP <= 0,
+                    hasAttacked = true,
+                    isTower = true,
+                    toKill = updatedCell.GetTower().ToGameObject(),
+                };
             }
 
-            return false;
+            return new AttackingInfo();
         }
     }
 }

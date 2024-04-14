@@ -45,6 +45,7 @@ namespace Amulets
         [Header("Trap")] 
         public int TrapCost = 2;
         public int StunDuration = 1;
+        public int TrapRange = 0;
 
         [Header("Obstacles")] 
         public int ObstaclesHealth = 1;
@@ -58,8 +59,8 @@ namespace Amulets
         public int TowerDamage = 1;
         
         [Header("Bomb")] 
-        [Header("NonUtilisable")]
         public int BombCost = 2;
         public int BombDamage = 1;
+        public int BombRange = 0;
     }
 }
