@@ -1202,6 +1202,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedBinding: 12
+  getAlternate: 0
+  getBlackVersion: 1
 --- !u!222 &5227424723535738588
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4452,6 +4454,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   associatedBinding: 13
+  getAlternate: 0
+  getBlackVersion: 1
 --- !u!222 &9031944937361033444
 CanvasRenderer:
   m_ObjectHideFlags: 0

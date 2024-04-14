@@ -382,6 +382,22 @@ public class InputManager : MonoBehaviour
 		return null;
 	}
 	
+	private const string ALTERNATE_SUFFIX = "ALT";
+	public Sprite GetBindingSpriteAlternate(Binding binding)
+	{
+		string bindingOverridePath = GetBindingOverridePath(binding) + ALTERNATE_SUFFIX;
+
+		foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
+		{
+			if (pair.path == bindingOverridePath)
+			{
+				return pair.sprite;
+			}
+		}
+
+		return null;
+	}
+	
 	public string GetBindingOverridePath(Binding binding)
 	{
 		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
