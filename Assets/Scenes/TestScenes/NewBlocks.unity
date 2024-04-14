@@ -26597,6 +26597,8 @@ MonoBehaviour:
   leftImage: {fileID: 427967405}
   rightImage: {fileID: 269511088}
   selectedBuildingText: {fileID: 2099673493}
+  endScale: 1.05
+  tweeningTime: 0.5
 --- !u!1001 &1298676069
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,6 +17,10 @@ public class BuildingCarrouselUI : MonoBehaviour
     [SerializeField] private Image rightImage;
 
     [SerializeField] private TextMeshProUGUI selectedBuildingText;
+
+    [Header("Tweening")]
+    [SerializeField] private float endScale;
+    [SerializeField] private float tweeningTime;
     
     private LinkedList<BuildableObjectSO> _buildableObjectsSO;
     private LinkedListNode<BuildableObjectSO> _selectedBuilding;
@@ -51,6 +55,8 @@ public class BuildingCarrouselUI : MonoBehaviour
 
     public void Show()
     {
+        transform.LeanScale(Vector3.one * endScale, tweeningTime).setEaseOutExpo().setLoopPingPong(1);
+        
         UpdateUI();
         
         BasicShowHide.Show(gameObject);
