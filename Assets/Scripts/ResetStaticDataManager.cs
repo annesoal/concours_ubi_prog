@@ -18,5 +18,6 @@ public class ResetStaticDataManager : MonoBehaviour
         SingleAmuletTemplateUI.ResetStaticData();
         AmuletSelectionButton.ResetStaticData();
         TilingGrid.ResetReachableCells();
+        SpawnMalus.ResetStaticData();
     }
 }
