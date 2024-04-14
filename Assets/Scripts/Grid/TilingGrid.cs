@@ -440,10 +440,7 @@ namespace Grid
                     if (!cell.IsNone())
                     {
                         cells.Add(cell);
-                        if (cell.position == new Vector2Int(16, 10))
-                        {
-                            Debug.Log("16 ,10 added");
-                        }
+                        
                     }
                 }
             }
