@@ -12,7 +12,6 @@ namespace Building.Towers
         public bool HasFinishedAnimations = false;
         public  List<BaseTower> towersInGame = new();
         private  Dictionary<BaseTower, TowerPlayInfo> listPlays = new();
-
         public void Awake()
         {
             Instance = this;
@@ -34,6 +33,8 @@ namespace Building.Towers
             {
                 towerInGame.HasFinishedAnimation = false;
             }
+
+            listPlays = new();
         }
 
         public  IEnumerator AnimateTowers()

@@ -88,7 +88,7 @@ public class BasicTower : BaseTower
             targetedCells.Add(cellsInShootingRange[indexOfFarthestEnemyCell]);
             
             numberOfTargetSet++;
-            Debug.Log("" + numberOfTargetSet);
+            Debug.Log("number of targets " + numberOfTargetSet);
         }
 
         return targetedCells;

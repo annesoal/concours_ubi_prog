@@ -6,7 +6,7 @@ using Enemies;
 using Ennemies;
 using Grid;
 using Grid.Interface;
-using UnityEditor.ShortcutManagement;
+using Unity.Netcode;
 using UnityEngine;
 using Utils;
 
@@ -44,6 +44,11 @@ public abstract class BaseTower : BuildableObject, IDamageable
     public abstract override int Cost { get; set; }
 
     public bool HasFinishedAnimation;
+
+    public BaseTower()
+    {
+        _timeSinceLastShot = TimeBetweenShots;
+    }
 
     public void Start()
     {
@@ -132,12 +137,14 @@ public abstract class BaseTower : BuildableObject, IDamageable
         TowerPlayInfo towerPlayInfo = new TowerPlayInfo();
         if (!CanPlay())
         {
+            Debug.LogWarning(("Cant play"));
             return towerPlayInfo;
         }
 
         List<Cell> cellsToShoot = TargetEnemies();
         if (cellsToShoot.Count == 0)
         {
+            Debug.LogWarning("no enemies around");
             return towerPlayInfo;
         }
 
@@ -170,7 +177,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
                 enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
             }
         }
-
+        _timeSinceLastShot = 0;
         return towerPlayInfo;
     }
 
@@ -187,9 +194,10 @@ public abstract class BaseTower : BuildableObject, IDamageable
         var list = playInfo.listEnemiesToShoot;
         foreach (var shotInfo in list)
         {
-            yield return ShootAt(shotInfo.position);
             Vector3 originToPush = this.gameObject.transform.position;
             originToPush.y = TilingGrid.TopOfCell;
+            yield return ShootAt(shotInfo.position);
+       
             yield return shotInfo.enemy.PushBackAnimation(originToPush);
             if (shotInfo.shouldKill)
             {
@@ -198,5 +206,21 @@ public abstract class BaseTower : BuildableObject, IDamageable
         }
 
         HasFinishedAnimation = true;
+    }
+
+    public void DestroyThis()
+    {
+        if (!GameMultiplayerManager.Instance.IsServer)
+            return;
+        
+        UnregisterTower(this);
+        TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+        DestroyClientRpc();
+    }
+
+    [ClientRpc]
+    public void DestroyClientRpc()
+    {
+       Destroy(this); 
     }
 }
