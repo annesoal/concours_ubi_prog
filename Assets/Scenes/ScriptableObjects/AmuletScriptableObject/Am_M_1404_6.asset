@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
-  m_Name: TestMalo
+  m_Name: Am_M_1404_6
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 120
+  turnTime: 90
   startingTurn: 0
-  numberOfTurns: 8
-  ressourceSpawnRate: 0.05
+  numberOfTurns: 9
+  ressourceSpawnRate: 0.08
   playersHealth: 3
   playerEnergy: 10
-  startingMoney: 3
+  startingMoney: 0
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
@@ -31,17 +31,17 @@ MonoBehaviour:
   SniperHealthPoints: 1
   SniperMoveRatio: 12
   SniperDamages: 1
-  SniperRange: 8
-  TrapCost: 1
+  SniperRange: 4
+  TrapCost: 2
   StunDuration: 1
-  TrapRange: 0
+  TrapRange: 1
   ObstaclesHealth: 1
-  TowerCost: 9
+  TowerCost: 7
   TowerRange: 3
-  TowerHealth: 1
+  TowerHealth: 3
   TowerTimeBetweenAttacks: 2
   numberOfProjectile: 1
   TowerDamage: 1
-  BombCost: 2
-  BombDamage: 1
-  BombRange: 0
+  BombCost: 3
+  BombDamage: 2
+  BombRange: 1
