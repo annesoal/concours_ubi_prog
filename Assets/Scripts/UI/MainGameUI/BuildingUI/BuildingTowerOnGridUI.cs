@@ -125,6 +125,9 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        Debug.Assert(_buildableCells.Count != 0);
+        Debug.Assert(_selectedCell != null);
+        
         CameraController.Instance.MoveCameraToPosition
             (TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
