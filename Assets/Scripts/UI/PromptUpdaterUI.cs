@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class PromptUpdaterUI : MonoBehaviour
 {
     [SerializeField] private InputManager.Binding associatedBinding;
+    
+    [SerializeField] private bool getAlternate;
+    [SerializeField] private bool getBlackVersion;
 
     private Image _promptImage;
     
@@ -26,6 +29,15 @@ public class PromptUpdaterUI : MonoBehaviour
 
     private void UpdateSprite()
     {
-        _promptImage.sprite = InputManager.Instance.GetBindingSprite(associatedBinding);
+        _promptImage.color = getBlackVersion ? Color.black : Color.white;
+        
+        if (getAlternate)
+        {
+            _promptImage.sprite = InputManager.Instance.GetBindingSpriteAlternate(associatedBinding);
+        }
+        else
+        {
+            _promptImage.sprite = InputManager.Instance.GetBindingSprite(associatedBinding);
+        }
     }
 }
