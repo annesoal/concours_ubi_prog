@@ -108,6 +108,10 @@ public abstract class BaseTower : BuildableObject, IDamageable
     }
     private IEnumerator ShootAt(Vector3 position)
     {
+        RotationAnimation rotationAnimation = new();
+        StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, position));
+        yield return rotationAnimation.HasMoved();
+        
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
@@ -177,6 +181,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
                 enemyInfoToShoot.shouldKill = false;
                 enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
             }
+            towerPlayInfo.listEnemiesToShoot.Add(enemyInfoToShoot);
         }
         _timeSinceLastShot = 0;
         return towerPlayInfo;

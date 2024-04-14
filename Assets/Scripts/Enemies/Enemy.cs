@@ -266,9 +266,9 @@ namespace Enemies
         {
             Vector3 origin = this.gameObject.transform.position;
             Vector3 directionToGo = origin - pushedFrom;
-            float intensity = 0.2f;
+            float intensity = 0.1f;
             float timeNow = 0.0f;
-            float timeToPush = 0.1f;
+            float timeToPush = 0.15f;
             while (timeNow < timeToPush)
             {
                 this.transform.position = Vector3.Lerp(origin, directionToGo + origin, intensity * timeNow/timeToPush);
