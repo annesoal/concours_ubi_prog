@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Sound
 {
-    public class SoundFXManager : NetworkBehaviour
+    public class SoundFXManager : MonoBehaviour
     {
-
         public static SoundFXManager instance;
         [SerializeField] private AudioSource soundFXObject;
+        
         private void Awake()
         {
             if (instance == null)
@@ -21,9 +21,10 @@ namespace Sound
             AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
             audioSource.clip = audioClip;
             audioSource.volume = volume;
+            Debug.Log(" lenghht audio clip "  + audioClip.length);
             audioSource.Play();
-            float clipLenght = audioSource.clip.length;
-            Destroy(audioSource.gameObject, clipLenght);
+            float clipLength = audioSource.clip.length;
+            Destroy(audioSource.gameObject, clipLength);
         }
 
     }

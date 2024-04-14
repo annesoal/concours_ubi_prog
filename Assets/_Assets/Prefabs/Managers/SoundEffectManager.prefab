@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4107813821
+  GlobalObjectIdHash: 3281327123
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -65,4 +65,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80aef10038549c695532925ad0ca16f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundFXObject: {fileID: 0}
+  soundFXObject: {fileID: 8013648030698323234, guid: 4530aec70cfe7d0eca7095480c789f50,
+    type: 3}

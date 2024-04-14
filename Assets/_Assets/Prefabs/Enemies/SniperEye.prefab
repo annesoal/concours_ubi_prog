@@ -264,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStupefiedState: 0
   hasPath: 0
-  hasFinishedToMove: 0
   hasFinishedMoveAnimation: 0
   hasFinishedSpawnAnimation: 0
   animator: {fileID: 2233567895258347816}
+  damageAudioClip: {fileID: 8300000, guid: 1ccd31e9e83441665ac42b78d6f66434, type: 3}
