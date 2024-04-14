@@ -20,6 +20,7 @@ namespace Enemies
                         
             if (HasReachedTheEnd())
             {
+                Player.Health--;
                 CleanUp();
                 return new EnemyChoicesInfo()
                 {
