@@ -449,6 +449,7 @@ public class GameMultiplayerManager : NetworkBehaviour
                 PickUpElement(element, CentralizedInventory.Instance.AddMalus);
             }
         }
+        SpawnMalus.RegisterCellForMalus(position);
         
         // clean picked up elements
         foreach (ITopOfCell toDelete in elementsPickedUp)

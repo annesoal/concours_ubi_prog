@@ -7,6 +7,7 @@ using Building.Traps;
 using Enemies;
 using Enemies.Attack;
 using Enemies.Basic;
+using Enemies.Boss;
 using Grid;
 using Grid.Blocks;
 using Managers;
@@ -37,6 +38,7 @@ public class TowerDefenseManager : NetworkBehaviour
     public static GameObject highlighter;
     private static List<Cell> DestinationCells;
     private List<GameObject> bonuses = new List<GameObject>();
+    private List<GameObject> maluses = new List<GameObject>();
     private bool gameWon = false;
     private IAManager _iaManager;
 
@@ -79,7 +81,7 @@ public class TowerDefenseManager : NetworkBehaviour
     [field: SerializeField] public Transform RobotBlockPlayerSpawn { get; private set; }
 
 
-    [field: SerializeField] public Transform BossBlockSpawn { get; private set; }
+    [field: SerializeField] public Transform BossPrefab { get; private set; }
     
     [Header("Next level data")]
     public NextLevelDataSO nextLevelDataSo;
@@ -242,6 +244,7 @@ public class TowerDefenseManager : NetworkBehaviour
             {
                 _currentTimer.Value = TacticalPauseDuration;
                 CentralizedInventory.Instance.CashBonus();
+                BigBossEnemy.Instance.SpawnMalusOnGrid();
             }
         }
     }
@@ -284,6 +287,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private void EnvironmentManager_OnEnvironmentTurnEnded(object sender, EventArgs e)
     {
         CleanBonuses();
+        CleanMaluses();
         TilingGrid.grid.SyncAllTopOfCells();
         
         if (Player.Health < 1)
@@ -423,6 +427,7 @@ public class TowerDefenseManager : NetworkBehaviour
             Debug.LogError(e);
         }
     }
+    
 
     private void InitializeSpawnPlayerMethods()
     {
@@ -433,6 +438,7 @@ public class TowerDefenseManager : NetworkBehaviour
             DebugPlayerSpawnError
         };
     }
+
 
 
     /**
@@ -543,11 +549,31 @@ public class TowerDefenseManager : NetworkBehaviour
         this.bonuses.Remove(bonus);
     }
 
+    
+    public void AddMalus(GameObject malus)
+    {
+        this.bonuses.Add(malus);
+    }
+
+    public void RemoveMalus(GameObject malus)
+    {
+        this.maluses.Remove(malus);
+    }
+
     private void CleanBonuses()
     {
         foreach (var bonus in bonuses)
         {
             Destroy(bonus);
+        }
+    }
+
+
+    private void CleanMaluses()
+    {
+        foreach (var malus in maluses)
+        {
+            Destroy(malus);
         }
     }
 

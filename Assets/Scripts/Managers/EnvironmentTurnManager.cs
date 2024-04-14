@@ -55,6 +55,7 @@ public class EnvironmentTurnManager : MonoBehaviour
                 totalEnergyPlayers--;
                 ResetPlayerReadyCount();
             }
+            
             int NPCEnergy = Enemy.Energy; 
             
             EnemySpawnerManager.Instance.StartMathSpawners(_turn);

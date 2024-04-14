@@ -1,3 +1,4 @@
+using Grid;
 using Grid.Interface;
 using Unity.Netcode;
 using UnityEngine;
@@ -18,6 +19,26 @@ namespace Synchrone
         public GameObject ToGameObject()
         {
             return gameObject;
+        }
+        
+        
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (IsServer)
+            {
+                TowerDefenseManager.Instance.AddMalus(this.gameObject);
+            }
+        }
+
+        public void OnDestroy()
+        {
+            Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
+            Cell toUpdate = TilingGrid.grid.GetCell(gridPosition);
+            toUpdate.ObjectsTopOfCell.Remove(this);
+            TilingGrid.grid.UpdateCell(toUpdate);
+            TowerDefenseManager.Instance.RemoveMalus(this.gameObject);
+            
         }
     }
 }
