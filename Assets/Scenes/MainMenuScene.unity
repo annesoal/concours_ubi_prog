@@ -1709,8 +1709,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.6826172, y: -2.9489136}
+  m_SizeDelta: {x: 28.0928, y: 32.587}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &617820865
 MonoBehaviour:
@@ -4012,6 +4012,8 @@ MonoBehaviour:
   rightCarouselImage: {fileID: 159846432}
   closeButton: {fileID: 1776711670}
   toSelectAfterClosing: {fileID: 1643812249}
+  showTweeningTime: 0.4
+  hideTweeningTime: 0.2
 --- !u!1 &1325805052
 GameObject:
   m_ObjectHideFlags: 0
