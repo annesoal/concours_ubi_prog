@@ -63,7 +63,6 @@ public class CentralizedInventory : NetworkBehaviour
         
         NetworkVariable<int> resourceNetworkVariable = GetNetworkVariableOfResource(resourceOfElement.BuildingMaterialSO);
 
-        resourceNetworkVariable.Value++;
         _ressourceAddedThisTurn++;
         
         EmitResourceChangedEventClientRpc(
