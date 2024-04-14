@@ -6,6 +6,7 @@ using Grid.Interface;
 using TMPro;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -73,16 +74,16 @@ namespace Grid
         private void Awake()
         {
             grid = this;
-        }
-
-        void Start()
-        {
+            
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
             foreach (var block in blocks)
             {
                 AddBlockAsCell(block);
             }
+        }
 
+        void Start()
+        {
             InitializeObstacles();
         }
 
@@ -186,14 +187,16 @@ namespace Grid
         {
             LinkedList<Cell> buildableCells = new LinkedList<Cell>();
 
-            foreach (Cell cell in _cells)
+            for( int x = 0; x < Size; x++)
             {
-                if (cell.Has(BlockType.Buildable))
+                for (int y = Size-1; y >= 0; y--)
                 {
-                    buildableCells.AddLast(cell);
+                    Cell cell = grid.GetCell(y, x);
+                    if (cell.Has(BlockType.Buildable))
+                        buildableCells.AddLast(cell);
                 }
             }
-
+            Debug.LogError(buildableCells.Count);
             return buildableCells;
         }
 
@@ -223,7 +226,8 @@ namespace Grid
 
             PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
-
+        
+        
         public static void UpdateMovePositionOnGrid(GameObject toUpdate, Vector2Int origin, Vector2Int destination)
         {
             Cell originCell = grid.GetCell(origin);
@@ -231,8 +235,8 @@ namespace Grid
             grid.UpdateCell(originCell);
             
             Cell destinationCell = grid.GetCell(destination);
-            destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
+            destinationCell .ObjectsTopOfCell.Add(toUpdate.GetComponent<ITopOfCell>());
+            grid.UpdateCell(destinationCell);
         }
         
 

@@ -96,8 +96,8 @@ public class InputManager : MonoBehaviour
 
     private void Confirm(InputAction.CallbackContext obj)
     {
-        if(_canMovePlayer && _player != null)
-            _player.OnConfirm();
+        //if(_canMovePlayer && _player != null)
+        //    _player.OnConfirm();
         
     }
 

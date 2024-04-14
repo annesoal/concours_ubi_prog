@@ -50,13 +50,7 @@ namespace Utils
 
         private bool IsInvalidCell(Cell cell)
         {
-            foreach (var elementType in blockingElementsType)
-            {
-                if (cell.HasObjectOfTypeOnTop(elementType))
-                    return true;
-            }
-
-            return false;
+            return cell.ObjectsTopOfCell.Count > 0; 
         }
         /// <summary>
         ///     Permet de creer un predicat pour la repetition si le _startingRound est different de -1.
@@ -129,14 +123,19 @@ namespace Utils
             Cell robotReachableCell;
             Cell monkeyReachableCell;
             int index;
+            int i = 0; 
             do
             {
                 index = Math.Min((int)(new Random().NextDouble() * TilingGrid._monkeyReachableCells.Count),
                     TilingGrid._monkeyReachableCells.Count);
                 monkeyReachableCell = TilingGrid._monkeyReachableCells[index];
                 cell = TilingGrid.grid.GetCell(monkeyReachableCell.position);
+                i++;
+                if (i > 300)
+                    break;
             } while (IsInvalidCell(cell));
-            
+
+            i = 0; 
             do 
             {
                 index = Math.Min((int) (new Random().NextDouble() * TilingGrid._robotReachableCells.Count), 
@@ -144,6 +143,9 @@ namespace Utils
                         
                 robotReachableCell = TilingGrid._robotReachableCells[index];
                 cell = TilingGrid.grid.GetCell(robotReachableCell.position);
+                i++;
+                if (i > 300)
+                    break;
             } while (IsInvalidCell(cell));
             
             listOfPositions.Add(monkeyReachableCell.position);

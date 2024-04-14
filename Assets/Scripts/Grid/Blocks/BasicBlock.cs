@@ -9,15 +9,6 @@ namespace Grid.Blocks
         [SerializeField] private List<Type> Types = new ();
         public int blockType;
 
-        void Awake()
-        {
-            foreach (var type in Types)
-            {
-                int typeToAdd = BlockType.Translate(type);
-                Add(typeToAdd);
-            } 
-        }
-
         protected BasicBlock()
         {
 
@@ -30,7 +21,18 @@ namespace Grid.Blocks
 
         public int GetBlockType()
         {
+            ComputeBlockType();
+            
             return blockType;
+        }
+
+        private void ComputeBlockType()
+        {
+            foreach (var type in Types)
+            {
+                int typeToAdd = BlockType.Translate(type);
+                Add(typeToAdd);
+            } 
         }
 
         private void Add(int type)
