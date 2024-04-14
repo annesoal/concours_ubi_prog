@@ -233,8 +233,8 @@ namespace Grid
             grid.UpdateCell(originCell);
             
             Cell destinationCell = grid.GetCell(destination);
-            destinationCell .ObjectsTopOfCell.Remove(toUpdate.GetComponent<ITopOfCell>());
-            grid.UpdateCell(originCell);
+            destinationCell .ObjectsTopOfCell.Add(toUpdate.GetComponent<ITopOfCell>());
+            grid.UpdateCell(destinationCell);
         }
         
 

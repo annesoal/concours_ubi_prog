@@ -241,9 +241,11 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     public IEnumerator Move()
     {
+        Vector2Int characterPosition = TilingGrid.LocalToGridPosition(transform.position);
         Vector2Int? oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
+        
         if (nextPosition == null || oldPosition == null)
         { 
             IsReadyServerRpc();
@@ -251,10 +253,15 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
         
         RemoveNextHighlighter();
+        if (IsServer)
+        {
+            Debug.LogError("oldpos " + characterPosition);
+            Debug.LogError("newpos " + nextPosition);
+        }
+        UpdateMoveServerRpc((Vector2Int) characterPosition, (Vector2Int) nextPosition);
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        UpdateMoveServerRpc((Vector2Int) oldPosition, (Vector2Int) nextPosition);
         IsReadyServerRpc();
     }
 
