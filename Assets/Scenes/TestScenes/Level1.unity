@@ -7459,7 +7459,7 @@ PrefabInstance:
         type: 3}
       propertyPath: blockUnder
       value: 
-      objectReference: {fileID: 1719974530}
+      objectReference: {fileID: 1604484655}
     - target: {fileID: 7433564408940415232, guid: 265e785c80fa58a08bda0cb3eedc82ab,
         type: 3}
       propertyPath: m_LocalPosition.x
