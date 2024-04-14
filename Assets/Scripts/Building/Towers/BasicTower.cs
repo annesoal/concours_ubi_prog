@@ -202,8 +202,7 @@ public class BasicTower : BaseTower
             case EnemyDirection.ZPositive:
                 return (contenderPosition, lasMaxPosition) => contenderPosition.z < lasMaxPosition.z;
             case EnemyDirection.ZNegative:
-                // throw new NotImplementedException();
-                break;
+                return (contenderPosition, lasMaxPosition) => contenderPosition.z > lasMaxPosition.z;
             case EnemyDirection.YPositive:
                 // throw new NotImplementedException();
                 break;
