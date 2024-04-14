@@ -217,7 +217,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         return translation;
     }
 
-    public void OnConfirm()
+    public void OnSelect()
     {
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         _canMove = false;
@@ -227,7 +227,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
-    public void OnSelect()
+    public void OldSelect()
     {
         if (_selector.isSelecting)
             return;
@@ -355,6 +355,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         _canMove = false;
         _selector.ResetSelf();
         _highlighters.Reset();
+        OldSelect();
     }
 
     public void PrepareToMove()
