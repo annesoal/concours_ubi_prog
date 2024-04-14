@@ -45,7 +45,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private bool _canMove;
 
-    private int _totalEnergy;
+    private int _totalEnergy = Energy;
     private int _currentEnergy;
     
     public Player()
@@ -254,10 +254,15 @@ public class Player : NetworkBehaviour, ITopOfCell
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, (Vector2Int)oldPosition, (Vector2Int)nextPosition);
+        UpdateMoveServerRpc((Vector2Int) oldPosition, (Vector2Int) nextPosition);
         IsReadyServerRpc();
     }
 
+    [ServerRpc]
+    private void UpdateMoveServerRpc(Vector2Int oldPosition, Vector2Int nextPosition)
+    {
+       TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, nextPosition); 
+    }
 
     private bool IsReadyToPickUp()
     {
@@ -298,7 +303,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         
        OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
        {
-           Energy = _currentEnergy,
+           Energy = _totalEnergy,
        });
     }
 
@@ -328,7 +333,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         CleanHighlighters();
         _selector.ResetSelf();
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        _canMove = false; 
+        ResetPlayer(_totalEnergy);
     }
 
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
@@ -351,6 +356,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     public void ResetPlayer(int energy)
     {
+        ResetEnergy();
         EnergyAvailable = energy;
         _canMove = false;
         _selector.ResetSelf();

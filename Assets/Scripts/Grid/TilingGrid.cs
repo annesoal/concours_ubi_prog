@@ -6,6 +6,7 @@ using Grid.Interface;
 using TMPro;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -223,7 +224,8 @@ namespace Grid
 
             PlaceObjectAtPositionOnGrid(toPlace, destination);
         }
-
+        
+        
         public static void UpdateMovePositionOnGrid(GameObject toUpdate, Vector2Int origin, Vector2Int destination)
         {
             Cell originCell = grid.GetCell(origin);
