@@ -13,7 +13,7 @@ namespace Spawners
 
         public override int GetBigGuyToSpawn(int turn)
         {
-            return (int) Math.Max(Math.Ceiling((turn - 1 * 0.4)), 0)  ;
+            return (int) Math.Max(Math.Ceiling((turn - 1 * 0.1)), 0)  ;
         }
 
         public override int GetDoggoToSpawn(int turn)
@@ -23,7 +23,7 @@ namespace Spawners
 
         public override int GetSnipperToSpawn(int turn)
         {
-            return (int)Math.Ceiling((turn * 0.25));
+            return (int)Math.Ceiling((turn * 0.1));
         }
     }
 }
