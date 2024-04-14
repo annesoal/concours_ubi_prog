@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Unity.Mathematics;
+using Unity.Netcode;
 
 
 namespace Utils
@@ -29,6 +30,7 @@ namespace Utils
         private void InstantiateObjectToFire(Vector3 position)
         {
             _objectInstance = Instantiate(ObjectToFire, position, quaternion.identity);
+            _objectInstance.GetComponent<NetworkObject>().Spawn(true);
         }
   
         private IEnumerator MoveObject(Vector3 startPoint, Vector3 middlePoint, Vector3 endPoint)
