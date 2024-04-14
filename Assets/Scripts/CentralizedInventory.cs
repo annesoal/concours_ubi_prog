@@ -65,10 +65,6 @@ public class CentralizedInventory : NetworkBehaviour
 
         resourceNetworkVariable.Value++;
         _ressourceAddedThisTurn++;
-        
-        EmitResourceChangedEventClientRpc(
-            resourceNetworkVariable.Value, 
-            allBuildingMaterialSO.IndexOf(resourceOfElement.BuildingMaterialSO));
     }
     
     public void AddBonus(ITopOfCell element)
