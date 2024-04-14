@@ -55,7 +55,7 @@ public class BuildingCarrouselUI : MonoBehaviour
 
     public void Show()
     {
-        transform.LeanScale(Vector3.one * endScale, tweeningTime).setEaseOutExpo().setLoopPingPong(1);
+        transform.LeanScale(Vector3.one * endScale, tweeningTime).setEaseInOutBack().setLoopPingPong(1);
         
         UpdateUI();
         
