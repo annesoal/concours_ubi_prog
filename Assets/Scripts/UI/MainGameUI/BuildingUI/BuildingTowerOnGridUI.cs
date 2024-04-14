@@ -55,12 +55,43 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
         
         _buildableCells = TilingGrid.grid.GetBuildableCells();
+        SortBuildableCells();
         
         _selectedCell = _buildableCells.First;
         
         errorText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
         
         BasicShowHide.Hide(gameObject);
+    }
+
+    private void SortBuildableCells()
+    {
+        LinkedList<Cell> sortedList = new();
+        sortedList.AddFirst(_buildableCells.First.Value);
+        _buildableCells.RemoveFirst();
+        while (_buildableCells.Count > 0)
+        {
+            var node = _buildableCells.First;
+            _buildableCells.RemoveFirst();
+            var sortedNode = sortedList.First;
+            while (true)
+            {
+                if (node.Value.position.y >= sortedNode.Value.position.y 
+                    &&  node.Value.position.x >= sortedNode.Value.position.x)
+                {
+                    sortedList.AddBefore(sortedNode, node.Value);
+                    break;
+                }
+                if (sortedNode.Next == null)
+                {
+                    sortedList.AddAfter(sortedNode, node.Value);
+                    break;
+                }
+                sortedNode = sortedNode.Next;
+            }
+        }
+
+        _buildableCells = sortedList;
     }
 
 
@@ -281,8 +312,15 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void ChangeSelectedCell(Vector2Int direction)
     {
-        _selectedCell.Value =
-            TilingGrid.grid.GetCellOfTypeAtDirection(_selectedCell.Value, Type.Buildable, direction);
+        
+        if (direction == Vector2Int.right)
+        {
+            _selectedCell = _selectedCell.Previous ?? _buildableCells.Last;
+        }
+        if (direction == Vector2Int.left)
+        {
+            _selectedCell = _selectedCell.Next ?? _buildableCells.First;
+        }
 
         UpdateSelectedCell(_selectedCell.Value.position);
     }
