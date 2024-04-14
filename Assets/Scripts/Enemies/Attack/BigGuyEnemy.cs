@@ -38,8 +38,11 @@ namespace Enemies.Attack
             }
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
+                int remainingHP = updatedCell.GetObstacle().Damage(AttackDamage);
                 return new AttackingInfo()
                 {
+                    shouldKill = remainingHP <= 0,
+                    hasAttacked = true,
                     isTower = false,
                     toKill = updatedCell.GetObstacle().ToGameObject(),
                 };
@@ -47,8 +50,11 @@ namespace Enemies.Attack
 
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Building))
             {
+                int remainingHP = updatedCell.GetTower().Damage(AttackDamage);
                 return new AttackingInfo()
-                {
+                { 
+                    shouldKill = remainingHP <= 0,
+                    hasAttacked = true,
                     isTower = true,
                     toKill = updatedCell.GetTower().ToGameObject(),
                 };
