@@ -74,16 +74,16 @@ namespace Grid
         private void Awake()
         {
             grid = this;
-        }
-
-        void Start()
-        {
+            
             BasicBlock[] blocks = _ground.GetComponentsInChildren<BasicBlock>();
             foreach (var block in blocks)
             {
                 AddBlockAsCell(block);
             }
+        }
 
+        void Start()
+        {
             InitializeObstacles();
         }
 
