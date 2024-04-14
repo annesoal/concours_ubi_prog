@@ -230,10 +230,60 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6443550988915849752, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dfd77b9bec2258c46bf499083c9f88ad,
         type: 3}
       propertyPath: m_Name
       value: SM_lego_carre
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951327731480106846, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2080807887174715091, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4461132270853767221, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.0076
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.0076
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.0032554
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0016
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0993
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568475043099754826, guid: dfd77b9bec2258c46bf499083c9f88ad,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1114
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
