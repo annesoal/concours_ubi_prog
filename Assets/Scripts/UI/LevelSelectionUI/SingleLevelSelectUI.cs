@@ -22,6 +22,7 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
     /// <summary>
     /// Dans le but d'avoir une représentation UI cohérente des amulettes entre le client et le serveur.
     /// </summary>
+    [Obsolete]
     public void UpdateAmuletsToShowClientSide()
     {
         if (NetworkManager.Singleton.IsServer) { return; }
@@ -31,10 +32,10 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
 
         AmuletSaveLoad converter = new AmuletSaveLoad();
 
-        List<AmuletSO> amuletsShownByServer =
-            converter.AmuletsIDToAmulets(amuletsIdsShownByServer, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
+        //List<AmuletSO> amuletsShownByServer =
+            //converter.AmuletsIDToAmulets(amuletsIdsShownByServer, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
 
-        ShowAmuletsClientSide(amuletsShownByServer);
+        //ShowAmuletsClientSide(amuletsShownByServer);
     }
 
     public void Show(LevelSelectSO levelSO)
@@ -61,14 +62,16 @@ public class SingleLevelSelectUI : MonoBehaviour, ISelectHandler, IDeselectHandl
         }
     }
 
+    [Obsolete]
     private void ShowAmuletsServerSide()
     {
         if (! NetworkManager.Singleton.IsServer) { return; }
         
         AmuletSaveLoad loader = new AmuletSaveLoad();
         
-        List<AmuletSO> amuletsToShow =
-            loader.GetAmuletsForScene(AssociatedLevelSO.levelScene, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
+        //List<AmuletSO> amuletsToShow =
+            //loader.GetAmuletsForScene(AssociatedLevelSO.levelScene, LevelSelectionSynchronizer.Instance.AmuletSelector.amulets);
+            List<AmuletSO> amuletsToShow = new List<AmuletSO>();
 
         LevelSelectionSynchronizer.Instance.SaveServerSideAmuletsForLevel(AssociatedLevelSO.levelScene);
 
