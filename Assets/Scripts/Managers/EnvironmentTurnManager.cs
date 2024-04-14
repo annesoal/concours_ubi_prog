@@ -53,13 +53,14 @@ public class EnvironmentTurnManager : MonoBehaviour
                 totalEnergyPlayers--;
                 ResetPlayerReadyCount();
             }
+            
             int NPCEnergy = Enemy.Energy; 
             
             EnemySpawnerManager.Instance.StartMathSpawners(_turn);
             while (HasEnergyLeft(NPCEnergy))
             {
                 //Debug.Log("EVM Avant le spawn");
-               // EnemySpawnerManager.Instance.Spawn(_turn);
+                EnemySpawnerManager.Instance.Spawn(_turn);
                  
                 //Debug.Log("EVM avant play tower in game turn");
                 StartCoroutine(BaseTower.PlayTowersInGameTurn());

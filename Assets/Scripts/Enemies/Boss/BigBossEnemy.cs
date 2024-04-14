@@ -3,6 +3,8 @@ using Grid;
 using Grid.Blocks;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = System.Random;
 
 namespace Enemies.Boss
 {
@@ -12,8 +14,14 @@ namespace Enemies.Boss
 
         [SerializeField] private int nbMalus = 1;
         [SerializeField] private int ratioMovement = 8;
-        [SerializeField] private GameObject malus;
+        [FormerlySerializedAs("malus")] [SerializeField] private GameObject malusMinus1;
+        [SerializeField] private GameObject malusMinus2;
+        [SerializeField] private float malusMinus2SpawnReate = 1f;
+            
         [SerializeField] protected Animator animator;
+       
+        
+        private Random _rand = new();
         
         private const string SPAWN_POINT_COMPONENT_ERROR =
             "Boss doit avoir le component `BlockBossSpawn`";
@@ -24,8 +32,15 @@ namespace Enemies.Boss
 
         public void SpawnMalusOnGrid()
         {
-            Debug.Log("BIGBOSS SparnMalus");
-            SpawnMalus.SpawnMalusOnGridPlayers(malus);
+            if (_rand.NextDouble() > malusMinus2SpawnReate)
+            {
+                SpawnMalus.SpawnMalusOnGridPlayers(malusMinus2);
+            }
+            else
+            {
+                SpawnMalus.SpawnMalusOnGridPlayers(malusMinus1);
+            }
+           
         }
         
         
@@ -81,7 +96,7 @@ namespace Enemies.Boss
         public void SpawnMalusOnGrid(int energy)
         {
             if (!IsTimeToMove(energy)) return;
-            SpawnMalus.SpawnMalusOnGridPlayers(malus);
+            SpawnMalus.SpawnMalusOnGridPlayers(malusMinus1);
             
         }
 

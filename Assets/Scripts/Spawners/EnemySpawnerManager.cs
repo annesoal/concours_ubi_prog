@@ -34,7 +34,7 @@ namespace Managers
         {
             foreach (var spawner in _spawners)
             {
-               // spawner.CalculateSpawnRate(turn);
+                spawner.CalculateSpawnRate(turn);
             } 
         }
         public void Spawn(int turn)
