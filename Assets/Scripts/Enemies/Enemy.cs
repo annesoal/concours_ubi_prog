@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Grid.Interface;
+using Sound;
 using Unity.Netcode;
 using UnityEngine;
 using Type = Grid.Type;
@@ -47,6 +48,8 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
         [SerializeField] protected Animator animator;
+        [SerializeField] protected AudioClip damageAudioClip;
+       
         protected void Initialize()
         {
             AddInGame(this.gameObject);
@@ -119,6 +122,7 @@ namespace Enemies
 
         public int Damage(int damage)
         {
+            SoundFXManager.instance.PlaySoundFXCLip(damageAudioClip, transform,1f);
              return Health -= damage;
         }
 
