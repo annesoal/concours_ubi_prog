@@ -18,13 +18,6 @@ public class SpawnMalus : NetworkBehaviour
     //compte le nombre de deplacementa des joueurs par position de Cell
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
-        Debug.Log("Regsiter position player " + positionCellPlayer);
-        
-        {
-            positionsPlayerRegister = new Dictionary<Vector2Int, int>();
-            Debug.Log("Register etait null " + positionsPlayerRegister);
-        }
-
         if (positionsPlayerRegister.ContainsKey(positionCellPlayer))
         {
             positionsPlayerRegister[positionCellPlayer]++;
@@ -99,6 +92,7 @@ public class SpawnMalus : NetworkBehaviour
                 isValidCell(toCheck))
             {
                 mostUsedCellTemp = keyValue.Key;
+                maxOccurence = keyValue.Value;
             }
         }
 
@@ -107,19 +101,14 @@ public class SpawnMalus : NetworkBehaviour
     }
 
 
-    private static void PlaceMalus(Vector2Int[] positionToObstacles, GameObject gameObjectsToSpawn,
+    private static void PlaceMalus(Vector2Int[] positionsToSpawn, GameObject gameObjectsToSpawn,
         Func<Cell, bool> isInvalidCell)
     {
-        foreach (Vector2Int positionOfSpawn in positionToObstacles)
+        foreach (Vector2Int position in positionsToSpawn)
         {
             Debug.Log("Spawnmalus placemalus");
-            Cell cell = TilingGrid.grid.GetCell(positionOfSpawn);
-            
-            //if (isInvalidCell.Invoke(cell))
-               // continue;
-            
             GameObject instance = Instantiate(gameObjectsToSpawn);
-            TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, positionOfSpawn);
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(instance, position);
             instance.GetComponent<NetworkObject>().Spawn(true);
         }
     }
@@ -144,13 +133,17 @@ public class SpawnMalus : NetworkBehaviour
 
     private static bool isValidCell(Cell toCheck)
     {
-        Cell test = TilingGrid.grid.GetCell(toCheck.position);
-        Debug.Log("position in isValid position malus " + test.position);
-        Debug.Log("has player on top of cell " + test.HasTopOfCellOfType(TypeTopOfCell.Player));
+        Cell cellUpdated = TilingGrid.grid.GetCell(toCheck.position);
+        Debug.Log("position in isValid position malus " + cellUpdated.position);
+        Debug.Log("has player on top of cell " + (cellUpdated.ObjectsTopOfCell.Count > 0));
 
+        return !(cellUpdated.ObjectsTopOfCell.Count > 0);
+        {
+            
+        }
         foreach (TypeTopOfCell type in Enum.GetValues(typeof(TypeTopOfCell)))
         {
-            bool hasType = TilingGrid.grid.HasTopOfCellOfType(test, type);
+            bool hasType = TilingGrid.grid.HasTopOfCellOfType(cellUpdated, type);
 
             if (hasType)
             {
