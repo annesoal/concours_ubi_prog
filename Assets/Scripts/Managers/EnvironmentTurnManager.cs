@@ -65,8 +65,9 @@ public class EnvironmentTurnManager : MonoBehaviour
                  
                 //Debug.Log("EVM avant play tower in game turn");
                 TowerManager.Instance.PlayBackEnd();
-                TowerManager.Instance.AnimateTowers();
+                StartCoroutine(TowerManager.Instance.AnimateTowers());
                 yield return new WaitUntil(() => TowerManager.Instance.HasFinishedAnimations);
+                TowerManager.Instance.ResetStates();
                 
                 //Debug.Log("EVM avant move enemies");
                 IAManager.Instance.BackendMoveEnemies();
