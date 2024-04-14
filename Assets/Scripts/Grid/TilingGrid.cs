@@ -187,14 +187,16 @@ namespace Grid
         {
             LinkedList<Cell> buildableCells = new LinkedList<Cell>();
 
-            foreach (Cell cell in _cells)
+            for( int x = 0; x < Size; x++)
             {
-                if (cell.Has(BlockType.Buildable))
+                for (int y = Size-1; y >= 0; y--)
                 {
-                    buildableCells.AddLast(cell);
+                    Cell cell = grid.GetCell(y, x);
+                    if (cell.Has(BlockType.Buildable))
+                        buildableCells.AddLast(cell);
                 }
             }
-
+            Debug.LogError(buildableCells.Count);
             return buildableCells;
         }
 

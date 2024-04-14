@@ -55,7 +55,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
         
         _buildableCells = TilingGrid.grid.GetBuildableCells();
-        SortBuildableCells();
+        //SortBuildableCells();
         
         _selectedCell = _buildableCells.First;
         
@@ -63,37 +63,6 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         BasicShowHide.Hide(gameObject);
     }
-
-    private void SortBuildableCells()
-    {
-        LinkedList<Cell> sortedList = new();
-        sortedList.AddFirst(_buildableCells.First.Value);
-        _buildableCells.RemoveFirst();
-        while (_buildableCells.Count > 0)
-        {
-            var node = _buildableCells.First;
-            _buildableCells.RemoveFirst();
-            var sortedNode = sortedList.First;
-            while (true)
-            {
-                if (node.Value.position.y >= sortedNode.Value.position.y 
-                    &&  node.Value.position.x >= sortedNode.Value.position.x)
-                {
-                    sortedList.AddBefore(sortedNode, node.Value);
-                    break;
-                }
-                if (sortedNode.Next == null)
-                {
-                    sortedList.AddAfter(sortedNode, node.Value);
-                    break;
-                }
-                sortedNode = sortedNode.Next;
-            }
-        }
-
-        _buildableCells = sortedList;
-    }
-
 
     public void Show(BuildableObjectSO buildableObjectSO)
     {
