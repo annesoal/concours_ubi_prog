@@ -16,7 +16,7 @@ MonoBehaviour:
   turnTime: 60
   startingTurn: 0
   numberOfTurns: 5
-  ressourceSpawnRate: 0.09
+  ressourceSpawnRate: 0.15
   playersHealth: 3
   playerEnergy: 10
   startingMoney: 0
