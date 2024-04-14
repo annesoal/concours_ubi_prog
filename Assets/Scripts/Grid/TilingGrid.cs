@@ -267,7 +267,6 @@ namespace Grid
             {
                 if (cell.Has(BlockType.Translate(searchType)))
                 {
-                    Debug.Log("returned " + cell.position);
                     return cell;
                 }
             }
@@ -422,6 +421,21 @@ namespace Grid
             cell.AddGameObject(toPlace.GetComponent<ITopOfCell>());
             UpdateCell(cell);
         }
+        
+        public static void RemoveElement(GameObject element, Vector2Int position)
+        {
+            try
+            {
+                var cell = grid.GetCell(position);
+                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
+                if (cell.ObjectsTopOfCell.Contains(element.GetComponent<ITopOfCell>()))
+                    Debug.LogError("kill me");
+                grid.UpdateCell(cell);
+            }
+            catch (ArgumentException)
+            {
+            }
+        }
 
         public List<Cell> GetCellsInRadius(Cell origin, int radius)
         {
@@ -459,18 +473,7 @@ namespace Grid
             return cells;
         }
 
-        public static void RemoveElement(GameObject element, Vector2Int position)
-        {
-            try
-            {
-                var cell = grid.GetCell(position);
-                cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
-                grid.UpdateCell(cell);
-            }
-            catch (ArgumentException)
-            {
-            }
-        }
+
 
         public static void RemoveElement(GameObject element, Vector3 position)
         {

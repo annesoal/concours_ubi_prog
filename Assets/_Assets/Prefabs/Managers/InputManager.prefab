@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fbe801cd0f5b7549fd221aeacfd645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableUserInterfaceInput: 0
+  pairInputPathAndSpriteSo: {fileID: 11400000, guid: 8799a577fac0917279fa21647e3265d7,
+    type: 2}

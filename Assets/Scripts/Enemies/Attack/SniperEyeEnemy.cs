@@ -52,15 +52,14 @@ namespace Enemies.Attack
         private bool CellHasObstacle(Vector3 direction)
         {
             Vector2Int position = TilingGrid.LocalToGridPosition(direction);
-            Cell cell = TilingGrid.grid.GetCell(position);
-            return cell.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
+            Cell updatedCell = TilingGrid.grid.GetCell(position);
+            return updatedCell.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
         }
         
         public override bool ChoseToAttack()
         {
             if (path == null || path.Count == 0)
             {
-                Debug.Log("Dans le early return de chose to attack");
                 return true;
             }
             
