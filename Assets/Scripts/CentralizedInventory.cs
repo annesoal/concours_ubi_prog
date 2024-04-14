@@ -18,6 +18,8 @@ public class CentralizedInventory : NetworkBehaviour
     [SerializeField] private CentralizedInventoryUI correspondingUI;
 
     [SerializeField] private List<BuildingMaterialSO> allBuildingMaterialSO;
+    
+    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
 
     public event EventHandler<OnNumberResourceChangedEventArgs> OnNumberResourceChanged;
 
@@ -34,18 +36,21 @@ public class CentralizedInventory : NetworkBehaviour
         Instance = this;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        NumberOfGreyResources.OnValueChanged += EmitGreyResourceChangedEvent;
+        
+        base.OnNetworkSpawn();
+    }
+
     public void Initialize()
     {
         if (IsServer)
         {
             Debug.Log(StartingMoney);
             NumberOfGreyResources.Value = StartingMoney;
-            // 0 est l'index des grey resources, qui sont, pour l'instant, les seules ressources disponibles pour le jeu.
-            EmitResourceChangedEventClientRpc(NumberOfGreyResources.Value, 0);
         }
     }
-
-    public NetworkVariable<int> NumberOfGreyResources { get; private set; } = new NetworkVariable<int>(0);
 
     /// <summary>
     /// throw new ITopOfCellNotAResourceException(); when element is not a resource.
@@ -80,8 +85,6 @@ public class CentralizedInventory : NetworkBehaviour
         {
             var resourceNetworkVariable = NumberOfGreyResources;
             resourceNetworkVariable.Value += (int)(Bonus.Multiplier * _ressourceAddedThisTurn);
-            EmitResourceChangedEventClientRpc(
-                        resourceNetworkVariable.Value, 0);
         }
         ResetBonus();     
     }
@@ -156,7 +159,6 @@ public class CentralizedInventory : NetworkBehaviour
         {
             case BuildingMaterialSO.BuildingMaterialType.GreyMaterial:
                 NumberOfGreyResources.Value = NumberOfGreyResources.Value - cost;
-                EmitResourceChangedEventClientRpc(NumberOfGreyResources.Value, allBuildingMaterialSO.IndexOf(resourceData));
                 break;
         }
     }
@@ -190,6 +192,18 @@ public class CentralizedInventory : NetworkBehaviour
     private void EmitResourceChangedEventClientRpc(int newValue, int indexOfBuildingMaterialSO)
     {
         BuildingMaterialSO resourceChanged = allBuildingMaterialSO[indexOfBuildingMaterialSO];
+        
+        OnNumberResourceChanged?.Invoke(this, new OnNumberResourceChangedEventArgs
+        {
+            NewValue = newValue,
+            ResourceChanged = resourceChanged,
+        });
+    }
+    
+    private void EmitGreyResourceChangedEvent(int previousValue, int newValue)
+    {
+        // As there is only on resource in the game for now, the index value for the grey resource is 0.
+        BuildingMaterialSO resourceChanged = allBuildingMaterialSO[0];
         
         OnNumberResourceChanged?.Invoke(this, new OnNumberResourceChangedEventArgs
         {

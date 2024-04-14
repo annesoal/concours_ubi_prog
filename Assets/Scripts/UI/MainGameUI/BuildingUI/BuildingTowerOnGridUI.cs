@@ -58,6 +58,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         _selectedCell = _buildableCells.First;
         
+        errorText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
+        
         BasicShowHide.Hide(gameObject);
     }
 

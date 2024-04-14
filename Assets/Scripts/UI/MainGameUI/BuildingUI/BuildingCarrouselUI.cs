@@ -17,6 +17,10 @@ public class BuildingCarrouselUI : MonoBehaviour
     [SerializeField] private Image rightImage;
 
     [SerializeField] private TextMeshProUGUI selectedBuildingText;
+
+    [Header("Tweening")]
+    [SerializeField] private float endScale;
+    [SerializeField] private float tweeningTime;
     
     private LinkedList<BuildableObjectSO> _buildableObjectsSO;
     private LinkedListNode<BuildableObjectSO> _selectedBuilding;
@@ -51,6 +55,8 @@ public class BuildingCarrouselUI : MonoBehaviour
 
     public void Show()
     {
+        transform.LeanScale(Vector3.one * endScale, tweeningTime).setEaseInOutBack().setLoopPingPong(1);
+        
         UpdateUI();
         
         BasicShowHide.Show(gameObject);
@@ -97,7 +103,8 @@ public class BuildingCarrouselUI : MonoBehaviour
 
         if (_selectedBuilding.Previous == null)
         {
-            leftImage.sprite = _selectedBuilding.Next.Value.icon;
+
+            leftImage.sprite = _buildableObjectsSO.Last.Value.icon;
             rightImage.sprite = _selectedBuilding.Next.Value.icon;
 
             centerImage.sprite = _selectedBuilding.Value.icon;
@@ -107,7 +114,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         if (_selectedBuilding.Next == null)
         {
             leftImage.sprite = _selectedBuilding.Previous.Value.icon;
-            rightImage.sprite = _selectedBuilding.Previous.Value.icon;
+            rightImage.sprite = _buildableObjectsSO.First.Value.icon;
 
             centerImage.sprite = _selectedBuilding.Value.icon;
             return;
@@ -140,7 +147,7 @@ public class BuildingCarrouselUI : MonoBehaviour
         }
         else
         {
-            selectedBuildingText.color = Color.red;
+            selectedBuildingText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
             selectedBuildingText.text = MISSING_RESOURCE_ERROR;
         }
         

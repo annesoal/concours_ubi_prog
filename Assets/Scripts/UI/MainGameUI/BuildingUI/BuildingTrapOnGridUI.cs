@@ -55,6 +55,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
         
         InputManager.Instance.OnUserInterfaceCancelPerformed += InputManager_OnUserInterfaceCancelPerformed;
+
+        errorText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
         
         BasicShowHide.Hide(gameObject);
     }

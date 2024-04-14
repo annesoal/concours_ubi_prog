@@ -8,7 +8,6 @@ using UnityEngine;
 public class GameStateUI : MonoBehaviour
 {
     [SerializeField] private GameObject currentStateBorder;
-    [SerializeField] private TextMeshProUGUI enemyPlayerTurnText;
     [SerializeField] private TextMeshProUGUI roundsLeftText;
     
     [Header("Timer")]
@@ -17,6 +16,11 @@ public class GameStateUI : MonoBehaviour
     
     [Header("Energy")]
     [SerializeField] private TextMeshProUGUI energyLeftText;
+    
+    [Header("Enemy or player turn indicator text")]
+    [SerializeField] private TextMeshProUGUI enemyPlayerTurnText;
+    [SerializeField] private Color playerTextColor;
+    [SerializeField] private Color enemyTextColor;
     
     private bool _canUpdateTimerText = false;
     
@@ -66,7 +70,7 @@ public class GameStateUI : MonoBehaviour
     
     private void TowerDefenseManager_OnRoundNumberIncreased(object sender, EventArgs e)
     {
-        int roundsLeft = TowerDefenseManager.TotalRounds - TowerDefenseManager.Instance.currentRoundNumber;
+        int roundsLeft = TowerDefenseManager.Instance.currentRoundNumber;
         roundsLeftText.text ="Rounds : " + roundsLeft;
     }
 
@@ -75,6 +79,7 @@ public class GameStateUI : MonoBehaviour
     private void DisplayEnvironmentTurnStateUI()
     {
         enemyPlayerTurnText.text = ENEMY_TURN_TEXT;
+        enemyPlayerTurnText.color = enemyTextColor;
         
         BasicShowHide.Show(currentStateBorder);
         
@@ -89,6 +94,7 @@ public class GameStateUI : MonoBehaviour
     private void DisplayTacticalPauseStateUI()
     {
         enemyPlayerTurnText.text = PLAYER_TURN_TEXT;
+        enemyPlayerTurnText.color = playerTextColor;
         
         BasicShowHide.Hide(currentStateBorder);
         
