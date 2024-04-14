@@ -154,6 +154,11 @@ public class TowerDefenseManager : NetworkBehaviour
 
         BasicTrap.SetCost = amuletSO.TrapCost;
         BasicTrap.StunDuration = amuletSO.StunDuration;
+        BasicTrap.TrapRange = amuletSO.TrapRange;
+
+        ZombotTrap.SetCost = amuletSO.BombCost;
+        ZombotTrap.Damage = amuletSO.BombDamage;
+        ZombotTrap.BombRange = amuletSO.BombRange;
 
         BasicTower.BasicTowerProjectilesNumber = amuletSO.numberOfProjectile;
         BasicTower.BasicTowerCost = amuletSO.TowerCost;
