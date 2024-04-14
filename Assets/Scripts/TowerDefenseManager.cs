@@ -89,6 +89,8 @@ public class TowerDefenseManager : NetworkBehaviour
     
     [Header("AdditionAmulet")]
     [SerializeField] private AdditionAmuletSO defaultAmulet;
+    
+    /// Reset manually.
     public static AdditionAmuletSO PlayerAmuletSelection;
 
     [SerializeField] private List<SpawnerBlock> listOfSpawners;
@@ -538,6 +540,11 @@ public class TowerDefenseManager : NetworkBehaviour
 
     public static void ResetStaticData()
     {
+        if (SceneManager.GetActiveScene().name == Loader.Scene.MainMenuScene.ToString())
+        {
+            PlayerAmuletSelection = null;
+        }
+        
         DestinationCells = null;
     }
 
