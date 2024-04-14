@@ -101,9 +101,6 @@ public class CentralizedInventory : NetworkBehaviour
 
         resourceNetworkVariable.Value = Math.Max(0, resourceNetworkVariable.Value - malus.value);
         
-        EmitResourceChangedEventClientRpc(
-            resourceNetworkVariable.Value, 
-            allBuildingMaterialSO.IndexOf(malus.BuildingMaterialSO));
 
     }
 
