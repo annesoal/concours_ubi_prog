@@ -338,7 +338,6 @@ namespace Grid
                 x += xDirection;
                 numberOfWhile++;
             } while (prevSize < nextSize);
-            Debug.LogWarning(cellsFound.Count);
             return cellsFound;
         }
         

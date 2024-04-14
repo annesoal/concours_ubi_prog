@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Amulets;
+using Building.Towers;
+using Building.Traps;
 using Enemies;
 using Enemies.Attack;
 using Enemies.Basic;
@@ -95,18 +97,21 @@ public class TowerDefenseManager : NetworkBehaviour
     private Action<ulong>[] _spawnPlayerMethods;
 
     private Action[] _statesMethods;
-
-
+    
     private List<Vector2Int> positions = new();
     public float TacticalPauseTimer => _currentTimer.Value;
 
     public static TowerDefenseManager Instance { get; private set; }
+    private TowerManager _towerManager;
+    private TrapManager _trapManager;
 
     private void Awake()
     {
         Instance = this;
         _currentTimer = new NetworkVariable<float>(TacticalPauseDuration);
         _iaManager = gameObject.AddComponent<IAManager>();
+        _trapManager = gameObject.AddComponent<TrapManager>();
+        _towerManager = gameObject.AddComponent<TowerManager>();
         _playerReadyToPlayDictionary = new Dictionary<ulong, bool>();
         _playerReadyToPassDictionary = new Dictionary<ulong, bool>();
         InitializeStatesMethods();

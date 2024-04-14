@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace Building.Traps
 {
-    public class TrapManager
+    public class TrapManager : MonoBehaviour
     {
         public static TrapManager Instance;
 
