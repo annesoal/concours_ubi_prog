@@ -234,7 +234,11 @@ public class BuildingCarrouselUI : MonoBehaviour
     
     private void InputManager_OnPlayerInteractPerformed(object sender, EventArgs e)
     {
-        if (!gameObject.activeSelf) { return; }
+        if (!gameObject.activeSelf)
+        {
+            // TODO show not at range error
+            return;
+        }
 
         if (HasResourceForBuilding())
         {
