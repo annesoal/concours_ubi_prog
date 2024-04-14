@@ -22,6 +22,7 @@ namespace Enemies.Basic
             Assert.IsTrue(IsServer);
             if (HasReachedTheEnd())
             {
+                CleanUp();
                 return new EnemyChoicesInfo()
                 {
                     hasReachedEnd = true,

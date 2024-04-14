@@ -20,6 +20,7 @@ namespace Enemies
                         
             if (HasReachedTheEnd())
             {
+                CleanUp();
                 return new EnemyChoicesInfo()
                 {
                     hasReachedEnd = true,
@@ -69,13 +70,21 @@ namespace Enemies
         {
             foreach (var aCell in cellsInRadius)
             {
-                if (TowerIsAtRange(aCell) &&
-                    canAttack())
+     
+                if (TowerIsAtRange(aCell))
                 {
                     hasPath = false;
                     var attackedObjectInfo = AttackTower(aCell.GetTower());
+                    var tower = attackedObjectInfo.Item2.GetComponent<BaseTower>();
+                    int remainingHealth = tower.Damage(AttackDamage);
+                    bool hasKilled = remainingHealth <= 0;
+                    if (hasKilled)
+                    {
+                        tower.Clean();
+                    }
                     return new AttackingInfo()
                     {
+                        shouldKill = hasKilled,
                         hasAttacked = true,
                         toKill = attackedObjectInfo.Item2,
                         isTower = attackedObjectInfo.Item1,
@@ -88,15 +97,15 @@ namespace Enemies
 
         private bool TowerIsAtRange(Cell aCell)
         {
+
+            Cell updatedCell = TilingGrid.grid.GetCell(aCell.position);
+      
             // non walkable building are towers or obstacle.
-            return TilingGrid.grid.HasTopOfCellOfType(aCell, TypeTopOfCell.Building) &&
-                   cell.HasNonWalkableBuilding();
+            return TilingGrid.grid.HasTopOfCellOfType(updatedCell, TypeTopOfCell.Building) &&
+                   updatedCell.HasNonWalkableBuilding();
         }
         
-        private bool canAttack()
-        {
-            return true;
-        }
+
         
         protected (bool, GameObject) AttackTower(BaseTower toAttack)
         {

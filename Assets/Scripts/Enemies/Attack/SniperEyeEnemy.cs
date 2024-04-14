@@ -58,9 +58,11 @@ namespace Enemies.Attack
         
         public override AttackingInfo ChoseToAttack()
         {
+            Vector2Int v = TilingGrid.LocalToGridPosition(transform.position);
             List<Cell> cellsInRadius =
-                TilingGrid.grid.GetCellsInRadius(TilingGrid.LocalToGridPosition(transform.position), Range);
-            return (ChoseAttack(cellsInRadius));
+                TilingGrid.grid.GetCellsInRadius(v, Range);
+
+            return ChoseAttack(cellsInRadius);
         }
 
     }

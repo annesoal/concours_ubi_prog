@@ -287,10 +287,13 @@ namespace Enemies
             }
         }
 
-        public void CleanUpAndKill()
+        public void CleanUp()
         {
             enemiesInGame.Remove(this.gameObject);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+        }
+        public void Kill()
+        {
             StartCoroutine(Dying());
         }
     }

@@ -121,7 +121,7 @@ namespace Grid
         public Cell GetCell(Vector3 position)
         {
             Vector2Int position2D = TilingGrid.LocalToGridPosition(position);
-            return GetCell(position);
+            return GetCell(position2D);
         }
 
         // Donne la Cellule a la position donnee.
@@ -381,26 +381,6 @@ namespace Grid
 
         private const int MINIMUM_POSITION_OF_ARRAY = 0;
 
-        private bool IsGreaterThanMimimumPosArray(int i)
-        {
-            return i > MINIMUM_POSITION_OF_ARRAY;
-        }
-
-        private bool IsLowerThanSize(int i)
-        {
-            return i < Size;
-        }
-
-        private void Increment(ref int i)
-        {
-            i++;
-        }
-
-        private void Decrement(ref int i)
-        {
-            i--;
-        }
-
         public void AddObjectToCellAtPosition(GameObject toPlace, Vector2Int cellPosition)
         {
             Cell cell = GetCell(cellPosition);
@@ -432,8 +412,6 @@ namespace Grid
             {
                 var cell = grid.GetCell(position);
                 cell.ObjectsTopOfCell.Remove(element.GetComponent<ITopOfCell>());
-                if (cell.ObjectsTopOfCell.Contains(element.GetComponent<ITopOfCell>()))
-                    Debug.LogError("kill me");
                 grid.UpdateCell(cell);
             }
             catch (ArgumentException)
@@ -460,7 +438,13 @@ namespace Grid
                 {
                     Cell cell = GetCell(i, j);
                     if (!cell.IsNone())
+                    {
                         cells.Add(cell);
+                        if (cell.position == new Vector2Int(16, 10))
+                        {
+                            Debug.Log("16 ,10 added");
+                        }
+                    }
                 }
             }
 
