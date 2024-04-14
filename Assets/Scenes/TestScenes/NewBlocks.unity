@@ -1596,7 +1596,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8fe3525160b9d0444b424fb1bf050493,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.57
+      value: 3.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fe3525160b9d0444b424fb1bf050493,
         type: 3}
@@ -31171,7 +31171,7 @@ MonoBehaviour:
   - {fileID: 1095905231}
   - {fileID: 2038331595}
   - {fileID: 964324984}
-  amuletSO: {fileID: 11400000, guid: 08981d5f4bfab2c4b826df6c4fa3888b, type: 2}
+  amuletSO: {fileID: 11400000, guid: dd6af01f165210c468a41f8834121ed0, type: 2}
 --- !u!4 &1953641236
 Transform:
   m_ObjectHideFlags: 0

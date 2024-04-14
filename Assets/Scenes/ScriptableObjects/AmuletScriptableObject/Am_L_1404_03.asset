@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Am_L_1404_03
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 90
+  turnTime: 90.3
   startingTurn: 0
   numberOfTurns: 8
   ressourceSpawnRate: 0.06
