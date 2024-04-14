@@ -110,8 +110,8 @@ namespace Enemies
         
         protected (bool, GameObject) AttackTower(BaseTower toAttack)
         {
-            int remainingHP = toAttack.Damage(AttackDamage);
-            return (remainingHP <= 0, toAttack.gameObject);
+            
+            return (true, toAttack.gameObject);
 
         }
         private IEnumerator AttackAnimation(AttackingInfo infos)
