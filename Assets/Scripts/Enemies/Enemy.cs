@@ -219,10 +219,7 @@ namespace Enemies
 
         private void FinishingMoveAnimation()
         {
-            if (IsServer) 
-            { 
-                TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
-            }
+            Debug.LogWarning("Finishing move");
             animator.SetBool("Die", true); 
             StartCoroutine(Dying());
 
@@ -241,7 +238,6 @@ namespace Enemies
             {
                 GameObject.Destroy(this.gameObject);
             }
-     
         }
 
         public virtual void MoveCorroutine(EnemyChoicesInfo infos)
@@ -249,8 +245,8 @@ namespace Enemies
             hasFinishedMoveAnimation = false;
             if (infos.hasReachedEnd)
             {
-                FinishingMoveAnimation();
                 hasFinishedMoveAnimation = true;
+                FinishingMoveAnimation();
                 return;
             }
             if (infos.hasMoved == false)

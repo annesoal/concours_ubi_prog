@@ -43,24 +43,13 @@ namespace Managers
         {
             hasMovedEveryEnemies = false;
             List<Enemy> movingEnemies = new();
-            List<GameObject> allEnemies = Enemy.GetEnemiesInGameCopy();
-            while(allEnemies.Count > 0) 
+
+            foreach (var enemyChoice in EnemyChoices)
             {
-                GameObject enemyGO = allEnemies[0];
-                allEnemies.RemoveAt(0);
-                Enemy e = enemyGO.GetComponent<Enemy>();
-                
-                var info = EnemyChoices[e];
-                if (!info.hasReachedEnd) 
-                    movingEnemies.Add(e);
-                else
-                {
-                    TilingGrid.grid.RemoveObjectFromCurrentCell(enemyGO); 
-                    e.RemoveInGame();
-                    Player.Health--;
-                }
-                e.MoveCorroutine(info);
+               enemyChoice.Key.MoveCorroutine(enemyChoice.Value); 
+               movingEnemies.Add(enemyChoice.Key);
             }
+            
 
             while (movingEnemies.Count > 0)
             {
