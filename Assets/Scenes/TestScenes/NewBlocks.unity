@@ -20275,6 +20275,7 @@ MonoBehaviour:
   correspondingUI: {fileID: 1642238845}
   allBuildingMaterialSO:
   - {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be, type: 2}
+  bonusAudioClip: {fileID: 8300000, guid: 0c03738475301750ab10080a1da19c1b, type: 3}
 --- !u!4 &1119525457
 Transform:
   m_ObjectHideFlags: 0
@@ -32903,8 +32904,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.33535254, y: 0.2262254, z: -0.083301984, w: 0.91072583}
-  m_LocalPosition: {x: 4.6, y: 14.03, z: -3.7}
+  m_LocalRotation: {x: 0.32623002, y: -0.23021065, z: 0.08224605, w: 0.91313344}
+  m_LocalPosition: {x: 26.5, y: 14.1, z: -3.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
