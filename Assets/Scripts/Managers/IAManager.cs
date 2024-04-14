@@ -26,12 +26,15 @@ namespace Managers
         public void BackendMoveEnemies()
         {
             EnemyChoices = new();
-            foreach (var enemy in Enemy.GetEnemiesInGame())
+            var copy = new List<GameObject>(Enemy.GetEnemiesInGame());
+            while(copy.Count > 0)
             {
-                var e = enemy.GetComponent<Enemy>();
-                SetEnemyPath(e);
-                var enemyChoicesInfo = e.CalculateChoices();
-                EnemyChoices.Add(e, enemyChoicesInfo);
+                var enemyGO = copy[0];
+                copy.RemoveAt(0);
+                var enemy = enemyGO.GetComponent<Enemy>();
+                SetEnemyPath(enemy);
+                var enemyChoicesInfo = enemy.CalculateChoices();
+                EnemyChoices.Add(enemy, enemyChoicesInfo);
             }
 
         }
