@@ -14664,6 +14664,79 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 765135733}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &769133458
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.032
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.479
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.099
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 624533084941555369, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2773368944696159311, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: m_Name
+      value: ZombotTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781007308218490128, guid: 8627b1ce8b31b37f1bacea3fba87922f,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1297558989
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8627b1ce8b31b37f1bacea3fba87922f, type: 3}
 --- !u!1001 &772516862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34975,3 +35048,4 @@ SceneRoots:
   - {fileID: 1476123591}
   - {fileID: 1314530615}
   - {fileID: 887919812}
+  - {fileID: 769133458}

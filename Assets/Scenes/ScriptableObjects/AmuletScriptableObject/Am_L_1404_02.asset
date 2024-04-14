@@ -19,7 +19,7 @@ MonoBehaviour:
   ressourceSpawnRate: 0.055
   playersHealth: 3
   playerEnergy: 10
-  startingMoney: 0
+  startingMoney: 100
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
