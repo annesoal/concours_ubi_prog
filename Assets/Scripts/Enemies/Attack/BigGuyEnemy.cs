@@ -39,9 +39,14 @@ namespace Enemies.Attack
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
                 int remainingHP = updatedCell.GetObstacle().Damage(AttackDamage);
+                bool shouldKill = remainingHP <= 0;
+                if (shouldKill)
+                {
+                    CleanUp();
+                }
                 return new AttackingInfo()
                 {
-                    shouldKill = remainingHP <= 0,
+                    shouldKill = shouldKill,
                     hasAttacked = true,
                     isTower = false,
                     toKill = updatedCell.GetObstacle().ToGameObject(),

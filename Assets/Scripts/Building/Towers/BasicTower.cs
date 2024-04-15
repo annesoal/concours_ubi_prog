@@ -72,8 +72,6 @@ public class BasicTower : BaseTower
             }
             
         }
-
-
         return infos;
     }
 
@@ -84,10 +82,6 @@ public class BasicTower : BaseTower
         return cellsInShootingRange;
     }
 
-
-    private const int INITIAL_NUMBER_OF_TARGET_SET = 0;
-    private const int NO_ENEMY_FOUND_IN_LIST = -1;
-    
     private Enemy TargetFarthestEnemy(List<Cell> cellsInShootingRange)
     {
         float distanceToJimmy = 0.0f;
