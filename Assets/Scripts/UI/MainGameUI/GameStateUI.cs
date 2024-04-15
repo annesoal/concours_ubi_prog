@@ -142,9 +142,10 @@ public class GameStateUI : MonoBehaviour
     {
         if (e.HealthValue <= 2)
         {
-            // _currentHealthColorTweenId = LeanTween.color(healthText.rectTransform, Color.red, 0.2f).setLoopPingPong().id;
-            LeanTween.value(healthText.gameObject, (Color toSet) => { healthText.color = toSet; },
-                Color.white, Color.red, 0.2f).setLoopPingPong(1);
+            _currentHealthColorTweenId =
+                LeanTween.value(healthText.gameObject, 
+                    (Color toSet) => { healthText.color = toSet; }, 
+                    Color.white, Color.red, 0.2f).setLoopPingPong().id;
         }
         else
         {
