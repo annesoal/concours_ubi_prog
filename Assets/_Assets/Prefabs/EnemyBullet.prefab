@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 2857078434426882998, guid: 2f28466c84102a607877f23cf2f56f97,
         type: 3}
       propertyPath: m_Name
-      value: Bullet
+      value: EnemyBullet
       objectReference: {fileID: 0}
     - target: {fileID: 3347274918967684535, guid: 2f28466c84102a607877f23cf2f56f97,
         type: 3}
@@ -62,6 +62,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7842559145200446760, guid: 2f28466c84102a607877f23cf2f56f97,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fbc9e5d6fbbade646967ee52060f808a, type: 2}
+    - target: {fileID: 8079019947959859597, guid: 2f28466c84102a607877f23cf2f56f97,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2268095018
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
