@@ -15,10 +15,10 @@ MonoBehaviour:
   ID: 
   turnTime: 60
   startingTurn: 0
-  numberOfTurns: 7
+  numberOfTurns: 6
   ressourceSpawnRate: 0.085
   playersHealth: 3
-  playerEnergy: 8
+  playerEnergy: 10
   startingMoney: 0
   enemyEnergy: 24
   MerdeHeathPoints: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
   SniperRange: 3
   TrapCost: 2
   StunDuration: 1
-  TrapRange: 2
+  TrapRange: 1
   ObstaclesHealth: 1
   TowerCost: 6
   TowerRange: 2

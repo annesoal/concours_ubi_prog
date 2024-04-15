@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Am_L_LV2_1504_01
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 90
+  turnTime: 60
   startingTurn: 0
-  numberOfTurns: 9
+  numberOfTurns: 8
   ressourceSpawnRate: 0.07
   playersHealth: 3
   playerEnergy: 10
@@ -31,17 +31,17 @@ MonoBehaviour:
   SniperHealthPoints: 1
   SniperMoveRatio: 12
   SniperDamages: 1
-  SniperRange: 4
+  SniperRange: 3
   TrapCost: 2
   StunDuration: 1
   TrapRange: 1
   ObstaclesHealth: 1
   TowerCost: 6
-  TowerRange: 3
-  TowerHealth: 3
+  TowerRange: 2
+  TowerHealth: 2
   TowerTimeBetweenAttacks: 2
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
-  BombDamage: 2
+  BombDamage: 1
   BombRange: 1
