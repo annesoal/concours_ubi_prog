@@ -7,7 +7,7 @@ public class SecondQuadraSpawnerMath2 :  MathSpawnSO
 {
     public override int GetNumberMerdeToSpawn(int turn)
     {
-        return (int)Math.Ceiling((turn * 0.55) / 2);
+        return (int)Math.Ceiling((turn * 0.61) / 2);
     }
 
     public override int GetBigGuyToSpawn(int turn)
@@ -17,7 +17,7 @@ public class SecondQuadraSpawnerMath2 :  MathSpawnSO
 
     public override int GetDoggoToSpawn(int turn)
     {
-        return (int)Math.Round((turn * 0.35)*0.75);
+        return (int)Math.Round(turn * 0.15);
     }
 
     public override int GetSnipperToSpawn(int turn)
