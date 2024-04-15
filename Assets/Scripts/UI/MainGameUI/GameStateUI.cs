@@ -105,7 +105,31 @@ public class GameStateUI : MonoBehaviour
     }
     
     private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
-    { 
+    {
+        if (HasLowEnergy(e.Energy))
+        {
+            energyLeftText.color = Color.red;
+        }
+        else if (HasMediumEnergy(e.Energy))
+        {
+            energyLeftText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
+        }
+        else
+        {
+            energyLeftText.color = ColorPaletteUI.Instance.ColorPaletteSo.lightBackgroundTextColor;
+        }
+        
+        
         energyLeftText.text = "" +  e.Energy;
+    }
+
+    private bool HasLowEnergy(int currentEnergy)
+    {
+        return currentEnergy <= Player.Energy / 5;
+    }
+    
+    private bool HasMediumEnergy(int currentEnergy)
+    {
+        return currentEnergy <= Player.Energy / 2;
     }
 }
