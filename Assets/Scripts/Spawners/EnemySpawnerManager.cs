@@ -59,8 +59,6 @@ namespace Managers
 
         private bool IsTimeToSpawn()
         {
-            Debug.Log("tss" + _timeSinceSpawns);
-            Debug.Log("tbs " + timeBetweenSpawns);
             return _timeSinceSpawns++ >= timeBetweenSpawns;
         }
     }

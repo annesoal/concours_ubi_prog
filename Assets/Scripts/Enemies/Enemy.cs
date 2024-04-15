@@ -47,6 +47,12 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
         [SerializeField] protected Animator animator;
+
+        private void Awake()
+        {
+            SetDestinations();
+        }
+
         protected void Initialize()
         {
             AddInGame(this.gameObject);
@@ -95,6 +101,7 @@ namespace Enemies
         
         private Cell GetClosestDestination()
         {
+            SetDestinations();
             if (_destinationsCell == null || _destinationsCell.Count == 0)
                 throw new Exception("Destination cells are not set or were not found !");
 
