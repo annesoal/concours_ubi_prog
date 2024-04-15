@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
-  m_Name: Am_M_LV1_1404_6
+  m_Name: Am_L_LV2_1504_01
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 60
+  turnTime: 90
   startingTurn: 0
-  numberOfTurns: 7
-  ressourceSpawnRate: 0.085
+  numberOfTurns: 9
+  ressourceSpawnRate: 0.07
   playersHealth: 3
-  playerEnergy: 8
+  playerEnergy: 10
   startingMoney: 0
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
-  GoofyHealthPoints: 2
+  GoofyHealthPoints: 3
   GoofyMoveRatio: 2
-  BigGuyHealthPoints: 2
+  BigGuyHealthPoints: 3
   BigGuyMoveRatio: 4
   BigGuyDamages: 1
   SniperHealthPoints: 1
   SniperMoveRatio: 12
   SniperDamages: 1
-  SniperRange: 3
+  SniperRange: 4
   TrapCost: 2
   StunDuration: 1
-  TrapRange: 2
+  TrapRange: 1
   ObstaclesHealth: 1
   TowerCost: 6
-  TowerRange: 2
-  TowerHealth: 2
+  TowerRange: 3
+  TowerHealth: 3
   TowerTimeBetweenAttacks: 2
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
-  BombDamage: 1
+  BombDamage: 2
   BombRange: 1
