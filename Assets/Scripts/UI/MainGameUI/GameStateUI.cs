@@ -18,6 +18,10 @@ public class GameStateUI : MonoBehaviour
     [SerializeField] private GameObject energyUI;
     [SerializeField] private TextMeshProUGUI energyLeftText;
     
+    [Header("Life")]
+    [SerializeField] private GameObject healthUI;
+    [SerializeField] private TextMeshProUGUI healthText;
+    
     [Header("Enemy or player turn indicator text")]
     [SerializeField] private TextMeshProUGUI enemyPlayerTurnText;
     [SerializeField] private Color playerTextColor;
@@ -30,6 +34,8 @@ public class GameStateUI : MonoBehaviour
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         TowerDefenseManager.Instance.OnRoundNumberIncreased += TowerDefenseManager_OnRoundNumberIncreased;
 
+        healthText.text = "" + Player.Health;
+        
         StartCoroutine(ConnectPlayerEventOnSpawn());
     }
 
@@ -41,6 +47,7 @@ public class GameStateUI : MonoBehaviour
         }
         
         Player.LocalInstance.OnPlayerEnergyChanged += PlayerLocalInstance_OnPlayerEnergyChanged;
+        Player.LocalInstance.OnPlayerHealthChanged += PlayerLocalInstance_OnPlayerHealthChanged;
         BasicShowHide.Hide(gameObject);
     }
 
@@ -127,6 +134,30 @@ public class GameStateUI : MonoBehaviour
 
         LeanTween.cancel(_currentEnergyTweenId);
         _currentEnergyTweenId = energyUI.transform.LeanScale(Vector3.one * 1.1f, 0.2f).setEaseOutCirc().setLoopPingPong(1).id;
+    }
+
+    private int _currentHealthScaleTweenId;
+    private int _currentHealthColorTweenId;
+    private void PlayerLocalInstance_OnPlayerHealthChanged(object sender, Player.OnPlayerHealthChangedEventArgs e)
+    {
+        if (e.HealthValue <= 2)
+        {
+            // _currentHealthColorTweenId = LeanTween.color(healthText.rectTransform, Color.red, 0.2f).setLoopPingPong().id;
+            LeanTween.value(healthText.gameObject, (Color toSet) => { healthText.color = toSet; },
+                Color.white, Color.red, 0.2f).setLoopPingPong(1);
+        }
+        else
+        {
+            LeanTween.cancel(_currentHealthColorTweenId);
+            healthText.color = Color.white;
+        }
+        
+        healthUI.transform.localScale = Vector3.one;
+        
+        healthText.text = "" + e.HealthValue;
+        
+        LeanTween.cancel(_currentHealthScaleTweenId);
+        _currentHealthScaleTweenId = healthUI.transform.LeanScale(Vector3.one * 1.1f, 0.2f).setEaseOutCirc().setLoopPingPong(1).id;
     }
 
     private bool HasLowEnergy(int currentEnergy)
