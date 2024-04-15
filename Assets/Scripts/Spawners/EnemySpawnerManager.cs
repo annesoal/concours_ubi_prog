@@ -11,6 +11,9 @@ namespace Managers
     public class EnemySpawnerManager : NetworkBehaviour
     {
         public static EnemySpawnerManager Instance {private set; get; }
+        public static int timeBetweenSpawns;
+        private int _timeSinceSpawns;
+        
         private List<SpawnerBlock> _spawners;
 
         private void Awake()
@@ -32,6 +35,7 @@ namespace Managers
 
         public void StartMathSpawners(int turn)
         {
+            _timeSinceSpawns = timeBetweenSpawns;
             foreach (var spawner in _spawners)
             {
                 spawner.CalculateSpawnRate(turn);
@@ -40,6 +44,7 @@ namespace Managers
         public void Spawn(int turn)
         {
             if (turn <= 0) return;
+            if (!IsTimeToSpawn()) return;
             foreach (var spawner in _spawners)
             {
                 GameObject enemyToSpawn = spawner.GetEnemyToSpawn();
@@ -49,6 +54,11 @@ namespace Managers
                 TilingGrid.grid.PlaceObjectAtPositionOnGrid(enemySpawned.gameObject, spawner.positionToSpawn.position);
                 enemySpawned.GetComponent<NetworkObject>().Spawn(true);
             }
+        }
+
+        public bool IsTimeToSpawn()
+        {
+            return _timeSinceSpawns++ >= timeBetweenSpawns;
         }
     }
 }
