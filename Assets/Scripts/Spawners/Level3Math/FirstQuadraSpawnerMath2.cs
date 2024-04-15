@@ -12,12 +12,12 @@ public class FirstQuadraSpawnerMath2 :  MathSpawnSO
 
     public override int GetBigGuyToSpawn(int turn)
     {
-        return (int) Math.Max(Math.Ceiling((turn - 1) * 0.1*0.75), 0);
+        return (int) Math.Max(Math.Ceiling((turn - 1) * 0.075), 0);
     }
 
     public override int GetDoggoToSpawn(int turn)
     {
-        return (int)Math.Round((turn * 0.5)*0.75);
+        return (int)Math.Floor((turn * 0.4)*0.6);
     }
 
     public override int GetSnipperToSpawn(int turn)

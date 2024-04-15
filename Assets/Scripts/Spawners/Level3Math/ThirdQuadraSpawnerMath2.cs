@@ -13,7 +13,7 @@ public class ThirdQuadraSpawnerMath2 :  MathSpawnSO
 
     public override int GetBigGuyToSpawn(int turn)
     {
-        return (int)Math.Max(Math.Round((turn - 1)*0.3),0);
+        return (int)Math.Round(turn *0.1);
     }
 
     public override int GetDoggoToSpawn(int turn)

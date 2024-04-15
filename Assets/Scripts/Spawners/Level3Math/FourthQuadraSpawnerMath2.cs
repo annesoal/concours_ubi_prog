@@ -12,12 +12,12 @@ public class FourthQuadraSpawnerMath2 :  MathSpawnSO
 
     public override int GetBigGuyToSpawn(int turn)
     {
-        return (int) Math.Round((turn *0.3) /1.2 );
+        return (int) Math.Round(turn *0.1);
     }
 
     public override int GetDoggoToSpawn(int turn)
     {
-        return (int)Math.Round((turn * 0.1));
+        return (int)Math.Round((turn * 0.15));
     }
 
     public override int GetSnipperToSpawn(int turn)
