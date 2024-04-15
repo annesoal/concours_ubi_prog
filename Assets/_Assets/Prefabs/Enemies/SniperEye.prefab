@@ -308,5 +308,5 @@ MonoBehaviour:
   hasFinishedMoveAnimation: 0
   hasFinishedSpawnAnimation: 0
   animator: {fileID: 2233567895258347816}
-  _bullet: {fileID: 2857078434426882998, guid: 2f28466c84102a607877f23cf2f56f97, type: 3}
+  _bullet: {fileID: 1796564747185390832, guid: 4c57030552780fcd3b7e7a1771cb1d64, type: 3}
   _bulletStartPosition: {fileID: 2781805379434431595}
