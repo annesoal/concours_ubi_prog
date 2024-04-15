@@ -43,7 +43,7 @@ namespace Synchrone
 
         public void OnDestroy()
         {
-            SoundFXManager.instance.PlaySoundFXCLip(bonusAudioClip, transform,1f);
+            //SoundFXManager.instance.PlaySoundFXCLip(bonusAudioClip, transform,1f);
             
             Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
             
