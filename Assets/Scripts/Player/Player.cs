@@ -304,10 +304,21 @@ public class Player : NetworkBehaviour, ITopOfCell
     public void ApplyDamage(int damage)
     {
         Health -= damage;
+
+        if (IsServer)
+        {
+            EmitOnPlayerHealthChangedClientRpc(Health);
+        }
+    }
+
+    [ClientRpc()]
+    private void EmitOnPlayerHealthChangedClientRpc(int changedHealth)
+    {
+        if (! IsServer) { Health = changedHealth; }
         
         OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
         {
-            HealthValue = Health
+            HealthValue = changedHealth
         });
     }
     
