@@ -42,9 +42,9 @@ namespace Enemies.Attack
             if (IsServer)
             {
                  shootingUtility = gameObject.AddComponent<ShootingUtility>();
-                            shootingUtility.ObjectToFire = _bullet;
-                            shootingUtility.TimeToFly = 0.1f;
-                            shootingUtility.Angle = 0.9f;
+                 shootingUtility.ObjectToFire = _bullet;
+                 shootingUtility.TimeToFly = 0.3f;
+                 shootingUtility.Angle = 0.9f;
             }
            
         }
@@ -97,7 +97,7 @@ namespace Enemies.Attack
              yield return new WaitUntil(rotationAnimation.HasMoved);
              animator.SetBool("Attack", true);
              float currentTime = 0.0f;
-             float timeToSoot = 0.2f;
+             float timeToSoot = 0.1f;
              bool hasShot = false;
              while (timeToMove > currentTime)
              {
