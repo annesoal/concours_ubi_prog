@@ -98,7 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _multiplier: 1
-  bonusAudioClip: {fileID: 8300000, guid: 0c03738475301750ab10080a1da19c1b, type: 3}
 --- !u!1 &8004527008739851519
 GameObject:
   m_ObjectHideFlags: 0

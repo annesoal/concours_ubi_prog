@@ -24,7 +24,8 @@ namespace Utils
 
             _hasFinished = true;
         }
-        public IEnumerator TurnObjectTo(GameObject gameObject, Vector3 position, float timeToMove = 0.2f)
+        public IEnumerator TurnObjectTo
+            (GameObject gameObject, Vector3 position, float timeToMove = 0.2f)
         {
             _hasFinished = false;
             float currentTime = 0.0f;

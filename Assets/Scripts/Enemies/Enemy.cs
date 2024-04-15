@@ -48,7 +48,6 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
         [SerializeField] protected Animator animator;
-        [SerializeField] protected AudioClip damageAudioClip;
        
         protected void Initialize()
         {
@@ -122,7 +121,6 @@ namespace Enemies
 
         public int Damage(int damage)
         {
-            SoundFXManager.instance.PlaySoundFXCLip(damageAudioClip, transform,1f);
              return Health -= damage;
         }
 

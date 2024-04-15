@@ -273,6 +273,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private static void PickUpItems(Vector2Int position)
     {
+        // metre sound
         GameMultiplayerManager.Instance.PickUpResourcesServerRpc(position);
     }
     private void CleanHighlighters()
@@ -357,6 +358,9 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
         transform.LookAt(cellLocalPosition);
+        // creer objet RotationAnimation
+        // start coroutine
+        // anim avancer
         Vector3 origin = transform.position;
         _hasFinishedToMove = false;
         float currentTime = 0.0f;
