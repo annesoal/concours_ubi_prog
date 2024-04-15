@@ -82,6 +82,8 @@ public class EnvironmentTurnManager : MonoBehaviour
                 
                 //Debug.Log("Fin Iteration boucle EVM");
                 NPCEnergy--;
+                if (Player.Health <= 0)
+                    goto end_of_phase;
             }
             //Debug.Log("Sortie de la boucle EVM");
         
@@ -90,6 +92,7 @@ public class EnvironmentTurnManager : MonoBehaviour
             _turn++;
         }
         
+        end_of_phase :
         yield return new WaitForSeconds(0.05f);    
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }
