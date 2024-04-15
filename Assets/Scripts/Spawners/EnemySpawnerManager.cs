@@ -45,6 +45,7 @@ namespace Managers
         {
             if (turn <= 0) return;
             if (!IsTimeToSpawn()) return;
+            _timeSinceSpawns = 0;
             foreach (var spawner in _spawners)
             {
                 GameObject enemyToSpawn = spawner.GetEnemyToSpawn();
@@ -56,8 +57,10 @@ namespace Managers
             }
         }
 
-        public bool IsTimeToSpawn()
+        private bool IsTimeToSpawn()
         {
+            Debug.Log("tss" + _timeSinceSpawns);
+            Debug.Log("tbs " + timeBetweenSpawns);
             return _timeSinceSpawns++ >= timeBetweenSpawns;
         }
     }
