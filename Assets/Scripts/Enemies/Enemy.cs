@@ -25,7 +25,7 @@ namespace Enemies
         public static int Energy;
         
         protected EnnemyType ennemyType;
-        protected float timeToDie = 0.5f;
+        protected float timeToDie = 0.8f;
 
         public abstract int MoveRatio { get; set; }
         
