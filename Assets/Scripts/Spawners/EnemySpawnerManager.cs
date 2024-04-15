@@ -52,15 +52,13 @@ namespace Managers
                 if (enemyToSpawn == null)
                     continue;
                 GameObject enemySpawned = Instantiate(enemyToSpawn, spawner.positionToSpawn);
-                TilingGrid.grid.PlaceObjectAtPositionOnGrid(enemySpawned.gameObject, spawner.positionToSpawn.position);
+                enemySpawned.GetComponent<Enemy>().Initialize(spawner.positionToSpawn);
                 enemySpawned.GetComponent<NetworkObject>().Spawn(true);
             }
         }
 
         private bool IsTimeToSpawn()
         {
-            Debug.Log("tss" + _timeSinceSpawns);
-            Debug.Log("tbs " + timeBetweenSpawns);
             return _timeSinceSpawns++ >= timeBetweenSpawns;
         }
     }

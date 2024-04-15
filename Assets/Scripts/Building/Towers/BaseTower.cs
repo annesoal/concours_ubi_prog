@@ -131,7 +131,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
         List<EnemyInfoToShoot> infos = TargetEnemies();
         if (infos.Count == 0)
         {
-            //Debug.LogWarning("no enemies around");
             return towerPlayInfo;
         }
 
