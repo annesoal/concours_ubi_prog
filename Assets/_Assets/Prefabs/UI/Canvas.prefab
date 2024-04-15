@@ -7006,6 +7006,7 @@ MonoBehaviour:
   roundsLeftText: {fileID: 280482804160996762}
   timerGameObject: {fileID: 5140701474480582484}
   timerText: {fileID: 5289197036877356905}
+  energyUI: {fileID: 5492642426625170404}
   energyLeftText: {fileID: 4822195866938575426}
   enemyPlayerTurnText: {fileID: 3678256793291291794}
   playerTextColor: {r: 0.08627451, g: 0.08235294, b: 0.23137255, a: 1}

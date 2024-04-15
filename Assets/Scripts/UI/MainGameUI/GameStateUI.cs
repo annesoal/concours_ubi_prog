@@ -15,6 +15,7 @@ public class GameStateUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     
     [Header("Energy")]
+    [SerializeField] private GameObject energyUI;
     [SerializeField] private TextMeshProUGUI energyLeftText;
     
     [Header("Enemy or player turn indicator text")]
@@ -103,7 +104,8 @@ public class GameStateUI : MonoBehaviour
         _canUpdateTimerText = true;
         //BasicShowHide.Show(timerGameObject);
     }
-    
+
+    private int _currentEnergyTweenId;
     private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
     {
         if (HasLowEnergy(e.Energy))
@@ -119,8 +121,12 @@ public class GameStateUI : MonoBehaviour
             energyLeftText.color = ColorPaletteUI.Instance.ColorPaletteSo.lightBackgroundTextColor;
         }
         
+        energyUI.transform.localScale = Vector3.one;
         
         energyLeftText.text = "" +  e.Energy;
+
+        LeanTween.cancel(_currentEnergyTweenId);
+        _currentEnergyTweenId = energyUI.transform.LeanScale(Vector3.one * 1.1f, 0.2f).setEaseOutCirc().setLoopPingPong(1).id;
     }
 
     private bool HasLowEnergy(int currentEnergy)
