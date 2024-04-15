@@ -72,12 +72,18 @@ public abstract class BaseTower : BuildableObject, IDamageable
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
-        SoundFXManager.instance.PlaySoundFXCLip(buildAudioClip, transform, 1f);
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
-
+        playSoundClientRpc();
         RegisterTower(this);
     }
 
+    [ClientRpc]
+    public void playSoundClientRpc()
+    {
+        SoundFXManager.instance.PlaySoundFXCLip(buildAudioClip, transform, 1f);
+    }
+    
+    
     /// <returns>List of cells targeted by the tower.</returns>
     protected abstract List<EnemyInfoToShoot> TargetEnemies();
 
