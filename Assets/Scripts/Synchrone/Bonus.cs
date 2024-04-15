@@ -1,6 +1,7 @@
 using System;
 using Grid;
 using Grid.Interface;
+using Sound;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Synchrone
     public class Bonus : NetworkBehaviour, ITopOfCell
     {
         [field: SerializeField] private float _multiplier;
+        [SerializeField] protected AudioClip bonusAudioClip;
+
         public static float Multiplier;
 
         private TypeTopOfCell _currentType;
@@ -40,6 +43,8 @@ namespace Synchrone
 
         public void OnDestroy()
         {
+            SoundFXManager.instance.PlaySoundFXCLip(bonusAudioClip, transform,1f);
+            
             Vector2Int gridPosition = TilingGrid.LocalToGridPosition(transform.position);
             
             Cell toUpdate = TilingGrid.grid.GetCell(gridPosition);

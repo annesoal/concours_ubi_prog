@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
+using Sound;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
