@@ -106,6 +106,6 @@ public class GameStateUI : MonoBehaviour
     
     private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
     { 
-        energyLeftText.text = "Energy : " +  e.Energy;
+        energyLeftText.text = "" +  e.Energy;
     }
 }
