@@ -77,7 +77,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
     }
 
     /// <returns>List of cells targeted by the tower.</returns>
-    protected abstract List<Cell> TargetEnemies();
+    protected abstract List<EnemyInfoToShoot> TargetEnemies();
 
     protected void RegisterTower(BaseTower toAdd)
     {
@@ -138,46 +138,16 @@ public abstract class BaseTower : BuildableObject, IDamageable
             //Debug.LogWarning(("Cant play"));
             return towerPlayInfo;
         }
-
-        List<Cell> cellsToShoot = TargetEnemies();
-        if (cellsToShoot.Count == 0)
+        
+        List<EnemyInfoToShoot> infos = TargetEnemies();
+        if (infos.Count == 0)
         {
             //Debug.LogWarning("no enemies around");
             return towerPlayInfo;
         }
 
-        towerPlayInfo = FillListToShoot(cellsToShoot);
-        return towerPlayInfo;
-    }
-
-    private TowerPlayInfo FillListToShoot(List<Cell> cellsToShoot)
-    {
-        TowerPlayInfo towerPlayInfo = new TowerPlayInfo()
-        {
-            hasFired = true,
-        };
-        towerPlayInfo.listEnemiesToShoot = new List<EnemyInfoToShoot>();
-        foreach (Cell cell in cellsToShoot)
-        {
-            EnemyInfoToShoot enemyInfoToShoot = new();
-            Enemy enemy = cell.GetEnemy();
-            int remainingHP = enemy.Damage(AttackDamage);
-            if (remainingHP < 0)
-            {
-                enemyInfoToShoot.enemy = enemy;
-                enemyInfoToShoot.shouldKill = true;
-                enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
-                enemy.CleanUp();
-            }
-            else
-            {
-                enemyInfoToShoot.enemy = enemy;
-                enemyInfoToShoot.shouldKill = false;
-                enemyInfoToShoot.position = enemy.ToGameObject().transform.position;
-            }
-            towerPlayInfo.listEnemiesToShoot.Add(enemyInfoToShoot);
-        }
-        _timeSinceLastShot = 0;
+        towerPlayInfo.listEnemiesToShoot = infos;
+        towerPlayInfo.hasFired = true;
         return towerPlayInfo;
     }
 
