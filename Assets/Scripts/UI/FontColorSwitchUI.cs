@@ -7,16 +7,33 @@ using UnityEngine.EventSystems;
 public class FontColorSwitchUI : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     [SerializeField] private TextMeshProUGUI textToSwitch;
+    
+    [Header("Override Colors")]
+    [SerializeField] private bool useOverrideColor;
     [SerializeField] private Color baseColor;
     [SerializeField] private Color selectedColor;
     
     public void OnSelect(BaseEventData eventData)
     {
-        textToSwitch.color = selectedColor;
+        if (useOverrideColor)
+        {
+            textToSwitch.color = selectedColor;
+        }
+        else
+        {
+            textToSwitch.color = ColorPaletteUI.Instance.ColorPaletteSo.lightBackgroundTextColor;
+        }
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        textToSwitch.color = baseColor;
+        if (useOverrideColor)
+        {
+            textToSwitch.color = selectedColor;
+        }
+        else
+        {
+            textToSwitch.color = ColorPaletteUI.Instance.ColorPaletteSo.darkBackgroundTextColor;
+        }
     }
 }
