@@ -25,7 +25,7 @@ namespace Enemies
         public static int Energy;
         
         protected EnnemyType ennemyType;
-        protected float timeToDie = 0.2f;
+        protected float timeToDie = 0.5f;
 
         public abstract int MoveRatio { get; set; }
         
@@ -122,24 +122,10 @@ namespace Enemies
              return Health -= damage;
         }
 
-        protected void Die()
-        {
-            enemiesInGame.Remove(this.gameObject);
-            animator.SetBool("Die", true);
-            TilingGrid.RemoveElement(this.gameObject, transform.position);
-        }
-
-
         protected void AddInGame(GameObject enemy)
         {
             enemiesInGame ??= new List<GameObject>();
             enemiesInGame.Add(enemy);
-        }
-
-
-        public void RemoveInGame()
-        {
-            enemiesInGame.Remove(this.gameObject);
         }
 
         public static List<GameObject> GetEnemiesInGame()
@@ -147,12 +133,6 @@ namespace Enemies
 
             return enemiesInGame;
         }
-
-        public static List<GameObject> GetEnemiesInGameCopy()
-        {
-            return new List<GameObject>(enemiesInGame);
-        }
-        
 
         public new TypeTopOfCell GetType()
         {
@@ -220,13 +200,25 @@ namespace Enemies
         private void FinishingMoveAnimation()
         {
             Debug.LogWarning("Finishing move");
-            animator.SetBool("Die", true); 
-            StartCoroutine(Dying());
+            animator.SetBool("Attack", true);
+            StartCoroutine(TimeToDie());
+        }
 
+        private IEnumerator TimeToDie()
+        {
+            var timeNow = 0.0f;
+            while (timeNow < timeToDie)
+            {
+                timeNow += Time.deltaTime;
+                yield return null;
+            }
+            if (IsServer) 
+                GameObject.Destroy(this.gameObject);
         }
 
         private IEnumerator Dying()
         {
+            animator.SetBool("Die", true);
             var timeNow = 0.0f;
             while (timeNow < timeToDie)
             {
