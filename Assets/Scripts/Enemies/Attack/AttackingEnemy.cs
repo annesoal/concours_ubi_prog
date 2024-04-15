@@ -20,7 +20,7 @@ namespace Enemies
                         
             if (HasReachedTheEnd())
             {
-                Player.Health--;
+                Player.LocalInstance.ApplyDamage(1);
                 CleanUp();
                 return new EnemyChoicesInfo()
                 {
@@ -110,11 +110,11 @@ namespace Enemies
         
         protected (bool, GameObject) AttackTower(BaseTower toAttack)
         {
-            int remainingHP = toAttack.Damage(AttackDamage);
-            return (remainingHP <= 0, toAttack.gameObject);
+            
+            return (true, toAttack.gameObject);
 
         }
-        private IEnumerator AttackAnimation(AttackingInfo infos)
+        protected virtual IEnumerator AttackAnimation(AttackingInfo infos)
         {
             if (!IsServer) yield break;
             

@@ -55,6 +55,7 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         InputManager.Instance.OnUserInterfaceDownPerformed += InputManager_OnUserInterfaceDownPerformed;
         
         _buildableCells = TilingGrid.grid.GetBuildableCells();
+        //SortBuildableCells();
         
         _selectedCell = _buildableCells.First;
         
@@ -62,7 +63,6 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         BasicShowHide.Hide(gameObject);
     }
-
 
     public void Show(BuildableObjectSO buildableObjectSO)
     {
@@ -125,6 +125,9 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        Debug.Assert(_buildableCells.Count != 0);
+        Debug.Assert(_selectedCell != null);
+        
         CameraController.Instance.MoveCameraToPosition
             (TilingGrid.GridPositionToLocal(_selectedCell.Value.position));
         
@@ -278,8 +281,15 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
     private void ChangeSelectedCell(Vector2Int direction)
     {
-        _selectedCell.Value =
-            TilingGrid.grid.GetCellOfTypeAtDirection(_selectedCell.Value, Type.Buildable, direction);
+        
+        if (direction == Vector2Int.right)
+        {
+            _selectedCell = _selectedCell.Previous ?? _buildableCells.Last;
+        }
+        if (direction == Vector2Int.left)
+        {
+            _selectedCell = _selectedCell.Next ?? _buildableCells.First;
+        }
 
         UpdateSelectedCell(_selectedCell.Value.position);
     }

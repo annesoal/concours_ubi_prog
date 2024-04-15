@@ -38,25 +38,37 @@ namespace Enemies.Attack
             }
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
             {
-                int remainingHP = updatedCell.GetObstacle().Damage(AttackDamage);
+                Obstacle obstacle = updatedCell.GetObstacle();
+                int remainingHP = obstacle.Damage(AttackDamage);
+                bool shouldKill = remainingHP <= 0;
+                if (shouldKill)
+                {
+                    obstacle.CleanUp();
+                }
                 return new AttackingInfo()
                 {
-                    shouldKill = remainingHP <= 0,
+                    shouldKill = shouldKill,
                     hasAttacked = true,
                     isTower = false,
-                    toKill = updatedCell.GetObstacle().ToGameObject(),
+                    toKill = obstacle.ToGameObject(),
                 };
             }
 
             if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Building))
             {
-                int remainingHP = updatedCell.GetTower().Damage(AttackDamage);
+                var tower = updatedCell.GetTower();
+                int remainingHP = tower.Damage(AttackDamage);
+                bool shouldKill = remainingHP <= 0;
+                if (shouldKill)
+                {
+                    tower.Clean();
+                }
                 return new AttackingInfo()
                 { 
-                    shouldKill = remainingHP <= 0,
+                    shouldKill = shouldKill,
                     hasAttacked = true,
                     isTower = true,
-                    toKill = updatedCell.GetTower().ToGameObject(),
+                    toKill = tower.ToGameObject(),
                 };
             }
 

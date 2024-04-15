@@ -13,11 +13,11 @@ public class SingleAmuletChoiceUI : MonoBehaviour
     [SerializeField] private Button selectAmuletButton;
 
     public event EventHandler<OnAmuletSelectButtonClickedEventArgs> OnAmuletSelectButtonClicked;
-    public class OnAmuletSelectButtonClickedEventArgs : EventArgs { public AmuletSO SelectedAmulet; }
+    public class OnAmuletSelectButtonClickedEventArgs : EventArgs { public AdditionAmuletSO SelectedAmulet; }
 
-    private AmuletSO _associatedAmuletSo;
+    private AdditionAmuletSO _associatedAmuletSo;
     
-    public void SetVisuals(AmuletSO amuletSo)
+    public void SetVisuals(AdditionAmuletSO amuletSo)
     {
         _associatedAmuletSo = amuletSo;
         

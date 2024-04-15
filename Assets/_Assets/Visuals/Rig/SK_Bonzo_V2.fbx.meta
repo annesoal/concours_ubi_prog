@@ -7,6 +7,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: eye
+    second: {fileID: 2100000, guid: 1fd62b0e82d02094a9f00102cd45527f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fil
+    second: {fileID: 2100000, guid: 32f3aba57ceb9fe4dae8decd4084f16f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert4
     second: {fileID: 2100000, guid: 32f3aba57ceb9fe4dae8decd4084f16f, type: 2}
   - first:
@@ -14,6 +24,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: lambert5
     second: {fileID: 2100000, guid: 1fd62b0e82d02094a9f00102cd45527f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: standardSurface1
+    second: {fileID: 2100000, guid: a33745b84016b2d4a822a3fd3baba99d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

@@ -16,7 +16,7 @@ MonoBehaviour:
   turnTime: 120
   startingTurn: 0
   numberOfTurns: 8
-  ressourceSpawnRate: 0.06
+  ressourceSpawnRate: 0.05
   playersHealth: 3
   playerEnergy: 10
   startingMoney: 3
@@ -34,6 +34,7 @@ MonoBehaviour:
   SniperRange: 8
   TrapCost: 1
   StunDuration: 1
+  TrapRange: 0
   ObstaclesHealth: 1
   TowerCost: 9
   TowerRange: 3
@@ -43,3 +44,4 @@ MonoBehaviour:
   TowerDamage: 1
   BombCost: 2
   BombDamage: 1
+  BombRange: 0

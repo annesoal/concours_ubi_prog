@@ -15,7 +15,12 @@ public class GameStateUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     
     [Header("Energy")]
+    [SerializeField] private GameObject energyUI;
     [SerializeField] private TextMeshProUGUI energyLeftText;
+    
+    [Header("Life")]
+    [SerializeField] private GameObject healthUI;
+    [SerializeField] private TextMeshProUGUI healthText;
     
     [Header("Enemy or player turn indicator text")]
     [SerializeField] private TextMeshProUGUI enemyPlayerTurnText;
@@ -29,6 +34,8 @@ public class GameStateUI : MonoBehaviour
         TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         TowerDefenseManager.Instance.OnRoundNumberIncreased += TowerDefenseManager_OnRoundNumberIncreased;
 
+        healthText.text = "" + Player.Health;
+        
         StartCoroutine(ConnectPlayerEventOnSpawn());
     }
 
@@ -40,6 +47,7 @@ public class GameStateUI : MonoBehaviour
         }
         
         Player.LocalInstance.OnPlayerEnergyChanged += PlayerLocalInstance_OnPlayerEnergyChanged;
+        Player.LocalInstance.OnPlayerHealthChanged += PlayerLocalInstance_OnPlayerHealthChanged;
         BasicShowHide.Hide(gameObject);
     }
 
@@ -103,9 +111,63 @@ public class GameStateUI : MonoBehaviour
         _canUpdateTimerText = true;
         //BasicShowHide.Show(timerGameObject);
     }
-    
+
+    private int _currentEnergyTweenId;
     private void PlayerLocalInstance_OnPlayerEnergyChanged(object sender, Player.OnPlayerEnergyChangedEventArgs e)
-    { 
-        energyLeftText.text = "Energy : " +  e.Energy;
+    {
+        if (HasLowEnergy(e.Energy))
+        {
+            energyLeftText.color = Color.red;
+        }
+        else if (HasMediumEnergy(e.Energy))
+        {
+            energyLeftText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
+        }
+        else
+        {
+            energyLeftText.color = ColorPaletteUI.Instance.ColorPaletteSo.lightBackgroundTextColor;
+        }
+        
+        energyUI.transform.localScale = Vector3.one;
+        
+        energyLeftText.text = "" +  e.Energy;
+
+        LeanTween.cancel(_currentEnergyTweenId);
+        _currentEnergyTweenId = energyUI.transform.LeanScale(Vector3.one * 1.1f, 0.2f).setEaseOutCirc().setLoopPingPong(1).id;
+    }
+
+    private int _currentHealthScaleTweenId;
+    private int _currentHealthColorTweenId;
+    private void PlayerLocalInstance_OnPlayerHealthChanged(object sender, Player.OnPlayerHealthChangedEventArgs e)
+    {
+        if (e.HealthValue <= 2)
+        {
+            _currentHealthColorTweenId =
+                LeanTween.value(healthText.gameObject, 
+                    (Color toSet) => { healthText.color = toSet; }, 
+                    Color.white, Color.red, 0.2f).setLoopPingPong().id;
+        }
+        else
+        {
+            LeanTween.cancel(_currentHealthColorTweenId);
+            healthText.color = Color.white;
+        }
+        
+        healthUI.transform.localScale = Vector3.one;
+        
+        healthText.text = "" + e.HealthValue;
+        
+        LeanTween.cancel(_currentHealthScaleTweenId);
+        _currentHealthScaleTweenId = healthUI.transform.LeanScale(Vector3.one * 1.1f, 0.2f).setEaseOutCirc().setLoopPingPong(1).id;
+    }
+
+    private bool HasLowEnergy(int currentEnergy)
+    {
+        return currentEnergy <= Player.Energy / 5;
+    }
+    
+    private bool HasMediumEnergy(int currentEnergy)
+    {
+        return currentEnergy <= Player.Energy / 2;
     }
 }

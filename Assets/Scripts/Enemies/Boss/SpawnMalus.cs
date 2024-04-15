@@ -15,6 +15,11 @@ public class SpawnMalus : NetworkBehaviour
     public static SpawnMalus Instance { get; private set; }
 
 
+
+    public static void ResetStaticData()
+    {
+        positionsPlayerRegister = new();
+    }
     //compte le nombre de deplacementa des joueurs par position de Cell
     public static void RegisterCellForMalus(Vector2Int positionCellPlayer)
     {
@@ -138,21 +143,5 @@ public class SpawnMalus : NetworkBehaviour
         Debug.Log("has player on top of cell " + (cellUpdated.ObjectsTopOfCell.Count > 0));
 
         return !(cellUpdated.ObjectsTopOfCell.Count > 0);
-        {
-            
-        }
-        foreach (TypeTopOfCell type in Enum.GetValues(typeof(TypeTopOfCell)))
-        {
-            bool hasType = TilingGrid.grid.HasTopOfCellOfType(cellUpdated, type);
-
-            if (hasType)
-            {
-                Debug.Log($"Cell contains {type}.");
-                return false;
-            }
-        }
-        
-     
-        return true;
     }
 }

@@ -23,7 +23,7 @@ namespace Enemies.Basic
             Assert.IsTrue(IsServer);
             if (HasReachedTheEnd())
             {
-                Player.Health--;
+                Player.LocalInstance.ApplyDamage(1);
                 CleanUp();
                 return new EnemyChoicesInfo()
                 {

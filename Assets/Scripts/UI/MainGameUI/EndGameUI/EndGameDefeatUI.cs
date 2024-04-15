@@ -19,7 +19,7 @@ public class EndGameDefeatUI : MonoBehaviour
     {
         BasicShowHide.Show(gameObject);
 
-        AmuletSelector.ResetPlayerAmuletSelection();
+        TowerDefenseManager.ResetPlayerAmuletSelection();
         
         if (NetworkManager.Singleton.IsServer)
         {

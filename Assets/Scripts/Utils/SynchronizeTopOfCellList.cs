@@ -25,6 +25,11 @@ public class SynchronizeTopOfCellList : NetworkBehaviour
         GameObject objectOnTopGameObject = objectOnTop.ToGameObject();
 
         NetworkObject objectOnTopNetworkObject = objectOnTopGameObject.GetComponent<NetworkObject>();
+        if (objectOnTopNetworkObject == null)
+        {
+            Debug.LogError("Trying to Sync null NetWorkObject !");
+            return;
+        }
         
         SyncIndividualTopOfCellClientRpc(objectOnTopNetworkObject);
     }

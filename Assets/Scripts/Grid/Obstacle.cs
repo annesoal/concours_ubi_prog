@@ -47,11 +47,15 @@ namespace Grid
 
         }
 
+        public void CleanUp()
+        {
+            TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+        }
+
         public void DestroyThis()
         {
             if (Health < 1 && IsServer)
             {
-                TilingGrid.RemoveElement(gameObject, transform.position); 
                 DestroyClientRpc();
             }
         }

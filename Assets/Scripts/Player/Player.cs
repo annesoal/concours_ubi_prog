@@ -45,7 +45,7 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private bool _canMove;
 
-    private int _totalEnergy;
+    private int _totalEnergy = Energy;
     private int _currentEnergy;
     
     public Player()
@@ -217,7 +217,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         return translation;
     }
 
-    public void OnConfirm()
+    public void OnSelect()
     {
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         _canMove = false;
@@ -227,7 +227,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
-    public void OnSelect()
+    public void OldSelect()
     {
         if (_selector.isSelecting)
             return;
@@ -241,9 +241,11 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     public IEnumerator Move()
     {
+        Vector2Int characterPosition = TilingGrid.LocalToGridPosition(transform.position);
         Vector2Int? oldPosition = _selector.GetCurrentPosition();
         _selector.Disable(); 
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
+        
         if (nextPosition == null || oldPosition == null)
         { 
             IsReadyServerRpc();
@@ -251,13 +253,18 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
         
         RemoveNextHighlighter();
+        UpdateMoveServerRpc((Vector2Int) characterPosition, (Vector2Int) nextPosition);
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
         PickUpItems((Vector2Int) nextPosition);
-        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, (Vector2Int)oldPosition, (Vector2Int)nextPosition);
         IsReadyServerRpc();
     }
 
+    [ServerRpc]
+    private void UpdateMoveServerRpc(Vector2Int oldPosition, Vector2Int nextPosition)
+    {
+       TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, nextPosition); 
+    }
 
     private bool IsReadyToPickUp()
     {
@@ -288,6 +295,21 @@ public class Player : NetworkBehaviour, ITopOfCell
         return _currentEnergy > 0; 
     }
 
+    public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
+    public class OnPlayerHealthChangedEventArgs : EventArgs
+    {
+        public int HealthValue;
+    }
+        
+    public void ApplyDamage(int damage)
+    {
+        Health -= damage;
+        
+        OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
+        {
+            HealthValue = Health
+        });
+    }
     
     public event EventHandler<OnPlayerEnergyChangedEventArgs> OnPlayerEnergyChanged;
     public class OnPlayerEnergyChangedEventArgs : EventArgs { public int Energy; }
@@ -298,7 +320,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         
        OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
        {
-           Energy = _currentEnergy,
+           Energy = _totalEnergy,
        });
     }
 
@@ -328,7 +350,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         CleanHighlighters();
         _selector.ResetSelf();
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        _canMove = false; 
+        ResetPlayer(_totalEnergy);
     }
 
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
@@ -351,10 +373,12 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     public void ResetPlayer(int energy)
     {
+        ResetEnergy();
         EnergyAvailable = energy;
         _canMove = false;
         _selector.ResetSelf();
         _highlighters.Reset();
+        OldSelect();
     }
 
     public void PrepareToMove()

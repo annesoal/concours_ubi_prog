@@ -46,13 +46,21 @@ public class SettingsUI : MonoBehaviour
     [Header("Close")]
     [SerializeField] private Button closeButton;
     [SerializeField] private Selectable toSelectAfterClosing;
+    
+    [Header("Tweening")]
+    [SerializeField] private float showTweeningTime;
+    [SerializeField] private float hideTweeningTime;
+    
+    private LTDescr _currentTween = null;
 
     private void Awake()
     {
         closeButton.onClick.AddListener(() =>
         {
+            if (_currentTween != null) { return; }
+            
             toSelectAfterClosing.GetComponent<Selectable>().Select();
-            BasicShowHide.Hide(gameObject);
+            Hide();
         });
         
         upButton.onClick.AddListener(() =>
@@ -110,9 +118,26 @@ public class SettingsUI : MonoBehaviour
     
     public void Show()
     {
+        if (_currentTween != null) { return; }
+        
+        transform.localScale = Vector3.zero;
         BasicShowHide.Show(gameObject);
+        _currentTween = transform.LeanScale(Vector3.one, showTweeningTime).setEaseOutExpo().setOnComplete(() =>
+        {
+            _currentTween = null;
+        });
+        
         UpdateVisuals();
         EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
+    }
+
+    private void Hide()
+    {
+        _currentTween = transform.LeanScale(Vector3.zero, hideTweeningTime).setEaseOutExpo().setOnComplete(() =>
+        {
+            _currentTween = null;
+            BasicShowHide.Hide(gameObject);
+        });
     }
 
     private void CarryOutRebinding(InputManager.Binding toRebind)

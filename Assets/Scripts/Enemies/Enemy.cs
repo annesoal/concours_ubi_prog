@@ -296,5 +296,12 @@ namespace Enemies
         {
             StartCoroutine(Dying());
         }
+
+        public float DistanceToDestination()
+        {
+            Cell destination = GetDestination();
+            Vector3 destination3D = TilingGrid.GridPositionToLocal(destination.position);
+            return Vector3.Distance(this.transform.position, destination3D);
+        }
     }
 }
