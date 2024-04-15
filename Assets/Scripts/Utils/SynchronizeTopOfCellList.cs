@@ -27,7 +27,6 @@ public class SynchronizeTopOfCellList : NetworkBehaviour
         NetworkObject objectOnTopNetworkObject = objectOnTopGameObject.GetComponent<NetworkObject>();
         if (objectOnTopNetworkObject == null)
         {
-            Debug.LogWarning(toSync.position + " has object network top of cell == null ");
             return;
         }
         

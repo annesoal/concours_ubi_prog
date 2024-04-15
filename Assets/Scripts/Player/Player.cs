@@ -253,11 +253,6 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
         
         RemoveNextHighlighter();
-        if (IsServer)
-        {
-            Debug.LogError("oldpos " + characterPosition);
-            Debug.LogError("newpos " + nextPosition);
-        }
         UpdateMoveServerRpc((Vector2Int) characterPosition, (Vector2Int) nextPosition);
         StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
