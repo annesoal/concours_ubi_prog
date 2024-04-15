@@ -62,7 +62,8 @@ public class EnvironmentTurnManager : MonoBehaviour
             while (HasEnergyLeft(NPCEnergy))
             {
                 //Debug.Log("EVM Avant le spawn");
-                EnemySpawnerManager.Instance.Spawn(_turn);
+                if (EnemySpawnerManager.Instance.Spawn(_turn))
+                    yield return new WaitForSeconds(0.2f);
                 yield return null;
                  
                 //Debug.Log("EVM avant play tower in game turn");

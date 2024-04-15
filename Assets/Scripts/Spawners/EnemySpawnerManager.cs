@@ -41,20 +41,25 @@ namespace Managers
                 spawner.CalculateSpawnRate(turn);
             } 
         }
-        public void Spawn(int turn)
+        public bool Spawn(int turn)
         {
-            if (turn <= 0) return;
-            if (!IsTimeToSpawn()) return;
+            if (turn <= 0) return false;
+            if (!IsTimeToSpawn()) return false;
             _timeSinceSpawns = 0;
+
+            bool hasSpawned = false;
             foreach (var spawner in _spawners)
             {
                 GameObject enemyToSpawn = spawner.GetEnemyToSpawn();
                 if (enemyToSpawn == null)
                     continue;
                 GameObject enemySpawned = Instantiate(enemyToSpawn, spawner.positionToSpawn);
-                enemySpawned.GetComponent<Enemy>().Initialize(spawner.positionToSpawn);
                 enemySpawned.GetComponent<NetworkObject>().Spawn(true);
+                enemySpawned.GetComponent<Enemy>().Initialize(spawner.positionToSpawn);
+                hasSpawned = true;
             }
+
+            return hasSpawned;
         }
 
         private bool IsTimeToSpawn()
