@@ -295,6 +295,21 @@ public class Player : NetworkBehaviour, ITopOfCell
         return _currentEnergy > 0; 
     }
 
+    public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
+    public class OnPlayerHealthChangedEventArgs : EventArgs
+    {
+        public int HealthValue;
+    }
+        
+    public void ApplyDamage(int damage)
+    {
+        Health -= damage;
+        
+        OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
+        {
+            HealthValue = Health
+        });
+    }
     
     public event EventHandler<OnPlayerEnergyChangedEventArgs> OnPlayerEnergyChanged;
     public class OnPlayerEnergyChangedEventArgs : EventArgs { public int Energy; }
