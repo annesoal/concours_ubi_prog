@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,16 +11,16 @@ public class SoundMixerManager : MonoBehaviour
 
     public void SetMasterVolume(float level)
     {
-        audioMixer.SetFloat("masterVolume",level);
+        audioMixer.SetFloat("masterVolume",Mathf.Log10(level) * 20f);
     }
 
     public void SetSoundFXVolume(float level)
     {
-        audioMixer.SetFloat("soundFXVolume",level);
+        audioMixer.SetFloat("soundFXVolume",Mathf.Log10(level) * 20f);
     }
 
     public void SetMusicVolume(float level)
     {
-        audioMixer.SetFloat("musicVolume",level);
+        audioMixer.SetFloat("musicVolume",Mathf.Log10(level) * 20f);
     }
 }
