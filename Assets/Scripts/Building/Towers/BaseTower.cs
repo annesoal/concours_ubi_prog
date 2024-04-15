@@ -25,7 +25,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     [SerializeField] protected BuildableObjectVisuals towerVisuals;
 
-    [SerializeField] protected EnemyDirection enemyDirection;
     [SerializeField] private float timeToFly;
 
     /// En radiant
@@ -118,16 +117,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
         _shooter.TimeToFly = timeToFly;
         _shooter.Angle = firingAngle;
         _shooter.ObjectToFire = _bullet;
-    }
-
-    protected enum EnemyDirection
-    {
-        ZPositive,
-        ZNegative,
-        YPositive,
-        YNegative,
-        XPositive,
-        XNegative
     }
 
     public TowerPlayInfo GetPlay()
