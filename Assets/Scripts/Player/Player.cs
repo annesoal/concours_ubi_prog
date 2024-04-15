@@ -304,6 +304,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     public void ApplyDamage(int damage)
     {
         Health -= damage;
+        Health = Mathf.Clamp(Health, 0, int.MaxValue);
 
         if (IsServer)
         {
