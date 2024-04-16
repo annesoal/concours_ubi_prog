@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Grid;
 using Grid.Interface;
 using UnityEngine;
 
@@ -16,6 +17,14 @@ public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
     {
         return buildableObjectSO;
     }
+
+    public abstract void HidePreview();
+    public void SynchBuild()
+    {
+        TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, this.transform.position);
+    }
+
+
 
     public new abstract TypeTopOfCell GetType();
 
