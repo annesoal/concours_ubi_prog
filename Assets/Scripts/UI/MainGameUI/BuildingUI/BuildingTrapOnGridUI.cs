@@ -101,7 +101,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private bool TryShowAlreadyHasBuildingError()
     {
-        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        if (_selectedCell.Value.HasNotBuildingOnTop() && 
+            !_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+        {
+            return false;
+        } 
         
         ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
 
@@ -175,7 +179,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)

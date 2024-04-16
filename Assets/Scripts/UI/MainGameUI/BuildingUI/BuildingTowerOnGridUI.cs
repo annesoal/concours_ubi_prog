@@ -102,7 +102,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
@@ -145,7 +146,11 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
     private bool TryShowAlreadyHasBuildingError()
     {
-        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        if (_selectedCell.Value.HasNotBuildingOnTop() &&
+            !_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+        {
+            return false;
+        } 
         
         ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
 
