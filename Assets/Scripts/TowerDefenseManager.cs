@@ -262,12 +262,18 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private bool HasNoEnemyInGame()
     {
-        return Enemy.GetEnemiesInGame().Count == 0;
-    }
+        List<GameObject> enemies = Enemy.GetEnemiesInGame();
+        if (enemies == null)
+        {
+            return true;
+        }
 
+        return enemies.Count == 0;
+    }
+    
     private void ProgressTacticalTimer()
     {
-        if (AllRoundsAreDone())
+        if (AllRoundsAreDone() && HasNoEnemyInGame())
         {
             gameWon = true;
             GoToSpecifiedState(State.EndOfGame);

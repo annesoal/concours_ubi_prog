@@ -109,26 +109,19 @@ public abstract class BaseTower : BuildableObject, IDamageable
         StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, position));
         yield return rotationAnimation.HasMoved();
         
+        Debug.Log("before animation");
         animator.SetBool("Attack", true);
-        yield return StartCoroutine(WaitAnimationToEnd());
+        yield return new WaitForSeconds(_animationTime); 
         animator.SetBool("Attack", false);
         
+        Debug.Log("after animation");
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
     }
 
-    private float _animationTime = 0.7f;
+    private readonly float _animationTime = 1.2f;
     
-    private IEnumerator WaitAnimationToEnd()
-    {
-        float timeNow = 0.0f;
-        while (timeNow < _animationTime)
-        {
-            timeNow += Time.deltaTime;
-            yield return null;
-        }
-    }
 
 
     private void SetShooter()

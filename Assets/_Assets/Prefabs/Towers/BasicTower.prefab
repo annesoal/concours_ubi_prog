@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
@@ -540,8 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
-  animator: {fileID: 5866666021909216657, guid: f03e2eb40e70eac429f65c34008c068d,
-    type: 3}
+  animator: {fileID: 6140172076746748943}
   shootingPoint: {fileID: 7876219794598605437}
   towerVisuals: {fileID: 1834571618264865163}
   timeToFly: 1
