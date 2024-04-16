@@ -229,20 +229,9 @@ namespace Enemies
                 GameObject.Destroy(this.gameObject);
         }
 
-        private IEnumerator Dying()
+        private void Dying()
         {
             animator.SetBool("Die", true);
-            var timeNow = 0.0f;
-            while (timeNow < timeToDie)
-            {
-                timeNow += Time.deltaTime;
-                yield return null;
-            }
-
-            if (IsServer)
-            {
-                GameObject.Destroy(this.gameObject);
-            }
         }
 
         public virtual void MoveCorroutine(EnemyChoicesInfo infos)
@@ -299,7 +288,7 @@ namespace Enemies
         }
         public void Kill()
         {
-            StartCoroutine(Dying());
+            Dying();
         }
 
         public float DistanceToDestination()
