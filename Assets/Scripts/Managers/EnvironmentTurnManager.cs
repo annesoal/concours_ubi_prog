@@ -81,7 +81,6 @@ public class EnvironmentTurnManager : MonoBehaviour
                 yield return StartCoroutine(TrapManager.Instance.AnimateTraps());
                 yield return null;
                 
-                IAManager.ResetEnemies();
                 TowerManager.Instance.ResetStates();
                 TrapManager.Instance.ResetAnimations();
                 
@@ -93,6 +92,8 @@ public class EnvironmentTurnManager : MonoBehaviour
             //Debug.Log("Sortie de la boucle EVM");
         
             _turn++;
+            
+            IAManager.ResetEnemies();
         }
         
         end_of_phase :

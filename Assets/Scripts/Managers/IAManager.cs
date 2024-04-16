@@ -68,10 +68,6 @@ namespace Managers
             hasMovedEveryEnemies = true;
         }
         
-        public bool hasMovedEnemies()
-        {
-            return hasMovedEveryEnemies;
-        }
 
         private static void SetEnemyPath(Enemy enemy)
         {
