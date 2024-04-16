@@ -453,9 +453,7 @@ namespace Grid
         public static List<Cell> FindCellsInCross(Cell origin)
         {
             List<Cell> cells = new();
-            cells.Add(grid.GetCell(origin.position));
             cells.Add(grid.GetCell(origin.position + Vector2Int.down));
-            cells.Add(grid.GetCell(origin.position + Vector2Int.up));
             cells.Add(grid.GetCell(origin.position + Vector2Int.left));
             cells.Add(grid.GetCell(origin.position + Vector2Int.right));
             return cells;

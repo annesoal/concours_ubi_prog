@@ -11,6 +11,7 @@ public class FourthQuadraSpawnerMath2 : MathSpawnSO
         if (turn > EnemySpawnerManager.TotalRounds)
             return 0;
         return (int)Math.Ceiling(turn * 0.28);
+
     }
 
     public override int GetBigGuyToSpawn(int turn)

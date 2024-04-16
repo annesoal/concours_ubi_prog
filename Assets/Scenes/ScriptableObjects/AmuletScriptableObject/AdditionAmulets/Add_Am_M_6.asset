@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_6
   m_EditorClassIdentifier: 
-  description: 
-  amuletIcon: {fileID: 0}
-  turnTime: 0
+  description: "Jimmy se r\xE9veille un tour plus t\xF4t, mais tol\xE8re la passage
+    d'un ennemi de moins avant de subir une d\xE9faite."
+  amuletIcon: {fileID: 21300000, guid: 68ce8c73d99d28a45b2015d440174d3c, type: 3}
+  turnTime: 10
   startingTurn: 0
   numberOfTurns: 0
   ressourceSpawnRate: 0
-  playersHealth: 0
+  playersHealth: -1
   playerEnergy: 0
   startingMoney: 0
   enemyEnergy: 0
@@ -44,6 +45,6 @@ MonoBehaviour:
   TowerTimeBetweenAttacks: 0
   numberOfProjectile: 0
   TowerDamage: 0
-  BombCost: 0
+  BombCost: 1
   BombDamage: 0
   BombRange: 0

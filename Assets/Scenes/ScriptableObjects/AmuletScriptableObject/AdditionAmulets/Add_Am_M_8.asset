@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_8
   m_EditorClassIdentifier: 
-  description: 
+  description: "Des ressources suppl\xE9mentaires apparaissent \xE0 chaque tour,
+    mais vous disposez de moins de temps pour prendre vos d\xE9cisions."
   amuletIcon: {fileID: 0}
   turnTime: -10
   startingTurn: 0

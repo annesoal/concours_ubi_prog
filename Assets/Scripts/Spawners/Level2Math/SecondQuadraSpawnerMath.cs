@@ -11,6 +11,7 @@ public class SecondQuadraSpawnerMath : MathSpawnSO
         if (turn > EnemySpawnerManager.TotalRounds)
             return 0;
         return (int)Math.Ceiling(turn * 0.55 / 4);
+
     }
 
     public override int GetBigGuyToSpawn(int turn)
@@ -25,6 +26,7 @@ public class SecondQuadraSpawnerMath : MathSpawnSO
         if (turn > EnemySpawnerManager.TotalRounds)
             return 0;
         return (int)Math.Round(turn * 0.35 * 0.75 / 2);
+
     }
 
     public override int GetSnipperToSpawn(int turn)
@@ -32,5 +34,6 @@ public class SecondQuadraSpawnerMath : MathSpawnSO
         if (turn > EnemySpawnerManager.TotalRounds)
             return 0;
         return (int)Math.Round(turn * 0.1 / 2);
+
     }
 }
