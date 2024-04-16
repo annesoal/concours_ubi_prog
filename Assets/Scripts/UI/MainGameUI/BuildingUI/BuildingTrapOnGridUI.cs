@@ -175,7 +175,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
