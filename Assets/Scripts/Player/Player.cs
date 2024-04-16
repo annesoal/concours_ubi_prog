@@ -12,25 +12,30 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
+using Utils;
 using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 
 public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
 
-    private const float MinPressure = 0.3f; 
+    private const float MinPressure = 0.3f;
+
     private const string SPAWN_POINT_COMPONENT_ERROR =
         "Chaque spawn point de joueur doit avoir le component `BlockPlayerSpawn`";
+
     [SerializeField] private float cooldown = 0.1f;
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
     [SerializeField] private float _timeToMove = 0.5f;
-    [SerializeField] protected Animator animator;
-    
+    private Animator animator;
+    protected Utils.OwnerNetworkAnimator Network;
+
     private Recorder<GameObject> _highlighters;
     private Timer _timer;
     public static int Health;
     public static int Energy;
+    public bool hasFinishedMoveAnimation = false;
 
     public int EnergyAvailable
     {
@@ -41,18 +46,28 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
     }
 
+
     private bool _hasFinishedToMove;
 
     private bool _canMove;
 
     private int _totalEnergy = Energy;
     private int _currentEnergy;
-    
+
+    private void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+
+        // autoritative = GetComponentInChildren<OwnerNetworkAnimator>();
+    }
+
+
     public Player()
     {
         _timer = new(cooldown);
         _highlighters = new();
     }
+
     public void InputMove(Vector2 direction)
     {
         if (IsMovementInvalid()) return;
@@ -69,8 +84,13 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         if (!IsOwner) return true;
         if (!CooldownHasPassed()) return true;
-    
+
         return false;
+    }
+
+    private void ResetBoolean()
+    {
+        _hasFinishedToMove = false;
     }
 
     private void HandleInput(Vector2 direction)
@@ -97,7 +117,8 @@ public class Player : NetworkBehaviour, ITopOfCell
                 _selector.MoveSelector();
                 _timer.Start();
             }
-        } else if (hasMoved != MoveType.Invalid)
+        }
+        else if (hasMoved != MoveType.Invalid)
         {
             throw new Exception("Invalide input " + direction);
         }
@@ -113,12 +134,13 @@ public class Player : NetworkBehaviour, ITopOfCell
         GameObject newHighlighter = Instantiate(_highlighter, position, quaternion.identity);
         _highlighters.Add(newHighlighter);
     }
+
     private void RemovePreviousHighlighter()
     {
         if (!_highlighters.IsEmpty())
         {
-                GameObject nextHighLighter = _highlighters.RemoveFirst();
-                Destroy(nextHighLighter);
+            GameObject nextHighLighter = _highlighters.RemoveFirst();
+            Destroy(nextHighLighter);
         }
     }
 
@@ -131,7 +153,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
 
         InitializePlayerBasedOnCharacterSelection();
-        
+
         if (IsServer)
         {
             TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, transform.position);
@@ -140,29 +162,34 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private void InitializePlayerBasedOnCharacterSelection()
     {
-        
         CharacterSelectUI.CharacterId characterSelection =
             GameMultiplayerManager.Instance.GetCharacterSelectionFromClientId(OwnerClientId);
 
         if (characterSelection == CharacterSelectUI.CharacterId.Monkey)
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.MonkeyBlockPlayerSpawn);
-            SetReachableCells(true, transform.position); 
-            
-            if (IsOwner) { CameraController.Instance.SetBonzoCameraAsMain(); }
+            SetReachableCells(true, transform.position);
+
+            if (IsOwner)
+            {
+                CameraController.Instance.SetBonzoCameraAsMain();
+            }
         }
         else
         {
             MovePlayerOnSpawnPoint(TowerDefenseManager.Instance.RobotBlockPlayerSpawn);
-            SetReachableCells(false, transform.position); 
-            if (IsOwner) { CameraController.Instance.SetZombotCameraAsMain(); }
+            SetReachableCells(false, transform.position);
+            if (IsOwner)
+            {
+                CameraController.Instance.SetZombotCameraAsMain();
+            }
         }
     }
-    
+
     private void MovePlayerOnSpawnPoint(Transform spawnPoint)
     {
         bool hasComponent = spawnPoint.TryGetComponent(out BlockPlayerSpawn blockPlayerSpawn);
-        
+
         if (hasComponent)
         {
             blockPlayerSpawn.SetPlayerOnBlock(transform);
@@ -177,6 +204,7 @@ public class Player : NetworkBehaviour, ITopOfCell
             CameraController.Instance.MoveCameraToPosition(transform.position);
         }
     }
+
     /// <summary>
     /// Demande au timer de verifier si le temps ecoule permet un nouveau deplacement
     /// </summary>
@@ -185,7 +213,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         return _timer.HasTimePassed();
     }
-    
+
     /// <summary>
     ///  Traduite la valeur d'input en Vector2Int
     /// </summary>
@@ -222,8 +250,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         TowerDefenseManager.Instance.SetPlayerReadyToPass(true);
         _canMove = false;
         _selector.Confirm();
-        if (!_selector.isSelecting) 
-            _selector.Initialize(transform.position); 
+        if (!_selector.isSelecting)
+            _selector.Initialize(transform.position);
     }
 
     // Methode appellee que le joeur appuie sur le bouton de selection (A sur gamepad par defaut ou spece au clavier)
@@ -231,51 +259,53 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         if (_selector.isSelecting)
             return;
-        
+
         _selector.Select();
         _selector.isSelecting = true;
-        _selector.Initialize(transform.position); 
+        _selector.Initialize(transform.position);
         TowerDefenseManager.Instance.SetPlayerReadyToPass(false);
-        _canMove = true; 
+        _canMove = true;
     }
 
     public IEnumerator Move()
     {
         Vector2Int characterPosition = TilingGrid.LocalToGridPosition(transform.position);
         Vector2Int? oldPosition = _selector.GetCurrentPosition();
-        _selector.Disable(); 
+        _selector.Disable();
         Vector2Int? nextPosition = _selector.GetNextPositionToGo();
-        
+
         if (nextPosition == null || oldPosition == null)
-        { 
+        {
             IsReadyServerRpc();
+            ResetBoolean();
             yield break;
         }
-        
+
         RemoveNextHighlighter();
-        UpdateMoveServerRpc((Vector2Int) characterPosition, (Vector2Int) nextPosition);
-        StartCoroutine(MoveToNextPosition((Vector2Int) nextPosition));
+        UpdateMoveServerRpc((Vector2Int)characterPosition, (Vector2Int)nextPosition);
+        StartCoroutine(MoveToNextPosition((Vector2Int)nextPosition));
         yield return new WaitUntil(IsReadyToPickUp);
-        PickUpItems((Vector2Int) nextPosition);
+        PickUpItems((Vector2Int)nextPosition);
         IsReadyServerRpc();
+        ResetBoolean();
     }
 
     [ServerRpc]
     private void UpdateMoveServerRpc(Vector2Int oldPosition, Vector2Int nextPosition)
     {
-       TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, nextPosition); 
+        TilingGrid.UpdateMovePositionOnGrid(this.gameObject, oldPosition, nextPosition);
     }
 
     private bool IsReadyToPickUp()
     {
-        return  _hasFinishedToMove;
+        return _hasFinishedToMove;
     }
 
     private static void PickUpItems(Vector2Int position)
     {
-        // metre sound
         GameMultiplayerManager.Instance.PickUpResourcesServerRpc(position);
     }
+
     private void CleanHighlighters()
     {
         while (_highlighters != null && !_highlighters.IsEmpty())
@@ -283,6 +313,7 @@ public class Player : NetworkBehaviour, ITopOfCell
             RemoveNextHighlighter();
         }
     }
+
     private void RemoveNextHighlighter()
     {
         if (!_highlighters.IsEmpty())
@@ -291,58 +322,64 @@ public class Player : NetworkBehaviour, ITopOfCell
             Destroy(nextHighLighter);
         }
     }
+
     private bool HasEnergy()
     {
-        return _currentEnergy > 0; 
+        return _currentEnergy > 0;
     }
 
     public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
+
     public class OnPlayerHealthChangedEventArgs : EventArgs
     {
         public int HealthValue;
     }
-        
+
     public void ApplyDamage(int damage)
     {
         Health -= damage;
-        
+
         OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
         {
             HealthValue = Health
         });
     }
-    
+
     public event EventHandler<OnPlayerEnergyChangedEventArgs> OnPlayerEnergyChanged;
-    public class OnPlayerEnergyChangedEventArgs : EventArgs { public int Energy; }
-    
+
+    public class OnPlayerEnergyChangedEventArgs : EventArgs
+    {
+        public int Energy;
+    }
+
     private void ResetEnergy()
     {
         _currentEnergy = _totalEnergy;
-        
-       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
-       {
-           Energy = _totalEnergy,
-       });
+
+        OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+        {
+            Energy = _totalEnergy,
+        });
     }
 
     private void DecrementEnergy()
     {
-       _currentEnergy--; 
-       
-       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
-       {
-           Energy = _currentEnergy,
-       });
+        _currentEnergy--;
+
+        OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+        {
+            Energy = _currentEnergy,
+        });
     }
-    
+
     private void IncrementEnergy()
     {
         _currentEnergy++;
-        
-       OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
-       {
-           Energy = _currentEnergy,
-       });
+
+        OnPlayerEnergyChanged?.Invoke(this, new OnPlayerEnergyChangedEventArgs
+        {
+            Energy = _currentEnergy,
+        });
     }
 
     public void OnCancel()
@@ -356,23 +393,48 @@ public class Player : NetworkBehaviour, ITopOfCell
 
     private IEnumerator MoveToNextPosition(Vector2Int toPosition)
     {
-        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
-        transform.LookAt(cellLocalPosition);
-        // creer objet RotationAnimation
-        // start coroutine
-        // anim avancer
-        Vector3 origin = transform.position;
         _hasFinishedToMove = false;
+        Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
+        RotationAnimation rotationAnimation = new RotationAnimation();
+
+        StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, cellLocalPosition));
+        yield return new WaitUntil(rotationAnimation.HasMoved);
+       // SetAnimatorStateServerRpc(true);
+        animator.SetBool("Move", true);
+
+        Vector3 origin = transform.position;
+
         float currentTime = 0.0f;
         while (currentTime < _timeToMove)
         {
             float f = currentTime / _timeToMove;
-            transform.position = Vector3.Lerp( origin, cellLocalPosition, f);
+            transform.position = Vector3.Lerp(origin, cellLocalPosition, f);
             currentTime += Time.deltaTime;
             yield return null;
         }
 
+        this.transform.position = cellLocalPosition;
+        //SetAnimatorStateServerRpc(false);
+         animator.SetBool("Move", false);
         _hasFinishedToMove = true;
+    }
+
+    private void SetAnimatorState(bool isMoving)
+    {
+        animator.SetBool("Move", isMoving);
+    }
+
+    [ServerRpc]
+    private void SetAnimatorStateServerRpc(bool isMoving)
+    {
+        if (!IsLocalPlayer) SetAnimatorState(isMoving);
+        SetAnimatorStateClientRpc(isMoving);
+    }
+
+    [ClientRpc]
+    private void SetAnimatorStateClientRpc(bool isMoving)
+    {
+        if (!IsLocalPlayer && !IsServer) SetAnimatorState(isMoving);
     }
 
     public void ResetPlayer(int energy)
@@ -399,10 +461,11 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         return this.gameObject;
     }
+
     private void SetReachableCells(bool isMonkey, Vector3 position)
     {
         if (isMonkey)
-        {   
+        {
             TilingGrid.FindReachableCellsMonkey(position);
         }
         else
@@ -411,17 +474,16 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
     }
 
-	public enum MoveType
-	{
-		New, 
-		ConsumeLast,
-		Invalid, 
-	}
+    public enum MoveType
+    {
+        New,
+        ConsumeLast,
+        Invalid,
+    }
 
     [ServerRpc]
     private void IsReadyServerRpc()
     {
         EnvironmentTurnManager.Instance.IncrementPlayerFinishedMoving();
     }
-
 }
