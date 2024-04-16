@@ -10,8 +10,6 @@ using UnityEngine.UI;
 
 public class BuildingCarrouselUI : MonoBehaviour
 {
-    [SerializeField] private Button chooseBuildingButton;
-    
     [SerializeField] private Image centerImage;
     [SerializeField] private Image leftImage;
     [SerializeField] private Image rightImage;
