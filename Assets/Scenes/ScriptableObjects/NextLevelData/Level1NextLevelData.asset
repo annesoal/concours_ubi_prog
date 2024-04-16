@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level1NextLevelData
   m_EditorClassIdentifier: 
   AmuletChoiceAtEnd:
-  - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
+  - {fileID: 11400000, guid: 2bdff5d83d1239ce88da19aa14c9678d, type: 2}
   - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
   - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
   nextLevelScene: 7
