@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultAdditionAmuletSO
   m_EditorClassIdentifier: 
   description: Default amulet description.
-  amuletIcon: {fileID: 21300000, guid: cfbf2a7e43c3477b99912643c484c6ca, type: 3}
+  amuletIcon: {fileID: 21300000, guid: 3076165f41a709eaba42c22a9f503e06, type: 3}
   turnTime: 0
   startingTurn: 0
   numberOfTurns: 0
@@ -22,6 +22,7 @@ MonoBehaviour:
   playerEnergy: 0
   startingMoney: 0
   enemyEnergy: 0
+  timeBetweenSpawns: 0
   MerdeHeathPoints: 0
   MerdeMoveRatio: 0
   GoofyHealthPoints: 0
