@@ -65,7 +65,8 @@ namespace Utils
                 }
             }
             //TODO changer!
-            throw new Exception("Path not found " + origin.position + ", " + destination.position );
+            openSet.Add(origin);
+            return openSet;
         }
 
         private static float GScoreNeighbor(Dictionary<Cell, float> gScore, Cell neighbor)
