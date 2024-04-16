@@ -48,4 +48,6 @@ MonoBehaviour:
   resourceAudioClip: {fileID: 8300000, guid: 276831dee1a86178bafd3d95fa420a7d, type: 3}
   malusAudioSound: {fileID: 8300000, guid: 162e1ead3c29c71709a11d8a4806aaa3, type: 3}
   victoryAudioLip: {fileID: 8300000, guid: 0d60716d16402721a8b45c24ea20ee28, type: 3}
-  lostAudioSound: {fileID: 8300000, guid: 8530ae0ac03114dda902b59f145e64e7, type: 3}
+  gameOverAudioSound: {fileID: 8300000, guid: 8530ae0ac03114dda902b59f145e64e7, type: 3}
+  menuMusic: {fileID: 8300000, guid: 0efd641c9c169816cbb3bd424ea38d51, type: 3}
+  gameMusic: {fileID: 8300000, guid: 82e86e01416d9827c81796f4330cea1b, type: 3}

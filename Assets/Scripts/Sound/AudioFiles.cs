@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Sound
 {
@@ -10,7 +11,9 @@ namespace Sound
         [SerializeField] private AudioClip resourceAudioClip;
         [SerializeField] private AudioClip malusAudioSound;
         [SerializeField] private AudioClip victoryAudioLip;
-        [SerializeField] private AudioClip lostAudioSound;
+        [FormerlySerializedAs("lostAudioSound")] [SerializeField] private AudioClip gameOverAudioSound;
+        [SerializeField] private AudioClip menuMusic;
+        [SerializeField] private AudioClip gameMusic;
 
         private void Awake()
         {
@@ -31,6 +34,16 @@ namespace Sound
         public AudioClip getMalusClip()
         {
             return malusAudioSound;
+        }
+        
+        public AudioClip getMenuClip()
+        {
+            return menuMusic;
+        }
+
+        public AudioClip getGameMusicClip()
+        {
+            return gameMusic;
         }
     }
 }
