@@ -54,7 +54,7 @@ namespace Enemies.Attack
                 };
             }
 
-            if (updatedCell.HasTopOfCellOfType(TypeTopOfCell.Building))
+            if (updatedCell.HasNonWalkableBuilding())
             {
                 var tower = updatedCell.GetTower();
                 int remainingHP = tower.Damage(AttackDamage);
