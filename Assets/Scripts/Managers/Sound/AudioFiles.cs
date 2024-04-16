@@ -6,9 +6,11 @@ namespace Sound
     {
         
         public static AudioFiles Instance{ get; private set; }
-        [SerializeField] protected AudioClip bonusAudioClip;
-        [SerializeField] protected AudioClip resourceAudioClip;
-        [SerializeField] protected AudioClip malusAudioSound;
+        [SerializeField] private AudioClip bonusAudioClip;
+        [SerializeField] private AudioClip resourceAudioClip;
+        [SerializeField] private AudioClip malusAudioSound;
+        [SerializeField] private AudioClip victoryAudioLip;
+        [SerializeField] private AudioClip lostAudioSound;
 
         private void Awake()
         {

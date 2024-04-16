@@ -47,3 +47,5 @@ MonoBehaviour:
   bonusAudioClip: {fileID: 8300000, guid: 0c03738475301750ab10080a1da19c1b, type: 3}
   resourceAudioClip: {fileID: 8300000, guid: 276831dee1a86178bafd3d95fa420a7d, type: 3}
   malusAudioSound: {fileID: 8300000, guid: 162e1ead3c29c71709a11d8a4806aaa3, type: 3}
+  victoryAudioLip: {fileID: 8300000, guid: 0d60716d16402721a8b45c24ea20ee28, type: 3}
+  lostAudioSound: {fileID: 8300000, guid: 8530ae0ac03114dda902b59f145e64e7, type: 3}
