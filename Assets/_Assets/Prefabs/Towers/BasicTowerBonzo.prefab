@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
-  animator: {fileID: 0}
+  animator: {fileID: 2425848613842114737}
   shootingPoint: {fileID: 7876219794598605437}
   towerVisuals: {fileID: 6731371395667940669}
   timeToFly: 1
@@ -457,6 +457,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67d8b372520b98d4db2403b213a519f6, type: 3}
+--- !u!95 &2425848613842114737 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 67d8b372520b98d4db2403b213a519f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 8124720088947254560}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8595811080869184203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,

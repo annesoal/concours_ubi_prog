@@ -280,7 +280,7 @@ PrefabInstance:
     - target: {fileID: 5635950511158437073, guid: 232d4a4653874781d8eb6d4e8bad458c,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 436191676
+      value: 3373096588
       objectReference: {fileID: 0}
     - target: {fileID: 5841426918530243920, guid: 232d4a4653874781d8eb6d4e8bad458c,
         type: 3}
@@ -334,13 +334,10 @@ MonoBehaviour:
     type: 3}
   shootingPoint: {fileID: 7876219794598605437}
   towerVisuals: {fileID: 6731371395667940669}
-  numberOfProjectilesToShootInTurn: 1
-  enemyDirection: 0
   timeToFly: 1
   firingAngle: 0.9
-  timeBetweenShots: 2
   _bullet: {fileID: 2857078434426882998, guid: 2f28466c84102a607877f23cf2f56f97, type: 3}
-  shootingRange: 2
+  HasFinishedAnimation: 0
 --- !u!4 &6343251929679007998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1288486726580524018, guid: 232d4a4653874781d8eb6d4e8bad458c,

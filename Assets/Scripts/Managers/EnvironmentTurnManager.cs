@@ -62,34 +62,41 @@ public class EnvironmentTurnManager : MonoBehaviour
             while (HasEnergyLeft(NPCEnergy))
             {
                 //Debug.Log("EVM Avant le spawn");
-                EnemySpawnerManager.Instance.Spawn(_turn);
+                if (EnemySpawnerManager.Instance.Spawn(_turn))
+                    yield return new WaitForSeconds(0.2f);
+                yield return null;
                  
                 //Debug.Log("EVM avant play tower in game turn");
                 TowerManager.Instance.PlayBackEnd();
-                StartCoroutine(TowerManager.Instance.AnimateTowers());
-                yield return new WaitUntil(() => TowerManager.Instance.HasFinishedAnimations);
-                TowerManager.Instance.ResetStates();
+                yield return StartCoroutine(TowerManager.Instance.AnimateTowers());
+                yield return null;
                 
                 //Debug.Log("EVM avant move enemies");
                 IAManager.Instance.BackendMoveEnemies();
-                StartCoroutine(IAManager.Instance.MoveEnemies());
-                yield return new WaitUntil(IAManager.Instance.hasMovedEnemies);
+                Debug.Log("after backendMove");
+                yield return StartCoroutine(IAManager.Instance.MoveEnemies());
+                yield return null;
 
                 TrapManager.Instance.PlayBackEnd();
-                StartCoroutine(TrapManager.Instance.AnimateTraps());
-                yield return new WaitUntil(() => TrapManager.Instance.HasFinishedAnimations);
+                yield return StartCoroutine(TrapManager.Instance.AnimateTraps());
+                yield return null;
+                
+                TowerManager.Instance.ResetStates();
                 TrapManager.Instance.ResetAnimations();
                 
-                //Debug.Log("Fin Iteration boucle EVM");
+               // Debug.Log("Fin Iteration boucle EVM");
                 NPCEnergy--;
+                if (Player.Health <= 0)
+                    goto end_of_phase;
             }
             //Debug.Log("Sortie de la boucle EVM");
         
-            IAManager.ResetEnemies();
-        
             _turn++;
+            
+            IAManager.ResetEnemies();
         }
         
+        end_of_phase :
         yield return new WaitForSeconds(0.05f);    
         OnEnvironmentTurnEnded?.Invoke(this, EventArgs.Empty);
     }

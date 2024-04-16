@@ -52,7 +52,7 @@ Material:
     - _QueueOffset: 0
     - _Shades: 0.4
     m_Colors:
-    - _Tint: {r: 0.59900004, g: 0.58509696, b: 0.56964904, a: 0}
+    - _Tint: {r: 0.24528301, g: 0.23891953, b: 0.23255606, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &619387713763337147
 MonoBehaviour:

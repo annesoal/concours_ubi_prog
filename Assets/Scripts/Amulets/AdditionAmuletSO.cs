@@ -23,6 +23,7 @@ public class AdditionAmuletSO : ScriptableObject
 
     [Header("Enemis")]
     public int enemyEnergy = 0;
+    public int timeBetweenSpawns = 0;
 
     [Header("Merde")] 
     public int MerdeHeathPoints = 0; 

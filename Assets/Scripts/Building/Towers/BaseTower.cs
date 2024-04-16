@@ -66,10 +66,15 @@ public abstract class BaseTower : BuildableObject, IDamageable
         return Health -= damage;
     }
 
+    public override void HidePreview()
+    {
+        towerVisuals.HidePreview();
+    }
+
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
-
+        
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
 
         RegisterTower(this);
@@ -104,11 +109,19 @@ public abstract class BaseTower : BuildableObject, IDamageable
         StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, position));
         yield return rotationAnimation.HasMoved();
         
-        // TODO : modifier le time tofly en fonction de la vitesse 
+        Debug.Log("before animation");
+        animator.SetBool("Attack", true);
+        yield return new WaitForSeconds(_animationTime); 
+        animator.SetBool("Attack", false);
+        
+        Debug.Log("after animation");
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
     }
+
+    private readonly float _animationTime = 1.2f;
+    
 
 
     private void SetShooter()
@@ -131,7 +144,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
         List<EnemyInfoToShoot> infos = TargetEnemies();
         if (infos.Count == 0)
         {
-            //Debug.LogWarning("no enemies around");
             return towerPlayInfo;
         }
 

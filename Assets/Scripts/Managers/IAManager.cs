@@ -60,22 +60,14 @@ namespace Managers
                     {
                         movingEnemies.Remove(enemy);
                     }
+                
                 }
                 yield return null;
-            }
-
-            foreach (var enemy in Enemy.GetEnemiesInGame())
-            {
-                enemy.GetComponent<Enemy>().ResetAnimationStates();
             }
 
             hasMovedEveryEnemies = true;
         }
         
-        public bool hasMovedEnemies()
-        {
-            return hasMovedEveryEnemies;
-        }
 
         private static void SetEnemyPath(Enemy enemy)
         {

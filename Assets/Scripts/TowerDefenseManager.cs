@@ -251,7 +251,7 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
 
-        if (currentRoundNumber >= TotalRounds)
+        if (currentRoundNumber >= TotalRounds && HasNoEnemyInGame())
         {
             gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
@@ -260,9 +260,20 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.TacticalPause);
     }
 
+    private bool HasNoEnemyInGame()
+    {
+        List<GameObject> enemies = Enemy.GetEnemiesInGame();
+        if (enemies == null)
+        {
+            return true;
+        }
+
+        return enemies.Count == 0;
+    }
+    
     private void ProgressTacticalTimer()
     {
-        if (AllRoundsAreDone())
+        if (AllRoundsAreDone() && HasNoEnemyInGame())
         {
             gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
@@ -500,6 +511,8 @@ public class TowerDefenseManager : NetworkBehaviour
         Player.Energy = amuletSO.playerEnergy + PlayerAmuletSelection.playerEnergy;
         Player.Health = amuletSO.playersHealth + PlayerAmuletSelection.playersHealth;
 
+        EnemySpawnerManager.TotalRounds = amuletSO.numberOfTurns + PlayerAmuletSelection.numberOfTurns;;
+        EnemySpawnerManager.timeBetweenSpawns = amuletSO.timeBetweenSpawns + PlayerAmuletSelection.timeBetweenSpawns;
         Enemy.Energy = amuletSO.enemyEnergy + PlayerAmuletSelection.enemyEnergy;
         
         GoofyEnemy.GoofyHealth = amuletSO.GoofyHealthPoints + PlayerAmuletSelection.GoofyHealthPoints;

@@ -21,6 +21,7 @@ namespace Amulets
         public int startingMoney = 0;
 
         [Header("Enemis")]
+        public int timeBetweenSpawns = 0;
         public int enemyEnergy = 12;
 
         [Header("Merde")] 

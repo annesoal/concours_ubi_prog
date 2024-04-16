@@ -10,6 +10,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -58,6 +73,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 453874682949890162, guid: 67d8b372520b98d4db2403b213a519f6,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -78,14 +98,49 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_tower-Bonzo
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a7f688e59ff2a5acb9db28202e2d166c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 67d8b372520b98d4db2403b213a519f6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6089319090102025236}
   m_SourcePrefab: {fileID: 100100000, guid: 67d8b372520b98d4db2403b213a519f6, type: 3}
 --- !u!4 &276524065957539445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 67d8b372520b98d4db2403b213a519f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 314355121352051102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &620856286703957199 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 67d8b372520b98d4db2403b213a519f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 314355121352051102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6089319090102025236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620856286703957199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 6140172076746748943}
+--- !u!95 &6140172076746748943 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 67d8b372520b98d4db2403b213a519f6,
     type: 3}
   m_PrefabInstance: {fileID: 314355121352051102}
   m_PrefabAsset: {fileID: 0}
@@ -211,6 +266,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2605634133671633282, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2891917162457659208, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
         type: 3}
       propertyPath: m_Name
@@ -219,6 +279,11 @@ PrefabInstance:
     - target: {fileID: 6134044490305366967, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
         type: 3}
       propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6155850350313567163, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6932939769036989777, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
@@ -281,6 +346,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8755822345432392002, guid: f11ad6cb94e99092abb41deeb4dbf3ab,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a7f688e59ff2a5acb9db28202e2d166c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -474,8 +544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
-  animator: {fileID: 5866666021909216657, guid: f03e2eb40e70eac429f65c34008c068d,
-    type: 3}
+  animator: {fileID: 6140172076746748943}
   shootingPoint: {fileID: 7876219794598605437}
   towerVisuals: {fileID: 1834571618264865163}
   timeToFly: 1

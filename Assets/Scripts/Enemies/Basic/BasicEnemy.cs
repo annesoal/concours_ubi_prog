@@ -158,11 +158,16 @@ namespace Enemies.Basic
 
         protected override IEnumerator RotateThenMove(Vector3 direction)
         {
+            Debug.LogWarning("before rotate ");
             RotationAnimation rotationAnimation = new RotationAnimation();
             StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, direction));
             yield return new WaitUntil(rotationAnimation.HasMoved);
+            
+            Debug.LogWarning("before move ");
             StartCoroutine(MoveEnemy(direction));
             yield return new WaitUntil(hasFinishedMovingAnimation);
+            
+            Debug.LogWarning("after move ");
         }
 
 

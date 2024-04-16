@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
+  m_Name: Am_L_LV3_1604_01
+  m_EditorClassIdentifier: 
+  ID: 
+  turnTime: 60
+  startingTurn: 0
+  numberOfTurns: 6
+  ressourceSpawnRate: 0.06
+  playersHealth: 3
+  playerEnergy: 12
+  startingMoney: 0
+  timeBetweenSpawns: 1
+  enemyEnergy: 24
+  MerdeHeathPoints: 1
+  MerdeMoveRatio: 4
+  GoofyHealthPoints: 2
+  GoofyMoveRatio: 2
+  BigGuyHealthPoints: 3
+  BigGuyMoveRatio: 4
+  BigGuyDamages: 1
+  SniperHealthPoints: 1
+  SniperMoveRatio: 6
+  SniperDamages: 1
+  SniperRange: 3
+  TrapCost: 2
+  StunDuration: 1
+  TrapRange: 1
+  ObstaclesHealth: 1
+  TowerCost: 6
+  TowerRange: 2
+  TowerHealth: 2
+  TowerTimeBetweenAttacks: 2
+  numberOfProjectile: 1
+  TowerDamage: 1
+  BombCost: 3
+  BombDamage: 2
+  BombRange: 1

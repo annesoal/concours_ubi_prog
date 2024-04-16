@@ -21,9 +21,12 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     [SerializeField] private Button rightArrowButton;
     [SerializeField] private Button leftArrowButton;
 
+    [Header("Error")]
+    [SerializeField] private GameObject errorUI;
+    [SerializeField] private TextMeshProUGUI errorText;
+    
     [Header("Other")]
     [SerializeField] private Button closeButton;
-    [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private GameObject highlighterGameObject;
     
     private LinkedList<Cell> _enemyWalkableCells;
@@ -93,15 +96,19 @@ public class BuildingTrapOnGridUI : MonoBehaviour
 
         if (TryShowHasEnemyError()) { return; }
         
-        BasicShowHide.Hide(errorText.gameObject);
+        BasicShowHide.Hide(errorUI.gameObject);
         ShowPreviewOnSelectedCell();
     }
 
-    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
+    private const string ALREADY_HAS_BUILDING_ERROR = "Building Spot Has Enemy On It !";
     
     private bool TryShowAlreadyHasBuildingError()
     {
-        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        if (_selectedCell.Value.HasNotBuildingOnTop() && 
+            !_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+        {
+            return false;
+        } 
         
         ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
 
@@ -128,12 +135,19 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         return true;
     }
 
+    private int _showErrorTextTweening;
     private void ShowErrorText(string toShow)
     {
         DestroyPreview();
             
+        LeanTween.cancel(_showErrorTextTweening);
+        errorUI.transform.localScale = Vector3.zero;
+        
         errorText.text = toShow;
-        BasicShowHide.Show(errorText.gameObject);
+        
+        BasicShowHide.Show(errorUI.gameObject);
+        _showErrorTextTweening =
+            errorUI.transform.LeanScale(Vector3.one, 0.4f).setEaseOutExpo().id;
     }
     
     private void ShowPreviewOnSelectedCell()
@@ -175,7 +189,8 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_trapSO) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
     
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)

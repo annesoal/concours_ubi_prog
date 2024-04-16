@@ -22,7 +22,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
     [SerializeField] private Button rightArrow;
     [SerializeField] private Button leftArrow;
 
-    [Header("Other")]
+    [Header("Error")]
+    [SerializeField] private GameObject errorUI;
     [SerializeField] private TextMeshProUGUI errorText;
 
     private LinkedList<Cell> _buildableCells;
@@ -102,7 +103,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
@@ -137,15 +139,19 @@ public class BuildingTowerOnGridUI : MonoBehaviour
 
         if (TryShowHasEnemyError()) { return; }
         
-        BasicShowHide.Hide(errorText.gameObject);
+        BasicShowHide.Hide(errorUI.gameObject);
             
         ShowPreview();
     }
 
-    private const string ALREADY_HAS_BUILDING_ERROR = "ALREADY HAS A BUILDING";
+    private const string ALREADY_HAS_BUILDING_ERROR = "Already Has a Building !";
     private bool TryShowAlreadyHasBuildingError()
     {
-        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        if (_selectedCell.Value.HasNotBuildingOnTop() &&
+            !_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+        {
+            return false;
+        } 
         
         ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
 
@@ -172,12 +178,19 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         return true;
     }
     
+    private int _showErrorTextTweening;
     private void ShowErrorText(string toShow)
     {
         HidePreview();
             
+        LeanTween.cancel(_showErrorTextTweening);
+        errorUI.transform.localScale = Vector3.zero;
+        
         errorText.text = toShow;
-        BasicShowHide.Show(errorText.gameObject);
+        
+        BasicShowHide.Show(errorUI.gameObject);
+        _showErrorTextTweening =
+            errorUI.transform.LeanScale(Vector3.one, 0.4f).setEaseOutExpo().id;
     }
 
     private void ShowPreview()

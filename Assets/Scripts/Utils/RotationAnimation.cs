@@ -30,7 +30,7 @@ namespace Utils
             float currentTime = 0.0f;
             Quaternion origin = gameObject.transform.rotation;
             Quaternion rotation = Quaternion.LookRotation(position - gameObject.transform.position);
-            if (rotation != Quaternion.identity)
+            if (rotation != origin)
                 while (timeToMove > currentTime)
                 {
                     gameObject.transform.rotation = Quaternion.Slerp(
