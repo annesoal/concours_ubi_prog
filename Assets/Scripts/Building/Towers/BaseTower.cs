@@ -66,10 +66,15 @@ public abstract class BaseTower : BuildableObject, IDamageable
         return Health -= damage;
     }
 
+    public override void HidePreview()
+    {
+        towerVisuals.HidePreview();
+    }
+
     public override void Build(Vector2Int positionToBuild)
     {
         towerVisuals.HidePreview();
-
+        
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
 
         RegisterTower(this);
@@ -104,10 +109,25 @@ public abstract class BaseTower : BuildableObject, IDamageable
         StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, position));
         yield return rotationAnimation.HasMoved();
         
-        // TODO : modifier le time tofly en fonction de la vitesse 
+        animator.SetBool("Attack", true);
+        yield return StartCoroutine(WaitAnimationToEnd());
+        animator.SetBool("Attack", false);
+        
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
+    }
+
+    private float _animationTime = 0.7f;
+    
+    private IEnumerator WaitAnimationToEnd()
+    {
+        float timeNow = 0.0f;
+        while (timeNow < _animationTime)
+        {
+            timeNow += Time.deltaTime;
+            yield return null;
+        }
     }
 
 
