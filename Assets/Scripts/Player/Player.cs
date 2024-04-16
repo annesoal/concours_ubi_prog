@@ -396,8 +396,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         _hasFinishedToMove = false;
         Vector3 cellLocalPosition = TilingGrid.GridPositionToLocal(toPosition);
         RotationAnimation rotationAnimation = new RotationAnimation();
-
-        StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject, cellLocalPosition));
+        
+        StartCoroutine(rotationAnimation.TurnAngleObjectTo(this.gameObject, cellLocalPosition));
         yield return new WaitUntil(rotationAnimation.HasMoved);
        // SetAnimatorStateServerRpc(true);
         animator.SetBool("Move", true);
