@@ -21,7 +21,6 @@ namespace Sound
             AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
             audioSource.clip = audioClip;
             audioSource.volume = volume;
-            Debug.Log(" lenghht audio clip "  + audioClip.length);
             audioSource.Play();
             float clipLength = audioSource.clip.length;
             Destroy(audioSource.gameObject, clipLength);
