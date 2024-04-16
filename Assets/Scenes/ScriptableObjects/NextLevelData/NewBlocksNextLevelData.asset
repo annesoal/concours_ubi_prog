@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NewBlocksNextLevelData
   m_EditorClassIdentifier: 
   AmuletChoiceAtEnd:
-  - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
-  - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
-  - {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
+  - {fileID: 11400000, guid: 4ee61a274b2bac54eb6ee5b543b7395c, type: 2}
+  - {fileID: 11400000, guid: 6499d6abb7f453141aa3ba0ef861bfe6, type: 2}
+  - {fileID: 11400000, guid: 465865fb7e200a34f8bb352ef01f8b4f, type: 2}
   nextLevelScene: 9

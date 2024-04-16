@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
-  m_Name: Add_Am_M_4
+  m_Name: Add_amu_LVL2_1
   m_EditorClassIdentifier: 
-  description: You have more can move more but have less time to move.
-  amuletIcon: {fileID: 21300000, guid: 20b3163c972db004ea221618e0890847, type: 3}
-  turnTime: -10
+  description: bombs and trap are cheaper but enemies move faster
+  amuletIcon: {fileID: 21300000, guid: 7bd8a7bccf192804cbb562d51bfad80b, type: 3}
+  turnTime: 0
   startingTurn: 0
   numberOfTurns: 0
   ressourceSpawnRate: 0
   playersHealth: 0
-  playerEnergy: 1
+  playerEnergy: 0
   startingMoney: 0
-  enemyEnergy: 0
+  enemyEnergy: 4
   timeBetweenSpawns: 0
   MerdeHeathPoints: 0
   MerdeMoveRatio: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   SniperMoveRatio: 0
   SniperDamages: 0
   SniperRange: 0
-  TrapCost: 0
+  TrapCost: -1
   StunDuration: 0
   TrapRange: 0
   ObstaclesHealth: 0
@@ -44,6 +44,6 @@ MonoBehaviour:
   TowerTimeBetweenAttacks: 0
   numberOfProjectile: 0
   TowerDamage: 0
-  BombCost: 0
+  BombCost: -1
   BombDamage: 0
   BombRange: 0

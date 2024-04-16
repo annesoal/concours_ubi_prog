@@ -16,7 +16,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b98b0c504e2bf28e9871645bddf8ce2f, type: 3}
   objectName: Basic Trap
   visuals: {fileID: 6450326503996897373, guid: 3fd77c610f31ede11a48523dcd47c1a4, type: 3}
-  description: "C'est la premier pi\xE8ge h\xE9\xE9h\xE9\xE9"
+  description: FUNKY PEEL - Ennemis who step on it get stunned for a turn.
   type: 1
   materialAndQuantityPairs:
   - quantityOfMaterialRequired: 1
