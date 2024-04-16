@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_5
   m_EditorClassIdentifier: 
-  description: "Vos tours sont plus r\xE9sistantes, mais certains ennemis ont une
-    port\xE9e accrue."
-  amuletIcon: {fileID: 0}
+  description: You have more time but bombs are more expensive
+  amuletIcon: {fileID: 21300000, guid: 0b2c9426512b9fa45a295cf9b01d355a, type: 3}
   turnTime: 0
   startingTurn: 0
   numberOfTurns: 0

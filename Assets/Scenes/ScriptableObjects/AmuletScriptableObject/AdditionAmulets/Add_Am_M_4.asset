@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_4
   m_EditorClassIdentifier: 
-  description: "Vous pouvez vous d\xE9placer plus loin, mais Jimmy met un tour de
-    plus \xE0 se r\xE9veiller."
-  amuletIcon: {fileID: 0}
-  turnTime: 0
+  description: You have more can move more but have less time to move.
+  amuletIcon: {fileID: 21300000, guid: 20b3163c972db004ea221618e0890847, type: 3}
+  turnTime: -10
   startingTurn: 0
-  numberOfTurns: 1
+  numberOfTurns: 0
   ressourceSpawnRate: 0
   playersHealth: 0
   playerEnergy: 1
