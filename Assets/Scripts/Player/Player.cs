@@ -424,19 +424,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         animator.SetBool("Move", isMoving);
     }
 
-    [ServerRpc]
-    private void SetAnimatorStateServerRpc(bool isMoving)
-    {
-        if (!IsLocalPlayer) SetAnimatorState(isMoving);
-        SetAnimatorStateClientRpc(isMoving);
-    }
 
-    [ClientRpc]
-    private void SetAnimatorStateClientRpc(bool isMoving)
-    {
-        if (!IsLocalPlayer && !IsServer) SetAnimatorState(isMoving);
-    }
-
+    
     public void ResetPlayer(int energy)
     {
         ResetEnergy();
