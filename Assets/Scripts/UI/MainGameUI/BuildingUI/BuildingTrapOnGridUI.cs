@@ -101,7 +101,11 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     
     private bool TryShowAlreadyHasBuildingError()
     {
-        if (_selectedCell.Value.HasNotBuildingOnTop()) { return false; } 
+        if (_selectedCell.Value.HasNotBuildingOnTop() && 
+            !_selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Obstacle))
+        {
+            return false;
+        } 
         
         ShowErrorText(ALREADY_HAS_BUILDING_ERROR);
 
