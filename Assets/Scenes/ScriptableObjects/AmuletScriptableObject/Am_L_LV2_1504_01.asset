@@ -16,10 +16,11 @@ MonoBehaviour:
   turnTime: 60
   startingTurn: 0
   numberOfTurns: 8
-  ressourceSpawnRate: 0.07
+  ressourceSpawnRate: 0.06
   playersHealth: 3
   playerEnergy: 10
   startingMoney: 0
+  timeBetweenSpawns: 0
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
