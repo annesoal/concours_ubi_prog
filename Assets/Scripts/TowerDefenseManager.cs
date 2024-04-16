@@ -251,13 +251,18 @@ public class TowerDefenseManager : NetworkBehaviour
             GoToSpecifiedState(State.EndOfGame);
         }
 
-        if (currentRoundNumber >= TotalRounds)
+        if (currentRoundNumber >= TotalRounds && HasNoEnemyInGame())
         {
             gameWon = true;
             GoToSpecifiedState(State.EndOfGame);
         }
         else
             GoToSpecifiedState(State.TacticalPause);
+    }
+
+    private bool HasNoEnemyInGame()
+    {
+        return Enemy.GetEnemiesInGame().Count == 0;
     }
 
     private void ProgressTacticalTimer()
