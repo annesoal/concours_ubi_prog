@@ -7,17 +7,38 @@ public class FourthQuadraSpawnerMath :  MathSpawnSO
 {
     public override int GetNumberMerdeToSpawn(int turn)
     {
-        return (int)(Math.Ceiling(turn *0.14));
+        if (turn <= 7)
+        {
+            return (int)(Math.Ceiling(turn *0.14));
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override int GetBigGuyToSpawn(int turn)
     {
-        return (int)(Math.Round((turn *0.3) /2.4 ));
+        if (turn <= 7)
+        {
+            return (int)(Math.Round((turn *0.3) /2.4 ));
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override int GetDoggoToSpawn(int turn)
     {
-        return (int)(Math.Round((turn * 0.05)));
+        if (turn <= 7)
+        {
+            return (int)(Math.Round((turn * 0.05)));
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override int GetSnipperToSpawn(int turn)

@@ -7,13 +7,27 @@ public class ThirdQuadraSpawnerMath2 :  MathSpawnSO
 {
     public override int GetNumberMerdeToSpawn(int turn)
     {
-        return (int) Math.Ceiling((turn + 1) * 0.2);
-        
+        if (turn <= 10)
+        {
+            return (int) Math.Ceiling((turn + 1) * 0.2);
+        }
+        else
+        {
+            return 0;
+        }
+
     }
 
     public override int GetBigGuyToSpawn(int turn)
     {
-        return (int)Math.Round(turn *0.1);
+        if (turn <= 10)
+        {
+            return (int)Math.Round(turn *0.1);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override int GetDoggoToSpawn(int turn)
@@ -23,6 +37,13 @@ public class ThirdQuadraSpawnerMath2 :  MathSpawnSO
 
     public override int GetSnipperToSpawn(int turn)
     {
-        return (int)Math.Ceiling((turn * 0.15));
+        if (turn <= 10)
+        {
+            return (int)Math.Ceiling((turn * 0.15));
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

@@ -8,7 +8,14 @@ namespace Spawners
     {
         public override int GetNumberMerdeToSpawn(int turn)
         {
-            return (int)Math.Ceiling((turn * 1.2) / 8);
+            if (turn <= 5)
+            {
+                return (int)Math.Ceiling((turn * 1.2) / 8);
+            }
+            else 
+            {
+                return 0;
+            }
         }
 
         public override int GetBigGuyToSpawn(int turn)
@@ -18,13 +25,26 @@ namespace Spawners
 
         public override int GetDoggoToSpawn(int turn)
         {
-            
-            return (int)Math.Floor(turn *0.3);
+            if (turn <= 5)
+            {
+                return (int)Math.Floor(turn *0.3);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public override int GetSnipperToSpawn(int turn)
         {
-            return 0;
+            if (turn <= 5)
+            {
+                return 0;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
