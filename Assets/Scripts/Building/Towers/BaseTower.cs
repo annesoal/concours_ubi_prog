@@ -111,7 +111,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
         
         Debug.Log("before animation");
         animator.SetBool("Attack", true);
-        yield return StartCoroutine(WaitAnimationToEnd());
+        yield return new WaitForSeconds(_animationTime); 
         animator.SetBool("Attack", false);
         
         Debug.Log("after animation");
@@ -122,15 +122,6 @@ public abstract class BaseTower : BuildableObject, IDamageable
 
     private readonly float _animationTime = 1.2f;
     
-    private IEnumerator WaitAnimationToEnd()
-    {
-        float timeNow = 0.0f;
-        while (timeNow < _animationTime)
-        {
-            timeNow += Time.deltaTime;
-            yield return null;
-        }
-    }
 
 
     private void SetShooter()
