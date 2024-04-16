@@ -25,7 +25,7 @@ namespace Enemies
         public static int Energy;
         
         protected EnnemyType ennemyType;
-        protected float timeToDie = 0.2f;
+        protected float timeToDie = 0.8f;
 
         public abstract int MoveRatio { get; set; }
         
@@ -47,18 +47,19 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
         [SerializeField] protected Animator animator;
-        protected void Initialize()
+
+        public void Initialize(Transform position)
         {
             AddInGame(this.gameObject);
+            SetDestinations();
+            TilingGrid.grid.PlaceObjectAtPositionOnGrid(this.gameObject, position.position);
+            RunSpawnAnimation();
         }
 
         public void Start()
         {
             TowerDefenseManager.Instance.OnCurrentStateChanged += TowerDefenseManager_OnCurrentStateChanged;
         
-            Initialize();
-            SetDestinations();
-            RunSpawnAnimation();
         }
 
         private void RunSpawnAnimation()
@@ -96,7 +97,17 @@ namespace Enemies
         private Cell GetClosestDestination()
         {
             if (_destinationsCell == null || _destinationsCell.Count == 0)
+            {
+                if (_destinationsCell == null)
+                {
+                    Debug.LogError(_destinationsCell + " was null");    
+                }
+                else
+                {
+                    Debug.LogError(_destinationsCell + " was empty");
+                }
                 throw new Exception("Destination cells are not set or were not found !");
+            }
 
             Cell destinationToReturn = _destinationsCell[0];
             float destinationDistance = Cell.Distance(cell, destinationToReturn);
@@ -122,24 +133,12 @@ namespace Enemies
              return Health -= damage;
         }
 
-        protected void Die()
-        {
-            enemiesInGame.Remove(this.gameObject);
-            animator.SetBool("Die", true);
-            TilingGrid.RemoveElement(this.gameObject, transform.position);
-        }
-
-
         protected void AddInGame(GameObject enemy)
         {
-            enemiesInGame ??= new List<GameObject>();
+            if (enemiesInGame == null)
+                enemiesInGame = new List<GameObject>();
+            
             enemiesInGame.Add(enemy);
-        }
-
-
-        public void RemoveInGame()
-        {
-            enemiesInGame.Remove(this.gameObject);
         }
 
         public static List<GameObject> GetEnemiesInGame()
@@ -147,12 +146,6 @@ namespace Enemies
 
             return enemiesInGame;
         }
-
-        public static List<GameObject> GetEnemiesInGameCopy()
-        {
-            return new List<GameObject>(enemiesInGame);
-        }
-        
 
         public new TypeTopOfCell GetType()
         {
@@ -220,13 +213,25 @@ namespace Enemies
         private void FinishingMoveAnimation()
         {
             Debug.LogWarning("Finishing move");
-            animator.SetBool("Die", true); 
-            StartCoroutine(Dying());
+            animator.SetBool("Attack", true);
+            StartCoroutine(TimeToDie());
+        }
 
+        private IEnumerator TimeToDie()
+        {
+            var timeNow = 0.0f;
+            while (timeNow < timeToDie)
+            {
+                timeNow += Time.deltaTime;
+                yield return null;
+            }
+            if (IsServer) 
+                GameObject.Destroy(this.gameObject);
         }
 
         private IEnumerator Dying()
         {
+            animator.SetBool("Die", true);
             var timeNow = 0.0f;
             while (timeNow < timeToDie)
             {
@@ -242,6 +247,7 @@ namespace Enemies
 
         public virtual void MoveCorroutine(EnemyChoicesInfo infos)
         {
+            Debug.LogWarning("debug log ");
             hasFinishedMoveAnimation = false;
             if (infos.hasReachedEnd)
             {
@@ -285,8 +291,11 @@ namespace Enemies
 
         public void CleanUp()
         {
+            Debug.Log(enemiesInGame.Count);
             enemiesInGame.Remove(this.gameObject);
             TilingGrid.grid.RemoveObjectFromCurrentCell(this.gameObject);
+            Debug.Log(enemiesInGame.Count);
+            Debug.Log(GetEnemiesInGame().Count);
         }
         public void Kill()
         {

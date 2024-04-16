@@ -65,6 +65,7 @@ public class ZombotTrap : BaseTrap
                 }
                 else
                 {
+                    enemyAffected.shouldKill = false;
                     enemyAffected.enemy = enemyToDamage;
                 };
                 trapPlayInfo.enemiesAffectedInfo.Add(enemyAffected);

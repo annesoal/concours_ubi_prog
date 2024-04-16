@@ -88,14 +88,17 @@ namespace Enemies.Attack
 
         protected override IEnumerator AttackAnimation(AttackingInfo infos)
         {
+            StartCoroutine(DebugLog());
              if (!IsServer) yield break;
 
              RotationAnimation rotationAnimation = new();
              hasFinishedMoveAnimation = false;
+             Debug.LogWarning("before rotation");
              StartCoroutine(rotationAnimation.TurnObjectTo(this.gameObject,
                  infos.toKill.gameObject.transform.position));
              yield return new WaitUntil(rotationAnimation.HasMoved);
              animator.SetBool("Attack", true);
+             Debug.LogWarning("after rotation");
              float currentTime = 0.0f;
              float timeToSoot = 0.1f;
              bool hasShot = false;
@@ -127,7 +130,16 @@ namespace Enemies.Attack
                      infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
                  }
              }
-             hasFinishedMoveAnimation = true;
+             hasFinishedMoveAnimation = true ;
+             Debug.LogWarning("hasfinishedMoveAnim = true");
+        }
+
+        public IEnumerator DebugLog()
+        {
+            while (true)
+            {
+                yield return null;
+            }
         }
     }
 }

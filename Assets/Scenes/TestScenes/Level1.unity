@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.27914855, g: 0.15266064, b: 0.3561527, a: 1}
+  m_IndirectSpecularColor: {r: 0.2790998, g: 0.15266445, b: 0.3560565, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3057,7 +3057,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: cfe635ef86336d346a1ea35321d44b35, type: 2}
+      objectReference: {fileID: 2100000, guid: e51c3fcddd12e9c4db8df9494784dbec, type: 2}
     - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: mathSpawnSo
@@ -6990,7 +6990,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: cfe635ef86336d346a1ea35321d44b35, type: 2}
+      objectReference: {fileID: 2100000, guid: e51c3fcddd12e9c4db8df9494784dbec, type: 2}
     - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: mathSpawnSo
@@ -8896,7 +8896,7 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -9029,7 +9029,7 @@ PrefabInstance:
         type: 3}
       propertyPath: listOfSpawners.Array.data[2]._objectToSpawn
       value: 
-      objectReference: {fileID: 7650414445784578766, guid: 14076d7f6143ae9cd9a76a01d6e18b58,
+      objectReference: {fileID: 3264472064520538293, guid: aca8a258f96500008a09af5f57d01ce4,
         type: 3}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -9152,17 +9152,17 @@ PrefabInstance:
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
       propertyPath: listOfSpawners.Array.data[2].blockingElementsType.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
-        type: 3}
-      propertyPath: listOfSpawners.Array.data[2].blockingElementsType.Array.data[1]
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
-      propertyPath: listOfSpawners.Array.data[2].blockingElementsType.Array.data[2]
+      propertyPath: listOfSpawners.Array.data[2].blockingElementsType.Array.data[1]
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1210163243326771567, guid: 135cb6e0cf55dc7299ac97c64943db0e,
+        type: 3}
+      propertyPath: listOfSpawners.Array.data[2].blockingElementsType.Array.data[2]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2561477878122128030, guid: 135cb6e0cf55dc7299ac97c64943db0e,
         type: 3}
@@ -9454,7 +9454,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: cfe635ef86336d346a1ea35321d44b35, type: 2}
+      objectReference: {fileID: 2100000, guid: e51c3fcddd12e9c4db8df9494784dbec, type: 2}
     - target: {fileID: 1925284801173100999, guid: ff823e20288780a0dbc4d6aec342a2e1,
         type: 3}
       propertyPath: mathSpawnSo

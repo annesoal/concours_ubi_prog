@@ -52,6 +52,9 @@ public class SynchronizeBuilding : NetworkBehaviour
         GameObject instance = Instantiate(allBuildableObjectSO.list[indexOfBuildableObjectSO].prefab);
         
         NetworkObject buildableObjectNetworkObject = instance.GetComponent<NetworkObject>();
+        
+        buildableObjectNetworkObject.GetComponent<IBuildable>().Build(positionToBuild);
+        
         buildableObjectNetworkObject.Spawn(true);
         
         SpawnBuildableObjectClientRpc(buildableObjectNetworkObject, positionToBuild);
@@ -72,9 +75,11 @@ public class SynchronizeBuilding : NetworkBehaviour
     private void SpawnBuildableObjectClientRpc(NetworkObjectReference buildableObjectNetworkObject, Vector2Int positionToBuild)
     {
         buildableObjectNetworkObject.TryGet(out NetworkObject buildableObjectNetwork);
+        if (!IsServer)
+        {
+            buildableObjectNetwork.GetComponent<IBuildable>().SynchBuild();
+        }
         
-        buildableObjectNetwork.GetComponent<IBuildable>().Build(positionToBuild);
-
         OnBuildingBuilt?.Invoke(this, new OnBuildingBuiltEventArgs
         {
             BuildingPosition = positionToBuild,

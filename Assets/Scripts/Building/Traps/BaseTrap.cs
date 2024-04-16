@@ -18,10 +18,15 @@ public abstract class BaseTrap : BuildableObject
     protected abstract void ActivateTrapBehaviour(Enemy enemy);
 
     public abstract TrapPlayInfo GetPlay();
-    public abstract IEnumerator PlayAnimation(TrapPlayInfo trapPlayInfo); 
+    public abstract IEnumerator PlayAnimation(TrapPlayInfo trapPlayInfo);
+
+    public override void HidePreview()
+    {
+         trapVisuals.HidePreview();
+    }
     public override void Build(Vector2Int positionToBuild)
     {
-        trapVisuals.HidePreview();
+       
         
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
        

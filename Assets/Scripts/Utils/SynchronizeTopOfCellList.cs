@@ -44,9 +44,12 @@ public class SynchronizeTopOfCellList : NetworkBehaviour
         Cell toUpdate = TilingGrid.grid.GetCell(
             TilingGrid.LocalToGridPosition(objectOnTopNetworkObject.gameObject.transform.position)
         );
-        
-        toUpdate.ObjectsTopOfCell.Add(objectOnTopNetworkObject.GetComponent<ITopOfCell>());
-        
+
+        if (!toUpdate.ObjectsTopOfCell.Contains(objectOnTopNetworkObject.GetComponent<ITopOfCell>()))
+        {
+            toUpdate.ObjectsTopOfCell.Add(objectOnTopNetworkObject.GetComponent<ITopOfCell>());
+        }
+
         TilingGrid.grid.UpdateCell(toUpdate);
     }
 
