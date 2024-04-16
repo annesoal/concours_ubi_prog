@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
-  m_Name: Am_M_LV2_1404_01
+  m_Name: Am_M_LV3_1504_02
   m_EditorClassIdentifier: 
   ID: 
   turnTime: 90
   startingTurn: 0
-  numberOfTurns: 9
-  ressourceSpawnRate: 0.07
+  numberOfTurns: 12
+  ressourceSpawnRate: 0.2
   playersHealth: 3
-  playerEnergy: 10
+  playerEnergy: 12
   startingMoney: 0
+  timeBetweenSpawns: 1
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
@@ -31,14 +32,14 @@ MonoBehaviour:
   SniperHealthPoints: 1
   SniperMoveRatio: 12
   SniperDamages: 1
-  SniperRange: 4
-  TrapCost: 2
+  SniperRange: 3
+  TrapCost: 3
   StunDuration: 1
-  TrapRange: 1
+  TrapRange: 2
   ObstaclesHealth: 1
-  TowerCost: 7
-  TowerRange: 3
-  TowerHealth: 3
+  TowerCost: 6
+  TowerRange: 2
+  TowerHealth: 2
   TowerTimeBetweenAttacks: 2
   numberOfProjectile: 1
   TowerDamage: 1
