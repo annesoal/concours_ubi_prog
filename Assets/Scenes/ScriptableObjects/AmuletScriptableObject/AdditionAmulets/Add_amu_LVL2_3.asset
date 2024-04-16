@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
-  m_Name: Add_Am_M_8
+  m_Name: Add_amu_LVL2_3
   m_EditorClassIdentifier: 
-  description: "Des ressources suppl\xE9mentaires apparaissent \xE0 chaque tour,
-    mais vous disposez de moins de temps pour prendre vos d\xE9cisions."
-  amuletIcon: {fileID: 0}
-  turnTime: -10
+  description: Sniper will have a better range but there will be one enemy wave less
+  amuletIcon: {fileID: 21300000, guid: 23cbce9ecbf823349a975f60fbc52d34, type: 3}
+  turnTime: 0
   startingTurn: 0
-  numberOfTurns: 0
-  ressourceSpawnRate: 0.01
+  numberOfTurns: -1
+  ressourceSpawnRate: 0
   playersHealth: 0
   playerEnergy: 0
   startingMoney: 0
@@ -34,7 +33,7 @@ MonoBehaviour:
   SniperHealthPoints: 0
   SniperMoveRatio: 0
   SniperDamages: 0
-  SniperRange: 0
+  SniperRange: 1
   TrapCost: 0
   StunDuration: 0
   TrapRange: 0

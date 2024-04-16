@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 
   turnTime: 45
   startingTurn: 0
-  numberOfTurns: 8
+  numberOfTurns: 5
   ressourceSpawnRate: 0.04
   playersHealth: 3
   playerEnergy: 10
@@ -30,7 +30,7 @@ MonoBehaviour:
   BigGuyMoveRatio: 4
   BigGuyDamages: 1
   SniperHealthPoints: 1
-  SniperMoveRatio: 12
+  SniperMoveRatio: 6
   SniperDamages: 1
   SniperRange: 3
   TrapCost: 2
