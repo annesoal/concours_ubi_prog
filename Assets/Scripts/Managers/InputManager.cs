@@ -369,7 +369,7 @@ public class InputManager : MonoBehaviour
 	/// <returns>Returns null when no matching path found</returns>
 	public Sprite GetBindingSprite(Binding binding)
 	{
-		string bindingOverridePath = GetBindingOverridePath(binding);
+		string bindingOverridePath = GetBindingOverridePath(binding) ?? GetBindingPath(binding);
 
 		foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
 		{
@@ -381,11 +381,15 @@ public class InputManager : MonoBehaviour
 
 		return null;
 	}
-	
+
 	private const string ALTERNATE_SUFFIX = "ALT";
+	/// <summary>
+	/// Returns non-alternate binding sprite if alternate sprite is not found.
+	/// </summary>
 	public Sprite GetBindingSpriteAlternate(Binding binding)
 	{
-		string bindingOverridePath = GetBindingOverridePath(binding) + ALTERNATE_SUFFIX;
+		string bindingOverridePath = GetBindingOverridePath(binding) ?? GetBindingPath(binding);
+		bindingOverridePath += ALTERNATE_SUFFIX;
 
 		foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
 		{
@@ -395,7 +399,7 @@ public class InputManager : MonoBehaviour
 			}
 		}
 
-		return null;
+		return GetBindingSprite(binding);
 	}
 	
 	public string GetBindingOverridePath(Binding binding)
@@ -403,6 +407,13 @@ public class InputManager : MonoBehaviour
 		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
 		
 		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].overridePath;
+	}
+	
+	private string GetBindingPath(Binding binding)
+	{
+		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
+		
+		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].path;
 	}
 
 	public event EventHandler OnInputRebindingCompleted;
