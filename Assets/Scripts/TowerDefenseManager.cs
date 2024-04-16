@@ -500,6 +500,7 @@ public class TowerDefenseManager : NetworkBehaviour
         Player.Energy = amuletSO.playerEnergy + PlayerAmuletSelection.playerEnergy;
         Player.Health = amuletSO.playersHealth + PlayerAmuletSelection.playersHealth;
 
+        EnemySpawnerManager.TotalRounds = amuletSO.numberOfTurns + PlayerAmuletSelection.numberOfTurns;;
         EnemySpawnerManager.timeBetweenSpawns = amuletSO.timeBetweenSpawns + PlayerAmuletSelection.timeBetweenSpawns;
         Enemy.Energy = amuletSO.enemyEnergy + PlayerAmuletSelection.enemyEnergy;
         

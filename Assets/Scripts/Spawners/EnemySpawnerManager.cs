@@ -11,6 +11,7 @@ namespace Managers
     public class EnemySpawnerManager : NetworkBehaviour
     {
         public static EnemySpawnerManager Instance {private set; get; }
+        public static int TotalRounds;
         public static int timeBetweenSpawns;
         private int _timeSinceSpawns;
         
