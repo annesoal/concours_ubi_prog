@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Ennemies;
 using Grid;
 using Grid.Interface;
+using Sound;
 using Unity.Netcode;
 using UnityEngine;
 using Type = Grid.Type;
@@ -47,6 +48,7 @@ namespace Enemies
         protected Vector2Int _droite2d = new Vector2Int(1, 0);
         
         [SerializeField] protected Animator animator;
+        
 
         public void Initialize(Transform position)
         {

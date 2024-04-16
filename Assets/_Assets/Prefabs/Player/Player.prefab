@@ -180,6 +180,8 @@ MonoBehaviour:
   _highlighter: {fileID: 7650414445784578766, guid: 9cf38b3f9b697740f98e99e9ab6485ec,
     type: 3}
   _timeToMove: 0.5
+  animator: {fileID: 0}
+  hasFinishedMoveAnimation: 0
 --- !u!114 &4833543920865548287
 MonoBehaviour:
   m_ObjectHideFlags: 0

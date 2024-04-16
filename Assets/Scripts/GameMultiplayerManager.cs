@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
 using Sound;
+using Synchrone;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using UnityEngine;
@@ -437,17 +438,19 @@ public class GameMultiplayerManager : NetworkBehaviour
                 //PickUpResource(element);
                 PickUpElement(element, CentralizedInventory.Instance.AddResource);
                 elementsPickedUp.Add(element);
+                playSoundClientRpc(type, position);
             }
 
             if (type == TypeTopOfCell.Bonus)
             {
                  PickUpElement(element, CentralizedInventory.Instance.AddBonus);
+                 playSoundClientRpc(type, position);
             }
 
             if (type == TypeTopOfCell.Malus)
             {
-                
                 PickUpElement(element, CentralizedInventory.Instance.AddMalus);
+                playSoundClientRpc(type, position);
             }
         }
         SpawnMalus.RegisterCellForMalus(position);
@@ -458,6 +461,26 @@ public class GameMultiplayerManager : NetworkBehaviour
             elementsOnTopOfCell.Remove(toDelete);
         }
     }
+
+    [ClientRpc]
+    public void playSoundClientRpc(TypeTopOfCell type, Vector2Int position)
+    {
+        if (type == TypeTopOfCell.Resource)
+        {
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getResourceClip(),TilingGrid.GridPositionToLocal(position) , 1f);
+        }
+
+        if (type == TypeTopOfCell.Bonus)
+        {
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getBonusClip(),TilingGrid.GridPositionToLocal(position) , 1f);
+        }
+
+        if (type == TypeTopOfCell.Malus)
+        {
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getMalusClip(),TilingGrid.GridPositionToLocal(position) , 1f);
+        }
+    } 
+    
 
     private static void PickUpElement(ITopOfCell element, Action<ITopOfCell> pickUpFunction)
     {
