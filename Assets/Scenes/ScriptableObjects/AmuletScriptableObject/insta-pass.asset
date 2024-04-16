@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4d0b3388c8ff04bab7cdac95c6ca0f, type: 3}
-  m_Name: Am_L_LV2_1504_01
+  m_Name: insta-pass
   m_EditorClassIdentifier: 
   ID: 
-  turnTime: 45
+  turnTime: 60
   startingTurn: 0
-  numberOfTurns: 8
-  ressourceSpawnRate: 0.04
+  numberOfTurns: 1
+  ressourceSpawnRate: 0.06
   playersHealth: 3
   playerEnergy: 10
   startingMoney: 0

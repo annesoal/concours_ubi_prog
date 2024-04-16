@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_2
   m_EditorClassIdentifier: 
-  description: "Les obstacles sont plus r\xE9sistants, mais les ennemis se d\xE9placent
-    plus loin."
-  amuletIcon: {fileID: 0}
+  description: "The lego\u2019s wall are more durable, but enemy will move faster"
+  amuletIcon: {fileID: 21300000, guid: 1ff8978e285afbe4db9ef465f6668a61, type: 3}
   turnTime: 0
   startingTurn: 0
   numberOfTurns: 0
@@ -22,7 +21,7 @@ MonoBehaviour:
   playersHealth: 0
   playerEnergy: 0
   startingMoney: 0
-  enemyEnergy: 4
+  enemyEnergy: 3
   timeBetweenSpawns: 0
   MerdeHeathPoints: 0
   MerdeMoveRatio: 0
@@ -38,7 +37,7 @@ MonoBehaviour:
   TrapCost: 0
   StunDuration: 0
   TrapRange: 0
-  ObstaclesHealth: 1
+  ObstaclesHealth: 3
   TowerCost: 0
   TowerRange: 0
   TowerHealth: 0
