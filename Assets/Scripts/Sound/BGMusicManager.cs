@@ -60,12 +60,30 @@ namespace Sound
         {
             if (isMenuScenes())
             {
-                PlayMenuMusic();
+                Debug.Log("music menu devrait commencer bientot");
+
+                audioSource.clip = audioClipMenu;
+           
+                Debug.Log("music clip  menu mis");
+                if (audioSource.enabled)
+                {
+                    Debug.Log("music audio source etait enabled");
+                }
+                audioSource.Play();
+                
+                
             }
             else
             {
                 Debug.Log("music game devrait commencer");
-                // audioSourceGame.Play();
+                
+                audioSource.clip = audioClipGame;
+                
+                if (audioSource.enabled)
+                {
+                    Debug.Log("music audio source etait enabled");
+                }
+                audioSource.Play();
             }
         }
 
@@ -86,7 +104,7 @@ namespace Sound
 
         private bool isMenuScenes()
         {
-            Debug.Log("music : est est menu scnene bool " + (SceneManager.GetActiveScene().name != "Level1" &&
+            Debug.Log("music :  est menu scnene bool " + (SceneManager.GetActiveScene().name != "Level1" &&
                                                              SceneManager.GetActiveScene().name != "Level3" &&
                                                              SceneManager.GetActiveScene().name != "NewsBlocks"));
             return SceneManager.GetActiveScene().name != "Level1" &&
