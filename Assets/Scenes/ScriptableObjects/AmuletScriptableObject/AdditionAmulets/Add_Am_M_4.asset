@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_4
   m_EditorClassIdentifier: 
-  description: 
+  description: "Vous pouvez vous d\xE9placer plus loin, mais Jimmy met un tour de
+    plus \xE0 se r\xE9veiller."
   amuletIcon: {fileID: 0}
   turnTime: 0
   startingTurn: 0
-  numberOfTurns: 0
+  numberOfTurns: 1
   ressourceSpawnRate: 0
   playersHealth: 0
-  playerEnergy: 0
+  playerEnergy: 1
   startingMoney: 0
   enemyEnergy: 0
   timeBetweenSpawns: 0

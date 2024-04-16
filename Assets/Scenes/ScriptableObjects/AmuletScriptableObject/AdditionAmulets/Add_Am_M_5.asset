@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_5
   m_EditorClassIdentifier: 
-  description: 
+  description: "Vos tours sont plus r\xE9sistantes, mais certains ennemis ont une
+    port\xE9e accrue."
   amuletIcon: {fileID: 0}
   turnTime: 0
   startingTurn: 0
@@ -33,14 +34,14 @@ MonoBehaviour:
   SniperHealthPoints: 0
   SniperMoveRatio: 0
   SniperDamages: 0
-  SniperRange: 0
+  SniperRange: 1
   TrapCost: 0
   StunDuration: 0
   TrapRange: 0
   ObstaclesHealth: 0
   TowerCost: 0
   TowerRange: 0
-  TowerHealth: 0
+  TowerHealth: 2
   TowerTimeBetweenAttacks: 0
   numberOfProjectile: 0
   TowerDamage: 0

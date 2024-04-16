@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_7
   m_EditorClassIdentifier: 
-  description: 
+  description: "Les pi\xE8ges sont moins co\xFBteux, mais les ennemis se d\xE9placent
+    plus loin."
   amuletIcon: {fileID: 0}
   turnTime: 0
   startingTurn: 0
@@ -21,7 +22,7 @@ MonoBehaviour:
   playersHealth: 0
   playerEnergy: 0
   startingMoney: 0
-  enemyEnergy: 0
+  enemyEnergy: 4
   timeBetweenSpawns: 0
   MerdeHeathPoints: 0
   MerdeMoveRatio: 0
@@ -34,7 +35,7 @@ MonoBehaviour:
   SniperMoveRatio: 0
   SniperDamages: 0
   SniperRange: 0
-  TrapCost: 0
+  TrapCost: -1
   StunDuration: 0
   TrapRange: 0
   ObstaclesHealth: 0
@@ -44,6 +45,6 @@ MonoBehaviour:
   TowerTimeBetweenAttacks: 0
   numberOfProjectile: 0
   TowerDamage: 0
-  BombCost: 0
+  BombCost: -1
   BombDamage: 0
   BombRange: 0

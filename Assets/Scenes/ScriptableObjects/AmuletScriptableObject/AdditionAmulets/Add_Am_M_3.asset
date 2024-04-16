@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_Am_M_3
   m_EditorClassIdentifier: 
-  description: 
+  description: "Les tours sont moins co\xFBteuses, mais elles tol\xE8rent le passage
+    d'un ennemi de moins avant d'entra\xEEner la d\xE9faite."
   amuletIcon: {fileID: 0}
   turnTime: 0
   startingTurn: 0
   numberOfTurns: 0
   ressourceSpawnRate: 0
-  playersHealth: 0
+  playersHealth: -1
   playerEnergy: 0
   startingMoney: 0
   enemyEnergy: 0
@@ -38,7 +39,7 @@ MonoBehaviour:
   StunDuration: 0
   TrapRange: 0
   ObstaclesHealth: 0
-  TowerCost: 0
+  TowerCost: -1
   TowerRange: 0
   TowerHealth: 0
   TowerTimeBetweenAttacks: 0
