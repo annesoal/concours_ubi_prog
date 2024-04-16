@@ -102,7 +102,8 @@ public class BuildingTowerOnGridUI : MonoBehaviour
         
         return _selectedCell.Value.HasNotBuildingOnTop() &&
                CentralizedInventory.Instance.HasResourcesForBuilding(_towerToBuild) &&
-               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy);
+               ! _selectedCell.Value.HasTopOfCellOfType(TypeTopOfCell.Enemy) &&
+               ! _selectedCell.Value.HasObjectOfTypeOnTop(TypeTopOfCell.Obstacle);
     }
 
     private void SynchronizeBuilding_OnBuildingBuilt(object sender, SynchronizeBuilding.OnBuildingBuiltEventArgs e)
