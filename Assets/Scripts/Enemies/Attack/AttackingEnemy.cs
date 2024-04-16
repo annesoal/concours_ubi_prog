@@ -13,7 +13,7 @@ namespace Enemies
 {
     public abstract class AttackingEnemy : BasicEnemy
     {
-        [SerializeField] private AudioClip explosionAudioClip; 
+        [SerializeField] protected AudioClip explosionAudioClip; 
         public abstract int AttackDamage { get; set; }
 
         protected override EnemyChoicesInfo BackendMove()
