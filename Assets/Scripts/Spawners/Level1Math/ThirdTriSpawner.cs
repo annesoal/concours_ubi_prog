@@ -19,6 +19,7 @@ namespace Spawners
             if (turn > EnemySpawnerManager.TotalRounds)
                 return 0;
             return (int)Math.Max(Math.Floor(turn - 1 * 0.2), 0);
+
         }
 
         public override int GetDoggoToSpawn(int turn)

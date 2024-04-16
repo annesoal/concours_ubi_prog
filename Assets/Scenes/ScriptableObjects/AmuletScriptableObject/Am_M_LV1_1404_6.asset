@@ -20,6 +20,7 @@ MonoBehaviour:
   playersHealth: 3
   playerEnergy: 8
   startingMoney: 0
+  timeBetweenSpawns: 1
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
@@ -32,7 +33,7 @@ MonoBehaviour:
   SniperMoveRatio: 12
   SniperDamages: 1
   SniperRange: 3
-  TrapCost: 2
+  TrapCost: 3
   StunDuration: 1
   TrapRange: 2
   ObstaclesHealth: 1
@@ -43,5 +44,5 @@ MonoBehaviour:
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
-  BombDamage: 1
+  BombDamage: 2
   BombRange: 1

@@ -16,7 +16,7 @@ MonoBehaviour:
   turnTime: 90
   startingTurn: 0
   numberOfTurns: 12
-  ressourceSpawnRate: 0.2
+  ressourceSpawnRate: 0.07
   playersHealth: 3
   playerEnergy: 12
   startingMoney: 0
@@ -30,15 +30,15 @@ MonoBehaviour:
   BigGuyMoveRatio: 4
   BigGuyDamages: 1
   SniperHealthPoints: 1
-  SniperMoveRatio: 12
+  SniperMoveRatio: 6
   SniperDamages: 1
   SniperRange: 3
   TrapCost: 3
   StunDuration: 1
   TrapRange: 2
   ObstaclesHealth: 1
-  TowerCost: 6
-  TowerRange: 2
+  TowerCost: 7
+  TowerRange: 3
   TowerHealth: 2
   TowerTimeBetweenAttacks: 2
   numberOfProjectile: 1

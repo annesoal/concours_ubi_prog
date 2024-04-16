@@ -12,6 +12,7 @@ namespace Spawners
             if (turn > EnemySpawnerManager.TotalRounds)
                 return 0;
             return (int)Math.Floor(turn * 0.18);
+
         }
 
         public override int GetBigGuyToSpawn(int turn)
@@ -19,6 +20,7 @@ namespace Spawners
             if (turn > EnemySpawnerManager.TotalRounds)
                 return 0;
             return (int)Math.Floor(turn * 0.1);
+
         }
 
         public override int GetDoggoToSpawn(int turn)
@@ -33,6 +35,7 @@ namespace Spawners
             if (turn > EnemySpawnerManager.TotalRounds)
                 return 0;
             return (int)Math.Ceiling(turn * 0.1);
+
         }
     }
 }
