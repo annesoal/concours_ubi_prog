@@ -9,4 +9,10 @@ public interface IBuildable
     /// All IBuildable Objects must have a reference to their BuildableObjectSO.
     /// </summary>
     BuildableObjectSO GetBuildableObjectSO();
+
+     void HidePreview();
+
+     // Client Rpc
+     void SynchBuild();
+
 }
