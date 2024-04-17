@@ -490,6 +490,14 @@ public class TowerDefenseManager : NetworkBehaviour
             _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
         }
     }
+    
+    [ClientRpc]
+    public void PlaySoundEnemyDamageClientRpc(AudioClip damageEnemyAudioClip)
+    {
+        SoundFXManager.instance.PlaySoundFXCLip(damageEnemyAudioClip, transform,0.4f);
+     
+    } 
+
 
     private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
     {
