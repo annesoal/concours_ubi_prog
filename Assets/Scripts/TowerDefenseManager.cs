@@ -491,14 +491,7 @@ public class TowerDefenseManager : NetworkBehaviour
         }
     }
     
-    [ClientRpc]
-    public void PlaySoundEnemyDamageClientRpc(AudioClip damageEnemyAudioClip)
-    {
-        SoundFXManager.instance.PlaySoundFXCLip(damageEnemyAudioClip, transform,0.4f);
-     
-    } 
-
-
+    
     private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
     {
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
