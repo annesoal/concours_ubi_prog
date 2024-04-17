@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Building.Traps;
 using Enemies;
 using Grid;
+using Sound;
 using UnityEngine;
 
 /// <summary>
@@ -46,8 +47,8 @@ public class ZombotTrap : BaseTrap
         var trapPlayInfo = new TrapPlayInfo();
         trapPlayInfo.isTrigger = true;
         this.CleanUp();
-        
 
+        SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getExplosionClip(), transform.position, 1f);
         List<Cell> cells = TilingGrid.grid.GetCellsInRadius(currentCell, Range);
         trapPlayInfo.enemiesAffectedInfo = new List<EnemyAffectedInfo>();
         foreach (var cell in cells)

@@ -24,10 +24,12 @@ namespace Sound
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
+           
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            Debug.Log("La scène chargée est : " + scene.name);
             PlayMusic();
         }
 
@@ -60,6 +62,7 @@ namespace Sound
             else
             {
                 audioSource.clip = audioClipGame;
+                audioSource.volume = 0.8f;
                 audioSource.Play();
             }
         }
@@ -72,7 +75,7 @@ namespace Sound
                                                              SceneManager.GetActiveScene().name != "NewsBlocks"));
             return SceneManager.GetActiveScene().name != "Level1" &&
                    SceneManager.GetActiveScene().name != "Level3" &&
-                   SceneManager.GetActiveScene().name != "NewsBlocks";
+                   SceneManager.GetActiveScene().name != "NewBlocks";
         }
         
         
