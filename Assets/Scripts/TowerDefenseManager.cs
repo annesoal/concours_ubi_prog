@@ -496,6 +496,7 @@ public class TowerDefenseManager : NetworkBehaviour
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
+
     
     private void SetAmuletFieldsToGameFields()
     {
@@ -552,6 +553,21 @@ public class TowerDefenseManager : NetworkBehaviour
         BasicTower.BasicTowerDamage = amuletSO.TowerDamage + PlayerAmuletSelection.TowerDamage;
         
         SynchronizeBuilding.Instance.OverrideBuildingCosts();
+    }
+    
+    public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
+    public class OnPlayerHealthChangedEventArgs : EventArgs
+    {
+        public int HealthValue;
+    }
+    
+    [ClientRpc()]
+    public void EmitOnPlayerHealthChangedClientRpc(int changedHealth)
+    {
+        OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
+        {
+            HealthValue = changedHealth
+        });
     }
 
     public static void ResetStaticData()

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_amu_LVL1_2
   m_EditorClassIdentifier: 
-  description: The brick walls are more durable, but the enemies will move faster.
+  description: The brick walls are more durable, but the enemies can move more..
   amuletIcon: {fileID: 21300000, guid: 1ff8978e285afbe4db9ef465f6668a61, type: 3}
   turnTime: 0
   startingTurn: 0

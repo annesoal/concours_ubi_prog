@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2791329, g: 0.15264997, b: 0.3561327, a: 1}
+  m_IndirectSpecularColor: {r: 0.27850926, g: 0.15260476, b: 0.35627687, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8935,6 +8935,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080536677910479129, guid: 611048557aa485685b0e85b6d73e3005,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5502258984865502384, guid: 611048557aa485685b0e85b6d73e3005,
         type: 3}
@@ -25478,8 +25483,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.33535254, y: 0.2262254, z: -0.083301984, w: 0.91072583}
-  m_LocalPosition: {x: 4.6, y: 14.03, z: -3.7}
+  m_LocalRotation: {x: 0.32623002, y: -0.23021065, z: 0.08224605, w: 0.91313344}
+  m_LocalPosition: {x: 26.5, y: 14.1, z: -3.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1553,7 +1553,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 31fc5b3a4908c50f683cc7d194c5b0c4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c98b66bb751843a44b652e757357cb8d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -6336,7 +6336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   associatedBinding: 7
   getAlternate: 0
-  getBlackVersion: 1
+  getBlackVersion: 0
 --- !u!222 &2430542956113345463
 CanvasRenderer:
   m_ObjectHideFlags: 0
