@@ -6336,7 +6336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   associatedBinding: 7
   getAlternate: 0
-  getBlackVersion: 1
+  getBlackVersion: 0
 --- !u!222 &2430542956113345463
 CanvasRenderer:
   m_ObjectHideFlags: 0
