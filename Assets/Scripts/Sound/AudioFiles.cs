@@ -16,12 +16,18 @@ namespace Sound
         [SerializeField] private AudioClip gameMusic;
         [SerializeField] private AudioClip gameOverAudioClip;
         [SerializeField] private AudioClip victoryAudioClip;
+        [SerializeField] private AudioClip explosionAudioClip;
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
             }
+        }
+
+        public AudioClip getExplosionClip()
+        {
+            return explosionAudioClip;
         }
 
         public AudioClip getBonusClip()
