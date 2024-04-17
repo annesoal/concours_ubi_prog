@@ -472,7 +472,7 @@ public class GameMultiplayerManager : NetworkBehaviour
 
         if (type == TypeTopOfCell.Bonus)
         {
-            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getBonusClip(),TilingGrid.GridPositionToLocal(position) , 1f);
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getBonusClip(),TilingGrid.GridPositionToLocal(position) , 0.4f);
         }
 
         if (type == TypeTopOfCell.Malus)

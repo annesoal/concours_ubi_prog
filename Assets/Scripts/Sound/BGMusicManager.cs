@@ -62,6 +62,7 @@ namespace Sound
             else
             {
                 audioSource.clip = audioClipGame;
+                audioSource.volume = 0.8f;
                 audioSource.Play();
             }
         }
