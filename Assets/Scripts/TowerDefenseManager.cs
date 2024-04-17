@@ -499,7 +499,8 @@ public class TowerDefenseManager : NetworkBehaviour
             _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
         }
     }
-
+    
+    
     private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
     {
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||

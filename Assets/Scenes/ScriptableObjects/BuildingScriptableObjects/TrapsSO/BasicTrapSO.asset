@@ -16,9 +16,13 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b98b0c504e2bf28e9871645bddf8ce2f, type: 3}
   objectName: Basic Trap
   visuals: {fileID: 6450326503996897373, guid: 3fd77c610f31ede11a48523dcd47c1a4, type: 3}
-  description: FUNKY PEEL - Ennemis who step on it get stunned for a turn.
+  description: 'FUNKY PEEL
+
+    Ennemis who step on it
+
+    get stunned for a turn.'
   type: 1
   materialAndQuantityPairs:
-  - quantityOfMaterialRequired: 1
+  - quantityOfMaterialRequired: 2
     buildingMaterialSO: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
       type: 2}

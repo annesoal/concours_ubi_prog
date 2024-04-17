@@ -128,7 +128,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
-        SoundFXManager.instance.PlaySoundFXCLip(damageEnemyAudioClip, transform,1f);
+        SoundFXManager.instance.PlaySoundFXCLip(damageEnemyAudioClip, transform,0.4f);
     }
 
     private readonly float _animationTime = 1.2f;
