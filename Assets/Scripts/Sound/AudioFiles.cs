@@ -14,7 +14,8 @@ namespace Sound
         [FormerlySerializedAs("lostAudioSound")] [SerializeField] private AudioClip gameOverAudioSound;
         [SerializeField] private AudioClip menuMusic;
         [SerializeField] private AudioClip gameMusic;
-
+        [SerializeField] private AudioClip gameOverAudioClip;
+        [SerializeField] private AudioClip victoryAudioClip;
         private void Awake()
         {
             if (Instance == null)
@@ -35,15 +36,18 @@ namespace Sound
         {
             return malusAudioSound;
         }
-        
-        public AudioClip getMenuClip()
+
+    
+        public AudioClip getGameOverAudio()
         {
-            return menuMusic;
+            return gameOverAudioClip;
+        }
+        
+        public AudioClip getVictoryAudio()
+        {
+            return victoryAudioClip;
         }
 
-        public AudioClip getGameMusicClip()
-        {
-            return gameMusic;
-        }
+      
     }
 }

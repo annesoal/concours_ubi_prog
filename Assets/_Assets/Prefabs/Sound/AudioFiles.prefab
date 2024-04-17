@@ -51,3 +51,5 @@ MonoBehaviour:
   gameOverAudioSound: {fileID: 8300000, guid: 8530ae0ac03114dda902b59f145e64e7, type: 3}
   menuMusic: {fileID: 8300000, guid: 0efd641c9c169816cbb3bd424ea38d51, type: 3}
   gameMusic: {fileID: 8300000, guid: 82e86e01416d9827c81796f4330cea1b, type: 3}
+  gameOverAudioClip: {fileID: 8300000, guid: 17a37c7c7f03c4971aa9bfd1ee2b87cd, type: 3}
+  victoryAudioClip: {fileID: 8300000, guid: 0d60716d16402721a8b45c24ea20ee28, type: 3}

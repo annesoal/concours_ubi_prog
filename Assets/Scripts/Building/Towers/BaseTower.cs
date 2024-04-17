@@ -20,7 +20,7 @@ using Utils;
  */
 public abstract class BaseTower : BuildableObject, IDamageable
 {
-    [SerializeField] protected AudioClip damageAudioClip;
+    [FormerlySerializedAs("damageAudioClip")] [SerializeField] protected AudioClip damageEnemyAudioClip;
     [FormerlySerializedAs("buildAudioSound")] [SerializeField] protected AudioClip buildAudioClip;
     [SerializeField] protected Animator animator;
     [Header("Tower specifics")] [SerializeField]
@@ -128,8 +128,7 @@ public abstract class BaseTower : BuildableObject, IDamageable
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
-        SoundFXManager.instance.PlaySoundFXCLip(damageAudioClip, transform,1f);
-
+        SoundFXManager.instance.PlaySoundFXCLip(damageEnemyAudioClip, transform,1f);
     }
 
     private readonly float _animationTime = 1.2f;
