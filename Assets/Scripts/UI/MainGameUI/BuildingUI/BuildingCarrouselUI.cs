@@ -14,7 +14,13 @@ public class BuildingCarrouselUI : MonoBehaviour
     [SerializeField] private Image leftImage;
     [SerializeField] private Image rightImage;
 
+    [Header("BuildingText")]
     [SerializeField] private TextMeshProUGUI selectedBuildingText;
+    [SerializeField] private GameObject selectedBuildingGameObject;
+    
+    [Header("ErrorText")]
+    [SerializeField] private TextMeshProUGUI errorText;
+    [SerializeField] private GameObject errorGameObject;
 
     [Header("Tweening")]
     [SerializeField] private float endScale;
@@ -67,7 +73,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         SetCarrouselImages();
         
-        ShowPreview();
+        // Retrait pour build final
+        // ShowPreview();
         
         ShowDescription();
         
@@ -137,27 +144,32 @@ public class BuildingCarrouselUI : MonoBehaviour
         CentralizedInventory.Instance.ClearAllMaterialsCostUI();
     }
 
-    private const string MISSING_RESOURCE_ERROR = "Resources Missing For Building !";
+    private const string MISSING_RESOURCE_ERROR = "Resources Missing\n" +
+                                                  " For Building !";
     private void ShowDescription()
     {
         if (HasResourceForBuilding())
         {
+            BasicShowHide.Show(selectedBuildingGameObject.gameObject);
+            BasicShowHide.Hide(errorGameObject.gameObject);
+        
             selectedBuildingText.color = new Color(69, 69, 69);
             selectedBuildingText.text = _selectedBuilding.Value.description;
-        
         }
         else
         {
-            selectedBuildingText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
-            selectedBuildingText.text = MISSING_RESOURCE_ERROR;
+            BasicShowHide.Hide(selectedBuildingGameObject.gameObject);
+            BasicShowHide.Show(errorGameObject.gameObject);
+            
+            errorText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
+            errorText.text = MISSING_RESOURCE_ERROR;
         }
-        
-        BasicShowHide.Show(selectedBuildingText.gameObject);
     }
     
     private void HideDescription()
     {
-        BasicShowHide.Hide(selectedBuildingText.gameObject);
+        BasicShowHide.Hide(selectedBuildingGameObject.gameObject);
+        BasicShowHide.Hide(errorGameObject.gameObject);
     }
     
     private void ShowPreview()
