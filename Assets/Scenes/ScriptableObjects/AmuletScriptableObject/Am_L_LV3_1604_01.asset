@@ -35,12 +35,12 @@ MonoBehaviour:
   SniperRange: 2
   TrapCost: 2
   StunDuration: 1
-  TrapRange: 1
+  TrapRange: 2
   ObstaclesHealth: 1
   TowerCost: 6
   TowerRange: 2
   TowerHealth: 2
-  TowerTimeBetweenAttacks: 2
+  TowerTimeBetweenAttacks: 3
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
