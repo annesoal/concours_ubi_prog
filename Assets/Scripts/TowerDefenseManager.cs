@@ -116,6 +116,7 @@ public class TowerDefenseManager : NetworkBehaviour
     private TowerManager _towerManager;
     private TrapManager _trapManager;
 
+    private bool hasSynched;
     private void Awake()
     {
         Instance = this;
@@ -128,7 +129,8 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
-        SetAmuletFieldsToGameFields();
+       
+      
     }
 
     private void Start()
@@ -144,6 +146,7 @@ public class TowerDefenseManager : NetworkBehaviour
         //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0; 
         this.gameObject.AddComponent<EnemySpawnerManager>().SetSpawners(listOfSpawners);
+         SetAmuletFieldsToGameFieldsServerRpc();
     }
 
     private void EndGame(object sender, OnCurrentStateChangedEventArgs e)
@@ -214,7 +217,6 @@ public class TowerDefenseManager : NetworkBehaviour
 
     private void WaitForPlayerReadyToPlay()
     {
-        
         if (PlayersAreReadyToPlay()) GoToSpecifiedState(State.CountdownToStart);
     }
 
@@ -497,8 +499,8 @@ public class TowerDefenseManager : NetworkBehaviour
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
 
-    
-    private void SetAmuletFieldsToGameFields()
+    [ServerRpc]
+    private void SetAmuletFieldsToGameFieldsServerRpc()
     {
         if (PlayerAmuletSelection == null)
         {
@@ -553,6 +555,7 @@ public class TowerDefenseManager : NetworkBehaviour
         BasicTower.BasicTowerDamage = amuletSO.TowerDamage + PlayerAmuletSelection.TowerDamage;
         
         SynchronizeBuilding.Instance.OverrideBuildingCosts();
+        hasSynched = true;
     }
     
     public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
