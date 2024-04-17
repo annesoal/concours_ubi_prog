@@ -129,8 +129,7 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
-       
-      
+        SetAmuletFieldsToGameFields();
     }
 
     private void Start()
@@ -146,7 +145,6 @@ public class TowerDefenseManager : NetworkBehaviour
         //OnCurrentStateChanged += DebugStateChange;
         energyToUse = 0; 
         this.gameObject.AddComponent<EnemySpawnerManager>().SetSpawners(listOfSpawners);
-         SetAmuletFieldsToGameFieldsServerRpc();
     }
 
     private void EndGame(object sender, OnCurrentStateChangedEventArgs e)
@@ -499,8 +497,7 @@ public class TowerDefenseManager : NetworkBehaviour
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
 
-    [ServerRpc]
-    private void SetAmuletFieldsToGameFieldsServerRpc()
+    private void SetAmuletFieldsToGameFields()
     {
         if (PlayerAmuletSelection == null)
         {
@@ -555,7 +552,6 @@ public class TowerDefenseManager : NetworkBehaviour
         BasicTower.BasicTowerDamage = amuletSO.TowerDamage + PlayerAmuletSelection.TowerDamage;
         
         SynchronizeBuilding.Instance.OverrideBuildingCosts();
-        hasSynched = true;
     }
     
     public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;

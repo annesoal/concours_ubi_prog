@@ -32,7 +32,7 @@ MonoBehaviour:
   SniperHealthPoints: 1
   SniperMoveRatio: 6
   SniperDamages: 1
-  SniperRange: 2
+  SniperRange: 3
   TrapCost: 2
   StunDuration: 1
   TrapRange: 2
