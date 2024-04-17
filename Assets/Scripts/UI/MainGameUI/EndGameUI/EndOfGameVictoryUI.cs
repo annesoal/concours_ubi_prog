@@ -24,11 +24,12 @@ public class EndOfGameVictoryUI : MonoBehaviour
 
     private void AmuletChoicesUI_OnAmuletChosen(object sender, AmuletChoicesUI.OnAmuletChosenEventArgs e)
     {
-        TowerDefenseManager.PlayerAmuletSelection = e.AmuletChosen;
+        TowerDefenseManager.amuletToChoose =
+            TowerDefenseManager.Instance.listAmuletAdditiveSo.additionAmuletSos.IndexOf(e.AmuletChosen);
         
         Loader.LoadNetwork(TowerDefenseManager.Instance.nextLevelDataSo.nextLevelScene);
     }
-
+    
     private void TowerDefenseManager_OnVictory(object sender, EventArgs e)
     {
         BasicShowHide.Show(gameObject);
@@ -49,4 +50,5 @@ public class EndOfGameVictoryUI : MonoBehaviour
             BasicShowHide.Hide(HostIsChosingUI);
         }
     }
+
 }

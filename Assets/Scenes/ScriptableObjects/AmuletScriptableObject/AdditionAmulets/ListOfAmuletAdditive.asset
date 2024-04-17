@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8cd567a7da4631833612a64887046f, type: 3}
+  m_Name: ListOfAmuletAdditive
+  m_EditorClassIdentifier: 
+  additionAmuletSos:
+  - {fileID: 11400000, guid: 2f0dba8baf441a148ad4974ef26f8108, type: 2}
+  - {fileID: 11400000, guid: 7dbf230ef2af13243aa03919c4f02bba, type: 2}
+  - {fileID: 11400000, guid: 5e87ca1e76be271478f289b90b907b8d, type: 2}
+  - {fileID: 11400000, guid: 4ee61a274b2bac54eb6ee5b543b7395c, type: 2}
+  - {fileID: 11400000, guid: 6499d6abb7f453141aa3ba0ef861bfe6, type: 2}
+  - {fileID: 11400000, guid: 15b85600c05ca714aaf0b857b027c140, type: 2}
+  - {fileID: 11400000, guid: 425d54c107102ef4ea474d86c506bf57, type: 2}
+  - {fileID: 11400000, guid: 63cab91701586a246b705663dcce1686, type: 2}
+  - {fileID: 11400000, guid: 465865fb7e200a34f8bb352ef01f8b4f, type: 2}

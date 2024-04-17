@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.27850926, g: 0.15260476, b: 0.35627687, a: 1}
+  m_IndirectSpecularColor: {r: 0.2785504, g: 0.15261765, b: 0.35639903, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -34568,6 +34568,8 @@ MonoBehaviour:
     type: 3}
   nextLevelDataSo: {fileID: 11400000, guid: 27e55dd30df170b9e9d54c59fee6cfaa, type: 2}
   defaultAmulet: {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
+  listAmuletAdditiveSo: {fileID: 11400000, guid: 254ed384cd7f73998af697645cacffa7,
+    type: 2}
   listOfSpawners:
   - {fileID: 291565355}
   - {fileID: 692615484}
@@ -35784,8 +35786,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29809123, y: -0.19963987, z: 0.06390523, w: 0.9312367}
-  m_LocalPosition: {x: 35.6, y: 15, z: -5.5}
+  m_LocalRotation: {x: 0.33262005, y: 0.22765757, z: -0.08308564, w: 0.9113906}
+  m_LocalPosition: {x: 5.9, y: 15.8, z: -4.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
