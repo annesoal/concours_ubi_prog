@@ -16,15 +16,15 @@ MonoBehaviour:
   turnTime: 60
   startingTurn: 0
   numberOfTurns: 6
-  ressourceSpawnRate: 0.06
+  ressourceSpawnRate: 0.04
   playersHealth: 3
-  playerEnergy: 12
+  playerEnergy: 10
   startingMoney: 0
   timeBetweenSpawns: 1
   enemyEnergy: 24
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
-  GoofyHealthPoints: 2
+  GoofyHealthPoints: 3
   GoofyMoveRatio: 2
   BigGuyHealthPoints: 3
   BigGuyMoveRatio: 4
@@ -44,5 +44,5 @@ MonoBehaviour:
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
-  BombDamage: 2
+  BombDamage: 6
   BombRange: 1

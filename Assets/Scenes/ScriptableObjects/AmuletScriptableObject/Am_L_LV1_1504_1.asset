@@ -44,5 +44,5 @@ MonoBehaviour:
   numberOfProjectile: 1
   TowerDamage: 1
   BombCost: 3
-  BombDamage: 1
+  BombDamage: 6
   BombRange: 1
