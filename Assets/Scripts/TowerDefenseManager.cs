@@ -632,6 +632,18 @@ public class TowerDefenseManager : NetworkBehaviour
             Destroy(malus);
         }
     }
+
+    public void SyncAmuletChoice(int amuletIndex)
+    {
+        SyncAmuletChoiceClientRpc(amuletIndex);
+    }
+
+    [ClientRpc]
+    private void SyncAmuletChoiceClientRpc(int amuletIndex)
+    {
+        amuletToChoose = amuletIndex;
+    }
+    
     public static void ResetPlayerAmuletSelection()
     {
         PlayerAmuletSelection = null;

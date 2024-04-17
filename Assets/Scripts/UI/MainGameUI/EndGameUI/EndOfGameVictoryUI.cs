@@ -24,8 +24,8 @@ public class EndOfGameVictoryUI : MonoBehaviour
 
     private void AmuletChoicesUI_OnAmuletChosen(object sender, AmuletChoicesUI.OnAmuletChosenEventArgs e)
     {
-        TowerDefenseManager.amuletToChoose =
-            TowerDefenseManager.Instance.listAmuletAdditiveSo.additionAmuletSos.IndexOf(e.AmuletChosen);
+        TowerDefenseManager.Instance.SyncAmuletChoice
+            (TowerDefenseManager.Instance.listAmuletAdditiveSo.additionAmuletSos.IndexOf(e.AmuletChosen));
         
         Loader.LoadNetwork(TowerDefenseManager.Instance.nextLevelDataSo.nextLevelScene);
     }
