@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.27850926, g: 0.15260476, b: 0.35627687, a: 1}
+  m_IndirectSpecularColor: {r: 0.2785504, g: 0.15261765, b: 0.35639903, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -20667,6 +20667,8 @@ MonoBehaviour:
   <BossPrefab>k__BackingField: {fileID: 0}
   nextLevelDataSo: {fileID: 11400000, guid: 72636b7cc832af1c6a6ab128c8c239f8, type: 2}
   defaultAmulet: {fileID: 11400000, guid: c45e4c55eb788d666bb141ca26c9d315, type: 2}
+  listAmuletAdditiveSo: {fileID: 11400000, guid: 254ed384cd7f73998af697645cacffa7,
+    type: 2}
   listOfSpawners:
   - {fileID: 347688062}
   - {fileID: 985788232}
@@ -21682,8 +21684,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049927654}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.325685, y: -0.24287683, z: 0.08696248, w: 0.90960306}
-  m_LocalPosition: {x: 22.26, y: 13.2, z: -3.5}
+  m_LocalRotation: {x: 0.33016, y: 0.20049904, z: -0.0719865, w: 0.91957194}
+  m_LocalPosition: {x: 5.3, y: 13.52, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -5,6 +5,7 @@ using Enemies.Basic;
 using Grid;
 using Grid.Interface;
 using Sound;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = System.Random;
@@ -148,6 +149,8 @@ namespace Enemies
             }
             hasFinishedMoveAnimation = true;
         }
+        
+        
 
         // Peut detruire obstacle et tower, tous les cells avec obstacles `solides` sont valides 
         public override bool PathfindingInvalidCell(Cell cellToCheck)

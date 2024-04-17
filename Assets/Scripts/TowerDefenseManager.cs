@@ -90,6 +90,9 @@ public class TowerDefenseManager : NetworkBehaviour
     
     [Header("AdditionAmulet")]
     [SerializeField] private AdditionAmuletSO defaultAmulet;
+
+    [SerializeField] public ListAmuletAdditiveSO listAmuletAdditiveSo;
+    public static int amuletToChoose;
     
     /// Reset manually.
     public static AdditionAmuletSO PlayerAmuletSelection;
@@ -129,7 +132,13 @@ public class TowerDefenseManager : NetworkBehaviour
         InitializeStatesMethods();
         InitializeSpawnPlayerMethods();
         currentRoundNumber = 0;
+        ChooseAmulet();
         SetAmuletFieldsToGameFields();
+    }
+
+    private void ChooseAmulet()
+    {
+        PlayerAmuletSelection = listAmuletAdditiveSo.additionAmuletSos[amuletToChoose];
     }
 
     private void Start()
@@ -490,13 +499,14 @@ public class TowerDefenseManager : NetworkBehaviour
             _playerReadyToPassDictionary[clientIdOfPlayerReady] = value;
         }
     }
-
+    
+    
     private bool ConnectedPlayerIsNotReadyToPass(ulong clientIdOfPlayer)
     {
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
-
+    
     private void SetAmuletFieldsToGameFields()
     {
         if (PlayerAmuletSelection == null)
