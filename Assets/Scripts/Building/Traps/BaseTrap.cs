@@ -26,7 +26,7 @@ public abstract class BaseTrap : BuildableObject
     }
     public override void Build(Vector2Int positionToBuild)
     {
-       
+        HidePreview();
         
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
        

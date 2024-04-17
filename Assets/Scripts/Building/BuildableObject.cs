@@ -21,6 +21,7 @@ public abstract class BuildableObject : MonoBehaviour, IBuildable, ITopOfCell
     public abstract void HidePreview();
     public void SynchBuild()
     {
+        HidePreview();
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, this.transform.position);
     }
 
