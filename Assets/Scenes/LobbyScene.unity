@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.19568536, g: 0.15395024, b: 0.3571391, a: 1}
+  m_IndirectSpecularColor: {r: 0.19569565, g: 0.15396068, b: 0.35716015, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4849,12 +4849,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 993963227}
     - target: {fileID: 1674875993240352067, guid: 0c7268d506b908320a885f146da5c8df,
         type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1970343412}
     - target: {fileID: 3971866251084462028, guid: 0c7268d506b908320a885f146da5c8df,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4959,7 +4959,7 @@ PrefabInstance:
         type: 3}
       propertyPath: toSelectAfterDeactivation
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 993963227}
     - target: {fileID: 6504555399389957751, guid: 0c7268d506b908320a885f146da5c8df,
         type: 3}
       propertyPath: m_Name
