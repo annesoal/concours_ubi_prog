@@ -35,7 +35,7 @@ MonoBehaviour:
   SniperRange: 2
   TrapCost: 2
   StunDuration: 1
-  TrapRange: 1
+  TrapRange: 2
   ObstaclesHealth: 1
   TowerCost: 6
   TowerRange: 2
