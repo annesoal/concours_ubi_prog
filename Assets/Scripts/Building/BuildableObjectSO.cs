@@ -17,6 +17,7 @@ public class BuildableObjectSO : ScriptableObject
 
     public GameObject visuals;
 
+    [TextArea]
     public string description;
 
     public TypeOfBuildableObject type;
