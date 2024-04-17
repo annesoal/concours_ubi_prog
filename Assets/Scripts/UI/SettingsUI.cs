@@ -212,7 +212,7 @@ public class SettingsUI : MonoBehaviour
 
     private Sprite GetSpriteForBinding(InputManager.Binding binding)
     {
-        string overridePath = InputManager.Instance.GetBindingOverridePath(binding);
+        string overridePath = InputManager.Instance.GetBindingOverridePath(binding) ?? InputManager.Instance.GetBindingPath(binding);
 
         foreach (PairInputPathAndSpriteSO.PairInputPathAndSprite pair in pairInputPathAndSpriteSo.pairsList)
         {

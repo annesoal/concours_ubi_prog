@@ -409,7 +409,7 @@ public class InputManager : MonoBehaviour
 		return actionMapOfBinding.bindings[BindingActionMapIndexEquivalent[binding]].overridePath;
 	}
 	
-	private string GetBindingPath(Binding binding)
+	public string GetBindingPath(Binding binding)
 	{
 		InputAction actionMapOfBinding = _actionMapBindingEquivalent[binding]; 
 		
