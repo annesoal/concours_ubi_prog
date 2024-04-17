@@ -16,9 +16,13 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b75f8e2f051c5c76eba68b2e3d38cb47, type: 3}
   objectName: Zombot Trap
   visuals: {fileID: 5887437798432054152, guid: a80f3a26b1036df8d91194821709c6c0, type: 3}
-  description: ROBOMB - Ennemis who step on it immediately vanish.
+  description: 'ROBOMB
+
+    Ennemis who step on it
+
+    immediately vanish.'
   type: 1
   materialAndQuantityPairs:
-  - quantityOfMaterialRequired: 2
+  - quantityOfMaterialRequired: 3
     buildingMaterialSO: {fileID: 11400000, guid: 1ff90da807136d13492c7ca82a9d41be,
       type: 2}

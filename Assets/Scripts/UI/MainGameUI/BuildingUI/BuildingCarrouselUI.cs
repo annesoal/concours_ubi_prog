@@ -15,6 +15,7 @@ public class BuildingCarrouselUI : MonoBehaviour
     [SerializeField] private Image rightImage;
 
     [SerializeField] private TextMeshProUGUI selectedBuildingText;
+    [SerializeField] private TextMeshProUGUI errorText;
 
     [Header("Tweening")]
     [SerializeField] private float endScale;
@@ -143,17 +144,20 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         if (HasResourceForBuilding())
         {
+            BasicShowHide.Show(selectedBuildingText.gameObject);
+            BasicShowHide.Hide(errorText.gameObject);
+        
             selectedBuildingText.color = new Color(69, 69, 69);
             selectedBuildingText.text = _selectedBuilding.Value.description;
-        
         }
         else
         {
-            selectedBuildingText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
-            selectedBuildingText.text = MISSING_RESOURCE_ERROR;
+            BasicShowHide.Hide(selectedBuildingText.gameObject);
+            BasicShowHide.Show(errorText.gameObject);
+            
+            errorText.color = ColorPaletteUI.Instance.ColorPaletteSo.errorColor;
+            errorText.text = MISSING_RESOURCE_ERROR;
         }
-        
-        BasicShowHide.Show(selectedBuildingText.gameObject);
     }
     
     private void HideDescription()
