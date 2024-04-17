@@ -11,6 +11,7 @@ using Enemies.Boss;
 using Grid;
 using Grid.Blocks;
 using Managers;
+using Sound;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -296,10 +297,12 @@ public class TowerDefenseManager : NetworkBehaviour
         
         if (victory)
         {
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getVictoryAudio(), transform, 1f);
             OnVictory?.Invoke(this, EventArgs.Empty);
         }
         else
         {
+            SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getGameOverAudio(), transform, 1f);
             OnDefeat?.Invoke(this, EventArgs.Empty);
         }
     }
