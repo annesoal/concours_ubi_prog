@@ -22,6 +22,7 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button creditButton;
     
     [Header("Tutorial")]
+    [SerializeField] private TutorialUI tutorialUI;
     [SerializeField] private Button tutorialButton;
 
     private void Awake()
@@ -44,6 +45,11 @@ public class MainMenuUI : MonoBehaviour
         creditButton.onClick.AddListener(() =>
         {
             creditsUI.ShowCredits();
+        });
+        
+        tutorialButton.onClick.AddListener(() =>
+        {
+            tutorialUI.ShowFirstSlide();
         });
     }
 }
