@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4df23f70fe3586fbbac07f811a6c53, type: 3}
   m_Name: Add_amu_LVL3_2
   m_EditorClassIdentifier: 
-  description: You have more time but bombs are more expensive
+  description: You have more time during your turn, but Robombs are more expensive.
   amuletIcon: {fileID: 21300000, guid: 0b2c9426512b9fa45a295cf9b01d355a, type: 3}
-  turnTime: 0
+  turnTime: 10
   startingTurn: 0
   numberOfTurns: 0
   ressourceSpawnRate: 0
@@ -44,6 +44,6 @@ MonoBehaviour:
   TowerTimeBetweenAttacks: 0
   numberOfProjectile: 0
   TowerDamage: 0
-  BombCost: 0
+  BombCost: 1
   BombDamage: 0
   BombRange: 0
