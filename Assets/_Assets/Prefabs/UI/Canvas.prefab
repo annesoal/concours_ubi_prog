@@ -7512,6 +7512,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3223496274433715106, guid: 6696487c5f0766fd1b04b715530cb53b,
         type: 3}
+      propertyPath: m_text
+      value: BUILD
+      objectReference: {fileID: 0}
+    - target: {fileID: 3223496274433715106, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
       propertyPath: m_fontSize
       value: 24
       objectReference: {fileID: 0}
@@ -8087,6 +8092,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3664547425465622398}
     m_Modifications:
+    - target: {fileID: 3223496274433715106, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_text
+      value: BUILD
+      objectReference: {fileID: 0}
     - target: {fileID: 3223496274433715106, guid: 6696487c5f0766fd1b04b715530cb53b,
         type: 3}
       propertyPath: m_fontSize
