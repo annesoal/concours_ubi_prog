@@ -47,7 +47,7 @@ public class GameStateUI : MonoBehaviour
         }
         
         Player.LocalInstance.OnPlayerEnergyChanged += PlayerLocalInstance_OnPlayerEnergyChanged;
-        Player.LocalInstance.OnPlayerHealthChanged += PlayerLocalInstance_OnPlayerHealthChanged;
+        TowerDefenseManager.Instance.OnPlayerHealthChanged += TowerDefenseManager_OnPlayerHealthChanged;
         BasicShowHide.Hide(gameObject);
     }
 
@@ -138,9 +138,9 @@ public class GameStateUI : MonoBehaviour
 
     private int _currentHealthScaleTweenId;
     private int _currentHealthColorTweenId;
-    private void PlayerLocalInstance_OnPlayerHealthChanged(object sender, Player.OnPlayerHealthChangedEventArgs e)
+    private void TowerDefenseManager_OnPlayerHealthChanged(object sender, TowerDefenseManager.OnPlayerHealthChangedEventArgs e)
     {
-        if (e.HealthValue <= 2)
+        if (e.HealthValue <= 1)
         {
             _currentHealthColorTweenId =
                 LeanTween.value(healthText.gameObject, 

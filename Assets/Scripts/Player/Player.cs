@@ -324,33 +324,18 @@ public class Player : NetworkBehaviour, ITopOfCell
         return _currentEnergy > 0;
     }
 
-    public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
-
-    public class OnPlayerHealthChangedEventArgs : EventArgs
-    {
-        public int HealthValue;
-    }
 
     public void ApplyDamage(int damage)
     {
-        Health -= damage;
-        Health = Mathf.Clamp(Health, 0, int.MaxValue);
+        int changedHealth = Health - damage;
+        changedHealth = Mathf.Clamp(changedHealth, 0, int.MaxValue);
+        
+        Health = changedHealth;
 
         if (IsServer)
         {
-            EmitOnPlayerHealthChangedClientRpc(Health);
+            TowerDefenseManager.Instance.EmitOnPlayerHealthChangedClientRpc(changedHealth);
         }
-    }
-
-    [ClientRpc()]
-    private void EmitOnPlayerHealthChangedClientRpc(int changedHealth)
-    {
-        if (! IsServer) { Health = changedHealth; }
-        
-        OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
-        {
-            HealthValue = changedHealth
-        });
     }
 
     public event EventHandler<OnPlayerEnergyChangedEventArgs> OnPlayerEnergyChanged;

@@ -550,6 +550,21 @@ public class TowerDefenseManager : NetworkBehaviour
         
         SynchronizeBuilding.Instance.OverrideBuildingCosts();
     }
+    
+    public event EventHandler<OnPlayerHealthChangedEventArgs> OnPlayerHealthChanged;
+    public class OnPlayerHealthChangedEventArgs : EventArgs
+    {
+        public int HealthValue;
+    }
+    
+    [ClientRpc()]
+    public void EmitOnPlayerHealthChangedClientRpc(int changedHealth)
+    {
+        OnPlayerHealthChanged?.Invoke(this, new OnPlayerHealthChangedEventArgs
+        {
+            HealthValue = changedHealth
+        });
+    }
 
     public static void ResetStaticData()
     {
