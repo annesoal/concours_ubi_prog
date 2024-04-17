@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Grid;
 using Grid.Interface;
+using Sound;
 using UnityEngine;
 using Utils;
 
@@ -112,7 +113,7 @@ namespace Enemies.Attack
                          hasShot = true;
                          shootingUtility.FireBetween(_bulletStartPosition.position,
                          infos.toKill.gameObject.transform.position);
-                         
+                        
                      }
                  }
                  yield return null;
@@ -124,10 +125,12 @@ namespace Enemies.Attack
                  if (infos.isTower)
                  {
                      infos.toKill.gameObject.GetComponent<BaseTower>().DestroyThis();
+                     SoundFXManager.instance.PlaySoundFXCLip(explosionAudioClip, transform,1f);
                  }
                  else
                  {
                      infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
+                     SoundFXManager.instance.PlaySoundFXCLip(explosionAudioClip, transform,1f);
                  }
              }
              hasFinishedMoveAnimation = true ;

@@ -330,6 +330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildableObjectSO: {fileID: 11400000, guid: 6dd0b3963c4e5aad1b8e26108653c1d0, type: 2}
+  damageAudioClip: {fileID: 8300000, guid: 1ccd31e9e83441665ac42b78d6f66434, type: 3}
+  buildAudioSound: {fileID: 8300000, guid: e30e7a907979fc9639c4cc983af001ff, type: 3}
   animator: {fileID: 5866666021909216657, guid: 67d8b372520b98d4db2403b213a519f6,
     type: 3}
   shootingPoint: {fileID: 7876219794598605437}

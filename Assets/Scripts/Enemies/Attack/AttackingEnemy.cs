@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Enemies.Basic;
 using Grid;
 using Grid.Interface;
+using Sound;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = System.Random;
@@ -12,6 +13,7 @@ namespace Enemies
 {
     public abstract class AttackingEnemy : BasicEnemy
     {
+        [SerializeField] protected AudioClip explosionAudioClip; 
         public abstract int AttackDamage { get; set; }
 
         protected override EnemyChoicesInfo BackendMove()
@@ -134,10 +136,14 @@ namespace Enemies
                 if (infos.isTower)
                 {
                     infos.toKill.gameObject.GetComponent<BaseTower>().DestroyThis();
+                    SoundFXManager.instance.PlaySoundFXCLip(explosionAudioClip, transform,1f);
+
                 }
                 else
                 {
                     infos.toKill.gameObject.GetComponent<Obstacle>().DestroyThis();
+                    SoundFXManager.instance.PlaySoundFXCLip(explosionAudioClip, transform,1f);
+
                 }
             }
             hasFinishedMoveAnimation = true;

@@ -6,8 +6,10 @@ using Enemies;
 using Ennemies;
 using Grid;
 using Grid.Interface;
+using Sound;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 /**
@@ -18,7 +20,8 @@ using Utils;
  */
 public abstract class BaseTower : BuildableObject, IDamageable
 {
-
+    [SerializeField] protected AudioClip damageAudioClip;
+    [FormerlySerializedAs("buildAudioSound")] [SerializeField] protected AudioClip buildAudioClip;
     [SerializeField] protected Animator animator;
     [Header("Tower specifics")] [SerializeField]
     protected Transform shootingPoint;
@@ -76,10 +79,17 @@ public abstract class BaseTower : BuildableObject, IDamageable
         towerVisuals.HidePreview();
         
         TilingGrid.grid.PlaceObjectAtPositionOnGrid(gameObject, positionToBuild);
-
+        playSoundClientRpc();
         RegisterTower(this);
     }
 
+    [ClientRpc]
+    public void playSoundClientRpc()
+    {
+        SoundFXManager.instance.PlaySoundFXCLip(buildAudioClip, transform, 1f);
+    }
+    
+    
     /// <returns>List of cells targeted by the tower.</returns>
     protected abstract List<EnemyInfoToShoot> TargetEnemies();
 
@@ -118,6 +128,8 @@ public abstract class BaseTower : BuildableObject, IDamageable
         _shooter.FireBetween(shootingPoint.position, position);
         yield return new WaitUntil(_shooter.HasFinished);
         _hasPlayed = true;
+        SoundFXManager.instance.PlaySoundFXCLip(damageAudioClip, transform,1f);
+
     }
 
     private readonly float _animationTime = 1.2f;

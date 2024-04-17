@@ -267,3 +267,4 @@ MonoBehaviour:
   hasFinishedMoveAnimation: 0
   hasFinishedSpawnAnimation: 0
   animator: {fileID: 5814351646530095030}
+  explosionAudioClip: {fileID: 8300000, guid: cf5b13772e7b5a38ba6b5820b3ea26b3, type: 3}
