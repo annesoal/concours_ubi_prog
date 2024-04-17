@@ -67,7 +67,8 @@ public class BuildingCarrouselUI : MonoBehaviour
     {
         SetCarrouselImages();
         
-        ShowPreview();
+        // Retrait pour build final
+        // ShowPreview();
         
         ShowDescription();
         
