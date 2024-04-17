@@ -496,6 +496,7 @@ public class TowerDefenseManager : NetworkBehaviour
         return !_playerReadyToPassDictionary.ContainsKey(clientIdOfPlayer) ||
                !_playerReadyToPassDictionary[clientIdOfPlayer];
     }
+
     
     private void SetAmuletFieldsToGameFields()
     {

@@ -17,7 +17,7 @@ MonoBehaviour:
   turnTime: -10
   startingTurn: 0
   numberOfTurns: 0
-  ressourceSpawnRate: 0.01
+  ressourceSpawnRate: 0.008
   playersHealth: 0
   playerEnergy: 0
   startingMoney: 0

@@ -18,6 +18,7 @@ using Timer = Unity.Multiplayer.Samples.Utilities.ClientAuthority.Utils.Timer;
 public class Player : NetworkBehaviour, ITopOfCell
 {
     public static Player LocalInstance { get; private set; }
+    public static Player OtherInstance { get; private set; }
 
     private const float MinPressure = 0.3f;
 
@@ -27,6 +28,7 @@ public class Player : NetworkBehaviour, ITopOfCell
     [SerializeField] private PlayerTileSelector _selector;
     [SerializeField] private GameObject _highlighter;
     [SerializeField] private float _timeToMove = 0.5f;
+    [SerializeField] private Transform SK;
     private Animator animator;
     protected Utils.OwnerNetworkAnimator Network;
 
@@ -45,6 +47,8 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
     }
 
+    private Vector3 SK_originPosition;
+    private Quaternion SK_originRotation;
     private bool _hasFinishedToMove;
 
     private bool _canMove;
@@ -55,6 +59,8 @@ public class Player : NetworkBehaviour, ITopOfCell
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        SK_originPosition = SK.localPosition;
+        SK_originRotation = SK.localRotation;
     }
 
 
@@ -146,6 +152,10 @@ public class Player : NetworkBehaviour, ITopOfCell
         {
             LocalInstance = this;
             InputManager.Player = this;
+        }
+        else
+        {
+            OtherInstance = this;
         }
 
         InitializePlayerBasedOnCharacterSelection();
@@ -393,7 +403,7 @@ public class Player : NetworkBehaviour, ITopOfCell
         StartCoroutine(rotationAnimation.TurnAngleObjectTo(this.gameObject, cellLocalPosition));
         yield return new WaitUntil(rotationAnimation.HasMoved);
        // SetAnimatorStateServerRpc(true);
-        animator.SetBool("Move", true);
+        SetAnimatorState(true);
 
         Vector3 origin = transform.position;
 
@@ -407,11 +417,13 @@ public class Player : NetworkBehaviour, ITopOfCell
         }
 
         this.transform.position = cellLocalPosition;
+        SetAnimatorState(false);
         //SetAnimatorStateServerRpc(false);
-         animator.SetBool("Move", false);
         _hasFinishedToMove = true;
+        ResetSkStates();
     }
 
+    
     private void SetAnimatorState(bool isMoving)
     {
         animator.SetBool("Move", isMoving);
@@ -468,4 +480,13 @@ public class Player : NetworkBehaviour, ITopOfCell
     {
         EnvironmentTurnManager.Instance.IncrementPlayerFinishedMoving();
     }
+
+    private void ResetSkStates()
+    {
+        LocalInstance.SK.localPosition = LocalInstance.SK_originPosition;
+        LocalInstance.SK.localRotation = LocalInstance.SK_originRotation;
+        OtherInstance.SK.localPosition = OtherInstance.SK_originPosition;
+        OtherInstance.SK.localRotation = OtherInstance.SK_originRotation;
+    }
+
 }
