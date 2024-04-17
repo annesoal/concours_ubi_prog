@@ -21,7 +21,7 @@ MonoBehaviour:
   playerEnergy: 10
   startingMoney: 0
   timeBetweenSpawns: 0
-  enemyEnergy: 24
+  enemyEnergy: 26
   MerdeHeathPoints: 1
   MerdeMoveRatio: 4
   GoofyHealthPoints: 3
