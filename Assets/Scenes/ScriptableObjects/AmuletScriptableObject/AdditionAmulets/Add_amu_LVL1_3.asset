@@ -38,7 +38,7 @@ MonoBehaviour:
   StunDuration: 0
   TrapRange: 0
   ObstaclesHealth: 0
-  TowerCost: -1
+  TowerCost: -2
   TowerRange: 0
   TowerHealth: 0
   TowerTimeBetweenAttacks: 0
