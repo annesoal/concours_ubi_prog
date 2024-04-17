@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.19568536, g: 0.15395024, b: 0.3571391, a: 1}
+  m_IndirectSpecularColor: {r: 0.19569565, g: 0.15396068, b: 0.35716015, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1344,8 +1344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703936387642966d784056a59df28935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonzonButton: {fileID: 0}
-  zombotButton: {fileID: 0}
+  bonzonButton: {fileID: 1594465135}
+  zombotButton: {fileID: 2131108388}
 --- !u!1001 &626885361
 PrefabInstance:
   m_ObjectHideFlags: 0
