@@ -56,8 +56,6 @@ namespace Sound
             {
                 audioSource.clip = audioClipMenu;
                 audioSource.Play();
-                
-                
             }
             else
             {
@@ -76,5 +74,8 @@ namespace Sound
                    SceneManager.GetActiveScene().name != "Level3" &&
                    SceneManager.GetActiveScene().name != "NewsBlocks";
         }
+        
+        
+        
     }
 }

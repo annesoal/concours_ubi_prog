@@ -303,7 +303,6 @@ public class TowerDefenseManager : NetworkBehaviour
         else
         {
             SoundFXManager.instance.PlaySoundFXCLip(AudioFiles.Instance.getGameOverAudio(), transform, 1f);
-            Debug.Log("joue ??");
             OnDefeat?.Invoke(this, EventArgs.Empty);
         }
     }
