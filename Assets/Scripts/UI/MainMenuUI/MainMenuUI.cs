@@ -16,6 +16,13 @@ public class MainMenuUI : MonoBehaviour
     
     [Header("Quit")]
     [SerializeField] private Button quitButton;
+    
+    [Header("Credits")]
+    [SerializeField] private CreditsUI creditsUI;
+    [SerializeField] private Button creditButton;
+    
+    [Header("Tutorial")]
+    [SerializeField] private Button tutorialButton;
 
     private void Awake()
     {
@@ -32,6 +39,11 @@ public class MainMenuUI : MonoBehaviour
         quitButton.onClick.AddListener(() =>
         {
             Application.Quit();
+        });
+        
+        creditButton.onClick.AddListener(() =>
+        {
+            creditsUI.ShowCredits();
         });
     }
 }

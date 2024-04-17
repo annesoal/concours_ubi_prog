@@ -100,7 +100,7 @@ public class BuildingTrapOnGridUI : MonoBehaviour
         ShowPreviewOnSelectedCell();
     }
 
-    private const string ALREADY_HAS_BUILDING_ERROR = "Building Spot Has Enemy On It !";
+    private const string ALREADY_HAS_BUILDING_ERROR = "Already Has a Building !";
     
     private bool TryShowAlreadyHasBuildingError()
     {
@@ -140,10 +140,10 @@ public class BuildingTrapOnGridUI : MonoBehaviour
     {
         DestroyPreview();
             
+        errorText.text = toShow;
+        
         LeanTween.cancel(_showErrorTextTweening);
         errorUI.transform.localScale = Vector3.zero;
-        
-        errorText.text = toShow;
         
         BasicShowHide.Show(errorUI.gameObject);
         _showErrorTextTweening =
