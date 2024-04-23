@@ -26,3 +26,7 @@ ayant été fait durant le Concours Universitaire Ubisoft 2024 (Ubisoft Gamelab)
 
 * Ariel Chouinard
 * Benoît Dubreuil
+
+### Musique
+
+Raphaël Côté
