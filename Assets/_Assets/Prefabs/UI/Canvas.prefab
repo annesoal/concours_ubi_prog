@@ -8285,10 +8285,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 4544474809989188968}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 3556030146788211263}
     - target: {fileID: 8938378501527177902, guid: 6696487c5f0766fd1b04b715530cb53b,
         type: 3}
       propertyPath: m_Name
-      value: SelectAmuletButton
+      value: LeftSelectAmuletButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8560,10 +8575,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 3556030146788211263}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 1481503136175383075}
     - target: {fileID: 8938378501527177902, guid: 6696487c5f0766fd1b04b715530cb53b,
         type: 3}
       propertyPath: m_Name
-      value: SelectAmuletButton
+      value: RightSelectAmuletButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8872,10 +8902,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1481503136175383075}
+    - target: {fileID: 5735819441109013478, guid: 6696487c5f0766fd1b04b715530cb53b,
+        type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 4544474809989188968}
     - target: {fileID: 8938378501527177902, guid: 6696487c5f0766fd1b04b715530cb53b,
         type: 3}
       propertyPath: m_Name
-      value: SelectAmuletButton
+      value: CenterSelectAmuletButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

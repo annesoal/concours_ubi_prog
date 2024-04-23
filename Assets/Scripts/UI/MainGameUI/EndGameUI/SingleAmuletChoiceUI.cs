@@ -35,6 +35,12 @@ public class SingleAmuletChoiceUI : MonoBehaviour
     
     public void SetButtonAsSelected()
     {
+        StartCoroutine(SetButtonAsSelectedAfterTime(0.3f));
+    }
+
+    private IEnumerator SetButtonAsSelectedAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
         selectAmuletButton.Select();
     }
 }
