@@ -46,8 +46,8 @@ public class CreditsUI : MonoBehaviour
         lastPartCredit.GetComponent<RectTransform>().anchoredPosition =
             _initialLastPartCreditPosition;
 
-        _currentFirstCreditId =
-            LeanTween.moveY(firstPartCredit.GetComponent<RectTransform>(), Screen.height * 2, slideTime).id;
+        //_currentFirstCreditId =
+            //LeanTween.moveY(firstPartCredit.GetComponent<RectTransform>(), Screen.height * 2, slideTime).id;
         _currentLastCreditId =
             LeanTween.moveY(lastPartCredit.GetComponent<RectTransform>(), 0, slideTime).setOnComplete(HideCreditsWithDelay).id;
         
